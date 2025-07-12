@@ -1,0 +1,77 @@
+<div
+    class="container relative flex h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <a class="absolute right-4 top-4 md:right-8 md:top-8" href="/examples/authentication"><img alt="logo" loading="lazy"
+            width="180" height="143" decoding="async" data-nimg="1" style="color:transparent"
+            srcset="/_next/image?url=%2Fimages%2Flogo.png&amp;w=256&amp;q=75 1x, /_next/image?url=%2Fimages%2Flogo.png&amp;w=384&amp;q=75 2x"
+            src="/_next/image?url=%2Fimages%2Flogo.png&amp;w=384&amp;q=75"></a>
+    <div class="absolute flex items-center justify-between left-[5%] lg:left-[53%] top-7  md:top-8">
+        <div class="mx-1">
+
+        </div>
+    </div>
+    <div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r"><img alt="test"
+            loading="lazy" decoding="async" data-nimg="fill" class="absolute inset-0 object-covr bg-zinc-900"
+            style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+            sizes="100vw"
+            srcset="/_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=640&amp;q=75 640w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=750&amp;q=75 750w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=828&amp;q=75 828w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=1080&amp;q=75 1080w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=1200&amp;q=75 1200w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=1920&amp;q=75 1920w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=2048&amp;q=75 2048w, /_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=3840&amp;q=75 3840w"
+            src="/_next/image?url=%2Fimages%2Fhandshake.jpg&amp;w=3840&amp;q=75"></div>
+    <div class="lg:p-8 w-full">
+        <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div class="flex flex-col space-y-2 text-center">
+                <h1 class="text-2xl font-semibold tracking-tight">Connectez-vous à votre compte</h1>
+                <p class="text-sm text-muted-foreground">Entrez votre matricule ci-dessous pour vous connecter</p>
+            </div>
+            <div class="grid gap-6">
+                <form (ngSubmit)="onSubmit()" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email
+                            address</label>
+                        <div class="mt-2">
+                            <input 
+                                pInputText 
+                                id="email" 
+                                name="email" 
+                                type="email" 
+                                [(ngModel)]="email"
+                                autocomplete="email" 
+                                required
+                                placeholder="Enter your email"
+                                class="w-full">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                        <div class="mt-2">
+                            <p-password 
+                                id="password"
+                                name="password"
+                                [(ngModel)]="password"
+                                placeholder="Enter your password"
+                                [toggleMask]="true"
+                                [feedback]="false"
+                                styleClass="w-full"
+                                inputStyleClass="w-full"
+                                required>
+                            </p-password>
+                        </div>
+                    </div>
+
+                    
+
+                    <div>
+                        <p-button 
+                            type="submit"
+                            label="Sign in" 
+                            severity="primary"
+                            styleClass="w-full"
+                            [loading]="false">
+                        </p-button>
+                        
+                       
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
