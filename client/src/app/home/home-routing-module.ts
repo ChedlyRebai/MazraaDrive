@@ -2,10 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Demandes } from './demandes/demandes';
 import { Documents } from './documents/documents';
+import { Home } from './home';
 
 const routes: Routes = [
-  {path: 'demandes', component: Demandes  },
-  {path:'documents', component:Documents}
+  {
+    path: '', component: Home, children: [
+      { path: 'demandes', loadComponent: () => import('./demandes/demandes').then(m => m.Demandes) },
+      { path: 'documents', loadComponent: () => import('./documents/documents').then(m => m.Documents) },
+    ]
+  },
+
 ];
 
 @NgModule({
