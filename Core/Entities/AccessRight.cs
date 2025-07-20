@@ -14,7 +14,6 @@ public class AccessRight : BaseEntity<int>
     public bool CanUpdate { get; set; } = false;
     public bool CanDelete { get; set; } = false;
 
-    // Navigation properties
     [ForeignKey(nameof(UserId))]
     public virtual AppUser User { get; set; }
 }
