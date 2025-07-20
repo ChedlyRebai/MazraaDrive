@@ -18,33 +18,34 @@ public class GenrateToken : IGenerateToken
     }
     public Task<string> GetAndCreateToken(AppUser user)
     {
-        List<Claim> claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
+        // List<Claim> claims = new List<Claim>
+        // {
+        //     new Claim(ClaimTypes.Name, user.UserName),
+        //     new Claim(ClaimTypes.Email, user.Email),
 
-        };
+        // };
 
 
 
-        var Security = _configuration["Token:Secret"];
-        var key = Encoding.ASCII.GetBytes(Security);
+        // var Security = _configuration["Token:Secret"];
+        // var key = Encoding.ASCII.GetBytes(Security);
 
-        SigningCredentials credentials = new SigningCredentials(
-            new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
-        );
-        SecurityTokenDescriptor token = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddDays(7),
-            Issuer = _configuration["Token:Issuer"],
-            SigningCredentials = credentials,
-            NotBefore = DateTime.Now
-        };
-        ///thabet lehne yothhorly fama mchkla arjaa lil video 119-115
-        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        SecurityToken securityToken = tokenHandler.CreateToken(token);
-        string tokenString = tokenHandler.WriteToken(securityToken);
-        return Task.FromResult(tokenString);
+        // SigningCredentials credentials = new SigningCredentials(
+        //     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+        // );
+        // SecurityTokenDescriptor token = new SecurityTokenDescriptor
+        // {
+        //     Subject = new ClaimsIdentity(claims),
+        //     Expires = DateTime.Now.AddDays(7),
+        //     Issuer = _configuration["Token:Issuer"],
+        //     SigningCredentials = credentials,
+        //     NotBefore = DateTime.Now
+        // };
+        // ///thabet lehne yothhorly fama mchkla arjaa lil video 119-115
+        // JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        // SecurityToken securityToken = tokenHandler.CreateToken(token);
+        // string tokenString = tokenHandler.WriteToken(securityToken);
+        // return Task.FromResult(tokenString);
+        return Task.FromResult("Token generation logic is not implemented yet."); // Placeholder for actual token generation logic
     }
 }

@@ -20,15 +20,16 @@ public class AppUser : IdentityUser
     [Required]
     public Guid DepartmentId { get; set; }
 
-    // Navigation properties
+    // Navigation prop
+    
     public Department Department { get; set; }
     public ICollection<AccessRight> AccessRights { get; set; }
     public ICollection<Folder> CreatedFolders { get; set; }
     public ICollection<Document> UploadedDocuments { get; set; }
     public ICollection<DocumentRequest> DocumentRequests { get; set; }
     public ICollection<AIQueryLog> AIQueryLogs { get; set; }
-    public ICollection<AuditLog> AuditLogs { get; set; }
-    public ICollection<Message> SentMessages { get; set; }
-    public ICollection<Message> ReceivedMessages { get; set; }
-    public ICollection<MailFolder> MailFolders { get; set; }
+     public ICollection<AuditLog> AuditLogs { get; set; }
+    // public ICollection<Message> SentMessages { get; set; }
+    // public ICollection<Message> ReceivedMessages { get; set; }
+    // public ICollection<MailFolder> MailFolders { get; set; }
 }
