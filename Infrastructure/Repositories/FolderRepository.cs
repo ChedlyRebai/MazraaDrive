@@ -12,10 +12,6 @@ public class FolderRepository : IFolderRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> CountAsync()
-    {
-        throw new NotImplementedException();
-    }
 
     public Task DeleteAsync(int id)
     {
@@ -27,20 +23,13 @@ public class FolderRepository : IFolderRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<Folder>> GetAllAsync(params Expression<Func<Folder, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task<Folder> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Folder> GetByIdAsync(int id, params Expression<Func<Folder, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+
 
     public Task UpdateAsync(Folder entity)
     {

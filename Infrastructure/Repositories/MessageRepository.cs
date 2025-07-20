@@ -13,10 +13,6 @@ public class MessageRepository : IMessageRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> CountAsync()
-    {
-        throw new NotImplementedException();
-    }
 
     public Task DeleteAsync(int id)
     {
@@ -28,20 +24,14 @@ public class MessageRepository : IMessageRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<Message>> GetAllAsync(params Expression<Func<Message, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public Task<Message> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Message> GetByIdAsync(int id, params Expression<Func<Message, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+ 
 
     public Task UpdateAsync(Message entity)
     {

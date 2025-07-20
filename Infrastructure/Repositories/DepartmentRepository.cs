@@ -2,48 +2,76 @@ using System;
 using System.Linq.Expressions;
 using Core.Entities;
 using Core.Interfaces;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class DepartmentRepository : IDepartmentRepository
 {
-    public Task AddAsync(Department entity)
-    {
-        throw new NotImplementedException();
+
+    private readonly AppDbContext _context;
+
+    public DepartmentRepository(AppDbContext context) {
+        this._context = context;     
     }
 
-    public Task<int> CountAsync()
+    public async Task AddAsync(Department department)
     {
-        throw new NotImplementedException();
+        if (department == null)
+        {
+            throw new ArgumentNullException(nameof(department), "Department cannot be null");
+        }
+
+        var dep = await _context.Departments.AddAsync(department);
+        await _context.SaveChangesAsync();
+        
     }
+
 
     public Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var department = _context.Departments.Find(id);
+        if (department == null)
+        {
+            throw new ArgumentException($"Department with id {id} not found");
+        }
+
+        _context.Departments.Remove(department);
+        return _context.SaveChangesAsync();
     }
 
-    public Task<IReadOnlyList<Department>> GetAllAsync()
+    public async Task<IReadOnlyList<Department>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var departments = await _context.Departments.ToListAsync();
+        if (departments == null || departments.Count == 0)
+        {
+            throw new InvalidOperationException("No departments found");
+        }
+        return departments;
     }
 
-    public Task<IReadOnlyList<Department>> GetAllAsync(params Expression<Func<Department, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+  
 
     public Task<Department> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var department = _context.Departments.FirstAsync(dep => dep.Id == id);
+        if (department == null)
+        {
+            throw new ArgumentException($"Department with id {id} not found");
+        }
+        return department;
     }
 
-    public Task<Department> GetByIdAsync(int id, params Expression<Func<Department, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public Task UpdateAsync(Department entity)
     {
-        throw new NotImplementedException();
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "Department cannot be null");
+        }
+
+        _context.Departments.Update(entity);
+        return _context.SaveChangesAsync();
     }
 }

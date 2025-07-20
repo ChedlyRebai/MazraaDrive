@@ -12,11 +12,7 @@ public class DocRequestRepository : IDocRequestRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> CountAsync()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public Task DeleteAsync(int id)
     {
         throw new NotImplementedException();
@@ -27,20 +23,14 @@ public class DocRequestRepository : IDocRequestRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<DocumentRequest>> GetAllAsync(params Expression<Func<DocumentRequest, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+   
 
     public Task<DocumentRequest> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<DocumentRequest> GetByIdAsync(int id, params Expression<Func<DocumentRequest, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public Task UpdateAsync(DocumentRequest entity)
     {

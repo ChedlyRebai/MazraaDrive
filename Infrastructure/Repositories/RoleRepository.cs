@@ -12,10 +12,6 @@ public class RoleRepository : IRoleRepository
         throw new NotImplementedException();
     }
 
-    public Task<int> CountAsync()
-    {
-        throw new NotImplementedException();
-    }
 
     public Task DeleteAsync(int id)
     {
@@ -27,20 +23,11 @@ public class RoleRepository : IRoleRepository
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<Role>> GetAllAsync(params Expression<Func<Role, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<Role> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Role> GetByIdAsync(int id, params Expression<Func<Role, object>>[] includes)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task UpdateAsync(Role entity)
     {
