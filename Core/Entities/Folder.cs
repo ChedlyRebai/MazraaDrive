@@ -5,16 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 public class Folder : BaseEntity<int>
 {
-    [Required]
-    [MaxLength(255)]
+   
     public string Name { get; set; }
 
     public Guid? ParentFolderId { get; set; }
 
-    [Required]
+  
     public Guid DepartmentId { get; set; }
 
-    [Required]
+  
     public Guid CreatedById { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

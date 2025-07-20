@@ -1,7 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities;
-using System.ComponentModel.DataAnnotations;
 
 public class Document : BaseEntity<int>
 {
@@ -20,21 +21,22 @@ public class Document : BaseEntity<int>
     public string StoragePath { get; set; }
 
     [Required]
-    public Guid FolderId { get; set; }
+    public int FolderId { get; set; }  // FIXED: Changed from Guid to int
 
     [Required]
-    public Guid UploadedById { get; set; }
+    public string UploadedById { get; set; }  // FIXED: Changed from Guid to string
 
     public int Version { get; set; } = 1;
-
     public bool IsValidated { get; set; } = false;
-
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
-    public Folder Folder { get; set; }
-    public AppUser UploadedBy { get; set; }
-    public ICollection<DocumentRequest> DocumentRequests { get; set; }
+    [ForeignKey(nameof(FolderId))]
+    public virtual Folder Folder { get; set; }
+    
+    [ForeignKey(nameof(UploadedById))]
+    public virtual AppUser UploadedBy { get; set; }
+    
+    public virtual ICollection<DocumentRequest> DocumentRequests { get; set; }
 }

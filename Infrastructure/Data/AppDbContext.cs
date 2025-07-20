@@ -13,7 +13,7 @@ namespace Infrastructure.Data
         }
 
         // DbSets
-        public virtual DbSet<Address> Addresses { get; set; }
+        //public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<AccessRight> AccessRights { get; set; }
         public virtual DbSet<Folder> Folders { get; set; }

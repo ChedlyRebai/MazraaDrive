@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250720094954_InitialCreate")]
+    [Migration("20250720155843_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,15 +44,13 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AIQueryLogs");
                 });
@@ -77,65 +75,15 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("CanUpdate")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AccessRights");
-                });
-
-            modelBuilder.Entity("Core.Entities.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("city")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("country")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("firstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("state")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("street")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Core.Entities.AppUser", b =>
@@ -146,28 +94,29 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("DepartmentId1")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
@@ -193,10 +142,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -204,13 +151,16 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -218,6 +168,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -240,21 +192,19 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<Guid>("TargetId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("TargetId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AuditLogs");
                 });
@@ -307,10 +257,7 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("FolderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FolderId1")
+                    b.Property<int>("FolderId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsValidated")
@@ -329,10 +276,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UploadedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UploadedById1")
+                    b.Property<string>("UploadedById")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Version")
@@ -340,9 +285,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FolderId1");
+                    b.HasIndex("FolderId");
 
-                    b.HasIndex("UploadedById1");
+                    b.HasIndex("UploadedById");
 
                     b.ToTable("Documents");
                 });
@@ -363,18 +308,15 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DocumentType")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Priority")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("timestamp with time zone");
@@ -396,8 +338,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -435,8 +376,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("ParentFolderId")
                         .HasColumnType("uuid");
@@ -453,6 +393,142 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ParentFolderId1");
 
                     b.ToTable("Folders");
+                });
+
+            modelBuilder.Entity("Core.Entities.MailFolder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("ParentFolderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ParentFolderId1")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentFolderId1");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("MailFolder");
+                });
+
+            modelBuilder.Entity("Core.Entities.MailMessageFolder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("MailFolderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("MailFolderId1")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("MessageId1")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MailFolderId1");
+
+                    b.HasIndex("MessageId1");
+
+                    b.ToTable("MailMessageFolder");
+                });
+
+            modelBuilder.Entity("Core.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ReceiverId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SenderId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId1");
+
+                    b.HasIndex("SenderId1");
+
+                    b.ToTable("Message");
+                });
+
+            modelBuilder.Entity("Core.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -591,7 +667,9 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("AIQueryLogs")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -600,38 +678,37 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("AccessRights")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Core.Entities.Address", b =>
-                {
-                    b.HasOne("Core.Entities.AppUser", "AppUser")
-                        .WithOne("Address")
-                        .HasForeignKey("Core.Entities.Address", "AppUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Entities.AppUser", b =>
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Users")
-                        .HasForeignKey("DepartmentId1")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId");
+
                     b.Navigation("Department");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Core.Entities.AuditLog", b =>
                 {
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("AuditLogs")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -640,13 +717,15 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Core.Entities.Folder", "Folder")
                         .WithMany("Documents")
-                        .HasForeignKey("FolderId1")
+                        .HasForeignKey("FolderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.AppUser", "UploadedBy")
                         .WithMany("UploadedDocuments")
-                        .HasForeignKey("UploadedById1");
+                        .HasForeignKey("UploadedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Folder");
 
@@ -701,6 +780,63 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("ParentFolder");
+                });
+
+            modelBuilder.Entity("Core.Entities.MailFolder", b =>
+                {
+                    b.HasOne("Core.Entities.MailFolder", "ParentFolder")
+                        .WithMany("SubFolders")
+                        .HasForeignKey("ParentFolderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.AppUser", "User")
+                        .WithMany("MailFolders")
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentFolder");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.MailMessageFolder", b =>
+                {
+                    b.HasOne("Core.Entities.MailFolder", "MailFolder")
+                        .WithMany("MailMessageFolders")
+                        .HasForeignKey("MailFolderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Message", "Message")
+                        .WithMany("MailMessageFolders")
+                        .HasForeignKey("MessageId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MailFolder");
+
+                    b.Navigation("Message");
+                });
+
+            modelBuilder.Entity("Core.Entities.Message", b =>
+                {
+                    b.HasOne("Core.Entities.AppUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.AppUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -760,14 +896,13 @@ namespace Infrastructure.Data.Migrations
 
                     b.Navigation("AccessRights");
 
-                    b.Navigation("Address")
-                        .IsRequired();
-
                     b.Navigation("AuditLogs");
 
                     b.Navigation("CreatedFolders");
 
                     b.Navigation("DocumentRequests");
+
+                    b.Navigation("MailFolders");
 
                     b.Navigation("UploadedDocuments");
                 });
@@ -791,6 +926,23 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Documents");
 
                     b.Navigation("SubFolders");
+                });
+
+            modelBuilder.Entity("Core.Entities.MailFolder", b =>
+                {
+                    b.Navigation("MailMessageFolders");
+
+                    b.Navigation("SubFolders");
+                });
+
+            modelBuilder.Entity("Core.Entities.Message", b =>
+                {
+                    b.Navigation("MailMessageFolders");
+                });
+
+            modelBuilder.Entity("Core.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

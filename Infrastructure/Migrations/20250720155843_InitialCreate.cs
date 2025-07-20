@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -43,6 +43,21 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -68,11 +83,12 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    DisplayName = table.Column<string>(type: "text", nullable: false),
-                    Role = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    AddressId = table.Column<int>(type: "integer", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DepartmentId1 = table.Column<int>(type: "integer", nullable: false),
+                    FullName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: true),
+                    DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -92,11 +108,16 @@ namespace Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Departments_DepartmentId1",
-                        column: x => x.DepartmentId1,
+                        name: "FK_AspNetUsers_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -105,44 +126,18 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     CanCreate = table.Column<bool>(type: "boolean", nullable: false),
                     CanRead = table.Column<bool>(type: "boolean", nullable: false),
                     CanUpdate = table.Column<bool>(type: "boolean", nullable: false),
-                    CanDelete = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId1 = table.Column<string>(type: "text", nullable: true)
+                    CanDelete = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccessRights", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccessRights_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    firstName = table.Column<string>(type: "text", nullable: false),
-                    lastName = table.Column<string>(type: "text", nullable: false),
-                    street = table.Column<string>(type: "text", nullable: false),
-                    city = table.Column<string>(type: "text", nullable: false),
-                    ZipCode = table.Column<string>(type: "text", nullable: false),
-                    state = table.Column<string>(type: "text", nullable: false),
-                    country = table.Column<string>(type: "text", nullable: false),
-                    AppUserId = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_AccessRights_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -154,20 +149,20 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     Question = table.Column<string>(type: "text", nullable: false),
                     ResultSummary = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId1 = table.Column<string>(type: "text", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AIQueryLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AIQueryLogs_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_AIQueryLogs_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,21 +256,21 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     Action = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     TargetEntity = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    TargetId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId1 = table.Column<string>(type: "text", nullable: true)
+                    TargetId = table.Column<int>(type: "integer", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AuditLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AuditLogs_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_AuditLogs_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -284,7 +279,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     ParentFolderId = table.Column<Guid>(type: "uuid", nullable: true),
                     DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedById = table.Column<Guid>(type: "uuid", nullable: false),
@@ -316,6 +311,68 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MailFolder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParentFolderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId1 = table.Column<string>(type: "text", nullable: false),
+                    ParentFolderId1 = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MailFolder", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MailFolder_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MailFolder_MailFolder_ParentFolderId1",
+                        column: x => x.ParentFolderId1,
+                        principalTable: "MailFolder",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SenderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReceiverId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Subject = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    SenderId1 = table.Column<string>(type: "text", nullable: false),
+                    ReceiverId1 = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_ReceiverId1",
+                        column: x => x.ReceiverId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_SenderId1",
+                        column: x => x.SenderId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Documents",
                 columns: table => new
                 {
@@ -325,27 +382,54 @@ namespace Infrastructure.Data.Migrations
                     FileType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     FileSize = table.Column<long>(type: "bigint", nullable: false),
                     StoragePath = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    FolderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UploadedById = table.Column<Guid>(type: "uuid", nullable: false),
+                    FolderId = table.Column<int>(type: "integer", nullable: false),
+                    UploadedById = table.Column<string>(type: "text", nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
                     IsValidated = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FolderId1 = table.Column<int>(type: "integer", nullable: false),
-                    UploadedById1 = table.Column<string>(type: "text", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Documents_AspNetUsers_UploadedById1",
-                        column: x => x.UploadedById1,
+                        name: "FK_Documents_AspNetUsers_UploadedById",
+                        column: x => x.UploadedById,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Documents_Folders_FolderId1",
-                        column: x => x.FolderId1,
+                        name: "FK_Documents_Folders_FolderId",
+                        column: x => x.FolderId,
                         principalTable: "Folders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MailMessageFolder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MailFolderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MessageId1 = table.Column<int>(type: "integer", nullable: false),
+                    MailFolderId1 = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MailMessageFolder", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MailMessageFolder_MailFolder_MailFolderId1",
+                        column: x => x.MailFolderId1,
+                        principalTable: "MailFolder",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MailMessageFolder_Message_MessageId1",
+                        column: x => x.MessageId1,
+                        principalTable: "Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -358,10 +442,10 @@ namespace Infrastructure.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RequesterId = table.Column<Guid>(type: "uuid", nullable: false),
                     DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DocumentType = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    Priority = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    DocumentType = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Priority = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     ResponseDocumentId = table.Column<Guid>(type: "uuid", nullable: true),
                     RequestedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RespondedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -392,20 +476,14 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccessRights_UserId1",
+                name: "IX_AccessRights_UserId",
                 table: "AccessRights",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_AppUserId",
-                table: "Addresses",
-                column: "AppUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AIQueryLogs_UserId1",
+                name: "IX_AIQueryLogs_UserId",
                 table: "AIQueryLogs",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -439,9 +517,14 @@ namespace Infrastructure.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_DepartmentId1",
+                name: "IX_AspNetUsers_DepartmentId",
                 table: "AspNetUsers",
-                column: "DepartmentId1");
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_RoleId",
+                table: "AspNetUsers",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -450,9 +533,9 @@ namespace Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditLogs_UserId1",
+                name: "IX_AuditLogs_UserId",
                 table: "AuditLogs",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocumentRequests_DepartmentId1",
@@ -470,14 +553,14 @@ namespace Infrastructure.Data.Migrations
                 column: "ResponseDocumentId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_FolderId1",
+                name: "IX_Documents_FolderId",
                 table: "Documents",
-                column: "FolderId1");
+                column: "FolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_UploadedById1",
+                name: "IX_Documents_UploadedById",
                 table: "Documents",
-                column: "UploadedById1");
+                column: "UploadedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Folders_CreatedById1",
@@ -493,6 +576,36 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_Folders_ParentFolderId1",
                 table: "Folders",
                 column: "ParentFolderId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MailFolder_ParentFolderId1",
+                table: "MailFolder",
+                column: "ParentFolderId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MailFolder_UserId1",
+                table: "MailFolder",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MailMessageFolder_MailFolderId1",
+                table: "MailMessageFolder",
+                column: "MailFolderId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MailMessageFolder_MessageId1",
+                table: "MailMessageFolder",
+                column: "MessageId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_ReceiverId1",
+                table: "Message",
+                column: "ReceiverId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_SenderId1",
+                table: "Message",
+                column: "SenderId1");
         }
 
         /// <inheritdoc />
@@ -500,9 +613,6 @@ namespace Infrastructure.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AccessRights");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AIQueryLogs");
@@ -529,10 +639,19 @@ namespace Infrastructure.Data.Migrations
                 name: "DocumentRequests");
 
             migrationBuilder.DropTable(
+                name: "MailMessageFolder");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Documents");
+
+            migrationBuilder.DropTable(
+                name: "MailFolder");
+
+            migrationBuilder.DropTable(
+                name: "Message");
 
             migrationBuilder.DropTable(
                 name: "Folders");
@@ -542,6 +661,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "Role");
         }
     }
 }

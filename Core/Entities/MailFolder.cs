@@ -6,11 +6,9 @@ using System.ComponentModel.DataAnnotations;
 public class MailFolder : BaseEntity<int>
 {
 
-    [Required]
-    [MaxLength(255)]
     public string Name { get; set; }
 
-    [Required]
+   
     public Guid UserId { get; set; }
 
     public Guid? ParentFolderId { get; set; }

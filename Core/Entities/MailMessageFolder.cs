@@ -5,10 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 public class MailMessageFolder : BaseEntity<int>
 {
-    [Required]
+    
     public Guid MessageId { get; set; }
 
-    [Required]
     public Guid MailFolderId { get; set; }
 
     // Navigation properties

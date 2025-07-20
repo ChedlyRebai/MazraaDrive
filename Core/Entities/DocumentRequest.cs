@@ -5,25 +5,25 @@ using System.ComponentModel.DataAnnotations;
 
 public class DocumentRequest : BaseEntity<int>
 {
-    [Required]
+    
     public Guid RequesterId { get; set; }
 
-    [Required]
+    
     public Guid DepartmentId { get; set; }
 
-    [Required]
-    [MaxLength(255)]
+    
+    
     public string DocumentType { get; set; }
 
-    [MaxLength(1000)]
+  
     public string Description { get; set; }
 
-    [Required]
-    [MaxLength(50)]
+    
+    
     public string Priority { get; set; }
 
-    [Required]
-    [MaxLength(50)]
+    
+    
     public string Status { get; set; } = "Pending";
 
     public Guid? ResponseDocumentId { get; set; }
