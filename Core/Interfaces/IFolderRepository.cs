@@ -1,8 +1,9 @@
 using System;
+using Core.Entities;
 
 namespace Core.Interfaces;
 
-public interface IFolderRepository
+public interface IFolderRepository:IGenericRepository<Folder>
 {
 
 }

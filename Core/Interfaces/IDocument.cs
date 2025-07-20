@@ -1,8 +1,10 @@
 using System;
+using Core.Entities;
+
 
 namespace Core.Interfaces;
 
-public interface IDocument
+public interface IDocument: IGenericRepository<Document>
 {
-
+    
 }

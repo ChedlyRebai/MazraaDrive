@@ -1,8 +1,9 @@
 using System;
+using Core.Entities;
 
 namespace Core.Interfaces;
 
-public interface IDocRequestRepository
+public interface IDocRequestRepository:IGenericRepository<DocumentRequest>
 {
 
 }
