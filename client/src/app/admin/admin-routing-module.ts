@@ -8,11 +8,11 @@ import { DepartmentMangement } from './department-mangement/department-mangement
 const routes: Routes = [
   {
     path: '', component: Admin, children: [
-      { path: 'role', component : RoleMangement },
-      {path :'user' , component:RoleMangement},
-      {path:'document' ,component : RoleMangement},
-      {path : 'doc-req',component : DocReqManagement},
-      {path:'department',component : DepartmentMangement}
+      { path: 'role', component: RoleMangement },
+      { path: 'user', component: RoleMangement },
+      { path: 'document', component: RoleMangement },
+      { path: 'doc-req', component: DocReqManagement },
+      { path: 'department', component: DepartmentMangement }
     ]
   }
 ];
