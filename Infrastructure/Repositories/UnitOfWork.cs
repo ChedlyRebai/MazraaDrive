@@ -15,10 +15,36 @@ public class UnitOfWork : IUnitOfWork
     private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmailService? _emailService;
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly IGenerateToken? _token;
+
+    // private readonly IRoleRepository _roleRepository;
+    // private readonly IUserRepository _userRepository;
+    // private readonly IAuditLogRepository _auditLogRepository;
+    // private readonly IMessageRepository _messageRepository;
+    // private readonly IGenericRepository<AuditLog> _auditLogGenericRepository;
+    // private readonly IDocument _documentRepository;
+    // private readonly IFolderRepository _folderRepository;
+    // private readonly SignInManager<AppUser> _signInManager;
+    // private readonly IGenerateToken? _token;
 
     public IAuth Auth { get; }
+
+    public IDocRequestRepository DocRequestRepository { get; }
+
+    public IDocument DocumentRepository { get; }
+
+    public IFolderRepository FolderRepository { get; }
+
+    public IMessageRepository MessageRepository { get; }
+
+    public IUserRepository UserRepository { get; }
+
+    public IDepartmentRepository DepartmentRepository { get; }
+
+    public IPermissionsRepository PermissionsRepository { get; }
+
+    public IRoleRepository RoleRepository { get; }
+
+    public IAuditLogRepository AuditLogRepository { get; }
 
     public UnitOfWork(
         AppDbContext context, 
@@ -31,9 +57,9 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         _redis = redis;
         _userManager = userManager;
-        _signInManager = signInManager;
+       // _signInManager = signInManager;
         _emailService = emailService;
-        _token = token;
+        // _token = token;
         
         // Initialize Auth with proper null checks
        // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);

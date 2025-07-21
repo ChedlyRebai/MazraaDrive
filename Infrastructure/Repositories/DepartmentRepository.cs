@@ -12,8 +12,9 @@ public class DepartmentRepository : IDepartmentRepository
 
     private readonly AppDbContext _context;
 
-    public DepartmentRepository(AppDbContext context) {
-        this._context = context;     
+    public DepartmentRepository(AppDbContext context)
+    {
+        this._context = context;
     }
 
     public async Task AddAsync(Department department)
@@ -25,7 +26,7 @@ public class DepartmentRepository : IDepartmentRepository
 
         var dep = await _context.Departments.AddAsync(department);
         await _context.SaveChangesAsync();
-        
+
     }
 
 
@@ -51,7 +52,7 @@ public class DepartmentRepository : IDepartmentRepository
         return departments;
     }
 
-  
+
 
     public Task<Department> GetByIdAsync(int id)
     {
@@ -63,7 +64,7 @@ public class DepartmentRepository : IDepartmentRepository
         return department;
     }
 
-    
+
     public Task UpdateAsync(Department entity)
     {
         if (entity == null)
