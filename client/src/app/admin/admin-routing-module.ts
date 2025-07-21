@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Admin } from './admin';
-import { RoleMangement } from './role-mangement/role-mangement';
+
 import { DocReqManagement } from './doc-req-management/doc-req-management';
 import { DepartmentMangement } from './department-mangement/department-mangement';
+import { RoleManagementComponent } from './role-mangement/role-mangement';
+import { UserMangement } from './user-mangement/user-mangement';
+import { DocumentMangement } from './document-mangement/document-mangement';
 
 const routes: Routes = [
   {
     path: '', component: Admin, children: [
-      { path: 'role', component: RoleMangement },
-      { path: 'user', component: RoleMangement },
-      { path: 'document', component: RoleMangement },
+      { path: 'role', component: RoleManagementComponent },
+      { path: 'user', component: UserMangement },
+      { path: 'document', component: DocumentMangement },
       { path: 'doc-req', component: DocReqManagement },
       { path: 'department', component: DepartmentMangement }
     ]
