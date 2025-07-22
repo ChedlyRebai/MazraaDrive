@@ -22,7 +22,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SharedModule } from '../shared/shared.module';
 import { RoleManagementComponent } from './role-mangement/role-mangement';
-import { ThemeSwitcher } from '../shared/themeswitcher';
+import { ThemeSwitcher } from './themeswitcher';
 
 
 const PRIMENG_MODULES = [
@@ -54,6 +54,8 @@ const PRIMENG_MODULES = [
    RoleManagementComponent,
     AdminRoutingModule,
     RouterModule,
+
+    ThemeSwitcher,
     
     PRIMENG_MODULES
   ]

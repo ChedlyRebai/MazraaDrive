@@ -24,7 +24,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ThemeSwitcher } from '../../shared/themeswitcher';
+import { ThemeSwitcher } from '../themeswitcher';
 // Import Table component for ViewChild
 import { Table } from 'primeng/table';
 import { provideHttpClient } from '@angular/common/http'; 
@@ -75,7 +75,7 @@ export interface Product {
     InputIconModule,
     CheckboxModule,
     RippleModule,
-    
+    ThemeSwitcher,
   ],
   templateUrl: './user-mangement.html',
   styleUrl: './user-mangement.css',
