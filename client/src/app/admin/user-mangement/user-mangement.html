@@ -1,55 +1,5 @@
 
-<div>
-  <div>
-    <nav class="sm:hidden" aria-label="Back">
-      <a href="#" class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
-        <!-- Heroicon name: solid/chevron-left -->
-        <svg class="flex-shrink-0 -ml-1 mr-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
-        Back
-      </a>
-    </nav>
-    <nav class="hidden sm:flex" aria-label="Breadcrumb">
-      <ol role="list" class="flex items-center space-x-4">
-        <li>
-          <div class="flex">
-            <a href="#" class="text-sm font-medium text-gray-500 hover:text-gray-700">Jobs</a>
-          </div>
-        </li>
-        <li>
-          <div class="flex items-center">
-            <!-- Heroicon name: solid/chevron-right -->
-            <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-            <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Engineering</a>
-          </div>
-        </li>
-        <li>
-          <div class="flex items-center">
-            <!-- Heroicon name: solid/chevron-right -->
-            <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-            <a href="#" aria-current="page" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Back End Developer</a>
-          </div>
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div class="mt-2 md:flex md:items-center md:justify-between">
-    <div class="flex-1 min-w-0">
-      <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Back End Developer</h2>
-    </div>
-    <div class="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
-      <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</button>
-      <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Publish</button>
-    </div>
-  </div>
-</div>
-
-<div class="card">
+<div class="card ">
     <p-toast />
     <p-toolbar class="mb-6">
         <ng-template #start>
@@ -58,11 +8,10 @@
         </ng-template>
 
         <ng-template #end>
-             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
-            <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
+            <p-button label="Export" icon="pi pi-upload" severity="secondary"  />
         </ng-template>
     </p-toolbar>
-
     <p-table
         #dt
         [value]="products"
@@ -82,7 +31,7 @@
                 <h5 class="m-0">Manage Products</h5>
                 <p-iconfield>
                     <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text" placeholder="Search..." />
+                    <input pInputText type="text"  placeholder="Search..." />
                 </p-iconfield>
             </div>
         </ng-template>
@@ -139,7 +88,7 @@
                 <td>{{ product.price | currency: 'USD' }}</td>
                 <td>{{ product.category }}</td>
                 <td>
-                    <p-rating [(ngModel)]="product.rating" [readonly]="true" />
+                    <p-rating [(ngModel)]="product.rating" [readonly]="true"  />
                 </td>
                 <td>
                     <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
@@ -213,4 +162,5 @@
     </p-dialog>
 
     <p-confirmDialog [style]="{ width: '450px' }" />
+    
 </div>

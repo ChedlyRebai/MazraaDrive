@@ -1,33 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
+
+
+
+:root {
+  --body-bg: var(--p-surface-50);
+  --body-text-color: var(--p-surface-900);
+  --card-border: 1px solid var(--border-color);
+  --card-bg: var(--p-surface-0);
+  --border-color: var(--p-surface-200);
+  --text-color: var(--p-surface-700);
+  --overlay-background: #ffffff;
+}
+
+:root[class='p-dark'] {
+  --body-bg: var(--p-surface-950);
+  --body-text-color: var(--p-surface-50);
+  --card-border: 1px solid transparent;
+  --card-bg: var(--p-surface-900);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-color: var(--p-surface-0);
+  --overlay-background: var(--p-surface-900);
+}
+
+html {
+  font-size: 14px;
+}
+
 body {
-    height: 100vh;
+  min-width: 100wh;
+  height: 100vh;
+  margin: 0px;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--body-bg);
+  font-weight: normal;
+  color: var(--body-text-color);
+  
 }
 
-
-
-
-/* Card */
-.file-card {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.5rem !important; /* gap-6 = 1.5rem */
-    border-radius: 18px !important;
-    background-color: #fff !important;
-    padding: 1.25rem !important; /* p-5 = 1.25rem */
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important; /* shadow-sm */
-    transition: all 0.2s !important;
-    cursor: pointer !important;
+.card {
+  background: var(--card-bg);
+  border: var(--card-border);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
 }
-.file-card:hover {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important; /* shadow-lg */
-    transform: translateY(-0.25rem) !important; /* -translate-y-1 = -0.25rem */
-}
+    
 
-.file-card-details {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.5rem !important; /* gap-2 = 0.5rem */
-    color: #f3f4f6 !important; /* text-light-100 (adjust as needed) */
-}

@@ -5,16 +5,20 @@ import { routes } from './app/app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { provideHttpClient } from '@angular/common/http';
+import MyPreset from './app/shared/preset';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
+    provideHttpClient(), 
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
-          darkModeSelector: '.dark'
+          darkModeSelector: '.dark',
+          MyPreset: MyPreset,
         }
       }
     })

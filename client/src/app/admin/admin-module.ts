@@ -22,6 +22,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SharedModule } from '../shared/shared.module';
 import { RoleManagementComponent } from './role-mangement/role-mangement';
+import { ThemeSwitcher } from '../shared/themeswitcher';
 
 
 const PRIMENG_MODULES = [
@@ -47,6 +48,7 @@ const PRIMENG_MODULES = [
 @NgModule({
   declarations: [],
   imports: [
+    ThemeSwitcher,
     SharedModule,
     CommonModule,
    RoleManagementComponent,

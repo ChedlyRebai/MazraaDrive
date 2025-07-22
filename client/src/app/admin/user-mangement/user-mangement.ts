@@ -12,6 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { Checkbox } from 'primeng/checkbox';
+
 import { TextareaModule } from 'primeng/textarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SelectModule } from 'primeng/select';
@@ -22,10 +24,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { ThemeSwitcher } from '../../shared/themeswitcher';
 // Import Table component for ViewChild
 import { Table } from 'primeng/table';
-
+import { provideHttpClient } from '@angular/common/http'; 
 interface Column {
   field: string;
   header: string;
@@ -72,7 +74,8 @@ export interface Product {
     IconFieldModule,
     InputIconModule,
     CheckboxModule,
-    RippleModule
+    RippleModule,
+    
   ],
   templateUrl: './user-mangement.html',
   styleUrl: './user-mangement.css',
