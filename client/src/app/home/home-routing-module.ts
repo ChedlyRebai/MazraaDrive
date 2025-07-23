@@ -4,11 +4,12 @@ import { Demandes } from './demandes/demandes';
 import { Documents } from './documents/documents';
 import { Home } from './home';
 
-const routes: Routes = [
+const routes: Routes = [  
   {
     path: '', component: Home, children: [
       { path: 'demandes', loadComponent: () => import('./demandes/demandes').then(m => m.Demandes) },
       { path: 'documents', loadComponent: () => import('./documents/documents').then(m => m.Documents) },
+      { path: 'document-search', loadComponent: () => import('./document-recherche/document-recherche').then(m => m.DocumentRecherche) }
     ]
   },
 

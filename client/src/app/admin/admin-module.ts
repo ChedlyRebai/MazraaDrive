@@ -23,6 +23,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { SharedModule } from '../shared/shared.module';
 import { RoleManagementComponent } from './role-mangement/role-mangement';
 import { ThemeSwitcher } from './themeswitcher';
+import { LogsModule } from './logs/logs-module';
 
 
 const PRIMENG_MODULES = [
@@ -48,10 +49,11 @@ const PRIMENG_MODULES = [
 @NgModule({
   declarations: [],
   imports: [
+    LogsModule,
     ThemeSwitcher,
     SharedModule,
     CommonModule,
-   RoleManagementComponent,
+    RoleManagementComponent,
     AdminRoutingModule,
     RouterModule,
 

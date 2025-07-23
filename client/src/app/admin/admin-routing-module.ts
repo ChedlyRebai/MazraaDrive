@@ -11,14 +11,15 @@ import { Stats } from './stats/stats';
 
 const routes: Routes = [
   {
-    path: '', component: Admin, children: [
-      {path:'stats',component:Stats},
-      { path: 'role', component: RoleManagementComponent },
-      { path: 'user', component: UserMangement },
-      { path: 'document', component: DocumentMangement },
-      { path: 'doc-req', component: DocReqManagement },
-      { path: 'department', component: DepartmentMangement },
-      {path: 'permissions',component: RoleManagementComponent},
+    path: '', loadComponent: () => import('./admin').then(m => m.Admin), children: [
+      {path:'stats',loadComponent:() => import('./stats/StatsWidgetComponent').then(m => m.StatsWidgetComponent)},
+      { path: 'role', loadComponent: () => import('./role-mangement/role-mangement').then(m => m.RoleManagementComponent) },
+      { path: 'user', loadComponent: () => import('./user-mangement/user-mangement').then(m => m.UserMangement) },
+      { path: 'document', loadComponent: () => import('./document-mangement/document-mangement').then(m => m.DocumentMangement) },
+      { path: 'doc-req', loadComponent: () => import('./doc-req-management/doc-req-management').then(m => m.DocReqManagement) },
+      { path: 'department', loadComponent: () => import('./department-mangement/department-mangement').then(m => m.DepartmentMangement) },
+      { path: 'permissions', loadComponent: () => import('./role-mangement/role-mangement').then(m => m.RoleManagementComponent) },
+      { path: 'logs', loadChildren: () => import('./logs/logs-module').then(m => m.LogsModule) }
     ]
   }
 ];
