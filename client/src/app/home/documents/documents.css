@@ -4554,7 +4554,7 @@ img {
   }
 }
 .card {
-  border-color: var(--card-border);
+  border-color: #000000;
   padding:1.5rem;
   border:1px solid var(--surface-border);
   margin-bottom:2rem;
@@ -4566,9 +4566,7 @@ img {
 .layout-card-filled .card {
   background:var(--surface-card)
 }
-.layout-card-transparent .card {
-  background:transparent
-}
+
 
 .pi {
   font-family:primeicons;

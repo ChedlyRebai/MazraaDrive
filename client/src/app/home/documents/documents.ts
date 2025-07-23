@@ -71,17 +71,8 @@ interface Folder {
     FileUploadModule,
     ToastModule,
     // PrimeNG Icons
-    AngleDoubleRightIcon,
-    
    
-    AngleDoubleLeftIcon,
-    SortAltIcon,
-    
-    
-    SortAltIcon,
-    AngleDoubleLeftIcon,
-    
-    AngleDoubleRightIcon
+   
   ],
   providers: [MessageService],
   templateUrl: './documents.html',

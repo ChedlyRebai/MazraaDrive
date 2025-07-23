@@ -40,7 +40,8 @@ interface ColorOption {
     selector: 'theme-switcher',
     standalone: true,
     imports: [CommonModule, FormsModule, StyleClassModule, SelectButtonModule, ToggleSwitchModule],
-    template: ` <div class="card flex justify-end p-2 mb-4">
+    template: `
+     <div class="card flex justify-end p-2 mb-4">
         <ul class="flex  list-none m-0 p-0 gap-2 items-center">
             <li>
                 <button type="button" class="cursor-pointer inline-flex w-8 h-8 p-0 items-center justify-center surface-0 dark:surface-800 border border-surface-200 dark:border-surface-600 rounded" (click)="onThemeToggler()">

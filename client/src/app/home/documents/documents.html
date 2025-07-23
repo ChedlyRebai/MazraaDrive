@@ -32,7 +32,7 @@
             <div class="flex items-center justify-between mb-4"><span
                 class="text-surface-900 dark:text-surface-0 text-xl font-semibold">Dropbox Storage</span>
               <div>
-           </div>
+              </div>
             </div>
             <div>
               <div class="rounded bg-pink-100" style="height: 6px;">
@@ -49,7 +49,7 @@
             <div class="flex items-center justify-between mb-4"><span
                 class="text-surface-900 dark:text-surface-0 text-xl font-semibold">Google Drive Storage</span>
               <div>
-               </div>
+              </div>
             </div>
             <div>
               <div class="rounded bg-green-100" style="height: 6px;">
@@ -82,7 +82,7 @@
             <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Account Storage</div>
             <div class="flex flex-row justify-center" style="height: 200px;"><p-chart type="doughnut" id="country-chart"
                 style="width: 200px;">
-                
+
               </p-chart></div>
             <!-- <div class="mt-8 flex gap-4"><button pbutton="" pripple="" icon="pi pi-search" outlined="" label="Details"
                 class="p-ripple flex-1 p-button p-component p-button-outlined" pc854="" pc855=""><span
@@ -195,27 +195,27 @@
           </div>
           <div class="card">
             <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Recent Uploads</div>
-             
-             <p-table [value]="recentFiles" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template #header>
-            <tr>
-                <th>name</th>
-                <th>date</th>
-                <th>fileSize</th>
-                <th>type</th>
-                <th>Action</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-product>
-            <tr>
-                <td><i style="color: rgb(2, 206, 2);" class="{{ product.icon }}"></i>  {{ product.name }}</td>
-                <td>{{ product.date }}</td>
-                <td>{{ product.fileSize }}</td>
-                <td>{{ product.type }}</td>
-                <td></td>
-            </tr>
-        </ng-template>
-    </p-table>
+
+            <p-table [value]="recentFiles" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template #header>
+                <tr>
+                  <th>name</th>
+                  <th>date</th>
+                  <th>fileSize</th>
+                  <th>type</th>
+                  <th>Action</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-product>
+                <tr>
+                  <td><i style="color: rgb(2, 206, 2);" class="{{ product.icon }}"></i> {{ product.name }}</td>
+                  <td>{{ product.date }}</td>
+                  <td>{{ product.fileSize }}</td>
+                  <td>{{ product.type }}</td>
+                  <td></td>
+                </tr>
+              </ng-template>
+            </p-table>
           </div>
         </div>
       </div>

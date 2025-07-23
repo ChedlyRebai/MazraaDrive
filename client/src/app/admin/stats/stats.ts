@@ -59,19 +59,18 @@ interface SelectOption {
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   imports: [
-    
-    
+
+
     RouterModule,
-   
+
     CommonModule,
     // PrimeNG Modules
     ChartModule,
     ThemeSwitcher,
-    KnobModule,
-    ChevronDownIcon,
+
     SelectModule,
-    StarFillIcon,
-    StarIcon,
+
+
     TableModule,
     ButtonModule,
     InputTextModule,
