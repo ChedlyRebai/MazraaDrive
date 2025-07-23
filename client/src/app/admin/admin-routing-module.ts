@@ -12,12 +12,13 @@ import { Stats } from './stats/stats';
 const routes: Routes = [
   {
     path: '', component: Admin, children: [
-      {path:'',component:Stats},
+      {path:'stats',component:Stats},
       { path: 'role', component: RoleManagementComponent },
       { path: 'user', component: UserMangement },
       { path: 'document', component: DocumentMangement },
       { path: 'doc-req', component: DocReqManagement },
-      { path: 'department', component: DepartmentMangement }
+      { path: 'department', component: DepartmentMangement },
+      {path: 'permissions',component: RoleManagementComponent},
     ]
   }
 ];

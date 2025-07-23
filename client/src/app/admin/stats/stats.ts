@@ -24,6 +24,7 @@ import { ChevronDownIcon } from 'primeng/icons/chevrondown';
 // Chart.js Types
 import { ChartOptions, ChartData } from 'chart.js';
 import { ThemeSwitcher } from '../themeswitcher';
+import { RouterModule } from '@angular/router';
 
 // Data Interfaces
 interface StatsData {
@@ -60,7 +61,7 @@ interface SelectOption {
   imports: [
     StarFillIcon,
     StarIcon,
-
+    RouterModule,
     ChevronDownIcon,
     CommonModule,
     // PrimeNG Modules
