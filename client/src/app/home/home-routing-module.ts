@@ -6,7 +6,7 @@ import { Home } from './home';
 
 const routes: Routes = [  
   {
-    path: '', component: Home, children: [
+    path: '', loadComponent: () => import('./home').then(m => m.Home), children: [
       { path: 'demandes', loadComponent: () => import('./demandes/demandes').then(m => m.Demandes) },
       { path: 'documents', loadComponent: () => import('./documents/documents').then(m => m.Documents) },
       { path: 'document-search', loadComponent: () => import('./document-recherche/document-recherche').then(m => m.DocumentRecherche) }

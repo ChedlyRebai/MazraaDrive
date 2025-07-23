@@ -24,6 +24,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 // Services
 import { MessageService } from 'primeng/api';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
+import { RouterModule } from '@angular/router';
 
 // Interfaces
 interface StorageInfo {
@@ -71,7 +72,7 @@ interface Folder {
     FileUploadModule,
     ToastModule,
     // PrimeNG Icons
-   
+   RouterModule,
    
   ],
   providers: [MessageService],
