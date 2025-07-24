@@ -1,15 +1,13 @@
 <theme-switcher />
 <div class="layout-content-wrapper">
-  <div class="layout-content">
+  <div class="">
     <nav app-breadcrumb="" class="layout-breadcrumb">
-      <ol>
-        <li><a href="/"><i class="pi pi-home"></i></a></li>
-        <li class="layout-breadcrumb-chevron">/</li>
-        <li style="cursor: pointer;">Apps</li>
-        <li class="layout-breadcrumb-chevron">/</li><!---->
-        <li style="cursor: pointer;">Files</li><!----><!---->
-      </ol>
+       <p-breadcrumb class="layout-readcrumb" [model]="items" [home]="home" />
+    
+        
     </nav><router-outlet></router-outlet><app-files class="ng-star-inserted">
+     
+      
       <div class="grid grid-cols-12 gap-4">
         <div class="col-span-12 md:col-span-6 lg:col-span-3 ng-star-inserted">
           <div class="card h-full">

@@ -9,14 +9,9 @@ import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { MenuItem } from 'primeng/api';
+import { Breadcrumb } from 'primeng/breadcrumb';
 
-// PrimeNG Icons
-import { PlusIcon } from 'primeng/icons/plus';
-import { SortAltIcon } from 'primeng/icons/sortalt';
-import { AngleDoubleLeftIcon } from 'primeng/icons/angledoubleleft';
-import { AngleLeftIcon } from 'primeng/icons/angleleft';
-import { AngleRightIcon } from 'primeng/icons/angleright';
-import { AngleDoubleRightIcon } from 'primeng/icons/angledoubleright';
 
 // Chart.js Types
 import { ChartData, ChartOptions } from 'chart.js';
@@ -61,6 +56,7 @@ interface Folder {
   standalone: true,
   schemas:[NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   imports: [
+    Breadcrumb,
     CommonModule,
     // PrimeNG Modules
     ButtonModule,
@@ -80,6 +76,9 @@ interface Folder {
   styleUrl: './documents.css'
 })
 export class Documents implements OnInit {
+  items: MenuItem[] | undefined;
+
+    home: MenuItem | undefined;
 storageData: StorageInfo[] = [
     {
       name: 'Cloud Storage',
@@ -262,6 +261,15 @@ storageData: StorageInfo[] = [
   constructor(private messageService: MessageService) {}
 
   ngOnInit() {
+    this.items = [
+            { label: 'Electronics' },
+            { label: 'Computer' },
+            { label: 'Accessories' },
+            { label: 'Keyboard' },
+            { label: 'Wireless' }
+        ];
+
+        this.home = { icon: 'pi pi-home', routerLink: '/' };
     this.initializeChart();
   }
 
