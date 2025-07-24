@@ -17,13 +17,6 @@ import { IconField, IconFieldModule } from 'primeng/iconfield';
 import { InputIcon, InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 
-// PrimeNG Icons
-import { ChevronDownIcon } from 'primeng/icons/chevrondown';
-import { AngleDoubleLeftIcon } from 'primeng/icons/angledoubleleft';
-import { AngleLeftIcon } from 'primeng/icons/angleleft';
-import { AngleRightIcon } from 'primeng/icons/angleright';
-import { AngleDoubleRightIcon } from 'primeng/icons/angledoubleright';
-
 // Servicesimport { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Editor } from 'primeng/editor';
@@ -119,7 +112,6 @@ export interface Customer {
     MultiSelectModule,
     InputTextModule,
     ThemeSwitcher,
-
   ],
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   providers: [MessageService, CustomerService],
