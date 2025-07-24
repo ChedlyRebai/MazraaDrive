@@ -97,7 +97,6 @@ export interface Customer {
     TableModule,
     ButtonModule,
     ToastModule,
-    CheckboxModule,
     AvatarModule,
     MenuModule,
     FormsModule,
@@ -109,24 +108,21 @@ export interface Customer {
     IconFieldModule,
     InputIconModule,
     TooltipModule,
-    // PrimeNG Icons
-    ChevronDownIcon,
-    AngleDoubleLeftIcon,
-    AngleLeftIcon,
-    AngleRightIcon,
     ThemeSwitcher,
-    AngleDoubleRightIcon,
-    TableModule, Tag, ButtonModule, IconField, InputIcon,
+    TableModule, 
+    Tag, 
+    ButtonModule, 
+    IconField, 
+    InputIcon,
     HttpClientModule,
     CommonModule,
     MultiSelectModule,
     InputTextModule,
     ThemeSwitcher,
-    Slider,
-    ProgressBar
+
   ],
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-  providers: [MessageService,CustomerService],
+  providers: [MessageService, CustomerService],
   templateUrl: './demandes.html',
   styleUrls: ['./demandes.css']
 })
@@ -142,17 +138,17 @@ export class Demandes implements OnInit {
   representatives!: Representative[];
 
   statuses!: any[];
-   text: string | undefined;
+  text: string | undefined;
   loading: boolean = true;
 
   activityValues: number[] = [0, 100];
 
   constructor(private customerService: CustomerService, private messageService: MessageService) { }
-   visible: boolean = false;
+  visible: boolean = false;
 
-    showDialog() {
-        this.visible = true;
-    }
+  showDialog() {
+    this.visible = true;
+  }
 
 
   getSeverity(status: string) {
@@ -172,7 +168,7 @@ export class Demandes implements OnInit {
       case 'renewal':
         return null;
 
-      
+
     }
     return null;
   }
