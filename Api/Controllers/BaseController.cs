@@ -12,11 +12,6 @@ namespace Api.Controllers
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
 
-        public BaseController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public BaseController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;

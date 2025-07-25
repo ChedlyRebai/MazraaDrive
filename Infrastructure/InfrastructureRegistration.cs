@@ -28,11 +28,11 @@ public static class InfrastructureRegistration
         // services.AddScoped<IProductRepository, ProductRepository>();
         // services.AddScoped<IPhotoRepository, PhotoRepository>();
 
-        services.AddSingleton<IConnectionMultiplexer>(i =>
-        {
-            var config = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"), true);
-            return ConnectionMultiplexer.Connect(config);
-        });
+        // services.AddSingleton<IConnectionMultiplexer>(i =>
+        // {
+        //     var config = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"), true);
+        //     return ConnectionMultiplexer.Connect(config);
+        // });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IEmailService, EmailService>();
        // services.AddSingleton<IImageMangeService, ImageMangeService>();

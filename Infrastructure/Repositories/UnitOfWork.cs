@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
-    private readonly IConnectionMultiplexer _redis;
+    //private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmailService? _emailService;
 
@@ -48,14 +48,14 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         AppDbContext context, 
-        IConnectionMultiplexer redis, 
+        //IConnectionMultiplexer redis, 
         UserManager<AppUser> userManager, 
         SignInManager<AppUser> signInManager, 
         IEmailService? emailService = null, 
         IGenerateToken? token = null)
     {
         _context = context;
-        _redis = redis;
+        //_redis = redis;
         _userManager = userManager;
        // _signInManager = signInManager;
         _emailService = emailService;

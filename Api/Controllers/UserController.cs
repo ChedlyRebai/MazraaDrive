@@ -7,10 +7,7 @@ namespace Api.Controllers
 {
     public class UserController : BaseController
     {
-        public UserController(IUnitOfWork unitOfWork) : base(unitOfWork)
-        {
-        }
-
+        
         public UserController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }

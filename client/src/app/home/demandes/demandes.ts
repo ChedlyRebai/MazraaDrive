@@ -55,9 +55,6 @@ interface PaginationOption {
 import { HttpClientModule } from '@angular/common/http';
 
 import { MultiSelectModule } from 'primeng/multiselect';
-
-import { Slider } from 'primeng/slider';
-import { ProgressBar } from 'primeng/progressbar';
 import { CustomerService } from './customerservice';
 export interface Country {
   name?: string;
@@ -102,10 +99,10 @@ export interface Customer {
     InputIconModule,
     TooltipModule,
     ThemeSwitcher,
-    TableModule, 
-    Tag, 
-    ButtonModule, 
-    IconField, 
+    TableModule,
+    Tag,
+    ButtonModule,
+    IconField,
     InputIcon,
     HttpClientModule,
     CommonModule,
