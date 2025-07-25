@@ -1,33 +1,39 @@
+// Update: Api/Controllers/RoleController.cs
 using Api.Helper;
 using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-
+    [ApiController]
+    [Route("api/[controller]")]
     public class RoleController : BaseController
     {
         public RoleController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 
+        [HttpGet("test")]
+        public async Task<string> TestApi()
+        {
+            return "CHEDLY - API is working!";
+        }
 
-         [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles()
         {
             try
             {
                 var roles = await _unitOfWork.RoleRepository.GetAllAsync();
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
-                return Ok(roleDtos);
+                return Ok(new { success = true, data = roleDtos });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -38,14 +44,14 @@ namespace Api.Controllers
             {
                 var role = await _unitOfWork.RoleRepository.GetByIdAsync(id);
                 if (role == null)
-                    return NotFound(new { message = "Role not found" });
+                    return NotFound(new { success = false, message = "Role not found" });
 
                 var roleDto = _mapper.Map<RoleDto>(role);
-                return Ok(roleDto);
+                return Ok(new { success = true, data = roleDto });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -54,21 +60,31 @@ namespace Api.Controllers
         {
             try
             {
+                // Validation
+                if (createRoleDto == null)
+                    return BadRequest(new { success = false, message = "Role data is required" });
+
                 if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                    return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
 
+                // Map DTO to entity
                 var role = _mapper.Map<Role>(createRoleDto);
-                // var createdRole = await _unitOfWork.RoleRepository.AddAsync(role);
-                // await _unitOfWork.SaveChangesAsync();
 
-                // var roleDto = _mapper.Map<RoleDto>(createdRole);
-                // return CreatedAtAction(nameof(GetRole), new { id = roleDto.Id }, roleDto);
-                 await _unitOfWork.RoleRepository.AddAsync(role);
-                return CreatedAtAction(nameof(GetRole), new { id = role.Id }, _mapper.Map<RoleDto>(role));
+                // Add to repository and get the created entity with ID
+                var createdRole = await _unitOfWork.RoleRepository.AddAsync(role);
+
+                // IMPORTANT: Save changes to get the generated ID
+                await _unitOfWork.SaveChangesAsync();
+
+                // Map back to DTO
+                var roleDto = _mapper.Map<RoleDto>(createdRole);
+
+                return CreatedAtAction(nameof(GetRole), new { id = roleDto.Id },
+                    new { success = true, data = roleDto });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
 
@@ -77,20 +93,30 @@ namespace Api.Controllers
         {
             try
             {
+                // Validation
+                if (updateRoleDto == null)
+                    return BadRequest(new { success = false, message = "Update data is required" });
+
                 var existingRole = await _unitOfWork.RoleRepository.GetByIdAsync(id);
                 if (existingRole == null)
-                    return NotFound(new { message = "Role not found" });
+                    return NotFound(new { success = false, message = "Role not found" });
 
+                // Map updates to existing entity
                 _mapper.Map(updateRoleDto, existingRole);
+                //    existingRole.UpdatedAt = DateTime.UtcNow;
+
+                // Update in repository
                 await _unitOfWork.RoleRepository.UpdateAsync(existingRole);
-                // await _unitOfWork.SaveChangesAsync();
+
+                // IMPORTANT: Save changes
+                await _unitOfWork.SaveChangesAsync();
 
                 var roleDto = _mapper.Map<RoleDto>(existingRole);
-                return Ok(roleDto);
+                return Ok(new { success = true, data = roleDto });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
 
@@ -101,18 +127,20 @@ namespace Api.Controllers
             {
                 var role = await _unitOfWork.RoleRepository.GetByIdAsync(id);
                 if (role == null)
-                    return NotFound(new { message = "Role not found" });
+                    return NotFound(new { success = false, message = "Role not found" });
 
-                // await _unitOfWork.RoleRepository.DeleteAsync(role);
-                // await _unitOfWork.SaveChangesAsync();
+                // Delete from repository
+                await _unitOfWork.RoleRepository.DeleteAsync(id);
 
-                return NoContent();
+                // IMPORTANT: Save changes
+                await _unitOfWork.SaveChangesAsync();
+
+                return Ok(new { success = true, message = "Role deleted successfully" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
-
     }
 }

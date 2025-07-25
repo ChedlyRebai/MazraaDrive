@@ -28,6 +28,20 @@ public static class InfrastructureRegistration
         // services.AddScoped<IProductRepository, ProductRepository>();
         // services.AddScoped<IPhotoRepository, PhotoRepository>();
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+        services.AddScoped<IDocRequestRepository, DocRequestRepository>();
+        services.AddScoped<IDocument, DocumentRepository>();
+        services.AddScoped<IFolderRepository, FolderRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        //services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IGenerateToken, GenrateToken>();
+
         // services.AddSingleton<IConnectionMultiplexer>(i =>
         // {
         //     var config = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"), true);
@@ -35,7 +49,7 @@ public static class InfrastructureRegistration
         // });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IEmailService, EmailService>();
-       // services.AddSingleton<IImageMangeService, ImageMangeService>();
+        // services.AddSingleton<IImageMangeService, ImageMangeService>();
         services.AddScoped<IGenerateToken, GenrateToken>();
         //services.AddScoped<IOrderService,OrderService>();
         // Register ASP.NET Core Identity with custom user and role types.

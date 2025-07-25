@@ -1,102 +1,98 @@
-using System;
-using System.Linq.Expressions;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories;
-
-public class RoleRepository : IRoleRepository
+namespace Infrastructure.Repositories
 {
-    private readonly AppDbContext _context;
-    public RoleRepository(AppDbContext context)
+    public class RoleRepository : IRoleRepository
     {
-        _context = context;
-    }
-    public Task AddAsync(Role entity)
-    {
-        if (entity == null)
+        private readonly AppDbContext _context;
+
+        public RoleRepository(AppDbContext context)
         {
-            throw new ArgumentNullException(nameof(entity), "Role cannot be null");
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // If _context.Roles expects IdentityRole, map your Role to IdentityRole
-        var identityRole = new Microsoft.AspNetCore.Identity.IdentityRole
+        public async Task<string> testapi()
         {
-            Id = entity.Id.ToString(),
-            Name = entity.Name,
-            NormalizedName = entity.Name?.ToUpper()
-        };
-        _context.Roles.Add(identityRole);
-        return _context.SaveChangesAsync();
-    }
-
-
-    public Task DeleteAsync(int id)
-    {
-        var role = _context.Roles.Find(id);
-        if (role == null)
-        {
-            throw new ArgumentException($"Role with id {id} not found");
+            return "Role Repository - Test successful!";
         }
 
-        _context.Roles.Remove(role);
-        return _context.SaveChangesAsync();
-    }
-
-    public async Task<IReadOnlyList<Role>> GetAllAsync()
-    {
-        var identityRoles = await _context.Roles.ToListAsync();
-        if (identityRoles == null || !identityRoles.Any())
+        public async Task<IEnumerable<Role>> GetAllAsync()
         {
-            throw new InvalidOperationException("No Roles found");
+            return await _context.Role
+                .Where(r => r.IsActive)
+                .OrderBy(r => r.Name)
+                .ToListAsync();
         }
 
-        // Map IdentityRole to your Role entity if needed
-        var roles = identityRoles.Select(ir => new Role
+        public async Task<Role?> GetByIdAsync(int id)
         {
-            Id = int.TryParse(ir.Id, out var id) ? id : 0,
-            Name = ir.Name
-        }).ToList();
-
-        return roles;
-    }
-
-    public async Task<Role> GetByIdAsync(int id)
-    {
-        var identityRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == id.ToString());
-        if (identityRole == null)
-        {
-            throw new ArgumentException($"Role with id {id} not found");
+            return await _context.Role.FindAsync(id);
         }
 
-        // Map IdentityRole to your Role entity if needed
-        return new Role
+        public async Task<Role?> GetByNameAsync(string name)
         {
-            Id = int.TryParse(identityRole.Id, out var roleId) ? roleId : 0,
-            Name = identityRole.Name
-        };
-    }
+            if (string.IsNullOrEmpty(name))
+                return null;
 
-
-    public Task UpdateAsync(Role entity)
-    {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity), "Role cannot be null");
+            return await _context.Role
+                .FirstOrDefaultAsync(r => r.Name.ToLower() == name.ToLower());
         }
 
-        var identityRole = _context.Roles.Find(entity.Id.ToString());
-        if (identityRole == null)
+        public async Task<Role> AddAsync(Role role)
         {
-            throw new ArgumentException($"Role with id {entity.Id} not found");
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+
+            // role.CreatedAt = DateTime.UtcNow;
+            // role.UpdatedAt = DateTime.UtcNow;
+
+            var result = await _context.Role.AddAsync(role);
+            return result.Entity;
         }
 
-        identityRole.Name = entity.Name;
-        identityRole.NormalizedName = entity.Name?.ToUpper();
-        
-        _context.Roles.Update(identityRole);
-        return _context.SaveChangesAsync();
+        public async Task UpdateAsync(Role role)
+        {
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+
+
+            _context.Role.Update(role);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var role = await _context.Role.FindAsync(id);
+            if (role != null)
+            {
+                _context.Role.Remove(role);
+            }
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _context.Role.AnyAsync(r => r.Id == id);
+        }
+
+        public async Task<bool> ExistsByNameAsync(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return false;
+
+            return await _context.Role
+                .AnyAsync(r => r.Name.ToLower() == name.ToLower());
+        }
+
+        Task<IReadOnlyList<Role>> IGenericRepository<Role>.GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IGenericRepository<Role>.AddAsync(Role entity)
+        {
+            return AddAsync(entity);
+        }
     }
 }

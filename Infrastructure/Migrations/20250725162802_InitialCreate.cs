@@ -320,7 +320,7 @@ namespace Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ParentFolderId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId1 = table.Column<string>(type: "text", nullable: false),
+                    UserId1 = table.Column<string>(type: "text", nullable: true),
                     ParentFolderId1 = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -330,8 +330,7 @@ namespace Infrastructure.Migrations
                         name: "FK_MailFolder_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MailFolder_MailFolder_ParentFolderId1",
                         column: x => x.ParentFolderId1,

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -7,14 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class DepartmentRepository : IDepartmentRepository
+public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
 {
 
+    private readonly IMapper mapper;
     private readonly AppDbContext _context;
 
-    public DepartmentRepository(AppDbContext context)
+    public DepartmentRepository(AppDbContext context, IMapper mapper) : base(context)
     {
+        this.mapper = mapper;
         this._context = context;
+
     }
 
     public async Task AddAsync(Department department)

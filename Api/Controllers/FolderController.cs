@@ -8,9 +8,7 @@ namespace Api.Controllers
 
     public class FolderController : BaseController
     {
-        public FolderController(IUnitOfWork unitOfWork) : base(unitOfWork)
-        {
-        }
+       
 
         public FolderController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

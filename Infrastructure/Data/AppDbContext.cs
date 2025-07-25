@@ -21,6 +21,8 @@ namespace Infrastructure.Data
         public virtual DbSet<DocumentRequest> DocumentRequests { get; set; }
         public virtual DbSet<AIQueryLog> AIQueryLogs { get; set; }
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        
         //public virtual DbSet<Message> Messages { get; set; }
         //public virtual DbSet<MailFolder> MailFolders { get; set; }
         //public virtual DbSet<MailMessageFolder> MailMessageFolders { get; set; }
@@ -237,7 +239,7 @@ namespace Infrastructure.Data
             //         .Property(rp => rp.Permission)
             //         .HasMaxLength(100);
             // 
-         
+
         }
     }
 }

@@ -417,7 +417,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("UserId1")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -691,7 +690,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
@@ -789,9 +788,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("MailFolders")
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("ParentFolder");
 
@@ -935,11 +932,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Message", b =>
                 {
                     b.Navigation("MailMessageFolders");
-                });
-
-            modelBuilder.Entity("Core.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

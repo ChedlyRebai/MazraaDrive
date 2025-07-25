@@ -14,7 +14,7 @@ public class DocRequestRepository : IDocRequestRepository
     {
         this._context = context;
     }
-    
+
     public Task AddAsync(DocumentRequest entity)
     {
         if (entity == null)
@@ -26,7 +26,7 @@ public class DocRequestRepository : IDocRequestRepository
         return _context.SaveChangesAsync();
     }
 
-    
+
     public Task DeleteAsync(int id)
     {
         var docRequest = _context.DocumentRequests.Find(id);
@@ -49,7 +49,7 @@ public class DocRequestRepository : IDocRequestRepository
         return docRequests;
     }
 
-   
+
 
     public Task<DocumentRequest> GetByIdAsync(int id)
     {
@@ -61,7 +61,7 @@ public class DocRequestRepository : IDocRequestRepository
         return docRequest;
     }
 
-    
+
 
     public Task UpdateAsync(DocumentRequest entity)
     {

@@ -47,21 +47,43 @@ public class UnitOfWork : IUnitOfWork
     public IAuditLogRepository AuditLogRepository { get; }
 
     public UnitOfWork(
-        AppDbContext context, 
+        AppDbContext context,
+        IRoleRepository roleRepository,
+        IUserRepository userRepository,
         //IConnectionMultiplexer redis, 
-        UserManager<AppUser> userManager, 
-        SignInManager<AppUser> signInManager, 
-        IEmailService? emailService = null, 
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        IEmailService? emailService = null,
         IGenerateToken? token = null)
     {
+        RoleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+        UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+
         _context = context;
         //_redis = redis;
         _userManager = userManager;
-       // _signInManager = signInManager;
+        // _signInManager = signInManager;
         _emailService = emailService;
         // _token = token;
-        
+
         // Initialize Auth with proper null checks
-       // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
+        // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
+    }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        try
+        {
+            // Update timestamps before saving
+            // UpdateTimestamps();
+
+            return await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log the error (you can inject ILogger if needed)
+            Console.WriteLine($"Error saving changes: {ex.Message}");
+            throw;
+        }
     }
 }
