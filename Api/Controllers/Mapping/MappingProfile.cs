@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 
@@ -11,6 +12,15 @@ public class MappingProfile : Profile
     {
         CreateMap<Role, RoleDto>().ReverseMap();
         CreateMap<Role, CreateRoleDto>().ReverseMap();
-        CreateMap<Role, UpdateRoleDto>().ReverseMap();   
+        CreateMap<Role, UpdateRoleDto>().ReverseMap();
+
+
+        CreateMap<Department, DepartmentDto>().ReverseMap();
+        CreateMap<Department, DepartmentCreateDTO>().ReverseMap();
+        CreateMap<Department, DepartmentUpdateDTO>().ReverseMap();
+        CreateMap<Department, DepartmentDeleteDTO>().ReverseMap();
+        CreateMap<Department, DepartmentUserCountDTO>().ReverseMap();
+        
+        
     }
 }

@@ -48,22 +48,36 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         AppDbContext context,
+        IDepartmentRepository departmentRepository,
+        // IDocRequestRepository docRequestRepository,
+        
+        // IAuth auth,
         IRoleRepository roleRepository,
-        IUserRepository userRepository,
+        IUserRepository userRepository
         //IConnectionMultiplexer redis, 
-        UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
-        IEmailService? emailService = null,
-        IGenerateToken? token = null)
-    {
+        // UserManager<AppUser> userManager,
+        // SignInManager<AppUser> signInManager,
+        // IEmailService? emailService = null,
+        // IGenerateToken? token = null
+        )
+    {_context = context;
+     //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
+        // DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
+        // FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
+        //MessageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
+        DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
+      //  PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
+        //AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
+        //Auth = auth ?? throw new ArgumentNullException(nameof(auth));
+
         RoleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
-        _context = context;
+        
         //_redis = redis;
-        _userManager = userManager;
+        //_userManager = userManager;
         // _signInManager = signInManager;
-        _emailService = emailService;
+        //_emailService = emailService;
         // _token = token;
 
         // Initialize Auth with proper null checks

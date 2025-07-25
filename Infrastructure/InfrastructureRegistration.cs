@@ -23,11 +23,8 @@ public static class InfrastructureRegistration
 {
     public static IServiceCollection infrastructureRegistration(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        // services.AddScoped<ICategoryReppository, CategoryRepository>();
-        // services.AddScoped<IProductRepository, ProductRepository>();
-        // services.AddScoped<IPhotoRepository, PhotoRepository>();
-
+        
+        //services.AddScoped<IGenericRepository, GenericRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -39,8 +36,8 @@ public static class InfrastructureRegistration
         //services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-        services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IGenerateToken, GenrateToken>();
+        // services.AddScoped<IEmailService, EmailService>();
+        // services.AddScoped<IGenerateToken, GenrateToken>();
 
         // services.AddSingleton<IConnectionMultiplexer>(i =>
         // {
@@ -48,9 +45,9 @@ public static class InfrastructureRegistration
         //     return ConnectionMultiplexer.Connect(config);
         // });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IEmailService, EmailService>();
+       // services.AddScoped<IEmailService, EmailService>();
         // services.AddSingleton<IImageMangeService, ImageMangeService>();
-        services.AddScoped<IGenerateToken, GenrateToken>();
+        //services.AddScoped<IGenerateToken, GenrateToken>();
         //services.AddScoped<IOrderService,OrderService>();
         // Register ASP.NET Core Identity with custom user and role types.
         // Use Entity Framework Core for persistence and add default token providers.
