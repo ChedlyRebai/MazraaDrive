@@ -4,7 +4,21 @@ using Core.Entities;
 
 namespace Core.Interfaces;
 
-public interface IDocument: IGenericRepository<Document>
+public interface IDocument : IGenericRepository<Document>
 {
-    
+    Task<Document> AddAsync(Document document);
+    Task DeleteAsync(int id);
+    Task<IReadOnlyList<Document>> GetAllAsync();
+    Task<Document?> GetByIdAsync(int id);
+    Task<Document?> GetByNameAsync(string name, int folderId);
+    Task UpdateAsync(Document document);
+    Task<bool> ExistsAsync(int id);
+    Task<IReadOnlyList<Document>> GetByFolderAsync(int folderId);
+    Task<IReadOnlyList<Document>> GetByUserAsync(string userId);
+    Task<IReadOnlyList<Document>> GetValidatedDocumentsAsync();
+    Task<IReadOnlyList<Document>> GetPendingValidationAsync();
+    Task<IReadOnlyList<Document>> GetByFileTypeAsync(string fileType);
+    Task<bool> ValidateDocumentAsync(int documentId, bool isValid);
+    Task<long> GetTotalFileSizeAsync();
+    Task<int> GetDocumentCountByFolderAsync(int folderId);
 }
