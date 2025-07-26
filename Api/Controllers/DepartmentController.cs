@@ -170,7 +170,7 @@ namespace Api.Controllers
                     u.Id,
                     u.UserName,
                     u.Email,
-                    u.FullName,
+                    
                     u.IsActive
                 }).ToList();
 

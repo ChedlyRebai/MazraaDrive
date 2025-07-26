@@ -9,9 +9,9 @@ public class MailFolder : BaseEntity<int>
     public string Name { get; set; }
 
    
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 
-    public Guid? ParentFolderId { get; set; }
+    public int? ParentFolderId { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -29,11 +29,14 @@ builder.Services.AddControllers();
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
 
+// builder.Services.AddIdentity<AppUser, AppRole>()
+//     .AddEntityFrameworkStores<AppDbContext>()
+//     .AddDefaultTokenProviders();
+
 // Add Identity services
-/*
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();*/
+// builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
+//     .AddEntityFrameworkStores<AppDbContext>()
+//     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();

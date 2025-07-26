@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250725162802_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250726001612_InitialCreateea")]
+    partial class InitialCreateea
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,12 +111,8 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
                     b.Property<bool>("IsActive")
+                        .HasMaxLength(255)
                         .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
@@ -300,10 +296,7 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("DepartmentId1")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
@@ -321,8 +314,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("RequesterId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("RequesterId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("RequesterId1")
                         .HasColumnType("text");
@@ -330,10 +323,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("RespondedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ResponseDocumentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ResponseDocumentId1")
+                    b.Property<int?>("ResponseDocumentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
@@ -342,11 +332,11 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("RequesterId1");
 
-                    b.HasIndex("ResponseDocumentId1");
+                    b.HasIndex("ResponseDocumentId");
 
                     b.ToTable("DocumentRequests");
                 });
@@ -362,37 +352,29 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedById1")
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("DepartmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("DepartmentId1")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ParentFolderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ParentFolderId1")
+                    b.Property<int?>("ParentFolderId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById1");
+                    b.HasIndex("CreatedById");
 
-                    b.HasIndex("DepartmentId1");
+                    b.HasIndex("DepartmentId");
 
-                    b.HasIndex("ParentFolderId1");
+                    b.HasIndex("ParentFolderId");
 
-                    b.ToTable("Folders");
+                    b.ToTable("Folder");
                 });
 
             modelBuilder.Entity("Core.Entities.MailFolder", b =>
@@ -410,23 +392,18 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ParentFolderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ParentFolderId1")
+                    b.Property<int?>("ParentFolderId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentFolderId1");
+                    b.HasIndex("ParentFolderId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("MailFolder");
                 });
@@ -439,23 +416,17 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("MailFolderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("MailFolderId1")
+                    b.Property<int>("MailFolderId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("MessageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("MessageId1")
+                    b.Property<int>("MessageId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MailFolderId1");
+                    b.HasIndex("MailFolderId");
 
-                    b.HasIndex("MessageId1");
+                    b.HasIndex("MessageId");
 
                     b.ToTable("MailMessageFolder");
                 });
@@ -475,15 +446,15 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ReceiverId1")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("SenderId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SenderId1")
                         .IsRequired()
@@ -735,7 +706,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("DocumentRequests")
-                        .HasForeignKey("DepartmentId1")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -745,9 +716,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Document", "ResponseDocument")
                         .WithMany("DocumentRequests")
-                        .HasForeignKey("ResponseDocumentId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResponseDocumentId");
 
                     b.Navigation("Department");
 
@@ -760,19 +729,19 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.AppUser", "CreatedBy")
                         .WithMany("CreatedFolders")
-                        .HasForeignKey("CreatedById1");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Folders")
-                        .HasForeignKey("DepartmentId1")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Folder", "ParentFolder")
                         .WithMany("SubFolders")
-                        .HasForeignKey("ParentFolderId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentFolderId");
 
                     b.Navigation("CreatedBy");
 
@@ -785,13 +754,13 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.MailFolder", "ParentFolder")
                         .WithMany("SubFolders")
-                        .HasForeignKey("ParentFolderId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentFolderId");
 
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("MailFolders")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ParentFolder");
 
@@ -802,13 +771,13 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.MailFolder", "MailFolder")
                         .WithMany("MailMessageFolders")
-                        .HasForeignKey("MailFolderId1")
+                        .HasForeignKey("MailFolderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Message", "Message")
                         .WithMany("MailMessageFolders")
-                        .HasForeignKey("MessageId1")
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

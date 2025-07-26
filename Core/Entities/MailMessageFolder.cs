@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 public class MailMessageFolder : BaseEntity<int>
 {
     
-    public Guid MessageId { get; set; }
+    public int MessageId { get; set; }
 
-    public Guid MailFolderId { get; set; }
+    public int MailFolderId { get; set; }
 
     // Navigation properties
     public Message Message { get; set; }

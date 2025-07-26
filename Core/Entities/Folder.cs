@@ -8,13 +8,13 @@ public class Folder : BaseEntity<int>
    
     public string Name { get; set; }
 
-    public Guid? ParentFolderId { get; set; }
+    public int? ParentFolderId { get; set; }
 
   
-    public Guid DepartmentId { get; set; }
+    public int DepartmentId { get; set; }
 
   
-    public Guid CreatedById { get; set; }
+    public string CreatedById { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

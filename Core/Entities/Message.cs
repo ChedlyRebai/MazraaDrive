@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 public class Message : BaseEntity<int>
 {
     [Required]
-    public Guid SenderId { get; set; }
+    public int SenderId { get; set; }
 
     [Required]
-    public Guid ReceiverId { get; set; }
+    public int ReceiverId { get; set; }
 
     [Required]
     [MaxLength(255)]

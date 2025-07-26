@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 public class DocumentRequest : BaseEntity<int>
 {
     
-    public Guid RequesterId { get; set; }
+    public int RequesterId { get; set; }
 
     
-    public Guid DepartmentId { get; set; }
+    public int DepartmentId { get; set; }
 
     
     
@@ -26,7 +26,7 @@ public class DocumentRequest : BaseEntity<int>
     
     public string Status { get; set; } = "Pending";
 
-    public Guid? ResponseDocumentId { get; set; }
+    public int? ResponseDocumentId { get; set; }
 
     public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
 

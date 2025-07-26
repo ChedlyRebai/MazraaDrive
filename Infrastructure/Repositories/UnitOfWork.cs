@@ -41,7 +41,7 @@ public class UnitOfWork : IUnitOfWork
     public IDepartmentRepository DepartmentRepository { get; }
 
     public IPermissionsRepository PermissionsRepository { get; }
-
+  
     public IRoleRepository RoleRepository { get; }
 
     public IAuditLogRepository AuditLogRepository { get; }
@@ -50,7 +50,7 @@ public class UnitOfWork : IUnitOfWork
         AppDbContext context,
         IDepartmentRepository departmentRepository,
         // IDocRequestRepository docRequestRepository,
-        
+        IFolderRepository folderRepository,
         // IAuth auth,
         IRoleRepository roleRepository,
         IUserRepository userRepository
@@ -60,20 +60,21 @@ public class UnitOfWork : IUnitOfWork
         // IEmailService? emailService = null,
         // IGenerateToken? token = null
         )
-    {_context = context;
-     //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
+    {
+        _context = context;
+        //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
         // DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         // FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         //MessageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-      //  PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
+        //  PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
         //AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         //Auth = auth ?? throw new ArgumentNullException(nameof(auth));
-
+        FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         RoleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
-        
+
         //_redis = redis;
         //_userManager = userManager;
         // _signInManager = signInManager;

@@ -1,3 +1,11 @@
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.csproj.AssemblyReference.cache
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.GeneratedMSBuildEditorConfig.editorconfig
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.csproj.CoreCompileInputs.cache
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.MvcApplicationPartsAssemblyInfo.cs
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.MvcApplicationPartsAssemblyInfo.cache
+/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.sourcelink.json
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/appsettings.Development.json
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/appsettings.json
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Api.staticwebassets.endpoints.json
@@ -119,14 +127,6 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Infrastructure.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Core.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Infrastructure.pdb
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.csproj.AssemblyReference.cache
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.GeneratedMSBuildEditorConfig.editorconfig
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.csproj.CoreCompileInputs.cache
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.MvcApplicationPartsAssemblyInfo.cs
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.MvcApplicationPartsAssemblyInfo.cache
-/home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.sourcelink.json
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/scopedcss/bundle/Api.styles.css
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/staticwebassets.build.json
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/staticwebassets.development.json

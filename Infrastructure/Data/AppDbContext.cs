@@ -22,7 +22,8 @@ namespace Infrastructure.Data
         public virtual DbSet<AIQueryLog> AIQueryLogs { get; set; }
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
         public virtual DbSet<Role> Role { get; set; }
-        
+        public DbSet<Folder> Folder { get; set; }
+        public virtual DbSet<AppUser> User { get; set; }
         //public virtual DbSet<Message> Messages { get; set; }
         //public virtual DbSet<MailFolder> MailFolders { get; set; }
         //public virtual DbSet<MailMessageFolder> MailMessageFolders { get; set; }

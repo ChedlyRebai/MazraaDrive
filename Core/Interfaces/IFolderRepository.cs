@@ -6,11 +6,18 @@ namespace Core.Interfaces;
 public interface IFolderRepository : IGenericRepository<Folder>
 {
     Task<Folder> AddAsync(Folder folder);
-    Task DeleteFolderAsync(int id);
-    Task<IReadOnlyList<Folder>> GetAllFoldersAsync();
-    Task<Folder> GetFolderByIdAsync(int id);
-    Task<Folder> UpdateFolderAsync(Folder folder);
-
-    Task<IReadOnlyList<Folder>> GetFoldersByParentIdAsync(int parentId);
+        Task DeleteAsync(int id);
+        Task<IReadOnlyList<Folder>> GetAllAsync();
+        Task<Folder?> GetByIdAsync(int id);
+        Task<Folder?> GetByNameAsync(string name, int departmentId);
+        Task UpdateAsync(Folder folder);
+        Task<bool> ExistsAsync(int id);
+        Task<IReadOnlyList<Folder>> GetByDepartmentAsync(int departmentId);
+        Task<IReadOnlyList<Folder>> GetRootFoldersAsync(int departmentId);
+        Task<IReadOnlyList<Folder>> GetSubFoldersAsync(int parentFolderId);
+        Task<IReadOnlyList<Folder>> GetFolderTreeAsync(int departmentId);
+        Task<bool> HasSubFoldersAsync(int folderId);
+        Task<bool> HasDocumentsAsync(int folderId);
+        Task<IReadOnlyList<Folder>> GetByUserAsync(string userId);
     
 }

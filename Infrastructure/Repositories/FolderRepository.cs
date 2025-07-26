@@ -16,17 +16,17 @@ public class FolderRepository : IFolderRepository
         _context = context;
     }
 
-    public Task AddAsync(Folder entity)
+    public async Task<Folder> AddAsync(Folder folder)
     {
-        if (entity == null)
+        if (folder == null)
         {
-            throw new ArgumentNullException(nameof(entity), "Folder cannot be null");
+            throw new ArgumentNullException(nameof(folder), "Folder cannot be null");
         }
 
-        _context.Folders.Add(entity);
-        return _context.SaveChangesAsync();
+        _context.Folders.Add(folder);
+        await _context.SaveChangesAsync();
+        return folder;
     }
-
 
     public Task DeleteAsync(int id)
     {
@@ -39,37 +39,124 @@ public class FolderRepository : IFolderRepository
         return _context.SaveChangesAsync();
     }
 
+
     public async Task<IReadOnlyList<Folder>> GetAllAsync()
     {
-        var folders =await  _context.Folders.ToListAsync();
-        if (folders == null || !folders.Any() )
-        {
-            throw new InvalidOperationException("No Folders found");
-        }
-        return folders;
+        return await _context.Folders
+            .Include(f => f.Department)
+            .Include(f => f.CreatedBy)
+            .Include(f => f.ParentFolder)
+            .Include(f => f.SubFolders)
+            .Include(f => f.Documents)
+
+            .OrderBy(f => f.Name)
+            .ToListAsync();
     }
 
-
-    public Task<Folder> GetByIdAsync(int id)
+    public async Task<Folder?> GetByIdAsync(int id)
     {
-        var folder = _context.Folders.FirstOrDefaultAsync(f => f.Id == id);
+        return await _context.Folders
+            .Include(f => f.Department)
+            .Include(f => f.CreatedBy)
+            .Include(f => f.ParentFolder)
+            .Include(f => f.SubFolders)
+            .Include(f => f.Documents)
+            .FirstOrDefaultAsync(f => f.Id == id);
+    }
+
+    public async Task<Folder?> GetByNameAsync(string name, int departmentId)
+    {
+        if (string.IsNullOrEmpty(name))
+            return null;
+
+        return await _context.Folders
+            .FirstOrDefaultAsync(f =>
+            f.Name.ToLower() == name.ToLower()
+           // &&   f.DepartmentId == departmentId
+            );
+    }
+
+    public async Task UpdateAsync(Folder folder)
+    {
         if (folder == null)
-        {
-            throw new ArgumentException($"Folder with id {id} not found");
-        }
-        return folder;
+            throw new ArgumentNullException(nameof(folder));
+
+        //folder.UpdatedAt = DateTime.UtcNow;
+        _context.Folders.Update(folder);
     }
 
-
-
-    public Task UpdateAsync(Folder entity)
+    public async Task<bool> ExistsAsync(int id)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity), "Folder cannot be null");
-        }
+        return await _context.Folders.AnyAsync(f => f.Id == id);
+    }
 
-        _context.Folders.Update(entity);
-        return _context.SaveChangesAsync();
+    public async Task<IReadOnlyList<Folder>> GetByDepartmentAsync(int departmentId)
+    {
+        return await _context.Folders
+            .Include(f => f.CreatedBy)
+            .Include(f => f.ParentFolder)
+            .Include(f => f.SubFolders)
+            .Include(f => f.Documents)
+            //.Where(f => f.DepartmentId == departmentId && f.IsActive)
+            .OrderBy(f => f.Name)
+            .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Folder>> GetRootFoldersAsync(int departmentId)
+    {
+        return await _context.Folders
+            .Include(f => f.CreatedBy)
+            .Include(f => f.SubFolders)
+            .Include(f => f.Documents)
+            //.Where(f => f.DepartmentId == departmentId && f.ParentFolderId == null)
+            .OrderBy(f => f.Name)
+            .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Folder>> GetSubFoldersAsync(int parentFolderId)
+    {
+        return await _context.Folders
+            .Include(f => f.CreatedBy)
+            .Include(f => f.SubFolders)
+            .Include(f => f.Documents)
+           // .Where(f => f.ParentFolderId == parentFolderId )
+            .OrderBy(f => f.Name)
+            .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Folder>> GetFolderTreeAsync(int departmentId)
+    {
+        return await _context.Folders
+            //.Where(f => f.DepartmentId == departmentId )
+            .OrderBy(f => f.Name)
+            .ToListAsync();
+    }
+
+    public async Task<bool> HasSubFoldersAsync(int folderId)
+    {
+        //  return await _context.Folders.FindAsync
+        //    .AnyAsync(f => f.ParentFolderId == folderId );
+        return true;
+    }
+
+    public async Task<bool> HasDocumentsAsync(int folderId)
+    {
+        return await _context.Documents
+            .AnyAsync(d => d.FolderId == folderId);
+    }
+
+    public async Task<IReadOnlyList<Folder>> GetByUserAsync(string userId)
+    {
+        return await _context.Folders
+            .Include(f => f.Department)
+            .Include(f => f.ParentFolder)
+           // .Where(f => f.CreatedById == userId )
+            .OrderBy(f => f.Name)
+            .ToListAsync();
+    }
+
+    Task IGenericRepository<Folder>.AddAsync(Folder entity)
+    {
+        return AddAsync(entity);
     }
 }

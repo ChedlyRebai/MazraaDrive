@@ -59,9 +59,9 @@ public static class InfrastructureRegistration
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
         // Identity configuration
-        services.AddIdentity<AppUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+        // services.AddIdentity<AppUser, IdentityRole>()
+        //     .AddEntityFrameworkStores<AppDbContext>()
+        //     .AddDefaultTokenProviders();
 
         // Configure Identity cookie
         services.ConfigureApplicationCookie(options =>
