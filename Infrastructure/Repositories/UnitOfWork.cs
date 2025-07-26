@@ -43,7 +43,7 @@ public class UnitOfWork : IUnitOfWork
     public IPermissionsRepository PermissionsRepository { get; }
   
     public IRoleRepository RoleRepository { get; }
-
+    
     public IAuditLogRepository AuditLogRepository { get; }
 
     public UnitOfWork(
@@ -51,7 +51,7 @@ public class UnitOfWork : IUnitOfWork
         IDepartmentRepository departmentRepository,
         // IDocRequestRepository docRequestRepository,
         IFolderRepository folderRepository,
-        // IAuth auth,
+        IPermissionsRepository permissionsRepository,
         IRoleRepository roleRepository,
         IDocument documentRepository,
         IUserRepository userRepository
@@ -75,7 +75,7 @@ public class UnitOfWork : IUnitOfWork
         FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         RoleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-
+        PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
 
         //_redis = redis;
         //_userManager = userManager;

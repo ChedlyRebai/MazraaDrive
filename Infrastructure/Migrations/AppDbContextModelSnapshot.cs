@@ -72,11 +72,21 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("CanUpdate")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("DocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FolderId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("FolderId");
 
                     b.HasIndex("UserId");
 
@@ -643,11 +653,23 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.AccessRight", b =>
                 {
+                    b.HasOne("Core.Entities.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId");
+
+                    b.HasOne("Core.Entities.Folder", "Folder")
+                        .WithMany()
+                        .HasForeignKey("FolderId");
+
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("AccessRights")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Folder");
 
                     b.Navigation("User");
                 });

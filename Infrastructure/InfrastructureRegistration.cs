@@ -33,6 +33,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IFolderRepository, FolderRepository>();
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPermissionsRepository, PermissionsRepository>();
         //services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();

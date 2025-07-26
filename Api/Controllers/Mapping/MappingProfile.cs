@@ -27,9 +27,17 @@ public class MappingProfile : Profile
         CreateMap<Document, DocumentDto>().ReverseMap();
         CreateMap<Document, DocumentUploadDto>().ReverseMap();
         CreateMap<Document, DocumentSummaryDto>().ReverseMap();
+
+        CreateMap<AccessRight, AccessRightDto>().ReverseMap();
+        CreateMap<AccessRight, CreateAccessRightDto>()
+            .ReverseMap();
+        CreateMap<AccessRight, UpdateAccessRightDto>().ReverseMap();
+        CreateMap<AccessRight, BulkAccessRightDto>()  .ReverseMap();
+        CreateMap<AccessRight, AccessRightSummaryDto>().ReverseMap();
+
     }
 
-        private static string FormatFileSize(long bytes)
+    private static string FormatFileSize(long bytes)
     {
         if (bytes >= 1073741824)
             return $"{bytes / 1073741824.0:F2} GB";
@@ -39,6 +47,6 @@ public class MappingProfile : Profile
             return $"{bytes / 1024.0:F2} KB";
         else
             return $"{bytes} bytes";
-    
-}
+
+    }
 }
