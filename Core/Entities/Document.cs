@@ -20,7 +20,7 @@ public class Document : BaseEntity<int>
     [MaxLength(500)]
     public string StoragePath { get; set; }
 
-    [Required]
+    
     public int FolderId { get; set; }  // FIXED: Changed from Guid to int
 
     [Required]
