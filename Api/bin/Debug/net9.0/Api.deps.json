@@ -973,6 +973,7 @@
       "System.Threading.Channels/7.0.0": {},
       "Core/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.3.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.0",
           "Microsoft.Extensions.FileProviders.Abstractions": "9.0.0"

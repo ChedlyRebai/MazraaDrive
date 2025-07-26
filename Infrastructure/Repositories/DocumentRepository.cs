@@ -1,70 +1,160 @@
-using System;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories;
-
-public class DocumentRepository : IDocument
+namespace Infrastructure.Repositories
 {
-    private readonly AppDbContext _context;
+    public class DocumentRepository : GenericRepository<Document>, IDocument
+    {
+        private readonly AppDbContext _context;
 
-    public DocumentRepository(AppDbContext context = null)
-    {
-        _context = context;
-    }
-    public Task AddAsync(Document entity)
-    {
-        if (entity == null)
+        public DocumentRepository(AppDbContext context) : base(context)
         {
-            throw new ArgumentNullException(nameof(entity), "Document cannot be null");
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        _context.Documents.Add(entity);
-        return _context.SaveChangesAsync();
-    }
-
-    public Task DeleteAsync(int id)
-    {
-        var document = _context.Documents.Find(id);
-        if (document == null)
+        public async Task<Document> AddAsync(Document document)
         {
-            throw new ArgumentException($"Document with id {id} not found");
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            document.CreatedAt = DateTime.UtcNow;
+            document.UpdatedAt = DateTime.UtcNow;
+
+            var result = await _context.Documents.AddAsync(document);
+            return result.Entity;
         }
 
-        _context.Documents.Remove(document);
-        return _context.SaveChangesAsync();
-    }
-
-    public async Task<IReadOnlyList<Document>> GetAllAsync()
-    {
-        var documents = await _context.Documents.ToListAsync();
-        if (documents == null || !documents.Any())
+        public async Task DeleteAsync(int id)
         {
-            throw new InvalidOperationException("No Documents found");
-        }
-        return documents;
-    }
+            var document = await _context.Documents.FindAsync(id);
+            if (document == null)
+                throw new ArgumentException($"Document with id {id} not found");
 
-    public Task<Document> GetByIdAsync(int id)
-    {
-        var document = _context.Documents.FirstOrDefaultAsync(doc => doc.Id == id);
-        if (document == null)
-        {
-            throw new ArgumentException($"Document with id {id} not found");
-        }
-        return document;
-    }
-
-    public Task UpdateAsync(Document entity)
-    {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity), "Document cannot be null");
+            _context.Documents.Remove(document);
         }
 
-        _context.Documents.Update(entity);
-        return _context.SaveChangesAsync();
+        public async Task<IReadOnlyList<Document>> GetAllAsync()
+        {
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.UploadedBy)
+                .Include(d => d.DocumentRequests)
+                
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<Document?> GetByIdAsync(int id)
+        {
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.UploadedBy)
+                .Include(d => d.DocumentRequests)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task<Document?> GetByNameAsync(string name, int folderId)
+        {
+            if (string.IsNullOrEmpty(name))
+                return null;
+
+            return await _context.Documents
+                .FirstOrDefaultAsync(d => d.Name.ToLower() == name.ToLower() && 
+                                        d.FolderId == folderId);
+        }
+
+        public async Task UpdateAsync(Document document)
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            document.UpdatedAt = DateTime.UtcNow;
+            _context.Documents.Update(document);
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _context.Documents.AnyAsync(d => d.Id == id);
+        }
+
+        public async Task<IReadOnlyList<Document>> GetByFolderAsync(int folderId)
+        {
+            return await _context.Documents
+                .Include(d => d.UploadedBy)
+                .Include(d => d.DocumentRequests)
+                .Where(d => d.FolderId == folderId )
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Document>> GetByUserAsync(string userId)
+        {
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.DocumentRequests)
+                .Where(d => d.UploadedById == userId )
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Document>> GetValidatedDocumentsAsync()
+        {
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.UploadedBy)
+                .Where(d => d.IsValidated )
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Document>> GetPendingValidationAsync()
+        {
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.UploadedBy)
+                .Where(d => !d.IsValidated )
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Document>> GetByFileTypeAsync(string fileType)
+        {
+            if (string.IsNullOrEmpty(fileType))
+                return new List<Document>();
+
+            return await _context.Documents
+                .Include(d => d.Folder)
+                .Include(d => d.UploadedBy)
+                .Where(d => d.FileType.ToLower() == fileType.ToLower() )
+                .OrderByDescending(d => d.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<bool> ValidateDocumentAsync(int documentId, bool isValid)
+        {
+            var document = await _context.Documents.FindAsync(documentId);
+            if (document == null)
+                return false;
+
+            document.IsValidated = isValid;
+            document.UpdatedAt = DateTime.UtcNow;
+            
+            return true;
+        }
+
+        public async Task<long> GetTotalFileSizeAsync()
+        {
+            return await _context.Documents
+                //.Where(d => d.IsActive)
+                .SumAsync(d => d.FileSize);
+        }
+
+        public async Task<int> GetDocumentCountByFolderAsync(int folderId)
+        {
+            return await _context.Documents
+                .CountAsync(d => d.FolderId == folderId );
+        }
     }
 }

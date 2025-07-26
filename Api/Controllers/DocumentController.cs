@@ -1,16 +1,367 @@
 using AutoMapper;
+using Core.DTOs;
+using Core.Entities;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers
 {
-
+    [ApiController]
+    [Route("api/[controller]")]
     public class DocumentController : BaseController
     {
+        private readonly IWebHostEnvironment _environment;
+        private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
+        private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
 
-        public DocumentController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public DocumentController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment) 
+            : base(unitOfWork, mapper)
         {
+            _environment = environment;
+        }
+
+        [HttpGet("test")]
+        public string TestApi()
+        {
+            return "Document API is working!";
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocuments()
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.GetAllAsync();
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                return Ok(new { success = true, data = documentDtos });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DocumentDto>> GetDocument(int id)
+        {
+            try
+            {
+                var document = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
+                if (document == null)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                var documentDto = _mapper.Map<DocumentDto>(document);
+                return Ok(new { success = true, data = documentDto });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("folder/{folderId}")]
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByFolder(int folderId)
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.GetByFolderAsync(folderId);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                return Ok(new { success = true, data = documentDtos });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByUser(string userId)
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.GetByUserAsync(userId);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                return Ok(new { success = true, data = documentDtos });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("validated")]
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetValidatedDocuments()
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.GetValidatedDocumentsAsync();
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                return Ok(new { success = true, data = documentDtos });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("pending-validation")]
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetPendingValidation()
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.GetPendingValidationAsync();
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                return Ok(new { success = true, data = documentDtos });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost("upload")]
+        public async Task<ActionResult<DocumentDto>> UploadDocument([FromForm] DocumentUploadDto uploadDto)
+        {
+            try
+            {
+                if (uploadDto?.File == null)
+                    return BadRequest(new { success = false, message = "File is required" });
+
+                if (!ModelState.IsValid)
+                    return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
+
+                // Validate file size
+                if (uploadDto.File.Length > MaxFileSize)
+                    return BadRequest(new { success = false, message = $"File size cannot exceed {MaxFileSize / (1024 * 1024)}MB" });
+
+                // Validate file type
+                var fileExtension = Path.GetExtension(uploadDto.File.FileName).ToLower();
+                if (!AllowedFileTypes.Contains(fileExtension))
+                    return BadRequest(new { success = false, message = "File type not allowed" });
+
+                // Verify folder exists
+                var folder = await _unitOfWork.FolderRepository.GetByIdAsync(uploadDto.FolderId);
+                if (folder == null)
+                    return BadRequest(new { success = false, message = "Folder not found" });
+
+                // Check if document with same name exists in folder
+                var existingDocument = await _unitOfWork.DocumentRepository.GetByNameAsync(
+                    Path.GetFileNameWithoutExtension(uploadDto.File.FileName), uploadDto.FolderId);
+                if (existingDocument != null)
+                    return BadRequest(new { success = false, message = "Document with this name already exists in this folder" });
+
+                // Create uploads directory if it doesn't exist
+                var uploadsPath = Path.Combine(_environment.WebRootPath ?? _environment.ContentRootPath, "uploads");
+                Directory.CreateDirectory(uploadsPath);
+
+                // Generate unique filename
+                var fileName = $"{Guid.NewGuid()}{fileExtension}";
+                var filePath = Path.Combine(uploadsPath, fileName);
+
+                // Save file
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await uploadDto.File.CopyToAsync(stream);
+                }
+
+                // Create document entity
+                var document = new Document
+                {
+                    Name = Path.GetFileNameWithoutExtension(uploadDto.File.FileName),
+                    
+                   // Description = uploadDto.Description,
+                    FileType = fileExtension.TrimStart('.'),
+                    FileSize = uploadDto.File.Length,
+                    StoragePath = filePath,
+                    FolderId = uploadDto.FolderId,
+                    UploadedById = "10",
+                    Version = 1,
+                    IsValidated = false,
+                    
+                };
+
+                var createdDocument = await _unitOfWork.DocumentRepository.AddAsync(document);
+                await _unitOfWork.SaveChangesAsync();
+
+                var documentDto = _mapper.Map<DocumentDto>(createdDocument);
+                return CreatedAtAction(nameof(GetDocument), new { id = documentDto.Id }, 
+                    new { success = true, data = documentDto });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<DocumentDto>> UpdateDocument(int id, [FromBody] UpdateDocumentDto updateDocumentDto)
+        {
+            try
+            {
+                if (updateDocumentDto == null)
+                    return BadRequest(new { success = false, message = "Update data is required" });
+
+                var existingDocument = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
+                if (existingDocument == null)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                // Verify new folder exists (if folder is being changed)
+                if (updateDocumentDto.FolderId.HasValue && updateDocumentDto.FolderId != existingDocument.FolderId)
+                {
+                    var folder = await _unitOfWork.FolderRepository.GetByIdAsync(updateDocumentDto.FolderId.Value);
+                    if (folder == null)
+                        return BadRequest(new { success = false, message = "Target folder not found" });
+                }
+
+                _mapper.Map(updateDocumentDto, existingDocument);
+                await _unitOfWork.DocumentRepository.UpdateAsync(existingDocument);
+                await _unitOfWork.SaveChangesAsync();
+
+                var documentDto = _mapper.Map<DocumentDto>(existingDocument);
+                return Ok(new { success = true, data = documentDto });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}/validate")]
+        public async Task<ActionResult> ValidateDocument(int id, [FromBody] bool isValid)
+        {
+            try
+            {
+                var result = await _unitOfWork.DocumentRepository.ValidateDocumentAsync(id, isValid);
+                if (!result)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(new { success = true, message = $"Document {(isValid ? "validated" : "rejected")} successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDocument(int id)
+        {
+            try
+            {
+                var document = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
+                if (document == null)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                // Delete physical file
+                if (System.IO.File.Exists(document.StoragePath))
+                {
+                    System.IO.File.Delete(document.StoragePath);
+                }
+
+                await _unitOfWork.DocumentRepository.DeleteAsync(id);
+                await _unitOfWork.SaveChangesAsync();
+
+                return Ok(new { success = true, message = "Document deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}/download")]
+        public async Task<ActionResult> DownloadDocument(int id)
+        {
+            try
+            {
+                var document = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
+                if (document == null)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                if (!System.IO.File.Exists(document.StoragePath))
+                    return NotFound(new { success = false, message = "File not found on server" });
+
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(document.StoragePath, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+
+                var contentType = GetContentType(document.FileType);
+                var fileName = $"{document.Name}.{document.FileType}";
+
+                return File(memory, contentType, fileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("stats")]
+        public async Task<ActionResult> GetDocumentStats()
+        {
+            try
+            {
+                var totalSize = await _unitOfWork.DocumentRepository.GetTotalFileSizeAsync();
+                var totalCount = (await _unitOfWork.DocumentRepository.GetAllAsync()).Count;
+                var validatedCount = (await _unitOfWork.DocumentRepository.GetValidatedDocumentsAsync()).Count;
+                var pendingCount = (await _unitOfWork.DocumentRepository.GetPendingValidationAsync()).Count;
+
+                var stats = new
+                {
+                    TotalDocuments = totalCount,
+                    ValidatedDocuments = validatedCount,
+                    PendingValidation = pendingCount,
+                    TotalFileSize = totalSize,
+                    TotalFileSizeFormatted = FormatFileSize(totalSize)
+                };
+
+                return Ok(new { success = true, data = stats });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        private string GetCurrentUserId()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";
+        }
+
+        private string GetContentType(string fileExtension)
+        {
+            return fileExtension.ToLower() switch
+            {
+                "pdf" => "application/pdf",
+                "doc" => "application/msword",
+                "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "xls" => "application/vnd.ms-excel",
+                "xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "ppt" => "application/vnd.ms-powerpoint",
+                "pptx" => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "txt" => "text/plain",
+                "jpg" or "jpeg" => "image/jpeg",
+                "png" => "image/png",
+                "gif" => "image/gif",
+                _ => "application/octet-stream"
+            };
+        }
+
+        private string FormatFileSize(long bytes)
+        {
+            if (bytes >= 1073741824)
+                return $"{bytes / 1073741824.0:F2} GB";
+            else if (bytes >= 1048576)
+                return $"{bytes / 1048576.0:F2} MB";
+            else if (bytes >= 1024)
+                return $"{bytes / 1024.0:F2} KB";
+            else
+                return $"{bytes} bytes";
         }
     }
 }

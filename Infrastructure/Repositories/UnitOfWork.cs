@@ -53,6 +53,7 @@ public class UnitOfWork : IUnitOfWork
         IFolderRepository folderRepository,
         // IAuth auth,
         IRoleRepository roleRepository,
+        IDocument documentRepository,
         IUserRepository userRepository
         //IConnectionMultiplexer redis, 
         // UserManager<AppUser> userManager,
@@ -61,9 +62,10 @@ public class UnitOfWork : IUnitOfWork
         // IGenerateToken? token = null
         )
     {
+
         _context = context;
         //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
-        // DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
+         DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         // FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         //MessageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
