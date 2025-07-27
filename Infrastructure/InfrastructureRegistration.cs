@@ -4,28 +4,48 @@ using Core.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Service;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using StackExchange.Redis;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
-
 namespace Infrastructure;
-
 
 public static class InfrastructureRegistration
 {
     public static IServiceCollection infrastructureRegistration(this IServiceCollection services, IConfiguration configuration)
     {
-        
-        //services.AddScoped<IGenericRepository, GenericRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        // Database context
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        });
+
+        // Identity configuration - UNCOMMENTED AND FIXED
+        // services.AddIdentity<AppUser, IdentityRole<int>>(options =>
+        // {
+        //     // Password settings
+        //     options.Password.RequireDigit = true;
+        //     options.Password.RequireLowercase = true;
+        //     options.Password.RequireNonAlphanumeric = false;
+        //     options.Password.RequireUppercase = true;
+        //     options.Password.RequiredLength = 6;
+        //     options.Password.RequiredUniqueChars = 1;
+
+        //     // Lockout settings
+        //     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        //     options.Lockout.MaxFailedAccessAttempts = 5;
+        //     options.Lockout.AllowedForNewUsers = true;
+
+        //     // User settings
+        //     options.User.AllowedUserNameCharacters =
+        //         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        //     options.User.RequireUniqueEmail = true;
+        // })
+        // .AddEntityFrameworkStores<AppDbContext>()
+        // .AddDefaultTokenProviders();
+
+        // Register repositories and services
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDocRequestRepository, DocRequestRepository>();
@@ -34,35 +54,92 @@ public static class InfrastructureRegistration
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
-        //services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-        // services.AddScoped<IEmailService, EmailService>();
-        // services.AddScoped<IGenerateToken, GenrateToken>();
-
-        // services.AddSingleton<IConnectionMultiplexer>(i =>
-        // {
-        //     var config = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"), true);
-        //     return ConnectionMultiplexer.Connect(config);
-        // });
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IGenerateToken, GenrateToken>();
+        services.AddScoped<IAuth, AuthRepository>();
        // services.AddScoped<IEmailService, EmailService>();
-        // services.AddSingleton<IImageMangeService, ImageMangeService>();
-        //services.AddScoped<IGenerateToken, GenrateToken>();
-        //services.AddScoped<IOrderService,OrderService>();
-        // Register ASP.NET Core Identity with custom user and role types.
-        // Use Entity Framework Core for persistence and add default token providers.
+        
+        // Register UnitOfWork
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        //An error occurred while accessing the Microsoft.Extensions.Hosting services. Continuing without the application service provider. Error: Some services are not able to be constructed (Error while validating the service descriptor 'ServiceType: Core.Interfaces.IUnitOfWork Lifetime: Scoped ImplementationType: Infrastructure.Repositories.UnitOfWork': Unable to resolve service for type 'Microsoft.Extensions.FileProviders.IFileProvider' while attempting to activate 'Infrastructure.Repositories.Service.ImageMangeService'.) (Error while validating the service descriptor 'ServiceType: Core.Services.IImageMangeService Lifetime: Singleton ImplementationType: Infrastructure.Repositories.Service.ImageMangeService': Unable to resolve service for type 'Microsoft.Extensions.FileProviders.IFileProvider' while attempting to activate 'Infrastructure.Repositories.Service.ImageMangeService'.)
-        //services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
-        services.AddDbContext<AppDbContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-        });
-        // Identity configuration
-        // services.AddIdentity<AppUser, IdentityRole>()
-        //     .AddEntityFrameworkStores<AppDbContext>()
-        //     .AddDefaultTokenProviders();
+        // Configure Identity cookie
+        /* services.ConfigureApplicationCookie(options =>
+         {
+             options.Cookie.Name = "token";
+             options.LoginPath = "/api/auth/login";
+             options.LogoutPath = "/api/auth/logout";
+             options.AccessDeniedPath = "/api/auth/access-denied";
+             options.ExpireTimeSpan = TimeSpan.FromDays(30);
+             options.SlidingExpiration = true;
+             options.Events.OnRedirectToLogin = context =>
+             {
+                 context.Response.StatusCode = 401;
+                 return Task.CompletedTask;
+             };
+             options.Events.OnRedirectToAccessDenied = context =>
+             {
+                 context.Response.StatusCode = 403;
+                 return Task.CompletedTask;
+             };
+         });*/
+
+        // JWT Bearer authentication
+        // var tokenSecret = configuration["Token:Secret"];
+        // if (string.IsNullOrEmpty(tokenSecret))
+        // {
+        //     throw new InvalidOperationException("Token:Secret configuration is missing or empty");
+        // }
+
+        // services.AddAuthentication(options =>
+        // {
+        //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        // })
+        // .AddJwtBearer(options =>
+        // {
+        //     options.RequireHttpsMetadata = false;
+        //     options.SaveToken = true;
+        //     options.TokenValidationParameters = new TokenValidationParameters
+        //     {
+        //         ValidateIssuerSigningKey = true,
+        //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSecret)),
+        //         ValidateIssuer = false,
+        //         ValidateAudience = false,
+        //         ClockSkew = TimeSpan.Zero,
+        //         ValidateLifetime = true
+        //     };
+        //     options.Events = new JwtBearerEvents
+        //     {
+        //         OnMessageReceived = context =>
+        //         {
+        //             // Check for token in cookie
+        //             context.Token = context.Request.Cookies["token"];
+        //             return Task.CompletedTask;
+        //         },
+        //         OnAuthenticationFailed = context =>
+        //         {
+        //             Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+        //             return Task.CompletedTask;
+        //         }
+        //     };
+        // });
+
+        // Authorization policies
+        // services.AddAuthorization(options =>
+        // {
+        //     options.AddPolicy("RequireAdmin", policy =>
+        //         policy.RequireRole("Admin"));
+
+        //     options.AddPolicy("RequireManager", policy =>
+        //         policy.RequireRole("Admin", "Manager"));
+
+        //     options.AddPolicy("RequireUser", policy =>
+        //         policy.RequireAuthenticatedUser());
+        // });
+        
+           services.AddIdentity<AppUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         // Configure Identity cookie
         services.ConfigureApplicationCookie(options =>
@@ -98,6 +175,7 @@ public static class InfrastructureRegistration
                     }
                 };
             });
+
         return services;
     }
 }

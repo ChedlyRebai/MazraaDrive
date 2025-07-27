@@ -16,7 +16,6 @@ public class AccessRight : BaseEntity<int>
 
     public AccessRightType Type => DocumentId.HasValue ? AccessRightType.Document : AccessRightType.Folder;
 
-
     public int? FolderId { get; set; }
     [ForeignKey(nameof(FolderId))]
     public virtual Folder Folder { get; set; }

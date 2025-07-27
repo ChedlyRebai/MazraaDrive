@@ -23,15 +23,49 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "MazraaDrive API", Version = "v1" });
+    
+    // Add JWT authentication to Swagger
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+    });
+    
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+// builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>
+// {
+//     // Your identity options here
+// })
+// .AddEntityFrameworkStores<AppDbContext>()
+// .AddDefaultTokenProviders();
 // Add controllers
 builder.Services.AddControllers();
 
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
 
-// builder.Services.AddIdentity<AppUser, AppRole>()
-//     .AddEntityFrameworkStores<AppDbContext>()
-//     .AddDefaultTokenProviders();
+//  builder.Services.AddIdentity<AppUser, AppRole>()
+//      .AddEntityFrameworkStores<AppDbContext>()
+//      .AddDefaultTokenProviders();
 
 // Add Identity services
 // builder.Services.AddIdentity<AppUser, IdentityRole<int>>()

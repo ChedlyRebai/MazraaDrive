@@ -12,6 +12,7 @@ public class ExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly IMemoryCache _cache;
     public readonly TimeSpan _rateLimitWindow = TimeSpan.FromSeconds(20);
+   
     public ExceptionMiddleware(RequestDelegate next, IHostEnvironment environment, IMemoryCache cache)
     {
         _next = next;

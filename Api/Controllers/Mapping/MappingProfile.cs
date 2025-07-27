@@ -32,9 +32,10 @@ public class MappingProfile : Profile
         CreateMap<AccessRight, CreateAccessRightDto>()
             .ReverseMap();
         CreateMap<AccessRight, UpdateAccessRightDto>().ReverseMap();
-        CreateMap<AccessRight, BulkAccessRightDto>()  .ReverseMap();
+        CreateMap<AccessRight, BulkAccessRightDto>().ReverseMap();
         CreateMap<AccessRight, AccessRightSummaryDto>().ReverseMap();
 
+        
     }
 
     private static string FormatFileSize(long bytes)

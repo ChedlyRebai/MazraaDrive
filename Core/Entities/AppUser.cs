@@ -31,8 +31,6 @@ public class AppUser : IdentityUser
     [ForeignKey(nameof(RoleId))]
     public virtual Role Role { get; set; }
     
-    
-    
     [ForeignKey(nameof(DepartmentId))]
     public virtual Department Department { get; set; }
     

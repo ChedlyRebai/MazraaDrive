@@ -16,7 +16,7 @@ public record ResetPasswordDTO:LoginDTO
 public record RegisterDTO : LoginDTO
 {
     public string Username { get; set; }
-    public string DisplayName { get; set; }
+    public int DepartmentId { get; set; } 
 
 }
 
