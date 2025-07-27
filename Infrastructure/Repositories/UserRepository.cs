@@ -1,118 +1,207 @@
-using System;
 using Core.Entities;
 using Core.Interfaces;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories;
-
-public class UserRepository : IUserRepository
+namespace Infrastructure.Repositories
 {
-    public Task ActivateUserAsync(int userId)
+    public class UserRepository : GenericRepository<AppUser>, IUserRepository
     {
-        throw new NotImplementedException();
-    }
+        private readonly AppDbContext _context;
 
-    public Task<AppUser> AddAsync(AppUser user)
-    {
-        throw new NotImplementedException();
-    }
+        public UserRepository(AppDbContext context) : base(context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
-    public Task DeactivateUserAsync(int userId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<AppUser> AddAsync(AppUser user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
-    public Task DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+            user.CreatedAt = DateTime.UtcNow;
+            user.UpdatedAt = DateTime.UtcNow;
 
-    public Task<bool> ExistsAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+            var result = await _context.Users.AddAsync(user);
+            return result.Entity;
+        }
 
-    public Task<int> GetActiveUserCountAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task DeleteAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                throw new ArgumentException($"User with id {id} not found");
 
-    public Task<IReadOnlyList<AppUser>> GetActiveUsersAsync()
-    {
-        throw new NotImplementedException();
-    }
+            _context.Users.Remove(user);
+        }
 
-    public Task<IReadOnlyList<AppUser>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<IReadOnlyList<AppUser>> GetAllAsync()
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                
+                .ToListAsync();
+        }
 
-    public Task<IReadOnlyList<AppUser>> GetByDepartmentAsync(int departmentId)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<AppUser?> GetByIdAsync(int id)
+        {
+            return null;
+        }
 
-    public Task<AppUser?> GetByEmailAsync(string email)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<AppUser?> GetByIdAsync(string id)
+        {
+            return await _context.Users.Include(u => u.Department)
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
 
-    public Task<AppUser?> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task UpdateAsync(AppUser user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
-    public Task<AppUser?> GetByIdAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
+            user.UpdatedAt = DateTime.UtcNow;
+            _context.Users.Update(user);
+        }
 
-    public Task<IReadOnlyList<AppUser>> GetByRoleAsync(int roleId)
-    {
-        throw new NotImplementedException();
-    }
+        
 
-    public Task<AppUser?> GetByUserNameAsync(string userName)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<IReadOnlyList<AppUser>> GetInactiveUsersAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<AppUser?> GetByUserNameAsync(string userName)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
+        }
 
-    public Task<IReadOnlyList<AppUser>> GetRecentUsersAsync(int count = 10)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<IReadOnlyList<AppUser>> GetByDepartmentAsync(int departmentId)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => u.DepartmentId == departmentId)
+                
+                .ToListAsync();
+        }
 
-    public Task<int> GetUserCountAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<IReadOnlyList<AppUser>> GetByRoleAsync(int roleId)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == roleId)
+                
+                .ToListAsync();
+        }
 
-    public Task<IReadOnlyList<AppUser>> GetUsersWithRolesAsync()
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<IReadOnlyList<AppUser>> GetActiveUsersAsync()
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => u.IsActive)
+                
+                .ToListAsync();
+        }
 
-    public Task<bool> IsEmailTakenAsync(string email, int? excludeUserId = null)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<IReadOnlyList<AppUser>> GetInactiveUsersAsync()
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => !u.IsActive)
+                
+                .ToListAsync();
+        }
 
-    public Task<bool> IsUserNameTakenAsync(string userName, int? excludeUserId = null)
-    {
-        throw new NotImplementedException();
-    }
+        public async Task<bool> IsEmailTakenAsync(string email, int? excludeUserId = null)
+        {
+            var query = _context.Users.Where(u => u.Email == email);
+            
+            if (excludeUserId.HasValue)
+            {
+                //query = query.Where(u => u.Id != excludeUserId.Value);
+            }
 
-    public Task<IReadOnlyList<AppUser>> SearchUsersAsync(string searchTerm)
-    {
-        throw new NotImplementedException();
-    }
+            return await query.AnyAsync();
+        }
 
-    public Task UpdateAsync(AppUser user)
-    {
-        throw new NotImplementedException();
+        public async Task<bool> IsUserNameTakenAsync(string userName, int? excludeUserId = null)
+        {
+            var query = _context.Users.Where(u => u.UserName == userName);
+            
+            if (excludeUserId.HasValue)
+            {
+                //query = query.Where(u => u.Id != excludeUserId.Value);
+            }
+
+            return await query.AnyAsync();
+        }
+
+        public async Task<int> GetUserCountAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<int> GetActiveUserCountAsync()
+        {
+            return await _context.Users.CountAsync(u => u.IsActive);
+        }
+
+        public async Task<IReadOnlyList<AppUser>> SearchUsersAsync(string searchTerm)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u =>  
+                           u.Email.Contains(searchTerm) ||
+                           u.UserName!.Contains(searchTerm))
+               
+                .ToListAsync();
+        }
+
+        public async Task DeactivateUserAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.IsActive = false;
+                user.UpdatedAt = DateTime.UtcNow;
+                _context.Users.Update(user);
+            }
+        }
+
+        public async Task ActivateUserAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.IsActive = true;
+                user.UpdatedAt = DateTime.UtcNow;
+                _context.Users.Update(user);
+            }
+        }
+
+        public async Task<IReadOnlyList<AppUser>> GetUsersWithRolesAsync()
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId != null)
+                
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<AppUser>> GetRecentUsersAsync(int count = 10)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .OrderByDescending(u => u.CreatedAt)
+                .Take(count)
+                .ToListAsync();
+        }
     }
 }

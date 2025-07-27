@@ -8,11 +8,11 @@ public interface IUserRepository
         Task<AppUser> AddAsync(AppUser user);
         Task DeleteAsync(int id);
         Task<IReadOnlyList<AppUser>> GetAllAsync();
-        Task<AppUser?> GetByIdAsync(int id);
+       
         Task<AppUser?> GetByIdAsync(string id);
         Task UpdateAsync(AppUser user);
-        Task<bool> ExistsAsync(int id);
-        Task<AppUser?> GetByEmailAsync(string email);
+
+
         Task<AppUser?> GetByUserNameAsync(string userName);
         Task<IReadOnlyList<AppUser>> GetByDepartmentAsync(int departmentId);
         Task<IReadOnlyList<AppUser>> GetByRoleAsync(int roleId);
