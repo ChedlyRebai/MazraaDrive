@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
             return result.Entity;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -40,14 +40,9 @@ namespace Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Department)
                 .Include(u => u.Role)
-                
                 .ToListAsync();
         }
 
-        public async Task<AppUser?> GetByIdAsync(int id)
-        {
-            return null;
-        }
 
         public async Task<AppUser?> GetByIdAsync(string id)
         {
@@ -66,8 +61,6 @@ namespace Infrastructure.Repositories
         }
 
         
-
-
         public async Task<AppUser?> GetByUserNameAsync(string userName)
         {
             return await _context.Users
@@ -116,26 +109,17 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> IsEmailTakenAsync(string email, int? excludeUserId = null)
-        {
-            var query = _context.Users.Where(u => u.Email == email);
-            
-            if (excludeUserId.HasValue)
-            {
-                //query = query.Where(u => u.Id != excludeUserId.Value);
-            }
+        
 
-            return await query.AnyAsync();
-        }
-
-        public async Task<bool> IsUserNameTakenAsync(string userName, int? excludeUserId = null)
+        public async Task<bool> IsUserNameTakenAsync(string userName, string? excludeUserId = null)
         {
             var query = _context.Users.Where(u => u.UserName == userName);
             
-            if (excludeUserId.HasValue)
+            if (excludeUserId != null)
             {
-                //query = query.Where(u => u.Id != excludeUserId.Value);
+                query = query.Where(u => u.Id != excludeUserId);
             }
+            
 
             return await query.AnyAsync();
         }
@@ -162,7 +146,7 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task DeactivateUserAsync(int userId)
+        public async Task DeactivateUserAsync(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)
@@ -173,7 +157,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task ActivateUserAsync(int userId)
+        public async Task ActivateUserAsync(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)

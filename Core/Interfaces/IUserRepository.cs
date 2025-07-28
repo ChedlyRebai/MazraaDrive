@@ -6,7 +6,7 @@ namespace Core.Interfaces;
 public interface IUserRepository
 {
         Task<AppUser> AddAsync(AppUser user);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(string id);
         Task<IReadOnlyList<AppUser>> GetAllAsync();
        
         Task<AppUser?> GetByIdAsync(string id);
@@ -18,13 +18,13 @@ public interface IUserRepository
         Task<IReadOnlyList<AppUser>> GetByRoleAsync(int roleId);
         Task<IReadOnlyList<AppUser>> GetActiveUsersAsync();
         Task<IReadOnlyList<AppUser>> GetInactiveUsersAsync();
-        Task<bool> IsEmailTakenAsync(string email, int? excludeUserId = null);
-        Task<bool> IsUserNameTakenAsync(string userName, int? excludeUserId = null);
+        
+        Task<bool> IsUserNameTakenAsync(string userName, string? excludeUserId = null);
         Task<int> GetUserCountAsync();
         Task<int> GetActiveUserCountAsync();
         Task<IReadOnlyList<AppUser>> SearchUsersAsync(string searchTerm);
-        Task DeactivateUserAsync(int userId);
-        Task ActivateUserAsync(int userId);
+        Task DeactivateUserAsync(string userId);
+        Task ActivateUserAsync(string userId);
         Task<IReadOnlyList<AppUser>> GetUsersWithRolesAsync();
         Task<IReadOnlyList<AppUser>> GetRecentUsersAsync(int count = 10);
 }
