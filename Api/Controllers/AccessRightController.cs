@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
@@ -32,7 +33,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
 
@@ -43,7 +44,7 @@ namespace Api.Controllers
             {
                 var accessRight = await _unitOfWork.PermissionsRepository.GetByIdAsync(id);
                 if (accessRight == null)
-                    return NotFound(new { success = false, message = "Access right not found" });
+                    return NotFound(new ResponseAPI(404, "Access right not found"));
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(accessRight);
                 return Ok(new { success = true, data = accessRightDto });
@@ -61,11 +62,11 @@ namespace Api.Controllers
             {
                 var accessRights = await _unitOfWork.PermissionsRepository.GetByUserAsync(userId);
                 var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new { success = true, data = accessRightDtos });
+                return Ok(new ResponseAPI(200, "Access rights retrieved successfully"));
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
 
@@ -76,11 +77,11 @@ namespace Api.Controllers
             {
                 var accessRights = await _unitOfWork.PermissionsRepository.GetByDocumentAsync(documentId);
                 var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new { success = true, data = accessRightDtos });
+                return Ok(new ResponseAPI(200, "Access rights retrieved successfully"));
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
 
@@ -95,7 +96,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
 
@@ -193,11 +194,11 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.BulkCreateAsync(accessRights);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = $"Created {accessRights.Count} access rights successfully" });
+                return Ok(new ResponseAPI(200, $"Created {accessRights.Count} access rights successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -222,7 +223,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -238,11 +239,11 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = "Access right deleted successfully" });
+                return Ok(new ResponseAPI(200, "Access right deleted successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -256,7 +257,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
 
@@ -268,11 +269,11 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.RemoveUserAccessAsync(userId, documentId, folderId);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = "User access removed successfully" });
+                return Ok(new ResponseAPI(200, "User access removed successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 

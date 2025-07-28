@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ix/smfclAhs=",
+  "dgSpecHash": "Flg1sTFpR4E=",
   "success": true,
   "projectFilePath": "/home/ubuntu/Bureau/github/MazraaDrive/Infrastructure/Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.http.features/2.3.0/microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.identity/2.3.1/microsoft.aspnetcore.identity.2.3.1.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/9.0.0/microsoft.aspnetcore.identity.entityframeworkcore.9.0.0.nupkg.sha512",
+    "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.mvc.versioning/5.1.0/microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.webutilities/2.3.0/microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.bcl.timeprovider/8.0.1/microsoft.bcl.timeprovider.8.0.1.nupkg.sha512",

@@ -143,3 +143,4 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/ref/Api.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.dll

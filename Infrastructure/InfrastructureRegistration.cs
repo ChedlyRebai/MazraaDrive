@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc; // Add this for ApiVersioning
 namespace Infrastructure;
 
 public static class InfrastructureRegistration
@@ -57,8 +58,14 @@ public static class InfrastructureRegistration
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IGenerateToken, GenrateToken>();
         services.AddScoped<IAuth, AuthRepository>();
-       // services.AddScoped<IEmailService, EmailService>();
-        
+        services.AddApiVersioning(options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            options.ReportApiVersions = true;
+        });
+        // services.AddScoped<IEmailService, EmailService>();
+
         // Register UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -136,10 +143,10 @@ public static class InfrastructureRegistration
         //     options.AddPolicy("RequireUser", policy =>
         //         policy.RequireAuthenticatedUser());
         // });
-        
-           services.AddIdentity<AppUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+
+        services.AddIdentity<AppUser, IdentityRole>()
+         .AddEntityFrameworkStores<AppDbContext>()
+         .AddDefaultTokenProviders();
 
         // Configure Identity cookie
         services.ConfigureApplicationCookie(options =>

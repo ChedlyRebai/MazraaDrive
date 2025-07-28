@@ -1,11 +1,10 @@
 using AutoMapper;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
-{
-    [Route("api/[controller]")]
+{   [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class BaseController : ControllerBase
     {
