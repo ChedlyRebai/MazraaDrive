@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using AutoMapper;
+using Core.DTO;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -17,6 +18,35 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    public async Task<PagedResult<Department>> GetPageAsync(DepartmentFilterDto filter)
+    {
+        var query = _context.Departments.AsQueryable();
+
+        // Apply filters
+        query = ApplyFilters(query, filter);
+
+        // Get total count before pagination
+        var totalRecords = await query.CountAsync();
+
+        // Apply sorting
+        query = ApplySorting(query, filter.SortBy, filter.SortDirection);
+
+        // Apply pagination
+        var departments = await query
+            .Include(d => d.Users)
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToListAsync();
+
+        return departments.ToPagedResult(
+            filter.PageNumber,
+            filter.PageSize,
+            totalRecords,
+            filter.Search,
+            filter.SortBy,
+            filter.SortDirection
+        );
+    }
     public async Task<Department> AddAsync(Department department)
     {
         if (department == null)
@@ -96,4 +126,52 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
             .OrderBy(d => d.Name)
             .ToListAsync();
     }
+    
+    private IQueryable<Department> ApplyFilters(IQueryable<Department> query, DepartmentFilterDto filter)
+        {
+            if (!string.IsNullOrEmpty(filter.Name))
+                query = query.Where(d => d.Name.Contains(filter.Name));
+
+            if (filter.CreatedFrom.HasValue)
+                query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
+
+            if (filter.CreatedTo.HasValue)
+                query = query.Where(d => d.CreatedAt <= filter.CreatedTo);
+
+            if (!string.IsNullOrEmpty(filter.Search))
+            {
+                query = query.Where(d => 
+                    d.Name.Contains(filter.Search) ||
+                    d.Description.Contains(filter.Search)
+                );
+            }
+
+            // Note: User count filtering will be applied after including users
+            // This is done in the main query method
+
+            return query;
+        }
+
+        private IQueryable<Department> ApplySorting(IQueryable<Department> query, string? sortBy, string? sortDirection)
+        {
+            if (string.IsNullOrEmpty(sortBy))
+                return query.OrderBy(d => d.Name);
+
+            var isDescending = sortDirection?.ToLower() == "desc";
+
+            return sortBy.ToLower() switch
+            {
+                "name" => isDescending ? query.OrderByDescending(d => d.Name)
+                                       : query.OrderBy(d => d.Name),
+                "description" => isDescending ? query.OrderByDescending(d => d.Description)
+                                              : query.OrderBy(d => d.Description),
+                "createdat" => isDescending ? query.OrderByDescending(d => d.CreatedAt)
+                                            : query.OrderBy(d => d.CreatedAt),
+                "updatedat" => isDescending ? query.OrderByDescending(d => d.UpdatedAt)
+                                            : query.OrderBy(d => d.UpdatedAt),
+                _ => query.OrderBy(d => d.Name)
+            };
+        }
+
+    
 }

@@ -23,17 +23,43 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DepartmentDto>>> GetDepartments()
+        public async Task<ActionResult<DepartmentPagedResult>> GetDepartments([FromQuery] DepartmentFilterDto filter)
         {
             try
             {
-                var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
-                var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(departments);
-                return Ok(departmentDtos);
+                var pagedDepartments = await _unitOfWork.DepartmentRepository.GetPageAsync(filter);
+                var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(pagedDepartments.Data);
+
+                // Apply user count filtering if specified (post-query filtering)
+                if (filter.MinUserCount.HasValue || filter.MaxUserCount.HasValue)
+                {
+                    departmentDtos = departmentDtos.Where(d => 
+                        (!filter.MinUserCount.HasValue || d.UserCount >= filter.MinUserCount) &&
+                        (!filter.MaxUserCount.HasValue || d.UserCount <= filter.MaxUserCount)
+                    );
+                }
+
+                var result = new DepartmentPagedResult
+                {
+                    Data = departmentDtos,
+                    PageNumber = pagedDepartments.PageNumber,
+                    PageSize = pagedDepartments.PageSize,
+                    TotalRecords = pagedDepartments.TotalRecords,
+                    TotalPages = pagedDepartments.TotalPages,
+                    HasPreviousPage = pagedDepartments.HasPreviousPage,
+                    HasNextPage = pagedDepartments.HasNextPage,
+                    Search = pagedDepartments.Search,
+                    SortBy = pagedDepartments.SortBy,
+                    SortDirection = pagedDepartments.SortDirection,
+                    TotalDepartments = departmentDtos.Count(),
+                   
+                };
+
+                return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500 , ex.Message));
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 

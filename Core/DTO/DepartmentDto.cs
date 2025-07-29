@@ -31,7 +31,20 @@ public class DepartmentDeleteDTO
     public int Id { get; set; }
 }
 
+public class DepartmentFilterDto : PaginationParams
+{
+    public string? Name { get; set; }
+    public DateTime? CreatedFrom { get; set; }
+    public DateTime? CreatedTo { get; set; }
+    public int? MinUserCount { get; set; }
+    public int? MaxUserCount { get; set; }
+}
 
+public class DepartmentPagedResult : PagedResult<DepartmentDto>
+{
+    public int TotalDepartments { get; set; }
+    public int TotalUsers { get; set; }
+}
 public class DepartmentUserCountDTO
 {
     public int DepartmentId { get; set; }
