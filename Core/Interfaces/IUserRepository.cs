@@ -1,4 +1,6 @@
 using System;
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 
 namespace Core.Interfaces;
@@ -12,7 +14,19 @@ public interface IUserRepository
         Task<AppUser?> GetByIdAsync(string id);
         Task UpdateAsync(AppUser user);
 
+        Task<PagedResult<AppUser>> GetPagedAsync(UserFilterDto filter);
+        Task<AppUser?> GetByIdWithDetailsAsync(string id);
+        Task<AppUser?> GetByEmailAsync(string email);
+        
+        Task<IReadOnlyList<AppUser>> GetUsersByDepartmentAsync(int departmentId);
+        Task<IReadOnlyList<AppUser>> GetUsersByRoleAsync(int roleId);
+        Task<bool> IsEmailTakenAsync(string email, string? excludeId = null);
 
+        Task<int> GetTotalCountAsync();
+        Task<int> GetActiveCountAsync();
+        Task<int> GetInactiveCountAsync();
+        Task<int> GetConfirmedEmailsCountAsync();
+       
         Task<AppUser?> GetByUserNameAsync(string userName);
         Task<IReadOnlyList<AppUser>> GetByDepartmentAsync(int departmentId);
         Task<IReadOnlyList<AppUser>> GetByRoleAsync(int roleId);

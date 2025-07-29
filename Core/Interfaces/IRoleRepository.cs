@@ -1,10 +1,13 @@
 using System;
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 
 namespace Core.Interfaces;
 
 public interface IRoleRepository:IGenericRepository<Role>
 {
+    Task<PagedResult<Role>> GetPagedAsync(RoleFilterDto filter, PaginationParams paginationParams);
     Task<IEnumerable<Role>> GetAllAsync();
         Task<Role?> GetByIdAsync(int id);
         Task<Role?> GetByNameAsync(string name);

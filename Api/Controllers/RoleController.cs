@@ -22,18 +22,43 @@ namespace Api.Controllers
             return "CHEDLY - API is working!";
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles()
+         [HttpGet]
+        public async Task<ActionResult<RolePagedResult>> GetRoles([FromQuery] RoleFilterDto filter)
         {
             try
             {
-                var roles = await _unitOfWork.RoleRepository.GetAllAsync();
-                var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
-                return Ok(roleDtos);
+                var pagedRoles = await _unitOfWork.RoleRepository.GetPagedAsync(filter, new Core.DTO.PaginationParams
+                {
+                    PageNumber = filter.PageNumber,
+                    PageSize = filter.PageSize,
+                    Search = filter.Search,
+                    SortBy = filter.SortBy,
+                    SortDirection = filter.SortDirection
+                });
+                var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(pagedRoles.Data);
+
+                var result = new RolePagedResult
+                {
+                    Data = roleDtos,
+                    PageNumber = pagedRoles.PageNumber,
+                    PageSize = pagedRoles.PageSize,
+                    TotalRecords = pagedRoles.TotalRecords,
+                    TotalPages = pagedRoles.TotalPages,
+                    HasPreviousPage = pagedRoles.HasPreviousPage,
+                    HasNextPage = pagedRoles.HasNextPage,
+                    Search = pagedRoles.Search,
+                    SortBy = pagedRoles.SortBy,
+                    SortDirection = pagedRoles.SortDirection,
+                    TotalRoles = roleDtos.Count(),
+                    ActiveRoles = roleDtos.Count(r => r.IsActive),
+                    InactiveRoles = roleDtos.Count(r => !r.IsActive)
+                };
+
+                return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500, ex.Message));
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 

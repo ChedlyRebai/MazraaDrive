@@ -141,8 +141,24 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.SubFolderCount, opt => opt.MapFrom(src => src.SubFolders != null ? src.SubFolders.Count() : 0))
             .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0))
             .ForMember(dest => dest.SubFolders, opt => opt.Ignore()); // Handle recursively in repository
-    
-        
+
+        CreateMap<UserController, UserDto>();
+
+        CreateMap<AppUser, UserWithDetailsDto>();
+        CreateMap<UserDto, UserWithDetailsDto>();
+        CreateMap<AppUser, UserWithDetailsDto>()
+            .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src => src.UploadedDocuments.OrderByDescending(d => d.CreatedAt).Take(5)))
+            .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src => src.UploadedDocuments));
+
+        CreateMap<Document, UserDocumentDto>().ReverseMap();
+        CreateMap<Folder, UserFolderDto>().ReverseMap();
+        CreateMap<Folder, FolderDTO>().ReverseMap();
+        CreateMap<AppUser, UserWithDetailsDto>()
+            .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src =>src.UploadedDocuments
+                    .OrderByDescending(d => d.CreatedAt)
+                    .Take(5)))
+            .ForMember(dest => dest.RecentFolders, opt => opt.MapFrom(src => src.CreatedFolders));
+
     }
 
     private static string FormatFileSize(long bytes)

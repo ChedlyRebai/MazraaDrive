@@ -1,3 +1,5 @@
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -60,7 +62,7 @@ namespace Infrastructure.Repositories
             _context.Users.Update(user);
         }
 
-        
+
         public async Task<AppUser?> GetByUserNameAsync(string userName)
         {
             return await _context.Users
@@ -75,7 +77,7 @@ namespace Infrastructure.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.Role)
                 .Where(u => u.DepartmentId == departmentId)
-                
+
                 .ToListAsync();
         }
 
@@ -85,7 +87,7 @@ namespace Infrastructure.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.Role)
                 .Where(u => u.RoleId == roleId)
-                
+
                 .ToListAsync();
         }
 
@@ -95,7 +97,7 @@ namespace Infrastructure.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.Role)
                 .Where(u => u.IsActive)
-                
+
                 .ToListAsync();
         }
 
@@ -105,21 +107,21 @@ namespace Infrastructure.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.Role)
                 .Where(u => !u.IsActive)
-                
+
                 .ToListAsync();
         }
 
-        
+
 
         public async Task<bool> IsUserNameTakenAsync(string userName, string? excludeUserId = null)
         {
             var query = _context.Users.Where(u => u.UserName == userName);
-            
+
             if (excludeUserId != null)
             {
                 query = query.Where(u => u.Id != excludeUserId);
             }
-            
+
 
             return await query.AnyAsync();
         }
@@ -139,10 +141,10 @@ namespace Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Department)
                 .Include(u => u.Role)
-                .Where(u =>  
+                .Where(u =>
                            u.Email.Contains(searchTerm) ||
                            u.UserName!.Contains(searchTerm))
-               
+
                 .ToListAsync();
         }
 
@@ -174,7 +176,7 @@ namespace Infrastructure.Repositories
                 .Include(u => u.Department)
                 .Include(u => u.Role)
                 .Where(u => u.RoleId != null)
-                
+
                 .ToListAsync();
         }
 
@@ -186,6 +188,243 @@ namespace Infrastructure.Repositories
                 .OrderByDescending(u => u.CreatedAt)
                 .Take(count)
                 .ToListAsync();
+        }
+
+        public async Task<PagedResult<AppUser>> GetPagedAsync(UserFilterDto filter)
+        {
+            var query = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.UploadedDocuments)
+            //    .Include(u => u.Folders)
+                .AsQueryable();
+
+            // Apply filters
+            query = ApplyFilters(query, filter);
+
+            // Get total count before pagination
+            var totalRecords = await query.CountAsync();
+
+            // Apply sorting
+            query = ApplySorting(query, filter.SortBy, filter.SortDirection);
+
+            // Apply pagination
+            var users = await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return users.ToPagedResult(
+                filter.PageNumber,
+                filter.PageSize,
+                totalRecords,
+                filter.Search,
+                filter.SortBy,
+                filter.SortDirection
+            );
+        }
+
+        public async Task<AppUser?> GetByIdWithDetailsAsync(string id)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.UploadedDocuments)
+                .Include(u=> u.CreatedFolders)
+                //.Include(u => u.CreatedFolders.OrderByDescending(f => f.CreatedAt).Take(5))
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<AppUser?> GetByEmailAsync(string email)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+        }
+
+        public async Task<IReadOnlyList<AppUser>> GetUsersByDepartmentAsync(int departmentId)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Where(u => u.DepartmentId == departmentId)
+                .OrderBy(u => u.UserName)
+                .ToListAsync();
+                
+        }
+
+        public async Task<IReadOnlyList<AppUser>> GetUsersByRoleAsync(int roleId)
+        {
+            return await _context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == roleId)
+                .ToListAsync();
+        }
+
+        public Task<bool> IsEmailTakenAsync(string email, string? excludeId = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<int> GetActiveCountAsync()
+        {
+            return await _context.Users.CountAsync(u => u.IsActive);
+        }
+
+        public async Task<int> GetInactiveCountAsync()
+        {
+            return await _context.Users.CountAsync(u => !u.IsActive);
+        }
+
+        public async Task<int> GetConfirmedEmailsCountAsync()
+        {
+            return await _context.Users.CountAsync(u => u.EmailConfirmed);
+        }
+
+        
+
+
+        private IQueryable<AppUser> ApplyFilters(IQueryable<AppUser> query, UserFilterDto filter)
+        {
+            if (!string.IsNullOrEmpty(filter.UserName))
+                query = query.Where(u => u.UserName.Contains(filter.UserName));
+
+            if (!string.IsNullOrEmpty(filter.Email))
+                query = query.Where(u => u.Email.Contains(filter.Email));
+
+          
+            if (!string.IsNullOrEmpty(filter.PhoneNumber))
+                query = query.Where(u => u.PhoneNumber.Contains(filter.PhoneNumber));
+
+            if (filter.IsActive.HasValue)
+                query = query.Where(u => u.IsActive == filter.IsActive);
+
+            if (filter.EmailConfirmed.HasValue)
+                query = query.Where(u => u.EmailConfirmed == filter.EmailConfirmed);
+
+            if (filter.PhoneNumberConfirmed.HasValue)
+                query = query.Where(u => u.PhoneNumberConfirmed == filter.PhoneNumberConfirmed);
+
+            if (filter.LockoutEnabled.HasValue)
+                query = query.Where(u => u.LockoutEnabled == filter.LockoutEnabled);
+
+            if (filter.IsLockedOut.HasValue)
+            {
+                if (filter.IsLockedOut.Value)
+                    query = query.Where(u => u.LockoutEnd.HasValue && u.LockoutEnd > DateTimeOffset.UtcNow);
+                else
+                    query = query.Where(u => !u.LockoutEnd.HasValue || u.LockoutEnd <= DateTimeOffset.UtcNow);
+            }
+
+            if (filter.RoleId.HasValue)
+                query = query.Where(u => u.RoleId == filter.RoleId);
+
+            if (!string.IsNullOrEmpty(filter.RoleName))
+                query = query.Where(u => u.Role != null && u.Role.Name.Contains(filter.RoleName));
+
+            if (filter.DepartmentId.HasValue)
+                query = query.Where(u => u.DepartmentId == filter.DepartmentId);
+
+            if (!string.IsNullOrEmpty(filter.DepartmentName))
+                query = query.Where(u => u.Department.Name.Contains(filter.DepartmentName));
+
+            if (filter.CreatedFrom.HasValue)
+                query = query.Where(u => u.CreatedAt >= filter.CreatedFrom);
+
+            if (filter.CreatedTo.HasValue)
+                query = query.Where(u => u.CreatedAt <= filter.CreatedTo);
+
+            if (filter.UpdatedFrom.HasValue)
+                query = query.Where(u => u.UpdatedAt >= filter.UpdatedFrom);
+
+            if (filter.UpdatedTo.HasValue)
+                query = query.Where(u => u.UpdatedAt <= filter.UpdatedTo);
+
+            if (filter.MinDocumentsCount.HasValue)
+                query = query.Where(u => u.UploadedDocuments.Count() >= filter.MinDocumentsCount);
+
+            if (filter.MaxDocumentsCount.HasValue)
+                query = query.Where(u => u.UploadedDocuments.Count() <= filter.MaxDocumentsCount);
+
+            // if (filter.MinFoldersCount.HasValue)
+            //     query = query.Where(u => u.Folders.Count(f => f.IsActive) >= filter.MinFoldersCount);
+
+            // if (filter.MaxFoldersCount.HasValue)
+            //     query = query.Where(u => u.Folders.Count(f => f.IsActive) <= filter.MaxFoldersCount);
+
+            if (filter.MinAccessFailedCount.HasValue)
+                query = query.Where(u => u.AccessFailedCount >= filter.MinAccessFailedCount);
+
+            if (filter.MaxAccessFailedCount.HasValue)
+                query = query.Where(u => u.AccessFailedCount <= filter.MaxAccessFailedCount);
+
+            if (filter.HasDocuments.HasValue)
+            {
+                if (filter.HasDocuments.Value)
+                    query = query.Where(u => u.UploadedDocuments.Any());
+                else
+                    query = query.Where(u => !u.UploadedDocuments.Any());
+            }
+
+            /*if (filter.HasFolders.HasValue)
+            {
+                if (filter.HasFolders.Value)
+                    query = query.Where(u => u.Folders.Any(f => f.IsActive));
+                else
+                    query = query.Where(u => !u.Folders.Any(f => f.IsActive));
+            }*/
+
+            if (!string.IsNullOrEmpty(filter.Search))
+            {
+                query = query.Where(u => 
+                    u.UserName.Contains(filter.Search) ||
+                    u.Email.Contains(filter.Search) ||
+
+                    u.PhoneNumber.Contains(filter.Search)
+                );
+            }
+
+            return query;
+        }
+
+        private IQueryable<AppUser> ApplySorting(IQueryable<AppUser> query, string? sortBy, string? sortDirection)
+        {
+            if (string.IsNullOrEmpty(sortBy))
+                return query.OrderBy(u => u.CreatedAt);
+
+            var isDescending = sortDirection?.ToLower() == "desc";
+
+            return sortBy.ToLower() switch
+            {
+                "username" => isDescending ? query.OrderByDescending(u => u.UserName)
+                                           : query.OrderBy(u => u.UserName),
+                "email" => isDescending ? query.OrderByDescending(u => u.Email)
+                                        : query.OrderBy(u => u.Email),
+              
+                "phonenumber" => isDescending ? query.OrderByDescending(u => u.PhoneNumber)
+                                              : query.OrderBy(u => u.PhoneNumber),
+                "createdat" => isDescending ? query.OrderByDescending(u => u.CreatedAt)
+                                            : query.OrderBy(u => u.CreatedAt),
+                "updatedat" => isDescending ? query.OrderByDescending(u => u.UpdatedAt)
+                                            : query.OrderBy(u => u.UpdatedAt),
+                "isactive" => isDescending ? query.OrderByDescending(u => u.IsActive)
+                                           : query.OrderBy(u => u.IsActive),
+                "rolename" => isDescending ? query.OrderByDescending(u => u.Role != null ? u.Role.Name : "")
+                                           : query.OrderBy(u => u.Role != null ? u.Role.Name : ""),
+                "departmentname" => isDescending ? query.OrderByDescending(u => u.Department.Name)
+                                                 : query.OrderBy(u => u.Department.Name),
+                "emailconfirmed" => isDescending ? query.OrderByDescending(u => u.EmailConfirmed)
+                                                 : query.OrderBy(u => u.EmailConfirmed),
+                "accessfailedcount" => isDescending ? query.OrderByDescending(u => u.AccessFailedCount)
+                                                    : query.OrderBy(u => u.AccessFailedCount),
+                _ => query.OrderBy(u => u.CreatedAt)
+            };
         }
     }
 }

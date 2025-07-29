@@ -17,7 +17,7 @@ namespace Api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
 
-        public UserController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager) 
+        public UserController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager)
             : base(unitOfWork, mapper)
         {
             _userManager = userManager;
@@ -30,18 +30,38 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        // [Authorize(Roles = "Admin,Manager")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        public async Task<ActionResult<UserPagedResult>> GetUsers([FromQuery] UserFilterDto filter)
         {
             try
             {
-                var users = await _unitOfWork.UserRepository.GetAllAsync();
-                var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
-                return Ok(userDtos );
+                var pagedUsers = await _unitOfWork.UserRepository.GetPagedAsync(filter);
+                var userDtos = _mapper.Map<IEnumerable<UserDto>>(pagedUsers.Data);
+
+                var result = new UserPagedResult
+                {
+                    Data = userDtos,
+                    PageNumber = pagedUsers.PageNumber,
+                    PageSize = pagedUsers.PageSize,
+                    TotalRecords = pagedUsers.TotalRecords,
+                    TotalPages = pagedUsers.TotalPages,
+                    HasPreviousPage = pagedUsers.HasPreviousPage,
+                    HasNextPage = pagedUsers.HasNextPage,
+                    Search = pagedUsers.Search,
+                    SortBy = pagedUsers.SortBy,
+                    SortDirection = pagedUsers.SortDirection,
+                    TotalUsers = await _unitOfWork.UserRepository.GetTotalCountAsync(),
+                    ActiveUsers = await _unitOfWork.UserRepository.GetActiveCountAsync(),
+                    InactiveUsers = await _unitOfWork.UserRepository.GetInactiveCountAsync(),
+                    ConfirmedEmails = await _unitOfWork.UserRepository.GetConfirmedEmailsCountAsync(),
+
+
+                };
+
+                return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500, ex.Message));
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -50,21 +70,21 @@ namespace Api.Controllers
         {
             try
             {
-               // var currentUserId = GetCurrentUserId();
+                // var currentUserId = GetCurrentUserId();
                 //var currentUserRoles = await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(currentUserId));
-                
+
                 // Users can only view their own profile unless they're Admin/Manager
                 /*if (id.ToString() != currentUserId && !currentUserRoles.Any(r => r == "Admin" || r == "Manager"))
                 {
                     return Forbid();
                 }*/
 
-                var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
+                var user = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
                 if (user == null)
                     return NotFound(new ResponseAPI(404, "User not found"));
 
                 var userDto = _mapper.Map<UserDto>(user);
-                return Ok(userDto );
+                return Ok(userDto);
             }
             catch (Exception ex)
             {
@@ -77,9 +97,9 @@ namespace Api.Controllers
         {
             try
             {
-                var currentUserId = GetCurrentUserId();
+                var currentUserId = "10";
                 var user = await _unitOfWork.UserRepository.GetByIdAsync(currentUserId);
-                
+
                 if (user == null)
                     return NotFound(new { success = false, message = "User not found" });
 
@@ -105,7 +125,7 @@ namespace Api.Controllers
                     return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
 
                 // Check if email is already taken
-              
+
                 // Check if username is already taken
                 if (await _unitOfWork.UserRepository.IsUserNameTakenAsync(createUserDto.UserName))
                     return BadRequest(new { success = false, message = "Username is already taken" });
@@ -116,7 +136,7 @@ namespace Api.Controllers
                     return BadRequest(new { success = false, message = "Department not found" });
 
                 var user = _mapper.Map<AppUser>(createUserDto);
-                
+
                 var result = await _userManager.CreateAsync(user, createUserDto.Password);
                 if (!result.Succeeded)
                 {
@@ -126,7 +146,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var userDto = _mapper.Map<UserDto>(user);
-                return CreatedAtAction(nameof(GetUser), new { id = userDto.Id }, 
+                return CreatedAtAction(nameof(GetUser), new { id = userDto.Id },
                     new { success = true, data = userDto });
             }
             catch (Exception ex)
@@ -142,7 +162,7 @@ namespace Api.Controllers
             {
                 var currentUserId = GetCurrentUserId();
                 var currentUserRoles = await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(currentUserId));
-                
+
                 // Users can only update their own profile unless they're Admin
                 if (id.ToString() != currentUserId && !currentUserRoles.Contains("Admin"))
                 {
@@ -156,16 +176,12 @@ namespace Api.Controllers
                 if (existingUser == null)
                     return NotFound(new { success = false, message = "User not found" });
 
-                
-
-                
-
                 _mapper.Map(updateUserDto, existingUser);
                 await _unitOfWork.UserRepository.UpdateAsync(existingUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 var userDto = _mapper.Map<UserDto>(existingUser);
-                return Ok(userDto );
+                return Ok(userDto);
             }
             catch (Exception ex)
             {
@@ -238,11 +254,11 @@ namespace Api.Controllers
 
                 var currentUserId = GetCurrentUserId();
                 var user = await _userManager.FindByIdAsync(currentUserId);
-                
+
                 if (user == null)
                     return NotFound(new { success = false, message = "User not found" });
 
-                var result = await _userManager.ChangePasswordAsync(user, 
+                var result = await _userManager.ChangePasswordAsync(user,
                     changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
 
                 if (!result.Succeeded)
@@ -303,13 +319,15 @@ namespace Api.Controllers
                 var activeUsers = await _unitOfWork.UserRepository.GetActiveUserCountAsync();
                 var inactiveUsers = totalUsers - activeUsers;
 
-                return Ok(new { 
-                    success = true, 
-                    data = new { 
-                        totalUsers, 
-                        activeUsers, 
-                        inactiveUsers 
-                    } 
+                return Ok(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        totalUsers,
+                        activeUsers,
+                        inactiveUsers
+                    }
                 });
             }
             catch (Exception ex)
@@ -322,5 +340,82 @@ namespace Api.Controllers
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0";
         }
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<UserWithDetailsDto>> GetUserWithDetails(string id)
+        {
+            try
+            {
+                // Authorization check
+                var currentUserId = "10";
+                /* if (id != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
+                 {
+                     return Forbid();
+                 }*/
+
+                var user = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
+                Console.WriteLine("***********************************************");
+                Console.WriteLine($"User ID: {id}, User: {user?.UserName}");
+                Console.WriteLine(user?.CreatedFolders?.Count);
+                
+                foreach (var item in user?.CreatedFolders)
+                {
+                    Console.WriteLine(item.Name);
+                }
+
+                if (user == null)
+                    return NotFound(new { success = false, message = "User not found" });
+
+                var userWithDetailsDto = _mapper.Map<UserWithDetailsDto>(user);
+
+                // userWithDetailsDto.RecentDocuments = user?.UploadedDocuments;
+
+                return Ok(new { success = true, data = userWithDetailsDto });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        /*[HttpPost("{id}/lock")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> LockUser(string id, [FromBody] LockUserDto lockDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
+
+                var success = await _unitOfWork.UserRepository.LockUserAsync(id, lockDto.LockoutEnd);
+                if (!success)
+                    return NotFound(new { success = false, message = "User not found" });
+
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(new { success = true, message = "User locked successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost("{id}/unlock")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> UnlockUser(string id)
+        {
+            try
+            {
+                var success = await _unitOfWork.UserRepository.UnlockUserAsync(id);
+                if (!success)
+                    return NotFound(new { success = false, message = "User not found" });
+
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(new { success = true, message = "User unlocked successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }*/
     }
 }

@@ -1,3 +1,5 @@
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -93,6 +95,76 @@ namespace Infrastructure.Repositories
         Task IGenericRepository<Role>.AddAsync(Role entity)
         {
             return AddAsync(entity);
+        }
+
+        public async Task<PagedResult<Role>> GetPagedAsync(RoleFilterDto filter, PaginationParams paginationParams)
+        {
+            var query = _context.Role.AsQueryable();
+
+            query = ApplyFilters(query, filter);
+            var totalRecords = await query.CountAsync();
+
+            query = ApplySorting(query, paginationParams.SortBy, paginationParams.SortDirection);
+            var roles = await query.Skip((filter.PageNumber - 1) * filter.PageSize)
+                                   .Take(filter.PageSize)
+                                   .ToListAsync();
+            
+            return roles.ToPagedResult(
+                filter.PageNumber,
+                filter.PageSize,
+                totalRecords,
+                filter.Search,
+                filter.SortBy,
+                filter.SortDirection
+            );
+
+        }
+
+
+        private IQueryable<Role> ApplyFilters(IQueryable<Role> query, RoleFilterDto filter)
+        {
+            if (!string.IsNullOrEmpty(filter.Name))
+                query = query.Where(r => r.Name.Contains(filter.Name));
+
+            if (filter.IsActive.HasValue)
+                query = query.Where(r => r.IsActive == filter.IsActive);
+
+            if (filter.CreatedFrom.HasValue)
+                query = query.Where(r => r.CreatedAt >= filter.CreatedFrom);
+
+            if (filter.CreatedTo.HasValue)
+                query = query.Where(r => r.CreatedAt <= filter.CreatedTo);
+
+            if (!string.IsNullOrEmpty(filter.Search))
+            {
+                query = query.Where(r =>
+                    r.Name.Contains(filter.Search) ||
+                    r.Description.Contains(filter.Search)
+                );
+            }
+
+            return query;
+        }
+
+        private IQueryable<Role> ApplySorting(IQueryable<Role> query, string? sortBy, string? sortDirection)
+        {
+            if (string.IsNullOrEmpty(sortBy))
+                return query.OrderBy(r => r.Name);
+
+            var isDescending = sortDirection?.ToLower() == "desc";
+
+            return sortBy.ToLower() switch
+            {
+                "name" => isDescending ? query.OrderByDescending(r => r.Name)
+                                       : query.OrderBy(r => r.Name),
+                "description" => isDescending ? query.OrderByDescending(r => r.Description)
+                                              : query.OrderBy(r => r.Description),
+                "createdat" => isDescending ? query.OrderByDescending(r => r.CreatedAt)
+                                            : query.OrderBy(r => r.CreatedAt),
+                "isactive" => isDescending ? query.OrderByDescending(r => r.IsActive)
+                                           : query.OrderBy(r => r.IsActive),
+                _ => query.OrderBy(r => r.Name)
+            };
         }
     }
 }
