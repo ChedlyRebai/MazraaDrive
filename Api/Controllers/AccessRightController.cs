@@ -1,5 +1,6 @@
 using Api.Helper;
 using AutoMapper;
+using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
@@ -22,18 +23,128 @@ namespace Api.Controllers
             return "AccessRight API is working!";
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AccessRightDto>>> GetAccessRights()
+
+        
+
+          [HttpGet]
+        // [Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult<PagedResult<AccessRightDto>>> GetAccessRights([FromQuery] AccessRightFilterDto filter)
         {
             try
             {
-                var accessRights = await _unitOfWork.PermissionsRepository.GetAllAsync();
-                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new { success = true, data = accessRightDtos });
+                var pagedAccessRights = await _unitOfWork.PermissionsRepository.GetPagedAsync(filter);
+                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
+
+                var result = accessRightDtos.ToPagedResult(
+                    pagedAccessRights.PageNumber,
+                    pagedAccessRights.PageSize,
+                    pagedAccessRights.TotalRecords,
+                    pagedAccessRights.Search,
+                    pagedAccessRights.SortBy,
+                    pagedAccessRights.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(400, ex.Message));
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<PagedResult<AccessRightDto>>> GetUserAccessRights(
+            string userId, 
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+                // Authorization: Users can only view their own access rights unless they're Admin/Manager
+                var currentUserId = GetCurrentUserId();
+                if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
+                {
+                    return Forbid();
+                }
+
+                var pagedAccessRights = await _unitOfWork.PermissionsRepository
+                    .GetUserAccessRightsPagedAsync(userId, pagination);
+
+                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
+
+                var result = accessRightDtos.ToPagedResult(
+                    pagedAccessRights.PageNumber,
+                    pagedAccessRights.PageSize,
+                    pagedAccessRights.TotalRecords,
+                    pagedAccessRights.Search,
+                    pagedAccessRights.SortBy,
+                    pagedAccessRights.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("document/{documentId}")]
+        // [Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult<PagedResult<AccessRightDto>>> GetDocumentAccessRights(
+            int documentId, 
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+                var pagedAccessRights = await _unitOfWork.PermissionsRepository
+                    .GetDocumentAccessRightsPagedAsync(documentId, pagination);
+
+                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
+
+                var result = accessRightDtos.ToPagedResult(
+                    pagedAccessRights.PageNumber,
+                    pagedAccessRights.PageSize,
+                    pagedAccessRights.TotalRecords,
+                    pagedAccessRights.Search,
+                    pagedAccessRights.SortBy,
+                    pagedAccessRights.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("folder/{folderId}")]
+        // [Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult<PagedResult<AccessRightDto>>> GetFolderAccessRights(
+            int folderId, 
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+                var pagedAccessRights = await _unitOfWork.PermissionsRepository
+                    .GetFolderAccessRightsPagedAsync(folderId, pagination);
+
+                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
+
+                var result = accessRightDtos.ToPagedResult(
+                    pagedAccessRights.PageNumber,
+                    pagedAccessRights.PageSize,
+                    pagedAccessRights.TotalRecords,
+                    pagedAccessRights.Search,
+                    pagedAccessRights.SortBy,
+                    pagedAccessRights.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -47,7 +158,7 @@ namespace Api.Controllers
                     return NotFound(new ResponseAPI(404, "Access right not found"));
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(accessRight);
-                return Ok(new { success = true, data = accessRightDto });
+                return Ok(accessRightDto);
             }
             catch (Exception ex)
             {
@@ -55,50 +166,9 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<AccessRightDto>>> GetUserAccessRights(string userId)
-        {
-            try
-            {
-                var accessRights = await _unitOfWork.PermissionsRepository.GetByUserAsync(userId);
-                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new ResponseAPI(200, "Access rights retrieved successfully"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(400, ex.Message));
-            }
-        }
+       
 
-        [HttpGet("document/{documentId}")]
-        public async Task<ActionResult<IEnumerable<AccessRightDto>>> GetDocumentAccessRights(int documentId)
-        {
-            try
-            {
-                var accessRights = await _unitOfWork.PermissionsRepository.GetByDocumentAsync(documentId);
-                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new ResponseAPI(200, "Access rights retrieved successfully"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(400, ex.Message));
-            }
-        }
-
-        [HttpGet("folder/{folderId}")]
-        public async Task<ActionResult<IEnumerable<AccessRightDto>>> GetFolderAccessRights(int folderId)
-        {
-            try
-            {
-                var accessRights = await _unitOfWork.PermissionsRepository.GetByFolderAsync(folderId);
-                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(accessRights);
-                return Ok(new { success = true, data = accessRightDtos });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(400, ex.Message));
-            }
-        }
+        
 
         [HttpPost]
         // public async Task<ActionResult<AccessRightDto>> CreateAccessRight([FromBody] CreateAccessRightDto createAccessRightDto)
@@ -219,7 +289,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(existingAccessRight);
-                return Ok(new { success = true, data = accessRightDto });
+                return Ok(accessRightDto );
             }
             catch (Exception ex)
             {
@@ -253,7 +323,7 @@ namespace Api.Controllers
             try
             {
                 var hasPermission = await _unitOfWork.PermissionsRepository.HasPermissionAsync(userId, documentId, folderId, permission);
-                return Ok(new { success = true, hasPermission });
+                return Ok(new ResponseAPI(200, hasPermission ? "User has permission" : "User does not have permission"));
             }
             catch (Exception ex)
             {

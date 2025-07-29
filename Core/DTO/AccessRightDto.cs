@@ -1,8 +1,31 @@
 
 using System.ComponentModel.DataAnnotations;
+using Core.DTO;
 
 namespace Core.DTOs
 {
+     public class AccessRightFilterDto : PaginationParams
+    {
+        public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public int? DocumentId { get; set; }
+        public int? FolderId { get; set; }
+        public string? Type { get; set; } // "Document" or "Folder"
+        public bool? IsActive { get; set; }
+        public bool? CanCreate { get; set; }
+        public bool? CanRead { get; set; }
+        public bool? CanUpdate { get; set; }
+        public bool? CanDelete { get; set; }
+        public DateTime? CreatedFrom { get; set; }
+        public DateTime? CreatedTo { get; set; }
+    }
+
+    public class AccessRightPagedResult : PagedResult<AccessRightDto>
+    {
+        public AccessRightSummaryDto? Summary { get; set; }
+    }
+
+    
     public class AccessRightDto
     {
         public int Id { get; set; }

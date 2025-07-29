@@ -1,9 +1,18 @@
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 
 namespace Core.Interfaces
 {
     public interface IPermissionsRepository : IGenericRepository<AccessRight>
     {
+
+
+         Task<PagedResult<AccessRight>> GetPagedAsync(AccessRightFilterDto filter);
+        Task<PagedResult<AccessRight>> GetUserAccessRightsPagedAsync(string userId, PaginationParams pagination);
+        Task<PagedResult<AccessRight>> GetDocumentAccessRightsPagedAsync(int documentId, PaginationParams pagination);
+        Task<PagedResult<AccessRight>> GetFolderAccessRightsPagedAsync(int folderId, PaginationParams pagination);
+        Task<int> GetTotalCountAsync(AccessRightFilterDto? filter = null);
         Task<AccessRight> AddAsync(AccessRight accessRight);
         Task DeleteAsync(int id);
         Task<IReadOnlyList<AccessRight>> GetAllAsync();

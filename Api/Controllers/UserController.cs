@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
@@ -36,11 +37,11 @@ namespace Api.Controllers
             {
                 var users = await _unitOfWork.UserRepository.GetAllAsync();
                 var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
-                return Ok(new { success = true, data = userDtos });
+                return Ok(userDtos );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -60,14 +61,14 @@ namespace Api.Controllers
 
                 var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
                 if (user == null)
-                    return NotFound(new { success = false, message = "User not found" });
+                    return NotFound(new ResponseAPI(404, "User not found"));
 
                 var userDto = _mapper.Map<UserDto>(user);
-                return Ok(new { success = true, data = userDto });
+                return Ok(userDto );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -87,7 +88,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -130,7 +131,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -164,11 +165,11 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var userDto = _mapper.Map<UserDto>(existingUser);
-                return Ok(new { success = true, data = userDto });
+                return Ok(userDto );
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -189,7 +190,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -206,7 +207,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -223,7 +224,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -253,7 +254,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 

@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTO;
 using Core.DTOs;
@@ -33,7 +34,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -51,7 +52,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -66,7 +67,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -81,7 +82,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -96,7 +97,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -111,7 +112,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 

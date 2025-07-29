@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTO;
 using Core.DTOs;
@@ -28,11 +29,11 @@ namespace Api.Controllers
             {
                 var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
                 var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(departments);
-                return Ok(new { success = true, data = departmentDtos });
+                return Ok(departmentDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500 , ex.Message));
             }
         }
 
@@ -46,11 +47,11 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Department not found" });
 
                 var departmentDto = _mapper.Map<DepartmentDto>(department);
-                return Ok(new { success = true, data = departmentDto });
+                return Ok(departmentDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500 , ex.Message));
             }
         }
 
@@ -61,11 +62,11 @@ namespace Api.Controllers
             {
                 var departments = await _unitOfWork.DepartmentRepository.GetWithUserCountAsync();
                 var summaryDtos = _mapper.Map<IEnumerable<DepartmentUserCountDTO>>(departments);
-                return Ok(new { success = true, data = summaryDtos });
+                return Ok(summaryDtos );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500 , ex.Message));
             }
         }
 
@@ -95,7 +96,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -125,7 +126,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var departmentDto = _mapper.Map<DepartmentDto>(existingDepartment);
-                return Ok(new { success = true, data = departmentDto });
+                return Ok(departmentDto);
             }
             catch (Exception ex)
             {
@@ -149,11 +150,11 @@ namespace Api.Controllers
                 await _unitOfWork.DepartmentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = "Department deleted successfully" });
+                return Ok(new ResponseAPI(200, "Department deleted successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -174,11 +175,11 @@ namespace Api.Controllers
                     u.IsActive
                 }).ToList();
 
-                return Ok(new { success = true, data = users });
+                return Ok(users);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500 , ex.Message));
             }
         }
 
@@ -199,11 +200,11 @@ namespace Api.Controllers
                     ActiveUsers = department.Users?.Count(u => u.IsActive) ?? 0
                 };
 
-                return Ok(new { success = true, data = stats });
+                return Ok(stats);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500 , ex.Message));
             }
         }
     }

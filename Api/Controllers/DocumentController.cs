@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
@@ -34,11 +35,11 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetAllAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(new { success = true, data = documentDtos });
+                return Ok(documentDtos );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -52,11 +53,11 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Document not found" });
 
                 var documentDto = _mapper.Map<DocumentDto>(document);
-                return Ok(new { success = true, data = documentDto });
+                return Ok(documentDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -67,11 +68,11 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetByFolderAsync(folderId);
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(new { success = true, data = documentDtos });
+                return Ok(documentDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -82,11 +83,11 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetByUserAsync(userId);
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(new { success = true, data = documentDtos });
+                return Ok(documentDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -97,11 +98,11 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetValidatedDocumentsAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(new { success = true, data = documentDtos });
+                return Ok(documentDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -112,11 +113,11 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetPendingValidationAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(new { success = true, data = documentDtos });
+                return Ok( documentDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -190,7 +191,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -219,11 +220,11 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var documentDto = _mapper.Map<DocumentDto>(existingDocument);
-                return Ok(new { success = true, data = documentDto });
+                return Ok(documentDto );
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -241,7 +242,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -263,11 +264,11 @@ namespace Api.Controllers
                 await _unitOfWork.DocumentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = "Document deleted successfully" });
+                return Ok(new ResponseAPI(200, "Document deleted successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -297,7 +298,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -320,11 +321,11 @@ namespace Api.Controllers
                     TotalFileSizeFormatted = FormatFileSize(totalSize)
                 };
 
-                return Ok(new { success = true, data = stats });
+                return Ok( stats );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 

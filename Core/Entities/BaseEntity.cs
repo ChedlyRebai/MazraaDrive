@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities;
 
-public class BaseEntity<T> 
+public class BaseEntity<T>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // This ensures auto-increment
     public T Id { get; set; }
-    
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
     // public bool Equals(BaseEntity<T>? other)
     // {
     //     if (other is null) return false;

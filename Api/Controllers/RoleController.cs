@@ -29,11 +29,11 @@ namespace Api.Controllers
             {
                 var roles = await _unitOfWork.RoleRepository.GetAllAsync();
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
-                return Ok(new { success = true, data = roleDtos });
+                return Ok(roleDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -44,14 +44,14 @@ namespace Api.Controllers
             {
                 var role = await _unitOfWork.RoleRepository.GetByIdAsync(id);
                 if (role == null)
-                    return NotFound(new { success = false, message = "Role not found" });
+                    return NotFound(new ResponseAPI(404, "Role not found"));
 
                 var roleDto = _mapper.Map<RoleDto>(role);
-                return Ok(new { success = true, data = roleDto });
+                return Ok(roleDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = ex.Message });
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -62,10 +62,10 @@ namespace Api.Controllers
             {
                 // Validation
                 if (createRoleDto == null)
-                    return BadRequest(new { success = false, message = "Role data is required" });
+                    return BadRequest(new ResponseAPI(400, "Role data is required"));
 
                 if (!ModelState.IsValid)
-                    return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
+                    return BadRequest(new ResponseAPI(400, "Invalid data"));
 
                 // Map DTO to entity
                 var role = _mapper.Map<Role>(createRoleDto);
@@ -84,7 +84,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -95,11 +95,11 @@ namespace Api.Controllers
             {
                 // Validation
                 if (updateRoleDto == null)
-                    return BadRequest(new { success = false, message = "Update data is required" });
+                    return BadRequest(new ResponseAPI(400, "Role data is required"));
 
                 var existingRole = await _unitOfWork.RoleRepository.GetByIdAsync(id);
                 if (existingRole == null)
-                    return NotFound(new { success = false, message = "Role not found" });
+                    return NotFound(new ResponseAPI(404, "Role not found"));
 
                 // Map updates to existing entity
                 _mapper.Map(updateRoleDto, existingRole);
@@ -112,11 +112,11 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var roleDto = _mapper.Map<RoleDto>(existingRole);
-                return Ok(new { success = true, data = roleDto });
+                return Ok(roleDto);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -135,11 +135,11 @@ namespace Api.Controllers
                 // IMPORTANT: Save changes
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok(new { success = true, message = "Role deleted successfully" });
+                return Ok(new ResponseAPI(200, "Role deleted successfully"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = ex.Message });
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
     }

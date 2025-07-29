@@ -1,3 +1,5 @@
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -12,6 +14,212 @@ namespace Infrastructure.Repositories
         public PermissionsRepository(AppDbContext context) : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+
+        public async Task<PagedResult<AccessRight>> GetPagedAsync(AccessRightFilterDto filter)
+        {
+            var query = _context.AccessRights
+                .Include(ar => ar.User)
+                .Include(ar => ar.Document)
+                .Include(ar => ar.Folder)
+                .AsQueryable();
+
+            // Apply filters
+            query = ApplyFilters(query, filter);
+
+            // Get total count before pagination
+            var totalRecords = await query.CountAsync();
+
+            // Apply sorting
+            query = ApplySorting(query, filter.SortBy, filter.SortDirection);
+
+            // Apply pagination
+            var accessRights = await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return accessRights.ToPagedResult(
+                filter.PageNumber,
+                filter.PageSize,
+                totalRecords,
+                filter.Search,
+                filter.SortBy,
+                filter.SortDirection
+            );
+        }
+
+        public async Task<PagedResult<AccessRight>> GetUserAccessRightsPagedAsync(string userId, PaginationParams pagination)
+        {
+            var query = _context.AccessRights
+                .Include(ar => ar.User)
+                .Include(ar => ar.Document)
+                .Include(ar => ar.Folder)
+                .Where(ar => ar.UserId.ToString() == userId);
+
+            var totalRecords = await query.CountAsync();
+
+            // Apply sorting
+            query = ApplySorting(query, pagination.SortBy, pagination.SortDirection);
+
+            var accessRights = await query
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
+                .ToListAsync();
+
+            return accessRights.ToPagedResult(
+                pagination.PageNumber,
+                pagination.PageSize,
+                totalRecords,
+                pagination.Search,
+                pagination.SortBy,
+                pagination.SortDirection
+            );
+        }
+
+        public async Task<PagedResult<AccessRight>> GetDocumentAccessRightsPagedAsync(int documentId, PaginationParams pagination)
+        {
+            var query = _context.AccessRights
+                .Include(ar => ar.User)
+                .Include(ar => ar.Document)
+                .Where(ar => ar.DocumentId == documentId);
+
+            var totalRecords = await query.CountAsync();
+
+            query = ApplySorting(query, pagination.SortBy, pagination.SortDirection);
+
+            var accessRights = await query
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
+                .ToListAsync();
+
+            return accessRights.ToPagedResult(
+                pagination.PageNumber,
+                pagination.PageSize,
+                totalRecords,
+                pagination.Search,
+                pagination.SortBy,
+                pagination.SortDirection
+            );
+        }
+
+        public async Task<PagedResult<AccessRight>> GetFolderAccessRightsPagedAsync(int folderId, PaginationParams pagination)
+        {
+            var query = _context.AccessRights
+                .Include(ar => ar.User)
+                .Include(ar => ar.Folder)
+                .Where(ar => ar.FolderId == folderId);
+
+            var totalRecords = await query.CountAsync();
+
+            query = ApplySorting(query, pagination.SortBy, pagination.SortDirection);
+
+            var accessRights = await query
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
+                .ToListAsync();
+
+            return accessRights.ToPagedResult(
+                pagination.PageNumber,
+                pagination.PageSize,
+                totalRecords,
+                pagination.Search,
+                pagination.SortBy,
+                pagination.SortDirection
+            );
+        }
+
+        public async Task<int> GetTotalCountAsync(AccessRightFilterDto? filter = null)
+        {
+            var query = _context.AccessRights.AsQueryable();
+
+            if (filter != null)
+            {
+                query = ApplyFilters(query, filter);
+            }
+
+            return await query.CountAsync();
+        }
+
+        private IQueryable<AccessRight> ApplyFilters(IQueryable<AccessRight> query, AccessRightFilterDto filter)
+        {
+            if (!string.IsNullOrEmpty(filter.UserId))
+                query = query.Where(ar => ar.UserId.ToString() == filter.UserId);
+
+            if (!string.IsNullOrEmpty(filter.UserName))
+                query = query.Where(ar => ar.User.UserName!.Contains(filter.UserName));
+
+            if (filter.DocumentId.HasValue)
+                query = query.Where(ar => ar.DocumentId == filter.DocumentId);
+
+            if (filter.FolderId.HasValue)
+                query = query.Where(ar => ar.FolderId == filter.FolderId);
+
+            if (!string.IsNullOrEmpty(filter.Type))
+            {
+                if (filter.Type.ToLower() == "document")
+                    query = query.Where(ar => ar.DocumentId.HasValue);
+                else if (filter.Type.ToLower() == "folder")
+                    query = query.Where(ar => ar.FolderId.HasValue);
+            }
+
+
+
+            if (filter.CanCreate.HasValue)
+                query = query.Where(ar => ar.CanCreate == filter.CanCreate);
+
+            if (filter.CanRead.HasValue)
+                query = query.Where(ar => ar.CanRead == filter.CanRead);
+
+            if (filter.CanUpdate.HasValue)
+                query = query.Where(ar => ar.CanUpdate == filter.CanUpdate);
+
+            if (filter.CanDelete.HasValue)
+                query = query.Where(ar => ar.CanDelete == filter.CanDelete);
+
+            if (filter.CreatedFrom.HasValue)
+                query = query.Where(ar => ar.CreatedAt >= filter.CreatedFrom);
+
+            if (filter.CreatedTo.HasValue)
+                query = query.Where(ar => ar.CreatedAt <= filter.CreatedTo);
+
+            if (!string.IsNullOrEmpty(filter.Search))
+            {
+                query = query.Where(ar =>
+                    ar.User.UserName!.Contains(filter.Search) ||
+
+                    (ar.Document != null && ar.Document.Name.Contains(filter.Search)) ||
+                    (ar.Folder != null && ar.Folder.Name.Contains(filter.Search))
+                );
+            }
+
+            return query;
+        }
+
+        private IQueryable<AccessRight> ApplySorting(IQueryable<AccessRight> query, string? sortBy, string? sortDirection)
+        {
+            if (string.IsNullOrEmpty(sortBy))
+                return query.OrderByDescending(ar => ar.CreatedAt);
+
+            var isDescending = sortDirection?.ToLower() == "desc";
+
+            return sortBy.ToLower() switch
+            {
+                "username" => isDescending ? query.OrderByDescending(ar => ar.User.UserName)
+                                          : query.OrderBy(ar => ar.User.UserName),
+
+                "documentname" => isDescending ? query.OrderByDescending(ar => ar.Document!.Name)
+                                               : query.OrderBy(ar => ar.Document!.Name),
+                "foldername" => isDescending ? query.OrderByDescending(ar => ar.Folder!.Name)
+                                             : query.OrderBy(ar => ar.Folder!.Name),
+                "createdat" => isDescending ? query.OrderByDescending(ar => ar.CreatedAt)
+                                            : query.OrderBy(ar => ar.CreatedAt),
+                "updatedat" => isDescending ? query.OrderByDescending(ar => ar.UpdatedAt)
+                                            : query.OrderBy(ar => ar.UpdatedAt),
+
+                _ => query.OrderByDescending(ar => ar.CreatedAt)
+            };
         }
 
         public async Task<AccessRight> AddAsync(AccessRight accessRight)
@@ -90,7 +298,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.AccessRights
                 .Include(ar => ar.User)
-                .Where(ar => ar.DocumentId == documentId )
+                .Where(ar => ar.DocumentId == documentId)
                 .OrderBy(ar => ar.User.UserName)
                 .ToListAsync();
         }
@@ -99,7 +307,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.AccessRights
                 .Include(ar => ar.User)
-                .Where(ar => ar.FolderId == folderId )
+                .Where(ar => ar.FolderId == folderId)
                 .OrderBy(ar => ar.User.UserName)
                 .ToListAsync();
         }
@@ -107,27 +315,27 @@ namespace Infrastructure.Repositories
         public async Task<AccessRight?> GetUserDocumentAccessAsync(string userId, int documentId)
         {
             return await _context.AccessRights
-                .FirstOrDefaultAsync(ar => ar.UserId == userId && 
-                                          ar.DocumentId == documentId 
+                .FirstOrDefaultAsync(ar => ar.UserId == userId &&
+                                          ar.DocumentId == documentId
                                           );
         }
 
         public async Task<AccessRight?> GetUserFolderAccessAsync(string userId, int folderId)
         {
             return await _context.AccessRights
-                .FirstOrDefaultAsync(ar => ar.UserId == userId && 
-                                          ar.FolderId == folderId 
+                .FirstOrDefaultAsync(ar => ar.UserId == userId &&
+                                          ar.FolderId == folderId
                                           );
         }
 
         public async Task<bool> HasPermissionAsync(string userId, int? documentId, int? folderId, string permission)
         {
             var query = _context.AccessRights
-                .Where(ar => ar.UserId == userId );
+                .Where(ar => ar.UserId == userId);
 
             if (documentId.HasValue)
                 query = query.Where(ar => ar.DocumentId == documentId);
-            
+
             if (folderId.HasValue)
                 query = query.Where(ar => ar.FolderId == folderId);
 
@@ -185,7 +393,7 @@ namespace Infrastructure.Repositories
 
             if (documentId.HasValue)
                 query = query.Where(ar => ar.DocumentId == documentId);
-            
+
             if (folderId.HasValue)
                 query = query.Where(ar => ar.FolderId == folderId);
 
