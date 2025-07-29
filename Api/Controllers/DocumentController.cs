@@ -1,5 +1,6 @@
 using Api.Helper;
 using AutoMapper;
+using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
@@ -28,7 +29,120 @@ namespace Api.Controllers
             return "Document API is working!";
         }
 
+
         [HttpGet]
+        public async Task<ActionResult<DocumentPagedResult>> GetDocuments([FromQuery] DocumentFilterDto filter)
+        {
+            try
+            {
+                var pagedDocuments = await _unitOfWork.DocumentRepository.GetPagedAsync(filter);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
+
+                var result = new DocumentPagedResult
+                {
+                    Data = documentDtos,
+                    PageNumber = pagedDocuments.PageNumber,
+                    PageSize = pagedDocuments.PageSize,
+                    TotalRecords = pagedDocuments.TotalRecords,
+                    TotalPages = pagedDocuments.TotalPages,
+                    HasPreviousPage = pagedDocuments.HasPreviousPage,
+                    HasNextPage = pagedDocuments.HasNextPage,
+                    Search = pagedDocuments.Search,
+                    SortBy = pagedDocuments.SortBy,
+                    SortDirection = pagedDocuments.SortDirection,
+                    TotalDocuments = pagedDocuments.TotalRecords,
+                    TotalUsers = 100
+                };
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DocumentDto>> GetDocument(int id)
+        {
+            try
+            {
+                var document = await _unitOfWork.DocumentRepository.GetByIdWithDetailsAsync(id);
+                if (document == null)
+                    return NotFound(new { success = false, message = "Document not found" });
+
+                var documentDto = _mapper.Map<DocumentDto>(document);
+                return Ok(new { success = true, data = documentDto });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("folder/{folderId}")]
+        public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByFolder(
+            int folderId, 
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+                var pagedDocuments = await _unitOfWork.DocumentRepository.GetByFolderPagedAsync(folderId, pagination);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
+
+                var result = documentDtos.ToPagedResult(
+                    pagedDocuments.PageNumber,
+                    pagedDocuments.PageSize,
+                    pagedDocuments.TotalRecords,
+                    pagedDocuments.Search,
+                    pagedDocuments.SortBy,
+                    pagedDocuments.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByUser(
+            string userId, 
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+                // Authorization: Users can only view their own documents unless they're Admin/Manager
+                var currentUserId = "10";
+                if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
+                {
+                    return Forbid();
+                }
+
+                var pagedDocuments = await _unitOfWork.DocumentRepository.GetByUserPagedAsync(userId, pagination);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
+
+                var result = documentDtos.ToPagedResult(
+                    pagedDocuments.PageNumber,
+                    pagedDocuments.PageSize,
+                    pagedDocuments.TotalRecords,
+                    pagedDocuments.Search,
+                    pagedDocuments.SortBy,
+                    pagedDocuments.SortDirection
+                );
+
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        
+        /*[HttpGet]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocuments()
         {
             try
@@ -41,9 +155,9 @@ namespace Api.Controllers
             {
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
-        }
+        }*/
 
-        [HttpGet("{id}")]
+       /* [HttpGet("{id}")]
         public async Task<ActionResult<DocumentDto>> GetDocument(int id)
         {
             try
@@ -59,9 +173,9 @@ namespace Api.Controllers
             {
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
-        }
+        }*/
 
-        [HttpGet("folder/{folderId}")]
+     /*   [HttpGet("folder/{folderId}")]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByFolder(int folderId)
         {
             try
@@ -74,9 +188,9 @@ namespace Api.Controllers
             {
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
-        }
+        }*/
 
-        [HttpGet("user/{userId}")]
+       /* [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByUser(string userId)
         {
             try
@@ -89,7 +203,7 @@ namespace Api.Controllers
             {
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
-        }
+        }*/
 
         [HttpGet("validated")]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetValidatedDocuments()

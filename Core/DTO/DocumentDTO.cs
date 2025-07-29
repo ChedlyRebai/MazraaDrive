@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Core.DTO;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.DTOs
@@ -78,4 +79,34 @@ namespace Core.DTOs
         public DateTime CreatedAt { get; set; }
         public bool IsValidated { get; set; }
     }
+
+
+
+    public class DocumentFilterDto : PaginationParams
+    {
+        public string? Name { get; set; }
+        public string? FileType { get; set; }
+        public int? FolderId { get; set; }
+        public string? FolderName { get; set; }
+        public string? UploadedById { get; set; }
+        public string? UploadedByName { get; set; }
+        public bool? IsValidated { get; set; }
+        public bool? IsActive { get; set; }
+        public DateTime? CreatedFrom { get; set; }
+        public DateTime? CreatedTo { get; set; }
+        public DateTime? UpdatedFrom { get; set; }
+        public DateTime? UpdatedTo { get; set; }
+        public long? MinFileSize { get; set; }
+        public long? MaxFileSize { get; set; }
+        public int? MinVersion { get; set; }
+        public int? MaxVersion { get; set; }
+        public string[]? FileTypes { get; set; } // Filter by multiple file types
+    }
+
+    public class DocumentPagedResult : PagedResult<DocumentDto>
+{
+    public int TotalDocuments { get; set; }
+    public int TotalUsers { get; set; }
+}
+
 }

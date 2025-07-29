@@ -1,4 +1,6 @@
 using System;
+using Core.DTO;
+using Core.DTOs;
 using Core.Entities;
 
 
@@ -6,6 +8,11 @@ namespace Core.Interfaces;
 
 public interface IDocument : IGenericRepository<Document>
 {
+    Task<Document?> GetByIdWithDetailsAsync(int id);
+        
+    Task<PagedResult<Document>> GetPagedAsync(DocumentFilterDto filter);
+        Task<PagedResult<Document>> GetByFolderPagedAsync(int folderId, PaginationParams pagination);
+        Task<PagedResult<Document>> GetByUserPagedAsync(string userId, PaginationParams pagination);
     Task<Document> AddAsync(Document document);
     Task DeleteAsync(int id);
     Task<IReadOnlyList<Document>> GetAllAsync();

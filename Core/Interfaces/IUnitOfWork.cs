@@ -1,4 +1,5 @@
 using System;
+using Core.Entities;
 
 
 namespace Core.Interfaces;
@@ -16,6 +17,7 @@ public interface IUnitOfWork
     // public ICustomerBasketRepository CustomerBasket { get; }
     public IDocRequestRepository DocRequestRepository { get; }
     public IDocument DocumentRepository { get; }
+    
     public IFolderRepository FolderRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public IUserRepository UserRepository { get; }

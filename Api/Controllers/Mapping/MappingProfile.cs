@@ -22,7 +22,7 @@ public class MappingProfile : Profile
         CreateMap<Department, DepartmentUserCountDTO>().ReverseMap();
 
         CreateMap<AppUser, UserDto>().ReverseMap();
-         
+
 
         CreateMap<CreateUserDto, AppUser>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -36,7 +36,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UploadedDocuments, opt => opt.Ignore())
             .ForMember(dest => dest.DocumentRequests, opt => opt.Ignore())
             .ForMember(dest => dest.AuditLogs, opt => opt.Ignore())
-           
+
             // Identity properties
             .ForMember(dest => dest.SecurityStamp, opt => opt.Ignore())
             .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore())
@@ -96,6 +96,52 @@ public class MappingProfile : Profile
         CreateMap<AccessRight, BulkAccessRightDto>().ReverseMap();
         CreateMap<AccessRight, AccessRightSummaryDto>().ReverseMap();
 
+        CreateMap<Folder, FolderDTO>()
+            .ForMember(dest => dest.ParentFolderName, opt => opt.MapFrom(src => src.ParentFolder != null ? src.ParentFolder.Name : null))
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : string.Empty))
+            .ForMember(dest => dest.CreatedById, opt => opt.MapFrom(src => src.CreatedById ?? string.Empty))
+            .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom(src => src.CreatedBy != null ? src.CreatedBy.UserName : string.Empty))
+            .ForMember(dest => dest.SubFolderCount, opt => opt.MapFrom(src => src.SubFolders != null ? src.SubFolders.Count() : 0))
+            .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0));
+
+        CreateMap<CreateFolderDTO, Folder>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedById, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.ParentFolder, opt => opt.Ignore())
+            .ForMember(dest => dest.Department, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+            .ForMember(dest => dest.SubFolders, opt => opt.Ignore())
+            .ForMember(dest => dest.Documents, opt => opt.Ignore());
+
+        CreateMap<UpdateFolderDTO, Folder>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.DepartmentId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedById, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.ParentFolder, opt => opt.Ignore())
+            .ForMember(dest => dest.Department, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+            .ForMember(dest => dest.SubFolders, opt => opt.Ignore())
+            .ForMember(dest => dest.Documents, opt => opt.Ignore())
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        CreateMap<Folder, FolderWithSubFoldersDTO>()
+            .ForMember(dest => dest.ParentFolderName, opt => opt.MapFrom(src => src.ParentFolder != null ? src.ParentFolder.Name : null))
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : string.Empty))
+            .ForMember(dest => dest.CreatedById, opt => opt.MapFrom(src => src.CreatedById ?? string.Empty))
+            .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom(src => src.CreatedBy != null ? src.CreatedBy.UserName : string.Empty))
+            .ForMember(dest => dest.SubFolderCount, opt => opt.MapFrom(src => src.SubFolders != null ? src.SubFolders.Count() : 0))
+            .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0));
+
+        CreateMap<Folder, FolderTreeDto>()
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : string.Empty))
+            .ForMember(dest => dest.SubFolderCount, opt => opt.MapFrom(src => src.SubFolders != null ? src.SubFolders.Count() : 0))
+            .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0))
+            .ForMember(dest => dest.SubFolders, opt => opt.Ignore()); // Handle recursively in repository
+    
         
     }
 

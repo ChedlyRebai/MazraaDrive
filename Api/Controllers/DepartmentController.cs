@@ -22,6 +22,7 @@ namespace Api.Controllers
             return "Department API is working!";
         }
 
+        
         [HttpGet]
         public async Task<ActionResult<DepartmentPagedResult>> GetDepartments([FromQuery] DepartmentFilterDto filter)
         {
