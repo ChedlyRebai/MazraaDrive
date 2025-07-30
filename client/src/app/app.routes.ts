@@ -13,7 +13,6 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '**',
-    redirectTo: 'home'
+    path: '**',   loadComponent: () => import('./core/not-found/not-found').then(m => m.NotFound)
   }
 ];
