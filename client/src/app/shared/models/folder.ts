@@ -1,6 +1,6 @@
-import { DocumentDto } from "./document.model";
-import { PagedResult, PaginationParams } from "./pageresult.model";
-import { UserDto } from "./user.model";
+import { DocumentDto } from "./document";
+import { PagedResult, PaginationParams } from "./pageresult";
+import { UserDto } from "./user";
 
 export interface FolderDTO {
     id: number;

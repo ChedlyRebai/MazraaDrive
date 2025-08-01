@@ -1,5 +1,5 @@
-import { PaginationParams } from "./pageresult.model";
-import { PagedResult } from "./pageresult.model";
+import { PaginationParams } from "./pageresult";
+import { PagedResult } from "./pageresult";
 
 export interface RoleDto {
        id: number;
