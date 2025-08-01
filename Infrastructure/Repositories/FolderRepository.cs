@@ -352,8 +352,8 @@ namespace Infrastructure.Repositories
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(f => f.Name.Contains(filter.Name));
 
-            if (filter.ParentFolderId.HasValue)
-                query = query.Where(f => f.ParentFolderId == filter.ParentFolderId);
+            // if (filter.ParentFolderId.HasValue)
+            //     query = query.Where(f => f.ParentFolderId == filter.ParentFolderId);
 
             if (!string.IsNullOrEmpty(filter.ParentFolderName))
                 query = query.Where(f => f.ParentFolder != null && f.ParentFolder.Name.Contains(filter.ParentFolderName));
@@ -373,28 +373,28 @@ namespace Infrastructure.Repositories
                     f.CreatedBy.UserName!.Contains(filter.CreatedByName)
                 );
 
-            if (filter.CreatedFrom.HasValue)
-                query = query.Where(f => f.CreatedAt >= filter.CreatedFrom);
+            // if (filter.CreatedFrom.HasValue)
+            //     query = query.Where(f => f.CreatedAt >= filter.CreatedFrom);
 
-            if (filter.CreatedTo.HasValue)
-                query = query.Where(f => f.CreatedAt <= filter.CreatedTo);
+            // if (filter.CreatedTo.HasValue)
+            //     query = query.Where(f => f.CreatedAt <= filter.CreatedTo);
 
-            if (filter.UpdatedFrom.HasValue)
-                query = query.Where(f => f.UpdatedAt >= filter.UpdatedFrom);
+            // if (filter.UpdatedFrom.HasValue)
+            //     query = query.Where(f => f.UpdatedAt >= filter.UpdatedFrom);
 
-            if (filter.UpdatedTo.HasValue)
-                query = query.Where(f => f.UpdatedAt <= filter.UpdatedTo);
-
-
+            // if (filter.UpdatedTo.HasValue)
+            //     query = query.Where(f => f.UpdatedAt <= filter.UpdatedTo);
 
 
-            if (filter.IsRootFolder.HasValue)
-            {
-                if (filter.IsRootFolder.Value)
-                    query = query.Where(f => f.ParentFolderId == null);
-                else
-                    query = query.Where(f => f.ParentFolderId != null);
-            }
+
+
+            // if (filter.IsRootFolder.HasValue)
+            // {
+            //     if (filter.IsRootFolder.Value)
+            //         query = query.Where(f => f.ParentFolderId == null);
+            //     else
+            //         query = query.Where(f => f.ParentFolderId != null);
+            // }
 
             if (!string.IsNullOrEmpty(filter.Search))
             {

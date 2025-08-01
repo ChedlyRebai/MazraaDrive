@@ -300,29 +300,29 @@ namespace Infrastructure.Repositories
                 query = query.Where(d => d.IsValidated == filter.IsValidated);
 
            
-            if (filter.CreatedFrom.HasValue)
-                query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
+            // if (filter.CreatedFrom.HasValue)
+            //     query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
 
-            if (filter.CreatedTo.HasValue)
-                query = query.Where(d => d.CreatedAt <= filter.CreatedTo);
+            // if (filter.CreatedTo.HasValue)
+            //     query = query.Where(d => d.CreatedAt <= filter.CreatedTo);
 
-            if (filter.UpdatedFrom.HasValue)
-                query = query.Where(d => d.UpdatedAt >= filter.UpdatedFrom);
+            // if (filter.UpdatedFrom.HasValue)
+            //     query = query.Where(d => d.UpdatedAt >= filter.UpdatedFrom);
 
-            if (filter.UpdatedTo.HasValue)
-                query = query.Where(d => d.UpdatedAt <= filter.UpdatedTo);
+            // if (filter.UpdatedTo.HasValue)
+            //     query = query.Where(d => d.UpdatedAt <= filter.UpdatedTo);
 
-            if (filter.MinFileSize.HasValue)
-                query = query.Where(d => d.FileSize >= filter.MinFileSize);
+            // if (filter.MinFileSize.HasValue)
+            //     query = query.Where(d => d.FileSize >= filter.MinFileSize);
 
-            if (filter.MaxFileSize.HasValue)
-                query = query.Where(d => d.FileSize <= filter.MaxFileSize);
+            // if (filter.MaxFileSize.HasValue)
+            //     query = query.Where(d => d.FileSize <= filter.MaxFileSize);
 
-            if (filter.MinVersion.HasValue)
-                query = query.Where(d => d.Version >= filter.MinVersion);
+            // if (filter.MinVersion.HasValue)
+            //     query = query.Where(d => d.Version >= filter.MinVersion);
 
-            if (filter.MaxVersion.HasValue)
-                query = query.Where(d => d.Version <= filter.MaxVersion);
+            // if (filter.MaxVersion.HasValue)
+            //     query = query.Where(d => d.Version <= filter.MaxVersion);
 
             if (filter.FileTypes?.Any() == true)
                 query = query.Where(d => filter.FileTypes.Contains(d.FileType));

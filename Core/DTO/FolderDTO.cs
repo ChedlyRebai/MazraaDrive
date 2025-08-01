@@ -87,8 +87,6 @@ public class FolderFilterDto : PaginationParams
     public string? CreatedById { get; set; }
     public string? CreatedByName { get; set; }
     public bool? IsActive { get; set; }
-    public int? MinDocumentCount { get; set; }
-    public int? MaxDocumentCount { get; set; }
 }
 
 public class FolderPagedResult : PagedResult<FolderDTO>

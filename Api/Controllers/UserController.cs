@@ -54,7 +54,7 @@ namespace Api.Controllers
                     TotalUsers = await _unitOfWork.UserRepository.GetTotalCountAsync(),
                     ActiveUsers = await _unitOfWork.UserRepository.GetActiveCountAsync(),
                     InactiveUsers = await _unitOfWork.UserRepository.GetInactiveCountAsync(),
-                    ConfirmedEmails = await _unitOfWork.UserRepository.GetConfirmedEmailsCountAsync(),
+                    //ConfirmedEmails = await _unitOfWork.UserRepository.GetConfirmedEmailsCountAsync(),
 
 
                 };

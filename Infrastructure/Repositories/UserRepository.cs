@@ -295,8 +295,8 @@ namespace Infrastructure.Repositories
             if (!string.IsNullOrEmpty(filter.UserName))
                 query = query.Where(u => u.UserName.Contains(filter.UserName));
 
-            if (!string.IsNullOrEmpty(filter.Email))
-                query = query.Where(u => u.Email.Contains(filter.Email));
+            // if (!string.IsNullOrEmpty(filter.Email))
+            //     query = query.Where(u => u.Email.Contains(filter.Email));
 
           
             if (!string.IsNullOrEmpty(filter.PhoneNumber))
@@ -305,22 +305,22 @@ namespace Infrastructure.Repositories
             if (filter.IsActive.HasValue)
                 query = query.Where(u => u.IsActive == filter.IsActive);
 
-            if (filter.EmailConfirmed.HasValue)
-                query = query.Where(u => u.EmailConfirmed == filter.EmailConfirmed);
+            // if (filter.EmailConfirmed.HasValue)
+            //     query = query.Where(u => u.EmailConfirmed == filter.EmailConfirmed);
 
-            if (filter.PhoneNumberConfirmed.HasValue)
-                query = query.Where(u => u.PhoneNumberConfirmed == filter.PhoneNumberConfirmed);
+            // if (filter.PhoneNumberConfirmed.HasValue)
+            //     query = query.Where(u => u.PhoneNumberConfirmed == filter.PhoneNumberConfirmed);
 
-            if (filter.LockoutEnabled.HasValue)
-                query = query.Where(u => u.LockoutEnabled == filter.LockoutEnabled);
+            // if (filter.LockoutEnabled.HasValue)
+            //     query = query.Where(u => u.LockoutEnabled == filter.LockoutEnabled);
 
-            if (filter.IsLockedOut.HasValue)
-            {
-                if (filter.IsLockedOut.Value)
-                    query = query.Where(u => u.LockoutEnd.HasValue && u.LockoutEnd > DateTimeOffset.UtcNow);
-                else
-                    query = query.Where(u => !u.LockoutEnd.HasValue || u.LockoutEnd <= DateTimeOffset.UtcNow);
-            }
+            // if (filter.IsLockedOut.HasValue)
+            // {
+            //     if (filter.IsLockedOut.Value)
+            //         query = query.Where(u => u.LockoutEnd.HasValue && u.LockoutEnd > DateTimeOffset.UtcNow);
+            //     else
+            //         query = query.Where(u => !u.LockoutEnd.HasValue || u.LockoutEnd <= DateTimeOffset.UtcNow);
+            // }
 
             if (filter.RoleId.HasValue)
                 query = query.Where(u => u.RoleId == filter.RoleId);
@@ -334,23 +334,23 @@ namespace Infrastructure.Repositories
             if (!string.IsNullOrEmpty(filter.DepartmentName))
                 query = query.Where(u => u.Department.Name.Contains(filter.DepartmentName));
 
-            if (filter.CreatedFrom.HasValue)
-                query = query.Where(u => u.CreatedAt >= filter.CreatedFrom);
+            // if (filter.CreatedFrom.HasValue)
+            //     query = query.Where(u => u.CreatedAt >= filter.CreatedFrom);
 
-            if (filter.CreatedTo.HasValue)
-                query = query.Where(u => u.CreatedAt <= filter.CreatedTo);
+            // if (filter.CreatedTo.HasValue)
+            //     query = query.Where(u => u.CreatedAt <= filter.CreatedTo);
 
-            if (filter.UpdatedFrom.HasValue)
-                query = query.Where(u => u.UpdatedAt >= filter.UpdatedFrom);
+            // if (filter.UpdatedFrom.HasValue)
+            //     query = query.Where(u => u.UpdatedAt >= filter.UpdatedFrom);
 
-            if (filter.UpdatedTo.HasValue)
-                query = query.Where(u => u.UpdatedAt <= filter.UpdatedTo);
+            // if (filter.UpdatedTo.HasValue)
+            //     query = query.Where(u => u.UpdatedAt <= filter.UpdatedTo);
 
-            if (filter.MinDocumentsCount.HasValue)
-                query = query.Where(u => u.UploadedDocuments.Count() >= filter.MinDocumentsCount);
+            // if (filter.MinDocumentsCount.HasValue)
+            //     query = query.Where(u => u.UploadedDocuments.Count() >= filter.MinDocumentsCount);
 
-            if (filter.MaxDocumentsCount.HasValue)
-                query = query.Where(u => u.UploadedDocuments.Count() <= filter.MaxDocumentsCount);
+            // if (filter.MaxDocumentsCount.HasValue)
+            //     query = query.Where(u => u.UploadedDocuments.Count() <= filter.MaxDocumentsCount);
 
             // if (filter.MinFoldersCount.HasValue)
             //     query = query.Where(u => u.Folders.Count(f => f.IsActive) >= filter.MinFoldersCount);
@@ -358,19 +358,19 @@ namespace Infrastructure.Repositories
             // if (filter.MaxFoldersCount.HasValue)
             //     query = query.Where(u => u.Folders.Count(f => f.IsActive) <= filter.MaxFoldersCount);
 
-            if (filter.MinAccessFailedCount.HasValue)
-                query = query.Where(u => u.AccessFailedCount >= filter.MinAccessFailedCount);
+            // if (filter.MinAccessFailedCount.HasValue)
+            //     query = query.Where(u => u.AccessFailedCount >= filter.MinAccessFailedCount);
 
-            if (filter.MaxAccessFailedCount.HasValue)
-                query = query.Where(u => u.AccessFailedCount <= filter.MaxAccessFailedCount);
+            // if (filter.MaxAccessFailedCount.HasValue)
+            //     query = query.Where(u => u.AccessFailedCount <= filter.MaxAccessFailedCount);
 
-            if (filter.HasDocuments.HasValue)
-            {
-                if (filter.HasDocuments.Value)
-                    query = query.Where(u => u.UploadedDocuments.Any());
-                else
-                    query = query.Where(u => !u.UploadedDocuments.Any());
-            }
+            // if (filter.HasDocuments.HasValue)
+            // {
+            //     if (filter.HasDocuments.Value)
+            //         query = query.Where(u => u.UploadedDocuments.Any());
+            //     else
+            //         query = query.Where(u => !u.UploadedDocuments.Any());
+            // }
 
             /*if (filter.HasFolders.HasValue)
             {
