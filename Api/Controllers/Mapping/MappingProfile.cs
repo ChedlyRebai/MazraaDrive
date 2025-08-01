@@ -154,11 +154,15 @@ public class MappingProfile : Profile
         CreateMap<Folder, UserFolderDto>().ReverseMap();
         CreateMap<Folder, FolderDTO>().ReverseMap();
         CreateMap<AppUser, UserWithDetailsDto>()
-            .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src =>src.UploadedDocuments
+            .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src => src.UploadedDocuments
                     .OrderByDescending(d => d.CreatedAt)
                     .Take(5)))
             .ForMember(dest => dest.RecentFolders, opt => opt.MapFrom(src => src.CreatedFolders));
 
+        CreateMap<HomeDto, Folder>();
+        CreateMap<Folder, SubFolderDTO>()
+        .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy))
+        .ReverseMap();
     }
 
     private static string FormatFileSize(long bytes)

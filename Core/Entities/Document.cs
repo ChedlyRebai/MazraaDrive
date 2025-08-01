@@ -26,6 +26,9 @@ public class Document : BaseEntity<int>
     [Required]
     public string UploadedById { get; set; }  // FIXED: Changed from Guid to string
 
+    public int DepartmentId { get; set; }  // FIXED: Changed from Guid to int
+    [ForeignKey(nameof(DepartmentId))]
+    public virtual Department? Department { get; set; }
     public int Version { get; set; } = 1;
     public bool IsValidated { get; set; } = false;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

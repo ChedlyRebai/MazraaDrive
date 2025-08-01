@@ -267,6 +267,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
@@ -302,6 +305,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("FolderId");
 
@@ -749,6 +754,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Document", b =>
                 {
+                    b.HasOne("Core.Entities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Folder", "Folder")
                         .WithMany("Documents")
                         .HasForeignKey("FolderId")
@@ -760,6 +771,8 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UploadedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Department");
 
                     b.Navigation("Folder");
 

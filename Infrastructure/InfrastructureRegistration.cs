@@ -58,6 +58,8 @@ public static class InfrastructureRegistration
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IGenerateToken, GenrateToken>();
         services.AddScoped<IAuth, AuthRepository>();
+        services.AddScoped<IHomeRepository, HomeRepository>();
+
         services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;

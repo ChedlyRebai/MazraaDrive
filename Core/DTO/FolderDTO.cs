@@ -1,4 +1,6 @@
 using System;
+using Core.DTOs;
+using Core.Entities;
 
 namespace Core.DTO;
 
@@ -17,9 +19,27 @@ public class FolderDTO
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
         public int SubFolderCount { get; set; }
+         public Folder ParentFolder { get; set; }
+        public ICollection<SubFolderDTO> SubFolders { get; set; }
+         
+        public ICollection<DocumentDto> Documents { get; set; }
         public int DocumentCount { get; set; }
 }
+public class SubFolderDTO
 
+
+{
+
+    
+    public string CreatedById { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    
+    public UserDto CreatedBy { get; set; } = new UserDto();
+    public int ParentFolderId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public bool IsActive { get; set; }
+}
 public class CreateFolderDTO
 {
     public string Name { get; set; } = string.Empty;
@@ -61,24 +81,14 @@ public class FolderTreeDto
 public class FolderFilterDto : PaginationParams
 {
     public string? Name { get; set; }
-    public int? ParentFolderId { get; set; }
     public string? ParentFolderName { get; set; }
     public int? DepartmentId { get; set; }
     public string? DepartmentName { get; set; }
     public string? CreatedById { get; set; }
     public string? CreatedByName { get; set; }
     public bool? IsActive { get; set; }
-    public DateTime? CreatedFrom { get; set; }
-    public DateTime? CreatedTo { get; set; }
-    public DateTime? UpdatedFrom { get; set; }
-    public DateTime? UpdatedTo { get; set; }
-    public int? MinSubFolderCount { get; set; }
-    public int? MaxSubFolderCount { get; set; }
     public int? MinDocumentCount { get; set; }
     public int? MaxDocumentCount { get; set; }
-    public bool? HasSubFolders { get; set; }
-    public bool? HasDocuments { get; set; }
-    public bool? IsRootFolder { get; set; } // Folders with no parent
 }
 
 public class FolderPagedResult : PagedResult<FolderDTO>

@@ -106,30 +106,15 @@ namespace Core.DTOs
     public class UserFilterDto : PaginationParams
     {
         public string? UserName { get; set; }
-        public string? Email { get; set; }
-        public string? FullName { get; set; }
+        
         public string? PhoneNumber { get; set; }
         public bool? IsActive { get; set; }
-        public bool? EmailConfirmed { get; set; }
-        public bool? PhoneNumberConfirmed { get; set; }
-        public bool? LockoutEnabled { get; set; }
-        public bool? IsLockedOut { get; set; }
+       
         public int? RoleId { get; set; }
         public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
-        public DateTime? CreatedFrom { get; set; }
-        public DateTime? CreatedTo { get; set; }
-        public DateTime? UpdatedFrom { get; set; }
-        public DateTime? UpdatedTo { get; set; }
-        public int? MinDocumentsCount { get; set; }
-        public int? MaxDocumentsCount { get; set; }
-        public int? MinFoldersCount { get; set; }
-        public int? MaxFoldersCount { get; set; }
-        public int? MinAccessFailedCount { get; set; }
-        public int? MaxAccessFailedCount { get; set; }
-        public bool? HasDocuments { get; set; }
-        public bool? HasFolders { get; set; }
+
     }
 
     public class UserPagedResult : PagedResult<UserDto>
@@ -137,9 +122,6 @@ namespace Core.DTOs
         public int TotalUsers { get; set; }
         public int ActiveUsers { get; set; }
         public int InactiveUsers { get; set; }
-        public int ConfirmedEmails { get; set; }
-        public int UnconfirmedEmails { get; set; }
-        public int LockedOutUsers { get; set; }
         public int TotalDocuments { get; set; }
         public int TotalFolders { get; set; }
     }
@@ -152,10 +134,10 @@ namespace Core.DTOs
         public DateTime? LastLoginAt { get; set; }
         public string? LastLoginIP { get; set; }
     }
-     
+
     // public string Name { get; set; }
     // public string FileType { get; set; }
-   
+
     // public string StoragePath { get; set; }
     // public int FolderId { get; set; }
     // public string UploadedById { get; set; } 
@@ -165,13 +147,23 @@ namespace Core.DTOs
     // public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     // public virtual Folder Folder { get; set; }
     // public virtual AppUser UploadedBy { get; set; }
-    
+
     // public virtual ICollection<DocumentRequest> DocumentRequests { get; set; }
+
+
+    public class UserDepartmentFoldersDocumentsDTO
+    {
+        public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
+        public List<UserFolderDto> Folders { get; set; } = new List<UserFolderDto>();
+        public List<UserDocumentDto> Documents { get; set; } = new List<UserDocumentDto>();
+    }
+
 
     public class UserDocumentDto
     {
         public int Id { get; set; }
-         public long FileSize { get; set; }
+        public long FileSize { get; set; }
         public string Name { get; set; } = string.Empty;
         public string FileType { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }

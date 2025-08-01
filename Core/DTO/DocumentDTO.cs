@@ -92,14 +92,7 @@ namespace Core.DTOs
         public string? UploadedByName { get; set; }
         public bool? IsValidated { get; set; }
         public bool? IsActive { get; set; }
-        public DateTime? CreatedFrom { get; set; }
-        public DateTime? CreatedTo { get; set; }
-        public DateTime? UpdatedFrom { get; set; }
-        public DateTime? UpdatedTo { get; set; }
-        public long? MinFileSize { get; set; }
-        public long? MaxFileSize { get; set; }
-        public int? MinVersion { get; set; }
-        public int? MaxVersion { get; set; }
+ 
         public string[]? FileTypes { get; set; } // Filter by multiple file types
     }
 

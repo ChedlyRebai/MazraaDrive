@@ -17,7 +17,8 @@ public interface IUnitOfWork
     // public ICustomerBasketRepository CustomerBasket { get; }
     public IDocRequestRepository DocRequestRepository { get; }
     public IDocument DocumentRepository { get; }
-    
+    public IHomeRepository HomeRepository { get; }
+
     public IFolderRepository FolderRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public IUserRepository UserRepository { get; }
@@ -29,6 +30,6 @@ public interface IUnitOfWork
 
     public IAuth Auth { get; }
 
-     Task<int> SaveChangesAsync();
+    Task<int> SaveChangesAsync();
 
 }

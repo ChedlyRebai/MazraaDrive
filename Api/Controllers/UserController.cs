@@ -29,6 +29,8 @@ namespace Api.Controllers
             return "User API is working!";
         }
 
+        
+
         [HttpGet]
         public async Task<ActionResult<UserPagedResult>> GetUsers([FromQuery] UserFilterDto filter)
         {

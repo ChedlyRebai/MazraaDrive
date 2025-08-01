@@ -34,6 +34,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IFolderRepository FolderRepository { get; }
 
+    public IHomeRepository HomeRepository { get; }
+
     public IMessageRepository MessageRepository { get; }
 
     public IUserRepository UserRepository { get; }
@@ -54,7 +56,7 @@ public class UnitOfWork : IUnitOfWork
         IFolderRepository folderRepository,
         IPermissionsRepository permissionsRepository,
         IRoleRepository roleRepository,
-        
+        IHomeRepository homeRepository,
         IDocument documentRepository,
         IUserRepository userRepository
         //IConnectionMultiplexer redis, 
@@ -67,7 +69,7 @@ public class UnitOfWork : IUnitOfWork
 
         _context = context;
         //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
-         DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
+        DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         // FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         //MessageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
@@ -79,6 +81,7 @@ public class UnitOfWork : IUnitOfWork
         UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
         Auth = auth ?? throw new ArgumentNullException(nameof(auth));
+        HomeRepository = homeRepository ?? throw new ArgumentNullException(nameof(homeRepository));
         //_redis = redis;
         //_userManager = userManager;
         // _signInManager = signInManager;
