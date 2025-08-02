@@ -65,7 +65,8 @@ namespace Core.DTOs
         
         [Required(ErrorMessage = "Folder ID is required")]
         public int FolderId { get; set; }
-        
+        public int DepartmentId { get; set; }
+
         [StringLength(1000)]
         public string Description { get; set; } = string.Empty;
     }

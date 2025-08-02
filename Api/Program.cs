@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options=>{
-    options.AddPolicy("CORSPolicy",builder =>{
+    options.AddPolicy("AllowAll",builder =>{
         builder.AllowAnyHeader().
         AllowAnyMethod().
         AllowCredentials().
@@ -83,8 +84,21 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Set Swagger UI at the root (optional)
     });
 }
-app.UseCors("CORSPolicy");
-app.UseStaticFiles();
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+
+// After app.Build(), add:
+app.UseCors("AllowAll");
+//app.UseCors("CORSPolicy");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/api/uploads"
+});
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
