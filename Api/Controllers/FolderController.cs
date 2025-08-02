@@ -4,6 +4,7 @@ using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -62,10 +63,25 @@ namespace Api.Controllers
             try
             {
                 var folder = await _unitOfWork.FolderRepository.GetByIdWithDetailsAsync(id);
+                Console.WriteLine($"Retrieved folder: {folder?.Name} with ID: {id}");
+                Console.WriteLine($"Folder has {folder?.Documents.Count} documents and {folder?.SubFolders.Count} subfolders.");
+                Console.WriteLine(folder?.SubFolders);
+                foreach (var item in folder?.SubFolders) {
+                    Console.WriteLine($"Subfolder: {item.Name}");
+                }
                 if (folder == null)
                     return NotFound(new { success = false, message = "Folder not found" });
 
                 var folderDto = _mapper.Map<FolderDTO>(folder);
+                Console.WriteLine($"SubfolderDTO:**********");
+                
+                if (folderDto?.SubFolders != null)
+                {
+                    foreach (var item in folderDto?.SubFolders)
+                    {
+                        Console.WriteLine($"SubfolderDTO: {item.Name}");
+                    }
+                }
                 return Ok(new { success = true, data = folderDto });
             }
             catch (Exception ex)

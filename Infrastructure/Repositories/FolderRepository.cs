@@ -355,9 +355,7 @@ namespace Infrastructure.Repositories
             // if (filter.ParentFolderId.HasValue)
             //     query = query.Where(f => f.ParentFolderId == filter.ParentFolderId);
 
-            if (!string.IsNullOrEmpty(filter.ParentFolderName))
-                query = query.Where(f => f.ParentFolder != null && f.ParentFolder.Name.Contains(filter.ParentFolderName));
-
+           
             if (filter.DepartmentId.HasValue)
                 query = query.Where(f => f.DepartmentId == filter.DepartmentId);
 

@@ -19,7 +19,7 @@ public class FolderDTO
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
         public int SubFolderCount { get; set; }
-         public Folder ParentFolder { get; set; }
+        //public Folder ParentFolder { get; set; }
         public ICollection<SubFolderDTO> SubFolders { get; set; }
          
         public ICollection<DocumentDto> Documents { get; set; }
@@ -81,7 +81,7 @@ public class FolderTreeDto
 public class FolderFilterDto : PaginationParams
 {
     public string? Name { get; set; }
-    public string? ParentFolderName { get; set; }
+
     public int? DepartmentId { get; set; }
     public string? DepartmentName { get; set; }
     public string? CreatedById { get; set; }

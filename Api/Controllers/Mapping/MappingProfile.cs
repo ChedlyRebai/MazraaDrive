@@ -152,7 +152,7 @@ public class MappingProfile : Profile
 
         CreateMap<Document, UserDocumentDto>().ReverseMap();
         CreateMap<Folder, UserFolderDto>().ReverseMap();
-        CreateMap<Folder, FolderDTO>().ReverseMap();
+
         CreateMap<AppUser, UserWithDetailsDto>()
             .ForMember(dest => dest.RecentDocuments, opt => opt.MapFrom(src => src.UploadedDocuments
                     .OrderByDescending(d => d.CreatedAt)
@@ -161,9 +161,25 @@ public class MappingProfile : Profile
 
         CreateMap<HomeDto, Folder>();
         CreateMap<Folder, SubFolderDTO>()
+        
         .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy))
         .ReverseMap();
-    }
+
+        CreateMap<Document ,DocumentDto>()
+            .ForMember(dest => dest.UploadedByName , opt => opt.MapFrom(src => src.UploadedBy != null ? src.UploadedBy.UserName : string.Empty));
+
+        CreateMap<Folder, FolderDTO>()
+         .ForMember(dest => dest.SubFolders, opt => opt.MapFrom(src => src.SubFolders))
+        .ForMember(dest => dest.ParentFolderName, opt => opt.MapFrom(src => src.ParentFolder != null ? src.ParentFolder.Name : null))
+        .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : string.Empty))
+        .ForMember(dest => dest.CreatedById, opt => opt.MapFrom(src => src.CreatedById ?? string.Empty))
+        .ForMember(dest => dest.CreatedByName, opt => opt.MapFrom(src => src.CreatedBy != null ? src.CreatedBy.UserName : string.Empty))
+        .ForMember(dest => dest.SubFolderCount, opt => opt.MapFrom(src => src.SubFolders != null ? src.SubFolders.Count() : 0))
+        .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0));
+
+
+
+        }
 
     private static string FormatFileSize(long bytes)
     {

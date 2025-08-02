@@ -11,10 +11,13 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { MenuItem } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { FolderPagedResult } from '../../shared/models/folder';
 
 @Component({
   selector: 'app-accueil',
-   schemas:[NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     Breadcrumb,
     CommonModule,
@@ -28,25 +31,40 @@ import { MenuItem } from 'primeng/api';
     FileUploadModule,
     ToastModule,
     // PrimeNG Icons
-   RouterModule,],
+    RouterModule,],
   templateUrl: './accueil.html',
   styleUrl: './accueil.css'
 })
 export class Accueil implements OnInit {
   items: MenuItem[] | undefined;
 
-    home: MenuItem | undefined;
+  home: MenuItem | undefined;
   ngOnInit(): void {
     this.items = [
-            { label: 'Electronics' },
-            { label: 'Computer' },
-            { label: 'Accessories' },
-            { label: 'Keyboard' },
-            { label: 'Wireless' }
-        ];
+      { label: 'Electronics' },
+      { label: 'Computer' },
+      { label: 'Accessories' },
+      { label: 'Keyboard' },
+      { label: 'Wireless' }
+    ];
 
-        this.home = { icon: 'pi pi-home', routerLink: '/' };
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
+    this.getFolders();
+  }
+
+  baseUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) { 
+    
+  }
+  folders: FolderPagedResult= {} as FolderPagedResult;
   
+  getFolders() {
+    this.http.get(`${this.baseUrl}/Folder`).subscribe((response: any) => {
+      this.folders = response.data as FolderPagedResult;
+      console.log('Folders fetched successfully:', response.data);
+      console.log(this.folders);
+    });
   }
 
 }

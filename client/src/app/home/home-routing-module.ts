@@ -11,6 +11,7 @@ const routes: Routes = [
       { path: 'demandes', component: Demandes },
       { path: 'accueil', component: Accueil },
       { path: 'documents', loadComponent: () => import('./documents/documents').then(m => m.Documents) },
+      { path: 'folder/:id', loadComponent: () => import('./folder-details/folder-details').then(m => m.FolderDetails) },
       { path: 'document-search', loadComponent: () => import('./document-recherche/document-recherche').then(m => m.DocumentRecherche) }
     ]
   },
