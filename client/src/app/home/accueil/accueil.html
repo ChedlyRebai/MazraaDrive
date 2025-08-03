@@ -131,12 +131,12 @@
               
                 <div>
                     <label for="name" class="block font-bold mb-3">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="folder.name" required autofocus fluid />
-                    <small class="text-red-500" *ngIf="submitted && !folder.name">Name is required.</small>
+                    <input type="text" pInputText id="name" [(ngModel)]="newFolder.name" required autofocus fluid />
+                    <small class="text-red-500" *ngIf="submitted && !newFolder.name">Name is required.</small>
                 </div>
                 <div>
                     <label for="description" class="block font-bold mb-3">Description</label>
-                    <textarea id="description" pTextarea [(ngModel)]="folder.description" required rows="3" cols="20" fluid></textarea>
+                    <textarea id="description" pTextarea [(ngModel)]="newFolder.description" required rows="3" cols="20" fluid></textarea>
                 </div>
 
               
@@ -148,7 +148,7 @@
 
         <ng-template #footer>
             <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-            <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
+            <p-button label="Save" icon="pi pi-check" (click)="saveFolder()" />
         </ng-template>
     </p-dialog>
      <p-confirmDialog [style]="{ width: '450px' }" />

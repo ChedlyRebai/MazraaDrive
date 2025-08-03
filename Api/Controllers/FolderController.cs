@@ -57,18 +57,47 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<FolderPagedResult>> GetFolderById([FromQuery] FolderFilterDto filter, int id)
+        {
+            try
+            {
+                var pagedFolders = await _unitOfWork.FolderRepository.GetByFolderID(filter, id);
+                var folderDtos = _mapper.Map<IEnumerable<FolderDTO>>(pagedFolders.Data);
+
+                var result = new FolderPagedResult
+                {
+                    Data = folderDtos,
+                    
+                    PageNumber = pagedFolders.PageNumber,
+                    PageSize = pagedFolders.PageSize,
+                    TotalRecords = pagedFolders.TotalRecords,
+                    TotalPages = pagedFolders.TotalPages,
+                    
+                    HasPreviousPage = pagedFolders.HasPreviousPage,
+                    HasNextPage = pagedFolders.HasNextPage,
+                    Search = pagedFolders.Search,
+                    SortBy = pagedFolders.SortBy,
+                    SortDirection = pagedFolders.SortDirection,
+                    TotalFolders = folderDtos.Count(),
+                    TotalDepartments = 10,
+                    TotalDocuments = pagedFolders.Data.Sum(f => f.Documents.Count)
+                };
+               
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<FolderDTO>> GetFolder(int id)
+        public async Task<ActionResult<FolderPagedResult>> GetFolder(int id)
         {
             try
             {
                 var folder = await _unitOfWork.FolderRepository.GetByIdWithDetailsAsync(id);
-                Console.WriteLine($"Retrieved folder: {folder?.Name} with ID: {id}");
-                Console.WriteLine($"Folder has {folder?.Documents.Count} documents and {folder?.SubFolders.Count} subfolders.");
-                Console.WriteLine(folder?.SubFolders);
-                foreach (var item in folder?.SubFolders) {
-                    Console.WriteLine($"Subfolder: {item.Name}");
-                }
                 if (folder == null)
                     return NotFound(new { success = false, message = "Folder not found" });
 
@@ -192,8 +221,8 @@ namespace Api.Controllers
             }
         }
 
+
         [HttpPost]
-        
         public async Task<ActionResult<FolderDTO>> CreateFolder([FromBody] CreateFolderDTO createDto)
         {
             try
@@ -207,6 +236,7 @@ namespace Api.Controllers
 
                 var folder = _mapper.Map<Folder>(createDto);
                 folder.CreatedById = "10";
+                folder.DepartmentId= 10;
 
                 await _unitOfWork.FolderRepository.AddAsync(folder);
                 await _unitOfWork.SaveChangesAsync();
@@ -220,7 +250,6 @@ namespace Api.Controllers
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
-
         // [HttpGet]
         // public async Task<ActionResult<IEnumerable<FolderDTO>>> GetFolders()
         // {

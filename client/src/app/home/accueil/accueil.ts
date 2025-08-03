@@ -72,7 +72,7 @@ import { Product } from '../../admin/doc-req-management/doc-req-management';
     RouterModule,],
   templateUrl: './accueil.html',
   styleUrl: './accueil.css',
-  providers: [ConfirmationService,MessageService  ]
+  providers: [ConfirmationService, MessageService]
 })
 export class Accueil implements OnInit {
   items: MenuItem[] | undefined;
@@ -100,9 +100,9 @@ export class Accueil implements OnInit {
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef,
     private http: HttpClient
-  ) {}
-  folders: FolderPagedResult= {} as FolderPagedResult;
-  
+  ) { }
+  folders: FolderPagedResult = {} as FolderPagedResult;
+
   getFolders() {
     this.http.get(`${this.baseUrl}/Folder`).subscribe((response: any) => {
       this.folders = response.data as FolderPagedResult;
@@ -112,21 +112,21 @@ export class Accueil implements OnInit {
   }
   folderDialog: boolean = false;
   //folders: FolderDTO[] = [] as FolderDTO[];
-  folder: FolderDTO = {} as FolderDTO;
+  newFolder: FolderDTO = {} as FolderDTO;
   selectedFolders: FolderDTO[] | null = null;
   submitted: boolean = false;
   statuses: any[] = [];
-  
+
 
 
   openNew() {
-    this.folder = {} as FolderDTO;
+    this.newFolder = {} as FolderDTO;
     this.submitted = false;
     this.folderDialog = true;
   }
 
   editFolder(folder: FolderDTO) {
-    this.folder = { ...folder };
+    this.newFolder = { ...folder };
     this.folderDialog = true;
   }
 
@@ -155,6 +155,48 @@ export class Accueil implements OnInit {
         // });
       }
     });
+  }
+
+  saveFolder() {
+    //     curl -X 'POST' \
+    //   'http://localhost:5108/api/Folder' \
+    //   -H 'accept: text/plain' \
+    //   -H 'Content-Type: application/json' \
+    //   -d '{
+    //   "name": "string",
+    //   "description": "string",
+
+    //   "createdById": "string",
+    //   "departmentId": 10,
+    //   "isActive": true
+    // }'
+    this.http.post(`${this.baseUrl}/Folder`, this.newFolder).subscribe({
+      next: (response: any) => {
+        console.log('Folder created successfully:', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Folder Created',
+          life: 3000
+        });
+        this.getFolders();
+        this.folderDialog = false;
+        this.newFolder = {} as FolderDTO;
+      },
+      error: (error) => {
+        console.error('Error creating folder:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to create folder',
+          life: 3000
+        });
+      }
+    });
+    this.submitted = true;
+
+
+    console.log('Saving folder:', this.newFolder);
   }
 
   deleteProduct(product: Product) {
@@ -192,56 +234,13 @@ export class Accueil implements OnInit {
   saveProduct() {
     this.submitted = true;
 
-    // if (this.product.name?.trim()) {
-    //   if (this.product.id) {
-    //     // Update existing product
-    //     const index = this.findIndexById(this.product.id);
-    //     if (index !== -1) {
-    //       this.products[index] = this.product;
-    //     }
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'Successful',
-    //       detail: 'Product Updated',
-    //       life: 3000
-    //     });
-    //   } else {
-    //     // Create new product
-    //     this.product.id = this.createId();
-    //     this.product.image = 'product-placeholder.svg';
-    //     this.products.push(this.product);
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'Successful',
-    //       detail: 'Product Created',
-    //       life: 3000
-    //     });
-    //   }
-
-    //   this.products = [...this.products];
-    //   this.folderDialog = false;
-    //   this.product = {};
-    //}
   }
 
- 
 
- 
 
-  
 
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
+
+
 
 
 

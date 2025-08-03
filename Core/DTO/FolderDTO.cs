@@ -45,6 +45,7 @@ public class CreateFolderDTO
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int? ParentFolderId { get; set; }
+    public string CreatedById { get; set; } = string.Empty;
     public int DepartmentId { get; set; }
     public bool IsActive { get; set; } = true;
 }
