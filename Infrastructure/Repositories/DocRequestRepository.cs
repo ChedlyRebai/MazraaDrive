@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class DocumentRequestRepository : GenericRepository<DocumentRequest>, IDocRequestRepository
+public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequestRepository
 {
 private readonly AppDbContext _context;
-    public DocumentRequestRepository(AppDbContext context) : base(context)
+    public DocRequestRepository(AppDbContext context) : base(context)
     {
 
            _context = context ?? throw new ArgumentNullException(nameof(context));
