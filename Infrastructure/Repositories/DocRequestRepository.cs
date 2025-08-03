@@ -8,11 +8,11 @@ namespace Infrastructure.Repositories;
 
 public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequestRepository
 {
-private readonly AppDbContext _context;
+    private readonly AppDbContext _context;
     public DocRequestRepository(AppDbContext context) : base(context)
     {
 
-           _context = context ?? throw new ArgumentNullException(nameof(context));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<PagedResult<DocumentRequest>> GetPagedAsync(DocumentRequestFilterDTO filter)
@@ -70,7 +70,7 @@ private readonly AppDbContext _context;
             query = query.Where(dr =>
                 dr.DocumentType.Contains(filter.Search) ||
                 dr.Description.Contains(filter.Search) ||
-               
+
                 dr.Department.Name.Contains(filter.Search));
         }
 
@@ -106,7 +106,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Department)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .FirstOrDefaultAsync(dr => dr.Id == id );
+            .FirstOrDefaultAsync(dr => dr.Id == id);
     }
 
     public async Task<IEnumerable<DocumentRequest>> GetByRequesterAsync(int requesterId)
@@ -115,7 +115,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Department)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .Where(dr => dr.RequesterId == requesterId )
+            .Where(dr => dr.RequesterId == requesterId)
             .OrderByDescending(dr => dr.RequestedAt)
             .ToListAsync();
     }
@@ -126,7 +126,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Requester)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .Where(dr => dr.DepartmentId == departmentId )
+            .Where(dr => dr.DepartmentId == departmentId)
             .OrderByDescending(dr => dr.RequestedAt)
             .ToListAsync();
     }
@@ -138,7 +138,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Department)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .Where(dr => dr.Status == status )
+            .Where(dr => dr.Status == status)
             .OrderByDescending(dr => dr.RequestedAt)
             .ToListAsync();
     }
@@ -149,7 +149,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Department)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .Where(dr => dr.RequesterId == requesterId )
+            .Where(dr => dr.RequesterId == requesterId)
             .OrderByDescending(dr => dr.RequestedAt);
 
         var totalRecords = await query.CountAsync();
@@ -177,7 +177,7 @@ private readonly AppDbContext _context;
             .Include(dr => dr.Requester)
             .Include(dr => dr.ResponseDocument)
             .Include(dr => dr.ProcessedBy)
-            .Where(dr => dr.DepartmentId == departmentId )
+            .Where(dr => dr.DepartmentId == departmentId)
             .OrderByDescending(dr => dr.RequestedAt);
 
         var totalRecords = await query.CountAsync();
@@ -225,7 +225,7 @@ private readonly AppDbContext _context;
         request.UpdatedAt = DateTime.UtcNow;
 
         await UpdateAsync(request);
-         return true;
+        return true;
     }
 
     public async Task<Dictionary<string, int>> GetRequestStatisticsAsync(int? departmentId = null)

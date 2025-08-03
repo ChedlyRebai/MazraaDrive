@@ -161,12 +161,12 @@ public class MappingProfile : Profile
 
         CreateMap<HomeDto, Folder>();
         CreateMap<Folder, SubFolderDTO>()
-        
+
         .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy))
         .ReverseMap();
 
-        CreateMap<Document ,DocumentDto>()
-            .ForMember(dest => dest.UploadedByName , opt => opt.MapFrom(src => src.UploadedBy != null ? src.UploadedBy.UserName : string.Empty));
+        CreateMap<Document, DocumentDto>()
+            .ForMember(dest => dest.UploadedByName, opt => opt.MapFrom(src => src.UploadedBy != null ? src.UploadedBy.UserName : string.Empty));
 
         CreateMap<Folder, FolderDTO>()
          .ForMember(dest => dest.SubFolders, opt => opt.MapFrom(src => src.SubFolders))
@@ -178,8 +178,30 @@ public class MappingProfile : Profile
         .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.Documents != null ? src.Documents.Count() : 0));
 
 
+        // Add to MappingProfile.cs constructor
+        CreateMap<DocumentRequest, DocumentRequestDTO>()
+            .ForMember(dest => dest.RequesterName, opt => opt.MapFrom(src => src.Requester != null ? src.Requester.UserName : string.Empty))
+            .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : string.Empty))
+            // .ForMember(dest => dest.ResponseDocumentName, opt => opt.MapFrom(src => src.ResponseDocument != null ? src.ResponseDocument. : null))
+            .ForMember(dest => dest.ProcessedByName, opt => opt.MapFrom(src => src.ProcessedBy != null ? src.ProcessedBy.UserName : null));
 
-        }
+        CreateMap<CreateDocumentRequestDTO, DocumentRequest>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Pending"))
+            .ForMember(dest => dest.RequestedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+
+
+        CreateMap<UpdateDocumentRequestDTO, DocumentRequest>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.RequesterId, opt => opt.Ignore())
+            .ForMember(dest => dest.RequestedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+    }
 
     private static string FormatFileSize(long bytes)
     {

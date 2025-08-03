@@ -20,7 +20,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetPagedAsync(filter);
+            var pagedRequests = await _unitOfWork.DocRequestRepository.GetPagedAsync(filter);
             var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
 
             var result = new DocumentRequestPagedResult
@@ -53,7 +53,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var request = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(id);
+            var request = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             if (request == null)
                 return NotFound(new { success = false, message = "Document request not found" });
 
@@ -78,13 +78,13 @@ public class DocumentRequestController : BaseController
             request.RequestedAt = DateTime.UtcNow;
             request.Status = "Pending";
 
-            var success = await _unitOfWork.DocumentRequestRepository.AddAsync(request);
+            var success = await _unitOfWork.DocRequestRepository.AddAsync(request);
             if (!success)
                 return BadRequest(new { success = false, message = "Failed to create document request" });
 
             await _unitOfWork.CompleteAsync();
 
-            var createdRequest = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(request.Id);
+            var createdRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(request.Id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
 
             return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, 
@@ -104,20 +104,20 @@ public class DocumentRequestController : BaseController
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
 
-            var existingRequest = await _unitOfWork.DocumentRequestRepository.GetByIdAsync(id);
+            var existingRequest = await _unitOfWork.DocRequestRepository.GetByIdAsync(id);
             if (existingRequest == null)
                 return NotFound(new { success = false, message = "Document request not found" });
 
             _mapper.Map(updateDto, existingRequest);
             existingRequest.UpdatedAt = DateTime.UtcNow;
 
-            var success = await _unitOfWork.DocumentRequestRepository.UpdateAsync(existingRequest);
+            var success = await _unitOfWork.DocRequestRepository.UpdateAsync(existingRequest);
             if (!success)
                 return BadRequest(new { success = false, message = "Failed to update document request" });
 
             await _unitOfWork.CompleteAsync();
 
-            var updatedRequest = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(id);
+            var updatedRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
 
             return Ok(new { success = true, data = requestDto });
@@ -133,8 +133,8 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var currentUserId = GetCurrentUserId();
-            var success = await _unitOfWork.DocumentRequestRepository.UpdateStatusAsync(id, statusDto.Status, int.Parse(currentUserId));
+            var currentUserId = "10";
+            var success = await _unitOfWork.DocRequestRepository.UpdateStatusAsync(id, statusDto.Status, int.Parse(currentUserId));
             
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
@@ -153,8 +153,8 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var currentUserId = GetCurrentUserId();
-            var success = await _unitOfWork.DocumentRequestRepository.AssignResponseDocumentAsync(
+            var currentUserId = "10";
+            var success = await _unitOfWork.DocRequestRepository.AssignResponseDocumentAsync(
                 id, assignDto.DocumentId, int.Parse(currentUserId));
             
             if (!success)
@@ -174,7 +174,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var success = await _unitOfWork.DocumentRequestRepository.DeleteAsync(id);
+            var success = await _unitOfWork.DocRequestRepository.DeleteAsync(id);
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
 
@@ -193,7 +193,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetByRequesterPagedAsync(requesterId, pagination);
+            var pagedRequests = await _unitOfWork.DocRequestRepository.GetByRequesterPagedAsync(requesterId, pagination);
             var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
 
             var result = requestDtos.ToPagedResult(
@@ -216,7 +216,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetByDepartmentPagedAsync(departmentId, pagination);
+            var pagedRequests = await _unitOfWork.DocRequestRepository.GetByDepartmentPagedAsync(departmentId, pagination);
             var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
 
             var result = requestDtos.ToPagedResult(
@@ -238,7 +238,7 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var statistics = await _unitOfWork.DocumentRequestRepository.GetRequestStatisticsAsync(departmentId);
+            var statistics = await _unitOfWork.DocRequestRepository.GetRequestStatisticsAsync(departmentId);
             return Ok(new { success = true, data = statistics });
         }
         catch (Exception ex)
