@@ -1,14 +1,259 @@
 using AutoMapper;
+using Core.DTO;
+using Core.Entities;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class DocumentRequestController : BaseController
 {
-    public class DocRequestController : BaseController
+    public DocumentRequestController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
-        public DocRequestController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<DocumentRequestPagedResult>> GetDocumentRequests([FromQuery] DocumentRequestFilterDTO filter)
+    {
+        try
         {
+            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetPagedAsync(filter);
+            var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
+
+            var result = new DocumentRequestPagedResult
+            {
+                Data = requestDtos,
+                PageNumber = pagedRequests.PageNumber,
+                PageSize = pagedRequests.PageSize,
+                TotalRecords = pagedRequests.TotalRecords,
+                TotalPages = pagedRequests.TotalPages,
+                HasPreviousPage = pagedRequests.HasPreviousPage,
+                HasNextPage = pagedRequests.HasNextPage,
+                Search = pagedRequests.Search,
+                SortBy = pagedRequests.SortBy,
+                SortDirection = pagedRequests.SortDirection,
+                TotalPendingRequests = requestDtos.Count(r => r.Status == "Pending"),
+                TotalProcessedRequests = requestDtos.Count(r => r.Status == "Completed"),
+                TotalRejectedRequests = requestDtos.Count(r => r.Status == "Rejected")
+            };
+
+            return Ok(new { success = true, data = result });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DocumentRequestDTO>> GetDocumentRequest(int id)
+    {
+        try
+        {
+            var request = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(id);
+            if (request == null)
+                return NotFound(new { success = false, message = "Document request not found" });
+
+            var requestDto = _mapper.Map<DocumentRequestDTO>(request);
+            return Ok(new { success = true, data = requestDto });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<DocumentRequestDTO>> CreateDocumentRequest([FromBody] CreateDocumentRequestDTO createDto)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
+
+            var request = _mapper.Map<DocumentRequest>(createDto);
+            request.RequestedAt = DateTime.UtcNow;
+            request.Status = "Pending";
+
+            var success = await _unitOfWork.DocumentRequestRepository.AddAsync(request);
+            if (!success)
+                return BadRequest(new { success = false, message = "Failed to create document request" });
+
+            await _unitOfWork.CompleteAsync();
+
+            var createdRequest = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(request.Id);
+            var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
+
+            return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, 
+                new { success = true, data = requestDto });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<DocumentRequestDTO>> UpdateDocumentRequest(int id, [FromBody] UpdateDocumentRequestDTO updateDto)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
+
+            var existingRequest = await _unitOfWork.DocumentRequestRepository.GetByIdAsync(id);
+            if (existingRequest == null)
+                return NotFound(new { success = false, message = "Document request not found" });
+
+            _mapper.Map(updateDto, existingRequest);
+            existingRequest.UpdatedAt = DateTime.UtcNow;
+
+            var success = await _unitOfWork.DocumentRequestRepository.UpdateAsync(existingRequest);
+            if (!success)
+                return BadRequest(new { success = false, message = "Failed to update document request" });
+
+            await _unitOfWork.CompleteAsync();
+
+            var updatedRequest = await _unitOfWork.DocumentRequestRepository.GetByIdWithDetailsAsync(id);
+            var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
+
+            return Ok(new { success = true, data = requestDto });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}/status")]
+    public async Task<ActionResult> UpdateRequestStatus(int id, [FromBody] UpdateRequestStatusDTO statusDto)
+    {
+        try
+        {
+            var currentUserId = GetCurrentUserId();
+            var success = await _unitOfWork.DocumentRequestRepository.UpdateStatusAsync(id, statusDto.Status, int.Parse(currentUserId));
+            
+            if (!success)
+                return NotFound(new { success = false, message = "Document request not found" });
+
+            await _unitOfWork.CompleteAsync();
+            return Ok(new { success = true, message = "Status updated successfully" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}/assign-document")]
+    public async Task<ActionResult> AssignResponseDocument(int id, [FromBody] AssignDocumentDTO assignDto)
+    {
+        try
+        {
+            var currentUserId = GetCurrentUserId();
+            var success = await _unitOfWork.DocumentRequestRepository.AssignResponseDocumentAsync(
+                id, assignDto.DocumentId, int.Parse(currentUserId));
+            
+            if (!success)
+                return NotFound(new { success = false, message = "Document request not found" });
+
+            await _unitOfWork.CompleteAsync();
+            return Ok(new { success = true, message = "Response document assigned successfully" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteDocumentRequest(int id)
+    {
+        try
+        {
+            var success = await _unitOfWork.DocumentRequestRepository.DeleteAsync(id);
+            if (!success)
+                return NotFound(new { success = false, message = "Document request not found" });
+
+            await _unitOfWork.CompleteAsync();
+            return Ok(new { success = true, message = "Document request deleted successfully" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpGet("requester/{requesterId}")]
+    public async Task<ActionResult<PagedResult<DocumentRequestDTO>>> GetRequestsByRequester(
+        int requesterId, [FromQuery] PaginationParams pagination)
+    {
+        try
+        {
+            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetByRequesterPagedAsync(requesterId, pagination);
+            var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
+
+            var result = requestDtos.ToPagedResult(
+                pagedRequests.PageNumber,
+                pagedRequests.PageSize,
+                pagedRequests.TotalRecords
+            );
+
+            return Ok(new { success = true, data = result });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpGet("department/{departmentId}")]
+    public async Task<ActionResult<PagedResult<DocumentRequestDTO>>> GetRequestsByDepartment(
+        int departmentId, [FromQuery] PaginationParams pagination)
+    {
+        try
+        {
+            var pagedRequests = await _unitOfWork.DocumentRequestRepository.GetByDepartmentPagedAsync(departmentId, pagination);
+            var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
+
+            var result = requestDtos.ToPagedResult(
+                pagedRequests.PageNumber,
+                pagedRequests.PageSize,
+                pagedRequests.TotalRecords
+            );
+
+            return Ok(new { success = true, data = result });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpGet("statistics")]
+    public async Task<ActionResult> GetRequestStatistics([FromQuery] int? departmentId = null)
+    {
+        try
+        {
+            var statistics = await _unitOfWork.DocumentRequestRepository.GetRequestStatisticsAsync(departmentId);
+            return Ok(new { success = true, data = statistics });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
+}
+
+public class UpdateRequestStatusDTO
+{
+    public string Status { get; set; } = string.Empty;
+}
+
+public class AssignDocumentDTO
+{
+    public int DocumentId { get; set; }
 }

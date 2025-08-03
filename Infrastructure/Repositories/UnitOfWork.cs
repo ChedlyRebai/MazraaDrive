@@ -58,7 +58,8 @@ public class UnitOfWork : IUnitOfWork
         IRoleRepository roleRepository,
         IHomeRepository homeRepository,
         IDocument documentRepository,
-        IUserRepository userRepository
+        IUserRepository userRepository,
+        IDocRequestRepository docRequestRepository
         //IConnectionMultiplexer redis, 
         // UserManager<AppUser> userManager,
         // SignInManager<AppUser> signInManager,
@@ -82,6 +83,7 @@ public class UnitOfWork : IUnitOfWork
         PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
         Auth = auth ?? throw new ArgumentNullException(nameof(auth));
         HomeRepository = homeRepository ?? throw new ArgumentNullException(nameof(homeRepository));
+        DocRequestRepository = docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
         //_redis = redis;
         //_userManager = userManager;
         // _signInManager = signInManager;
