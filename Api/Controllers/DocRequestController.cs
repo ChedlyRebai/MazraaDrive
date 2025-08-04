@@ -78,11 +78,11 @@ public class DocumentRequestController : BaseController
             request.RequestedAt = DateTime.UtcNow;
             request.Status = "Pending";
 
-            var success = await _unitOfWork.DocRequestRepository.AddAsync(request);
-            if (!success)
-                return BadRequest(new { success = false, message = "Failed to create document request" });
+            await _unitOfWork.DocRequestRepository.AddAsync(request);
+            // if (!success)
+            //     return BadRequest(new { success = false, message = "Failed to create document request" });
 
-            await _unitOfWork.CompleteAsync();
+            // await _unitOfWork.CompleteAsync();
 
             var createdRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(request.Id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
@@ -111,11 +111,11 @@ public class DocumentRequestController : BaseController
             _mapper.Map(updateDto, existingRequest);
             existingRequest.UpdatedAt = DateTime.UtcNow;
 
-            var success = await _unitOfWork.DocRequestRepository.UpdateAsync(existingRequest);
-            if (!success)
-                return BadRequest(new { success = false, message = "Failed to update document request" });
+            await _unitOfWork.DocRequestRepository.UpdateAsync(existingRequest);
+            // if (!success)
+            //     return BadRequest(new { success = false, message = "Failed to update document request" });
 
-            await _unitOfWork.CompleteAsync();
+           // await _unitOfWork.CompleteAsync();
 
             var updatedRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
@@ -134,12 +134,12 @@ public class DocumentRequestController : BaseController
         try
         {
             var currentUserId = "10";
-            var success = await _unitOfWork.DocRequestRepository.UpdateStatusAsync(id, statusDto.Status, int.Parse(currentUserId));
+            var success = await _unitOfWork.DocRequestRepository.UpdateStatusAsync(id, statusDto.Status, currentUserId);
             
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
 
-            await _unitOfWork.CompleteAsync();
+           // await _unitOfWork.CompleteAsync();
             return Ok(new { success = true, message = "Status updated successfully" });
         }
         catch (Exception ex)
@@ -155,12 +155,12 @@ public class DocumentRequestController : BaseController
         {
             var currentUserId = "10";
             var success = await _unitOfWork.DocRequestRepository.AssignResponseDocumentAsync(
-                id, assignDto.DocumentId, int.Parse(currentUserId));
+                id, assignDto.DocumentId, currentUserId);
             
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
 
-            await _unitOfWork.CompleteAsync();
+          //  await _unitOfWork.CompleteAsync();
             return Ok(new { success = true, message = "Response document assigned successfully" });
         }
         catch (Exception ex)
@@ -174,11 +174,11 @@ public class DocumentRequestController : BaseController
     {
         try
         {
-            var success = await _unitOfWork.DocRequestRepository.DeleteAsync(id);
-            if (!success)
-                return NotFound(new { success = false, message = "Document request not found" });
+            await _unitOfWork.DocRequestRepository.DeleteAsync(id);
+            // if (!success)
+            //     return NotFound(new { success = false, message = "Document request not found" });
 
-            await _unitOfWork.CompleteAsync();
+            // await _unitOfWork.CompleteAsync();
             return Ok(new { success = true, message = "Document request deleted successfully" });
         }
         catch (Exception ex)
@@ -189,7 +189,7 @@ public class DocumentRequestController : BaseController
 
     [HttpGet("requester/{requesterId}")]
     public async Task<ActionResult<PagedResult<DocumentRequestDTO>>> GetRequestsByRequester(
-        int requesterId, [FromQuery] PaginationParams pagination)
+        string requesterId, [FromQuery] PaginationParams pagination)
     {
         try
         {

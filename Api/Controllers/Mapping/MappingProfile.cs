@@ -34,7 +34,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AccessRights, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedFolders, opt => opt.Ignore())
             .ForMember(dest => dest.UploadedDocuments, opt => opt.Ignore())
-            .ForMember(dest => dest.DocumentRequests, opt => opt.Ignore())
+            //.ForMember(dest => dest.DocumentRequests, opt => opt.Ignore())
             .ForMember(dest => dest.AuditLogs, opt => opt.Ignore())
 
             // Identity properties
@@ -59,7 +59,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AccessRights, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedFolders, opt => opt.Ignore())
             .ForMember(dest => dest.UploadedDocuments, opt => opt.Ignore())
-            .ForMember(dest => dest.DocumentRequests, opt => opt.Ignore())
+            //.ForMember(dest => dest.DocumentRequests, opt => opt.Ignore())
             .ForMember(dest => dest.AuditLogs, opt => opt.Ignore())
             // Identity properties
             .ForMember(dest => dest.SecurityStamp, opt => opt.Ignore())

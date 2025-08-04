@@ -1,19 +1,30 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities;
 
-using System.ComponentModel.DataAnnotations;
-
 public class DocumentRequest : BaseEntity<int>
 {
-
-    public int RequesterId { get; set; }
-
+    [ForeignKey("Requester")]
+    public string RequesterId { get; set; }
 
     public int DepartmentId { get; set; }
-    public string DocumentType { get; set; }
-    public string Description { get; set; }
-    public string Priority { get; set; }
+    
+    [Required]
+    [MaxLength(100)]
+    public string DocumentType { get; set; } = string.Empty;
+    
+    [Required]
+    [MaxLength(500)]
+    public string Description { get; set; } = string.Empty;
+    
+    [Required]
+    [MaxLength(20)]
+    public string Priority { get; set; } = "Normal";
+    
+    [Required]
+    [MaxLength(20)]
     public string Status { get; set; } = "Pending";
 
     public int? ResponseDocumentId { get; set; }
@@ -22,11 +33,12 @@ public class DocumentRequest : BaseEntity<int>
 
     public DateTime? RespondedAt { get; set; }
 
-    // Navigation properties
-    public AppUser Requester { get; set; }
-    public Department Department { get; set; }
-    public Document ResponseDocument { get; set; }
+    [ForeignKey("ProcessedBy")]
+    public string? ProcessedById { get; set; }
 
-    public int? ProcessedById { get; set; }
+    // Navigation properties
+    public AppUser Requester { get; set; } = null!;
+    public Department Department { get; set; } = null!;
+    public Document? ResponseDocument { get; set; }
     public AppUser? ProcessedBy { get; set; }
 }

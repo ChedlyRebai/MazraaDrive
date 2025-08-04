@@ -25,10 +25,10 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
             .AsQueryable();
 
         // Apply filters
-        if (filter.RequesterId.HasValue)
-        {
-            query = query.Where(dr => dr.RequesterId == filter.RequesterId.Value);
-        }
+        // if (filter.RequesterId.HasValue)
+        // {
+        //     query = query.Where(dr => dr.RequesterId == filter.RequesterId.Value);
+        // }
 
         if (filter.DepartmentId.HasValue)
         {
@@ -60,10 +60,10 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
             query = query.Where(dr => dr.RequestedAt <= filter.RequestedTo.Value);
         }
 
-        if (filter.ProcessedById.HasValue)
-        {
-            query = query.Where(dr => dr.ProcessedById == filter.ProcessedById.Value);
-        }
+        // if (filter.ProcessedById.has)
+        // {
+        //     query = query.Where(dr => dr.ProcessedById == filter.ProcessedById);
+        // }
 
         if (!string.IsNullOrEmpty(filter.Search))
         {
@@ -109,7 +109,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
             .FirstOrDefaultAsync(dr => dr.Id == id);
     }
 
-    public async Task<IEnumerable<DocumentRequest>> GetByRequesterAsync(int requesterId)
+    public async Task<IEnumerable<DocumentRequest>> GetByRequesterAsync(string requesterId)
     {
         return await _context.DocumentRequests
             .Include(dr => dr.Department)
@@ -143,7 +143,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
             .ToListAsync();
     }
 
-    public async Task<PagedResult<DocumentRequest>> GetByRequesterPagedAsync(int requesterId, PaginationParams pagination)
+    public async Task<PagedResult<DocumentRequest>> GetByRequesterPagedAsync(string requesterId, PaginationParams pagination)
     {
         var query = _context.DocumentRequests
             .Include(dr => dr.Department)
@@ -199,7 +199,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
         };
     }
 
-    public async Task<bool> UpdateStatusAsync(int id, string status, int? processedById = null)
+    public async Task<bool> UpdateStatusAsync(int id, string status, string? processedById = null)
     {
         var request = await GetByIdAsync(id);
         if (request == null) return false;
@@ -213,7 +213,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
         return true;
     }
 
-    public async Task<bool> AssignResponseDocumentAsync(int id, int responseDocumentId, int processedById)
+    public async Task<bool> AssignResponseDocumentAsync(int id, int responseDocumentId, string? processedById = null)
     {
         var request = await GetByIdAsync(id);
         if (request == null) return false;

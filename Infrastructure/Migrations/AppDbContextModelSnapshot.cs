@@ -329,25 +329,35 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("DepartmentId1")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("DocumentId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("DocumentType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Priority")
                         .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("ProcessedById")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("RequesterId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RequesterId1")
+                    b.Property<string>("RequesterId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("RespondedAt")
@@ -358,7 +368,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -367,7 +378,13 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("RequesterId1");
+                    b.HasIndex("DepartmentId1");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("ProcessedById");
+
+                    b.HasIndex("RequesterId");
 
                     b.HasIndex("ResponseDocumentId");
 
@@ -782,20 +799,38 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.DocumentRequest", b =>
                 {
                     b.HasOne("Core.Entities.Department", "Department")
-                        .WithMany("DocumentRequests")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.AppUser", "Requester")
+                    b.HasOne("Core.Entities.Department", null)
                         .WithMany("DocumentRequests")
-                        .HasForeignKey("RequesterId1");
+                        .HasForeignKey("DepartmentId1");
+
+                    b.HasOne("Core.Entities.Document", null)
+                        .WithMany("DocumentRequests")
+                        .HasForeignKey("DocumentId");
+
+                    b.HasOne("Core.Entities.AppUser", "ProcessedBy")
+                        .WithMany("ProcessedDocuments")
+                        .HasForeignKey("ProcessedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Core.Entities.AppUser", "Requester")
+                        .WithMany("RequestedDocuments")
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Core.Entities.Document", "ResponseDocument")
-                        .WithMany("DocumentRequests")
-                        .HasForeignKey("ResponseDocumentId");
+                        .WithMany()
+                        .HasForeignKey("ResponseDocumentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
+
+                    b.Navigation("ProcessedBy");
 
                     b.Navigation("Requester");
 
@@ -943,9 +978,11 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("CreatedFolders");
 
-                    b.Navigation("DocumentRequests");
-
                     b.Navigation("MailFolders");
+
+                    b.Navigation("ProcessedDocuments");
+
+                    b.Navigation("RequestedDocuments");
 
                     b.Navigation("UploadedDocuments");
                 });
