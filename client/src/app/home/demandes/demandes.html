@@ -225,7 +225,7 @@
     <div class="col-span-12">
       <label
         for="documentType"
-        class="text-surface-900 dark:text-surface-0 font-semibold"
+        class="text-surface-900 font-semibold"
       >
         Type de Document
       </label>
@@ -247,7 +247,7 @@
     <div class="col-span-12">
       <label
         for="priority"
-        class="text-surface-900 dark:text-surface-0 font-semibold"
+        class="text-surface-900  font-semibold"
       >
         Priorité
       </label>
@@ -264,7 +264,7 @@
     <div class="col-span-12">
       <label
         for="description"
-        class="text-surface-900 dark:text-surface-0 font-semibold"
+        class="text-surface-900  font-semibold"
       >
         Description
       </label>
@@ -503,6 +503,494 @@
     <div *ngIf="!selectedRequest" class="flex justify-center items-center py-8">
       <i class="pi pi-spin pi-spinner text-2xl"></i>
       <span class="ml-2">Chargement des détails...</span>
+    </div>
+  </p-dialog>
+</div>
+
+
+
+
+
+
+
+
+<!-- Enhanced Create Request Dialog -->
+<div class="card flex justify-center">
+  <p-dialog
+    header="Nouvelle Demande de Document"
+    [modal]="true"
+    [(visible)]="createDialog"
+    [style]="{ width: '50rem' }"
+    [closable]="true"
+  >
+    <div class="flex flex-col gap-6">
+      <!-- Header Info -->
+      <div class="bg-blue-50 rounded-lg p-4">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-file-plus text-3xl text-blue-500"></i>
+          <div>
+            <h4 class="text-lg font-semibold m-0">Créer une nouvelle demande</h4>
+            <p class="text-sm text-gray-600 m-0">
+              Remplissez les informations ci-dessous pour soumettre votre demande
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="grid grid-cols-12 gap-6">
+        <!-- Left Column -->
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-4">
+            <!-- Document Type -->
+            <div>
+              <label for="documentType" class="block text-sm font-medium mb-2">
+                <i class="pi pi-file mr-2"></i>
+                Type de Document *
+              </label>
+              <p-dropdown
+                id="documentType"
+                [(ngModel)]="newRequest.documentType"
+                [options]="documentTypes"
+                placeholder="Sélectionner le type de document"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                [style]="{ height: '3rem' }"
+                [showClear]="true"
+              />
+              <small class="text-gray-500">
+                Choisissez le type de document que vous souhaitez demander
+              </small>
+            </div>
+
+            <!-- Priority -->
+            <div>
+              <label for="priority" class="block text-sm font-medium mb-2">
+                <i class="pi pi-flag mr-2"></i>
+                Priorité *
+              </label>
+              <p-dropdown
+                id="priority"
+                [(ngModel)]="newRequest.priority"
+                [options]="priorityOptions"
+                placeholder="Sélectionner la priorité"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                [style]="{ height: '3rem' }"
+              />
+              <small class="text-gray-500">
+                Indiquez le niveau d'urgence de votre demande
+              </small>
+            </div>
+
+            <!-- Department -->
+            <div>
+              <label for="department" class="block text-sm font-medium mb-2">
+                <i class="pi pi-building mr-2"></i>
+                Département *
+              </label>
+              <p-dropdown
+                id="department"
+                [(ngModel)]="newRequest.departmentId"
+                [options]="departments"
+                placeholder="Sélectionner le département"
+                optionLabel="name"
+                optionValue="id"
+                class="w-full"
+                [style]="{ height: '3rem' }"
+              />
+              <small class="text-gray-500">
+                Département concerné par la demande
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-4">
+            <!-- Description -->
+            <div>
+              <label for="description" class="block text-sm font-medium mb-2">
+                <i class="pi pi-align-left mr-2"></i>
+                Description détaillée *
+              </label>
+              <textarea
+                id="description"
+                pInputTextarea
+                [(ngModel)]="newRequest.description"
+                placeholder="Décrivez précisément votre demande..."
+                rows="8"
+                class="w-full"
+                [style]="{ resize: 'vertical', minHeight: '160px' }"
+                maxlength="500"
+              ></textarea>
+              <div class="flex justify-between items-center mt-1">
+                <small class="text-gray-500">
+                  Soyez aussi précis que possible dans votre description
+                </small>
+                <small class="text-gray-400">
+                  {{ (newRequest.description || '').length }}/500
+                </small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Form Summary/Preview -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h5 class="font-semibold mb-3 flex items-center gap-2">
+          <i class="pi pi-eye text-purple-500"></i>
+          Aperçu de votre demande
+        </h5>
+        <div class="grid grid-cols-12 gap-2 text-sm">
+          <div class="col-span-12 md:col-span-6">
+            <p><strong>Type:</strong> {{ newRequest.documentType || 'Non sélectionné' }}</p>
+            <p><strong>Priorité:</strong>
+              <p-tag
+                *ngIf="newRequest.priority"
+                [value]="newRequest.priority"
+                [severity]="getPrioritySeverity(newRequest.priority)"
+                class="ml-2"
+              />
+              <span *ngIf="!newRequest.priority" class="text-gray-400">Non sélectionnée</span>
+            </p>
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <p><strong>Département:</strong> {{ getDepartmentName(newRequest.departmentId) || 'Non sélectionné' }}</p>
+          </div>
+          <div class="col-span-12" *ngIf="newRequest.description">
+            <p><strong>Description:</strong></p>
+            <p class="text-gray-600 mt-1">{{ (newRequest.description || '') | slice:0:100 }}{{ (newRequest.description || '').length > 100 ? '...' : '' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Validation Messages -->
+      <div *ngIf="validationErrors.length > 0" class="bg-red-50 border border-red-200 rounded-lg p-3">
+        <h6 class="font-semibold text-red-800 mb-2 flex items-center gap-2">
+          <i class="pi pi-exclamation-triangle"></i>
+          Erreurs de validation
+        </h6>
+        <ul class="list-disc list-inside text-sm text-red-700">
+          <li *ngFor="let error of validationErrors">{{ error }}</li>
+        </ul>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-between items-center pt-4 border-t">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <i class="pi pi-info-circle"></i>
+          <span>Tous les champs marqués d'un * sont obligatoires</span>
+        </div>
+
+        <div class="flex gap-2">
+          <p-button
+            label="Annuler"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            (click)="cancelCreate()"
+          />
+          <p-button
+            label="Réinitialiser"
+            icon="pi pi-refresh"
+            severity="help"
+            [outlined]="true"
+            (click)="resetForm()"
+          />
+          <p-button
+            label="Créer la Demande"
+            icon="pi pi-send"
+            severity="success"
+            (click)="createRequest()"
+            [loading]="creatingRequest"
+            [disabled]="!isFormValid()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="creatingRequest" class="absolute inset-0 bg-white/50 flex justify-center items-center rounded-lg">
+      <div class="text-center">
+        <i class="pi pi-spin pi-spinner text-2xl text-blue-500"></i>
+        <p class="mt-2 text-sm">Création de la demande en cours...</p>
+      </div>
+    </div>
+  </p-dialog>
+</div>
+
+
+
+
+<!-- Response Dialog -->
+<div class="card flex justify-center">
+  <p-dialog
+    header="Répondre à la Demande"
+    [modal]="true"
+    [(visible)]="responseDialog"
+    [style]="{ width: '60rem' }"
+    [closable]="true"
+  >
+    <div class="flex flex-col gap-6" *ngIf="selectedRequest">
+      <!-- Request Summary -->
+      <div class="bg-gray-50  rounded-lg p-4">
+        <h4 class="font-semibold mb-3 flex items-center gap-2">
+          <i class="pi pi-info-circle text-blue-500"></i>
+          Résumé de la Demande
+        </h4>
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-12 md:col-span-6">
+            <div class="flex flex-col gap-2 text-sm">
+              <div class="flex justify-between">
+                <span class="font-medium">Demandeur:</span>
+                <span>{{ selectedRequest.requesterName }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Type:</span>
+                <span>{{ selectedRequest.documentType }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Priorité:</span>
+                <p-tag
+                  [value]="selectedRequest.priority"
+                  [severity]="getPrioritySeverity(selectedRequest.priority)"
+                  class="text-xs"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <div class="flex flex-col gap-2 text-sm">
+              <div class="flex justify-between">
+                <span class="font-medium">Département:</span>
+                <span>{{ selectedRequest.departmentName }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Date demande:</span>
+                <span>{{ selectedRequest.requestedAt | date: 'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Demande #:</span>
+                <span>{{ selectedRequest.id }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12">
+            <div class="mt-2">
+              <span class="font-medium text-sm">Description:</span>
+              <p class="text-sm text-gray-600  mt-1">
+                {{ selectedRequest.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Response Form -->
+      <div class="grid grid-cols-12 gap-6">
+        <!-- Left Column - Response Details -->
+        <div class="col-span-12 md:col-span-8">
+          <div class="flex flex-col gap-4">
+            <!-- Response Status -->
+            <div>
+              <label for="responseStatus" class="block text-sm font-medium mb-2">
+                <i class="pi pi-flag mr-2"></i>
+                Statut de la Réponse *
+              </label>
+              <p-dropdown
+                id="responseStatus"
+                [(ngModel)]="responseForm.status"
+                [options]="responseStatuses"
+                placeholder="Sélectionner un statut"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                [style]="{ height: '3rem' }"
+              />
+            </div>
+
+            <!-- Response Message -->
+            <div>
+              <label for="responseMessage" class="block text-sm font-medium mb-2">
+                <i class="pi pi-comment mr-2"></i>
+                Message de Réponse *
+              </label>
+              <textarea
+                id="responseMessage"
+                pInputTextarea
+                [(ngModel)]="responseForm.message"
+                placeholder="Saisir votre réponse détaillée..."
+                rows="6"
+                class="w-full"
+                [style]="{ resize: 'vertical', minHeight: '120px' }"
+              ></textarea>
+              <small class="text-gray-500">
+                Fournissez une explication claire de votre réponse
+              </small>
+            </div>
+
+            <!-- Additional Notes -->
+
+          </div>
+        </div>
+
+        <!-- Right Column - Document Upload -->
+        <div class="col-span-12 md:col-span-4">
+          <div class="border rounded-lg p-4 h-fit">
+            <h5 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-upload text-green-500"></i>
+              Document de Réponse
+            </h5>
+
+            <!-- File Upload -->
+            <p-fileUpload
+              #fileUpload
+              mode="basic"
+              name="responseDocument"
+              [url]="uploadUrl"
+              accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+              [maxFileSize]="10000000"
+              [auto]="false"
+              chooseLabel="Choisir un fichier"
+              class="mb-3"
+              (onSelect)="onFileSelect($event)"
+              (onUpload)="onFileUpload($event)"
+              (onError)="onFileError($event)"
+            />
+
+            <small class="text-gray-500 block mb-3">
+              Formats acceptés: PDF, DOC, DOCX, TXT, JPG, PNG (Max: 10MB)
+            </small>
+
+            <!-- Selected File Info -->
+            <div *ngIf="selectedFile" class="bg-blue-50  p-3 rounded border">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-file text-blue-500"></i>
+                <div class="flex-1">
+                  <p class="text-sm font-medium">{{ selectedFile.name }}</p>
+                  <p class="text-xs text-gray-500">{{ formatFileSize(selectedFile.size) }}</p>
+                </div>
+                <p-button
+                  icon="pi pi-times"
+                  severity="danger"
+                  [outlined]="true"
+                  size="small"
+                  (click)="removeSelectedFile()"
+                />
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="mt-4">
+              <h6 class="font-medium mb-2">Actions Rapides</h6>
+              <div class="flex flex-col gap-2">
+                <p-button
+                  label="Approuver"
+                  icon="pi pi-check"
+                  severity="success"
+                  size="small"
+                  [outlined]="true"
+                  (click)="quickApprove()"
+                />
+                <p-button
+                  label="Rejeter"
+                  icon="pi pi-times"
+                  severity="danger"
+                  size="small"
+                  [outlined]="true"
+                  (click)="quickReject()"
+                />
+                <p-button
+                  label="Demander Info"
+                  icon="pi pi-question-circle"
+
+                  size="small"
+                  [outlined]="true"
+                  (click)="requestMoreInfo()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Preview Section -->
+      <div class=" pt-4">
+        <h5 class="font-semibold mb-3 flex items-center gap-2">
+          <i class="pi pi-eye text-gray-500"></i>
+          Aperçu de la Réponse
+        </h5>
+        <div class="bg-gray-50 p-4 rounded border">
+          <div class="text-sm">
+            <p><strong>Statut:</strong>
+              <p-tag
+                [value]="responseForm.status || 'Non défini'"
+                [severity]="getResponseStatusSeverity(responseForm.status)"
+                class="ml-2"
+              />
+            </p>
+            <p class="mt-2"><strong>Message:</strong></p>
+            <p class="text-gray-600  mt-1"
+               [innerHTML]="responseForm.message || 'Aucun message saisi'">
+            </p>
+            <p class="mt-2" *ngIf="responseForm.notes">
+              <strong>Notes:</strong> {{ responseForm.notes }}
+            </p>
+            <p class="mt-2" *ngIf="selectedFile">
+              <strong>Document joint:</strong> {{ selectedFile.name }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-between items-center pt-4 border-t">
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <i class="pi pi-info-circle"></i>
+          <span>La réponse sera envoyée automatiquement au demandeur</span>
+        </div>
+
+        <div class="flex gap-2">
+          <p-button
+            label="Annuler"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            (click)="cancelResponse()"
+          />
+          <p-button
+            label="Sauvegarder Brouillon"
+            icon="pi pi-save"
+            severity="help"
+            [outlined]="true"
+            (click)="saveDraft()"
+          />
+          <p-button
+            label="Envoyer Réponse"
+            icon="pi pi-send"
+            severity="success"
+            (click)="sendResponse()"
+            [loading]="sendingResponse"
+            [disabled]="!isResponseValid()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="!selectedRequest" class="flex justify-center items-center py-8">
+      <i class="pi pi-spin pi-spinner text-2xl"></i>
+      <span class="ml-2">Chargement...</span>
     </div>
   </p-dialog>
 </div>

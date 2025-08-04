@@ -58,7 +58,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CustomerService } from './customerservice';
-import { DocumentRequestDTO } from '../../shared/models/docrequest';
+import { CreateDocumentRequestDTO, DocumentRequestDTO } from '../../shared/models/docrequest';
 import { DocumentPagedResult } from '../../shared/models/document';
 import { environment } from '../../../environments/environment';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -135,7 +135,7 @@ export class Demandes implements OnInit {
   selectedCustomers!: Customer[];
 
   representatives!: Representative[];
-  newRequest: DocumentRequestDTO = {} as DocumentRequestDTO;
+  newRequest: CreateDocumentRequestDTO = {} as CreateDocumentRequestDTO;
 
   text: string | undefined;
   loading: boolean = true;
@@ -468,10 +468,7 @@ export class Demandes implements OnInit {
     this.visible = false;
   }
 
-  respondToRequest(demande: any) {
-    // Handle response logic
-    console.log('Responding to:', demande);
-  }
+
   detailsDialog: boolean = false;
   resquestDetails(demande: any) {
     // Handle request details logic
@@ -527,11 +524,7 @@ export class Demandes implements OnInit {
   }
 
 
-  createRequest() {
-    // Handle create logic
-    console.log('Creating request:', this.newRequest);
-    this.hideDialog();
-  }
+
 
   getSeverity(status: string) {
     switch (status) {
@@ -603,4 +596,334 @@ getPrioritySeverity(priority: string) {
       return 'info';
   }
 }
+
+
+// Add these properties to your component
+responseDialog = false;
+sendingResponse = false;
+selectedFile: File | null = null;
+uploadUrl = 'http://localhost:5108/api/DocumentRequest/upload-response';
+
+responseForm = {
+  status: '',
+  message: '',
+  notes: '',
+  followUpPriority: 'Normal',
+  followUpDate: null as Date | null
+};
+
+responseStatuses = [
+  { label: 'Approuvé', value: 'Approved' },
+  { label: 'Rejeté', value: 'Rejected' },
+  { label: 'En attente d\'informations', value: 'Pending_Info' },
+  { label: 'En cours de traitement', value: 'Processing' },
+  { label: 'Complété', value: 'Completed' }
+];
+
+// Update the respondToRequest method
+respondToRequest(request: DocumentRequestDTO) {
+  this.selectedRequest = request;
+  this.responseDialog = true;
+  this.resetResponseForm();
 }
+
+// Add these new methods
+resetResponseForm() {
+  this.responseForm = {
+    status: '',
+    message: '',
+    notes: '',
+    followUpPriority: 'Normal',
+    followUpDate: null
+  };
+  this.selectedFile = null;
+}
+
+onFileSelect(event: any) {
+  this.selectedFile = event.files[0];
+}
+
+onFileUpload(event: any) {
+  console.log('File uploaded:', event);
+  this.messageService.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: 'File uploaded successfully'
+  });
+}
+
+onFileError(event: any) {
+  console.error('File upload error:', event);
+  this.messageService.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: 'File upload failed'
+  });
+}
+
+removeSelectedFile() {
+  this.selectedFile = null;
+}
+
+formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+quickApprove() {
+  this.responseForm.status = 'Approved';
+  this.responseForm.message = 'Votre demande a été approuvée. Vous pouvez procéder comme prévu.';
+}
+
+quickReject() {
+  this.responseForm.status = 'Rejected';
+  this.responseForm.message = 'Votre demande a été rejetée. Veuillez consulter les notes pour plus de détails.';
+}
+
+requestMoreInfo() {
+  this.responseForm.status = 'Pending_Info';
+  this.responseForm.message = 'Nous avons besoin d\'informations supplémentaires pour traiter votre demande. Veuillez nous contacter.';
+}
+
+getResponseStatusSeverity(status: string) {
+  switch (status) {
+    case 'Approved':
+    case 'Completed':
+      return 'success';
+    case 'Rejected':
+      return 'danger';
+    case 'Pending_Info':
+    case 'Processing':
+      return 'warning';
+    default:
+      return 'info';
+  }
+}
+
+isResponseValid(): boolean {
+  return !!(this.responseForm.status && this.responseForm.message.trim());
+}
+
+cancelResponse() {
+  this.responseDialog = false;
+  this.resetResponseForm();
+}
+
+saveDraft() {
+  // Implement save draft logic
+  console.log('Saving draft:', this.responseForm);
+  this.messageService.add({
+    severity: 'info',
+    summary: 'Brouillon Sauvegardé',
+    detail: 'Votre brouillon a été sauvegardé'
+  });
+}
+
+sendResponse() {
+  if (!this.isResponseValid()) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Validation',
+      detail: 'Veuillez remplir tous les champs requis'
+    });
+    return;
+  }
+
+  this.sendingResponse = true;
+
+  // Create the response data
+  const responseData = {
+    requestId: this.selectedRequest?.id,
+    status: this.responseForm.status,
+    message: this.responseForm.message,
+    notes: this.responseForm.notes,
+    followUpPriority: this.responseForm.followUpPriority,
+    followUpDate: this.responseForm.followUpDate,
+    hasDocument: !!this.selectedFile
+  };
+
+  // Simulate API call
+  setTimeout(() => {
+    console.log('Sending response:', responseData);
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Réponse Envoyée',
+      detail: 'Votre réponse a été envoyée avec succès'
+    });
+
+    this.sendingResponse = false;
+    this.responseDialog = false;
+    this.resetResponseForm();
+
+    // Refresh the data
+    this.loadDocumentRequests();
+  }, 2000);
+}
+
+
+
+// Add these properties to your component
+creatingRequest = false;
+validationErrors: string[] = [];
+minDate = new Date(); // Today's date
+
+documentTypes = [
+  { label: 'Certificat de travail', value: 'employment_certificate' },
+  { label: 'Attestation de salaire', value: 'salary_certificate' },
+  { label: 'Congé annuel', value: 'annual_leave' },
+  { label: 'Congé maladie', value: 'sick_leave' },
+  { label: 'Rapport mensuel', value: 'monthly_report' },
+  { label: 'Facture', value: 'invoice' },
+  { label: 'Contrat', value: 'contract' },
+  { label: 'Autre', value: 'other' }
+];
+
+priorityOptions = [
+  { label: 'Faible', value: 'Low' },
+  { label: 'Normale', value: 'Normal' },
+  { label: 'Élevée', value: 'High' },
+  { label: 'Urgente', value: 'Urgent' }
+];
+
+departments = [
+  { id: 1, name: 'Ressources Humaines' },
+  { id: 2, name: 'Finance' },
+  { id: 3, name: 'IT' },
+  { id: 4, name: 'Marketing' },
+  { id: 5, name: 'Opérations' }
+];
+
+contactMethods = [
+  { label: 'Email', value: 'email' },
+  { label: 'Téléphone', value: 'phone' },
+  { label: 'SMS', value: 'sms' },
+  { label: 'En personne', value: 'in_person' }
+];
+
+// Enhanced newRequest object
+
+
+// Enhanced methods
+isFormValid(): boolean {
+  return !!(
+    this.newRequest.documentType &&
+    this.newRequest.priority &&
+    this.newRequest.description?.trim() &&
+    this.newRequest.departmentId
+  );
+}
+
+validateForm(): boolean {
+  this.validationErrors = [];
+
+  if (!this.newRequest.documentType) {
+    this.validationErrors.push('Le type de document est obligatoire');
+  }
+
+  if (!this.newRequest.priority) {
+    this.validationErrors.push('La priorité est obligatoire');
+  }
+
+  if (!this.newRequest.description?.trim()) {
+    this.validationErrors.push('La description est obligatoire');
+  } else if (this.newRequest.description.length < 10) {
+    this.validationErrors.push('La description doit contenir au moins 10 caractères');
+  }
+
+  if (!this.newRequest.departmentId) {
+    this.validationErrors.push('Le département est obligatoire');
+  }
+
+  return this.validationErrors.length === 0;
+}
+
+getDepartmentName(departmentId: number | null): string {
+  if (!departmentId) return '';
+  const dept = this.departments.find(d => d.id === departmentId);
+  return dept ? dept.name : '';
+}
+
+resetForm() {
+  this.newRequest = {
+    documentType: '',
+    priority: 'Normal',
+    description: '',
+    departmentId: 10,
+    requesterId:"10"
+  };
+  this.validationErrors = [];
+}
+createDialog: boolean = false;
+cancelCreate() {
+  this.resetForm();
+  this.createDialog = false;
+}
+
+// Enhanced createRequest method
+createRequest() {
+  if (!this.validateForm()) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Validation',
+      detail: 'Veuillez corriger les erreurs avant de continuer'
+    });
+    return;
+  }
+
+  this.creatingRequest = true;
+
+  // Prepare the request data
+  const requestData = {
+    ...this.newRequest,
+    requestedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString()
+  };
+
+  // Simulate API call
+  // setTimeout(() => {
+  //   console.log('Creating request:', requestData);
+
+  //   // Add to local array (for demo purposes)
+  //   const newId = Math.max(...this.demandes.map(d => d.id)) + 1;
+  //   const newDemande = {
+
+  //     ...requestData,
+  //     requesterName: 'Current User', // Get from auth service
+  //     departmentName: this.getDepartmentName(requestData.departmentId!),
+  //     responseDocumentId: null,
+  //     responseDocumentName: null,
+  //     respondedAt: null,
+  //     processedById: null,
+  //     processedByName: null,
+  //     updatedAt: null,
+  //     isActive: true
+  //   };
+
+  //   this.demandes.unshift(newDemande);
+  //   this.totalRecords++;
+
+  //   this.messageService.add({
+  //     severity: 'success',
+  //     summary: 'Succès',
+  //     detail: 'Votre demande a été créée avec succès'
+  //   });
+
+  //   this.creatingRequest = false;
+  //   this.visible = false;
+  //   this.resetForm();
+
+  //   // Refresh the data
+  //   this.loadDocumentRequests();
+  // }, 2000);
+}
+
+
+}
+
+
+
+
