@@ -78,7 +78,7 @@ export class FolderDetails implements OnInit {
   folders: FolderPagedResult = {} as FolderPagedResult;
   home: MenuItem | undefined;
   id = "";
- 
+
   ngOnInit(): void {
     this.items = [
       { label: 'Electronics' },
@@ -95,7 +95,7 @@ export class FolderDetails implements OnInit {
   }
 
   baseUrl = environment.apiUrl;
-  
+
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,
 
     private messageService: MessageService,

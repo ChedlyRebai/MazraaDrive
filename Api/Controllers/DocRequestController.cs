@@ -40,7 +40,7 @@ public class DocumentRequestController : BaseController
                 TotalRejectedRequests = requestDtos.Count(r => r.Status == "Rejected")
             };
 
-            return Ok(new { success = true, data = result });
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -58,7 +58,7 @@ public class DocumentRequestController : BaseController
                 return NotFound(new { success = false, message = "Document request not found" });
 
             var requestDto = _mapper.Map<DocumentRequestDTO>(request);
-            return Ok(new { success = true, data = requestDto });
+            return Ok(requestDto);
         }
         catch (Exception ex)
         {
@@ -87,8 +87,7 @@ public class DocumentRequestController : BaseController
             var createdRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(request.Id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
 
-            return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, 
-                new { success = true, data = requestDto });
+            return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, new { success = true, data = requestDto });
         }
         catch (Exception ex)
         {
@@ -120,7 +119,7 @@ public class DocumentRequestController : BaseController
             var updatedRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
 
-            return Ok(new { success = true, data = requestDto });
+            return Ok(requestDto);
         }
         catch (Exception ex)
         {
@@ -202,7 +201,7 @@ public class DocumentRequestController : BaseController
                 pagedRequests.TotalRecords
             );
 
-            return Ok(new { success = true, data = result });
+            return Ok(result );
         }
         catch (Exception ex)
         {
@@ -225,7 +224,7 @@ public class DocumentRequestController : BaseController
                 pagedRequests.TotalRecords
             );
 
-            return Ok(new { success = true, data = result });
+            return Ok(result );
         }
         catch (Exception ex)
         {
@@ -239,7 +238,7 @@ public class DocumentRequestController : BaseController
         try
         {
             var statistics = await _unitOfWork.DocRequestRepository.GetRequestStatisticsAsync(departmentId);
-            return Ok(new { success = true, data = statistics });
+            return Ok(statistics );
         }
         catch (Exception ex)
         {

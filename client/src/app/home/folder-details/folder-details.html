@@ -81,14 +81,14 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div *ngFor="let intem of folders.subFolders; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
+
+                            <!-- <div *ngFor="let intem of folders.subFolders; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
                                 <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                                    <!-- File info section -->
+
                                     <div class="p-4  ">
                                         <div class=" flex flex-col items-start">
                                             <div class="flex items-center w-full justify-between ">
-                                                <!-- Icon for the file -->
+
                                                 <div class="bg-blue-100  p-3 rounded-lg">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
@@ -99,12 +99,12 @@
                                                     </svg>
 
                                                 </div>
-                                                <!-- <p class=" text-gray-500">10.7 KB</p> -->
+
                                             </div>
                                             <div class="my-2">
 
                                                 <h6 class="font-bold  text-gray-800 w bold">{{ intem.name }}</h6>
-                                                <!-- <p class="text-sm text-gray-500">10.7 KB</p> -->
+
                                                 <div class="flex flex-col  justify-between  text-gray-600">
                                                     <div>
                                                         <h3 class="font-semibold my-1">{{ intem.createdAt | date: 'short' }}</h3>
@@ -117,15 +117,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div *ngFor="let intem of folders.documents; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
+                            <!-- <div *ngFor="let intem of folders.documents; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
                                 <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                                    <!-- File info section -->
+
                                     <div class="p-4  ">
                                         <div class=" flex flex-col items-start">
                                             <div class="flex items-center w-full justify-between ">
-                                                <!-- Icon for the file -->
+
                                                 <div class="bg-blue-100  p-3 rounded-lg">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
@@ -136,11 +136,11 @@
                                                     </svg>
 
                                                 </div>
-                                                <!-- <p class=" text-gray-500">10.7 KB</p> -->
+
                                             </div>
                                             <div class="my-2">
                                                 <h6 class="font-bold  text-gray-800 w bold">{{ intem.name }}</h6>
-                                                <!-- <p class="text-sm text-gray-500">10.7 KB</p> -->
+
                                                 <div class="flex flex-col  justify-between  text-gray-600">
                                                     <div>
                                                         <h3 class="font-semibold my-1">{{ intem.createdAt | date: 'short' }}</h3>
@@ -153,7 +153,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>
@@ -163,7 +163,7 @@
           <p-dialog [(visible)]="folderDialog" [style]="{ width: '450px' }" header="New Folder" [modal]="true">
         <ng-template #content>
             <div class="flex flex-col gap-6">
-              
+
                 <div>
                     <label for="name" class="block font-bold mb-3">Name</label>
                     <input type="text" pInputText id="name" [(ngModel)]="newFolder.name" required autofocus fluid />
@@ -174,10 +174,10 @@
                     <textarea id="description" pTextarea [(ngModel)]="newFolder.description" required rows="3" cols="20" fluid></textarea>
                 </div>
 
-              
-               
 
-               
+
+
+
             </div>
         </ng-template>
 

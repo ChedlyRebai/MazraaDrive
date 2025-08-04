@@ -54,7 +54,7 @@ interface Folder {
 @Component({
   selector: 'app-documents',
   standalone: true,
-  schemas:[NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     Breadcrumb,
     CommonModule,
@@ -68,8 +68,8 @@ interface Folder {
     FileUploadModule,
     ToastModule,
     // PrimeNG Icons
-   RouterModule,
-   
+    RouterModule,
+
   ],
   providers: [MessageService],
   templateUrl: './documents.html',
@@ -78,8 +78,8 @@ interface Folder {
 export class Documents implements OnInit {
   items: MenuItem[] | undefined;
 
-    home: MenuItem | undefined;
-storageData: StorageInfo[] = [
+  home: MenuItem | undefined;
+  storageData: StorageInfo[] = [
     {
       name: 'Cloud Storage',
       files: 412,
@@ -258,18 +258,18 @@ storageData: StorageInfo[] = [
   first: number = 0;
   rows: number = 10;
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   ngOnInit() {
     this.items = [
-            { label: 'Electronics' },
-            { label: 'Computer' },
-            { label: 'Accessories' },
-            { label: 'Keyboard' },
-            { label: 'Wireless' }
-        ];
+      { label: 'Electronics' },
+      { label: 'Computer' },
+      { label: 'Accessories' },
+      { label: 'Keyboard' },
+      { label: 'Wireless' }
+    ];
 
-        this.home = { icon: 'pi pi-home', routerLink: '/' };
+    this.home = { icon: 'pi pi-home', routerLink: '/' };
     this.initializeChart();
   }
 
@@ -307,7 +307,7 @@ storageData: StorageInfo[] = [
       elements: {
         arc: {
           //cutout: '70%'
-          
+
         }
       }
     };

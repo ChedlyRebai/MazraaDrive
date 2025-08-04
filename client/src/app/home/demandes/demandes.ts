@@ -1,5 +1,9 @@
-
-import { Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditorModule } from 'primeng/editor';
 // PrimeNG Imports
@@ -20,7 +24,7 @@ import { TooltipModule } from 'primeng/tooltip';
 // Servicesimport { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Editor } from 'primeng/editor';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuItem } from 'primeng/api';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { Tag } from 'primeng/tag';
@@ -50,12 +54,14 @@ interface PaginationOption {
   value: number;
 }
 
-
-
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CustomerService } from './customerservice';
+import { DocumentRequestDTO } from '../../shared/models/docrequest';
+import { DocumentPagedResult } from '../../shared/models/document';
+import { environment } from '../../../environments/environment';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 export interface Country {
   name?: string;
   code?: string;
@@ -109,58 +115,44 @@ export interface Customer {
     MultiSelectModule,
     InputTextModule,
     ThemeSwitcher,
+    ConfirmDialog,
+    ToastModule,
+    ButtonModule,
   ],
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-  providers: [MessageService, CustomerService],
+  providers: [MessageService, CustomerService, ConfirmationService],
   templateUrl: './demandes.html',
-  styleUrls: ['./demandes.css']
+  styleUrls: ['./demandes.css'],
 })
-
-
-
-
 export class Demandes implements OnInit {
+  demandes: DocumentRequestDTO[] = [];
+
   customers!: Customer[];
+  visible = false;
+  statuses = ['Pending', 'Completed', 'Rejected'];
+  priorities = ['Low', 'Normal', 'High', 'Urgent'];
 
   selectedCustomers!: Customer[];
 
   representatives!: Representative[];
+  newRequest: DocumentRequestDTO = {} as DocumentRequestDTO;
 
-  statuses!: any[];
   text: string | undefined;
   loading: boolean = true;
 
   activityValues: number[] = [0, 100];
 
-  constructor(private customerService: CustomerService, private messageService: MessageService) { }
-  visible: boolean = false;
+  constructor(
+    private HttpClient: HttpClient,
+    private customerService: CustomerService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {}
 
   showDialog() {
     this.visible = true;
   }
 
-
-  getSeverity(status: string) {
-    switch (status) {
-      case 'unqualified':
-        return 'danger';
-
-      case 'qualified':
-        return 'success';
-
-      case 'new':
-        return 'info';
-
-      case 'negotiation':
-        return 'warn';
-
-      case 'renewal':
-        return null;
-
-
-    }
-    return null;
-  }
   // Mail data
   mails: MailItem[] = [
     {
@@ -170,44 +162,8 @@ export class Demandes implements OnInit {
       date: 'May 30 2022',
       avatar: '/images/avatar/ionibowcher.png',
       starred: false,
-      important: true
+      important: true,
     },
-    {
-      id: '2',
-      from: 'Xuxue Feng',
-      subject: 'Eget ipsum quam eu a, sit pellentesque molestie tristique.',
-      date: 'May 28 2022',
-      avatar: '/images/avatar/xuxuefeng.png',
-      starred: true,
-      important: false
-    },
-    {
-      id: '3',
-      from: 'Ivan Magalhaes',
-      subject: 'Consequat sed nibh laoreet ultrices at elit tellus, nunc. Neque,',
-      date: 'May 26 2022',
-      avatar: '/images/avatar/ivanmagalhaes.png',
-      starred: true,
-      important: false
-    },
-    {
-      id: '4',
-      from: 'Asiya Javayant',
-      subject: 'Consectetur sed dis viverra lorem. Augue felis sed elit rhoncus non',
-      date: 'May 28 2022',
-      avatar: '/images/avatar/asiyajavayant.png',
-      starred: false,
-      important: true
-    },
-    {
-      id: '5',
-      from: 'Amy Elsner',
-      subject: 'Nullam purus metus, cras adipiscing magna et, aliquam gravida',
-      date: 'May 30 2022',
-      avatar: '/images/avatar/amyelsner.png',
-      starred: false,
-      important: true
-    }
   ];
 
   // Selected mails
@@ -221,7 +177,7 @@ export class Demandes implements OnInit {
     { label: 'Important', icon: 'pi pi-bookmark', count: 5 },
     { label: 'Sent', icon: 'pi pi-send', count: 3 },
     { label: 'Archived', icon: 'pi pi-book', count: 6 },
-    { label: 'Trash', icon: 'pi pi-trash', count: 4 }
+    { label: 'Trash', icon: 'pi pi-trash', count: 4 },
   ];
 
   // Menu items for mail actions
@@ -229,21 +185,21 @@ export class Demandes implements OnInit {
     {
       label: 'Mark as Read',
       icon: 'pi pi-eye',
-      command: () => this.markAsRead()
+      command: () => this.markAsRead(),
     },
     {
       label: 'Mark as Unread',
       icon: 'pi pi-eye-slash',
-      command: () => this.markAsUnread()
+      command: () => this.markAsUnread(),
     },
     {
-      separator: true
+      separator: true,
     },
     {
       label: 'Delete Selected',
       icon: 'pi pi-trash',
-      command: () => this.deleteSelected()
-    }
+      command: () => this.deleteSelected(),
+    },
   ];
 
   // Pagination
@@ -256,7 +212,7 @@ export class Demandes implements OnInit {
     { label: '5', value: 5 },
     { label: '10', value: 10 },
     { label: '25', value: 25 },
-    { label: '50', value: 50 }
+    { label: '50', value: 50 },
   ];
 
   // Search
@@ -268,14 +224,8 @@ export class Demandes implements OnInit {
   // Current active category
   activeCategory: string = 'Inbox';
 
-
   ngOnInit() {
-    this.customerService.getCustomersLarge().then((customers: any) => {
-      this.customers = customers;
-      this.loading = false;
-
-      this.customers.forEach((customer) => (customer.date = new Date(<Date>customer.date)));
-    });
+    this.loadDocumentRequests();
 
     this.representatives = [
       { name: 'Amy Elsner', image: 'amyelsner.png' },
@@ -287,17 +237,17 @@ export class Demandes implements OnInit {
       { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
       { name: 'Onyama Limba', image: 'onyamalimba.png' },
       { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-      { name: 'Xuxue Feng', image: 'xuxuefeng.png' }
+      { name: 'Xuxue Feng', image: 'xuxuefeng.png' },
     ];
 
-    this.statuses = [
-      { label: 'Unqualified', value: 'unqualified' },
-      { label: 'Qualified', value: 'qualified' },
-      { label: 'New', value: 'new' },
-      { label: 'Negotiation', value: 'negotiation' },
-      { label: 'Renewal', value: 'renewal' },
-      { label: 'Proposal', value: 'proposal' }
-    ];
+    // this.statuses = [
+    //   { label: 'Unqualified', value: 'unqualified' },
+    //   { label: 'Qualified', value: 'qualified' },
+    //   { label: 'New', value: 'new' },
+    //   { label: 'Negotiation', value: 'negotiation' },
+    //   { label: 'Renewal', value: 'renewal' },
+    //   { label: 'Proposal', value: 'proposal' },
+    // ];
     // Initialize component
     this.loadMails();
   }
@@ -312,7 +262,7 @@ export class Demandes implements OnInit {
   // Sidebar category selection
   onCategorySelect(category: SidebarCategory) {
     this.activeCategory = category.label;
-    this.sidebarCategories.forEach(cat => cat.active = false);
+    this.sidebarCategories.forEach((cat) => (cat.active = false));
     category.active = true;
 
     // Filter mails based on category
@@ -321,7 +271,7 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Category Changed',
-      detail: `Switched to ${category.label}`
+      detail: `Switched to ${category.label}`,
     });
   }
 
@@ -335,7 +285,7 @@ export class Demandes implements OnInit {
   // Mail selection handlers
   onMailSelect(mail: MailItem) {
     // Toggle selection
-    const index = this.selectedMails.findIndex(m => m.id === mail.id);
+    const index = this.selectedMails.findIndex((m) => m.id === mail.id);
     if (index > -1) {
       this.selectedMails.splice(index, 1);
     } else {
@@ -359,7 +309,9 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: mail.starred ? 'success' : 'info',
       summary: mail.starred ? 'Starred' : 'Unstarred',
-      detail: `Mail from ${mail.from} ${mail.starred ? 'starred' : 'unstarred'}`
+      detail: `Mail from ${mail.from} ${
+        mail.starred ? 'starred' : 'unstarred'
+      }`,
     });
   }
 
@@ -370,7 +322,9 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: mail.important ? 'success' : 'info',
       summary: mail.important ? 'Important' : 'Not Important',
-      detail: `Mail from ${mail.from} marked as ${mail.important ? 'important' : 'not important'}`
+      detail: `Mail from ${mail.from} marked as ${
+        mail.important ? 'important' : 'not important'
+      }`,
     });
   }
 
@@ -380,7 +334,7 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Archived',
-      detail: `Mail from ${mail.from} archived`
+      detail: `Mail from ${mail.from} archived`,
     });
   }
 
@@ -392,7 +346,7 @@ export class Demandes implements OnInit {
 
   deleteMail(mail: MailItem, event: Event) {
     event.stopPropagation();
-    const index = this.mails.findIndex(m => m.id === mail.id);
+    const index = this.mails.findIndex((m) => m.id === mail.id);
     if (index > -1) {
       this.mails.splice(index, 1);
       this.totalRecords--;
@@ -401,32 +355,32 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: 'warn',
       summary: 'Deleted',
-      detail: `Mail from ${mail.from} deleted`
+      detail: `Mail from ${mail.from} deleted`,
     });
   }
 
   // Bulk actions
   markAsRead() {
-    this.selectedMails.forEach(mail => mail.read = true);
+    this.selectedMails.forEach((mail) => (mail.read = true));
     this.messageService.add({
       severity: 'success',
       summary: 'Marked as Read',
-      detail: `${this.selectedMails.length} mails marked as read`
+      detail: `${this.selectedMails.length} mails marked as read`,
     });
   }
 
   markAsUnread() {
-    this.selectedMails.forEach(mail => mail.read = false);
+    this.selectedMails.forEach((mail) => (mail.read = false));
     this.messageService.add({
       severity: 'info',
       summary: 'Marked as Unread',
-      detail: `${this.selectedMails.length} mails marked as unread`
+      detail: `${this.selectedMails.length} mails marked as unread`,
     });
   }
 
   deleteSelected() {
-    this.selectedMails.forEach(selectedMail => {
-      const index = this.mails.findIndex(mail => mail.id === selectedMail.id);
+    this.selectedMails.forEach((selectedMail) => {
+      const index = this.mails.findIndex((mail) => mail.id === selectedMail.id);
       if (index > -1) {
         this.mails.splice(index, 1);
       }
@@ -435,7 +389,7 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: 'warn',
       summary: 'Deleted',
-      detail: `${this.selectedMails.length} mails deleted`
+      detail: `${this.selectedMails.length} mails deleted`,
     });
 
     this.selectedMails = [];
@@ -448,7 +402,7 @@ export class Demandes implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Refreshed',
-      detail: 'Mail list refreshed'
+      detail: 'Mail list refreshed',
     });
   }
 
@@ -480,15 +434,6 @@ export class Demandes implements OnInit {
     this.showNewMessageDialog = true;
   }
 
-  // Utility methods
-  getStarIcon(mail: MailItem): string {
-    return mail.starred ? 'pi pi-star-fill' : 'pi pi-star';
-  }
-
-  getImportantIcon(mail: MailItem): string {
-    return mail.important ? 'pi pi-bookmark-fill' : 'pi pi-bookmark';
-  }
-
   getMailRowClass(mail: MailItem): string {
     let classes = 'cursor-pointer';
     if (mail.read === false) {
@@ -499,16 +444,163 @@ export class Demandes implements OnInit {
 
   // Check if all mails are selected
   get allSelected(): boolean {
-    return this.mails.length > 0 && this.selectedMails.length === this.mails.length;
+    return (
+      this.mails.length > 0 && this.selectedMails.length === this.mails.length
+    );
   }
 
   // Check if some mails are selected
   get someSelected(): boolean {
-    return this.selectedMails.length > 0 && this.selectedMails.length < this.mails.length;
+    return (
+      this.selectedMails.length > 0 &&
+      this.selectedMails.length < this.mails.length
+    );
   }
 
   // Get selected count
   get selectedCount(): number {
     return this.selectedMails.length;
   }
+
+  // Add these methods to your component
+
+  hideDialog() {
+    this.visible = false;
+  }
+
+  respondToRequest(demande: any) {
+    // Handle response logic
+    console.log('Responding to:', demande);
+  }
+  detailsDialog: boolean = false;
+  resquestDetails(demande: any) {
+    // Handle request details logic
+    console.log('Request details for:', demande);
+  }
+  deleteRequest(demande: any) {
+    this.confirmationService.confirm({
+      //target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.HttpClient.delete(
+          `${this.baseUrl}/DocumentRequest/${demande.id}`
+        ).subscribe({
+          next: (response: any) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Request Deleted',
+              detail: `Request ${demande.id} deleted successfully`,
+            });
+            this.loadDocumentRequests(); // Refresh the list after deletion
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Deletion Failed',
+              detail: `Failed to delete request ${demande.id}`,
+            });
+            console.error('Error deleting request:', error);
+          },
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
+  }
+
+
+  createRequest() {
+    // Handle create logic
+    console.log('Creating request:', this.newRequest);
+    this.hideDialog();
+  }
+
+  getSeverity(status: string) {
+    switch (status) {
+      case 'Pending':
+        return 'warning';
+      case 'Completed':
+        return 'success';
+      case 'Rejected':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  }
+
+  baseUrl = environment.apiUrl;
+  loadDocumentRequests() {
+    this.HttpClient.get<DocumentPagedResult>(
+      `${this.baseUrl}/DocumentRequest`
+    ).subscribe({
+      next: (response: any) => {
+        this.demandes = response.data;
+
+        console.log('Document requests fetched successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error fetching document requests:', error);
+      },
+    });
+  }
+
+
+
+  // Add these properties to your component
+selectedRequest: DocumentRequestDTO | null = null;
+
+// Update the showDetailsDialog method
+showDetailsDialog(demande: DocumentRequestDTO) {
+  this.selectedRequest = demande;
+  this.detailsDialog = true;
+}
+
+// Add these new methods
+editRequest(request: DocumentRequestDTO) {
+  // Handle edit logic
+  console.log('Editing request:', request);
+  // You can open an edit dialog or navigate to edit page
+}
+
+downloadResponseDocument(request: DocumentRequestDTO) {
+  if (request.responseDocumentId) {
+    // Handle document download
+    console.log('Downloading document:', request.responseDocumentName);
+    // Implement download logic here
+  }
+}
+
+// Add the priority severity method if not already present
+getPrioritySeverity(priority: string) {
+  switch (priority) {
+    case 'Urgent':
+      return 'danger';
+    case 'High':
+      return 'warning';
+    case 'Normal':
+      return 'info';
+    case 'Low':
+      return 'success';
+    default:
+      return 'info';
+  }
+}
 }

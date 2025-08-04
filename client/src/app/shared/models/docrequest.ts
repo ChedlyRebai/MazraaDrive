@@ -1,71 +1,58 @@
-// import { FormFile } from "./formFile";
 import { PagedResult, PaginationParams } from "./pageresult";
 
-export interface DocumentDto {
+
+export interface DocumentRequestDTO {
        id: number;
-       name: string;
+       requesterId: string;
+       requesterName: string;
+       departmentId: number;
+       departmentName: string;
+       documentType: string;
        description: string;
-       fileType: string;
-       fileSize: number;
-       fileSizeFormatted: string;
-       storagePath: string;
-       folderId: number;
-       folderName: string;
-       uploadedById: string;
-       uploadedByName: string;
-       version: number;
-       isValidated: boolean;
-       isActive: boolean;
+       priority: string;
+       status: string;
+       responseDocumentId: number | null;
+       responseDocumentName: string | null;
+       requestedAt: string;
+       respondedAt: string | null;
+       processedById: string | null;
+       processedByName: string | null;
        createdAt: string;
        updatedAt: string | null;
-       requestCount: number;
+       isActive: boolean;
 }
 
-export interface CreateDocumentDto {
-       name: string;
-       description: string;
-       fileType: string;
-       folderId: number;
-    //    file: FormFile;
-}
-
-export interface UpdateDocumentDto {
-       name: string | null;
-       description: string | null;
-       folderId: number | null;
-       isValidated: boolean | null;
-       isActive: boolean | null;
-}
-
-export interface DocumentUploadDto {
-    //    file: FormFile;
-       folderId: number;
+export interface CreateDocumentRequestDTO {
+       requesterId: string;
        departmentId: number;
+       documentType: string;
        description: string;
+       priority: string;
 }
 
-export interface DocumentSummaryDto {
-       id: number;
-       name: string;
-       fileType: string;
-       fileSizeFormatted: string;
-       createdAt: string;
-       isValidated: boolean;
+export interface UpdateDocumentRequestDTO {
+       documentType: string | null;
+       description: string | null;
+       priority: string | null;
+       status: string | null;
+       responseDocumentId: number | null;
+       processedById: string | null;
 }
 
-export interface DocumentFilterDto extends PaginationParams {
-       name: string | null;
-       fileType: string | null;
-       folderId: number | null;
-       folderName: string | null;
-       uploadedById: string | null;
-       uploadedByName: string | null;
-       isValidated: boolean | null;
-       isActive: boolean | null;
-       fileTypes: string[] | null;
+export interface DocumentRequestFilterDTO extends PaginationParams {
+       requesterId: string | null;
+       departmentId: number | null;
+       documentType: string | null;
+       priority: string | null;
+       status: string | null;
+       requestedFrom: string | null;
+       requestedTo: string | null;
+       processedById: string | null;
+       search: string | null;
 }
 
-export interface DocumentPagedResult extends PagedResult<DocumentDto> {
-       totalDocuments: number;
-       totalUsers: number;
+export interface DocumentRequestPagedResult extends PagedResult<DocumentRequestDTO> {
+       totalPendingRequests: number;
+       totalProcessedRequests: number;
+       totalRejectedRequests: number;
 }

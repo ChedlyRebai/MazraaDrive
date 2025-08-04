@@ -1,148 +1,508 @@
 <theme-switcher />
 <div class="card">
-    <p-table #dt [value]="customers" [(selection)]="selectedCustomers" dataKey="id" [rowHover]="true" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']">
-        <ng-template #caption>
-            <div class="flex justify-between">
-                <div>
-                    <p-button class="mr-2" [outlined]="true" icon="pi pi-refresh" />
+  <p-table
+    #dt
+    [value]="demandes"
+    [(selection)]="selectedCustomers"
+    dataKey="id"
+    [rowHover]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'requesterName',
+      'documentType',
+      'description',
+      'status'
+    ]"
+  >
+    <ng-template #caption>
+      <div class="flex justify-between">
+        <div>
+          <p-button class="mr-2" [outlined]="true" icon="pi pi-refresh" />
+        </div>
+        <p-iconField iconPosition="left">
+          <p-button
+            (click)="showDialog()"
+            label="Ajouter une Demande"
+            icon="pi pi-plus"
+          />
+        </p-iconField>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <!-- <th style="width: 4rem">
+          <p-tableHeaderCheckbox />
+        </th> -->
+        <th pSortableColumn="requesterName" style="min-width: 14rem">
+          <div class="flex justify-between items-center gap-2">
+            Demandeur
+            <p-sortIcon field="requesterName" />
+            <p-columnFilter
+              type="text"
+              field="requesterName"
+              display="menu"
+              class="ml-auto"
+            />
+          </div>
+        </th>
+        <th pSortableColumn="documentType" style="min-width: 14rem">
+          <div class="flex justify-between items-center gap-2">
+            Type de Document
+            <p-sortIcon field="documentType" />
+            <p-columnFilter
+              type="text"
+              field="documentType"
+              display="menu"
+              class="ml-auto"
+            />
+          </div>
+        </th>
 
-                </div>
-                <p-iconField iconPosition="left">
+        <th pSortableColumn="description" style="min-width: 14rem">
+          <div class="flex justify-between items-center gap-2">
+            Description
+            <p-sortIcon field="description" />
+            <p-columnFilter
+              type="text"
+              field="description"
+              display="menu"
+              class="ml-auto"
+            />
+          </div>
+        </th>
 
-                    <p-button (click)="showDialog()" label="Ajouter une Demande" icon="pi pi-plus" />
-                </p-iconField>
-            </div>
-        </ng-template>
-        <ng-template #header>
-            <tr>
-                <th style="width: 4rem">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th pSortableColumn="name" style="min-width: 14rem">
-                    <div class="flex justify-between items-center gap-2">
-                        Nom
-                        <p-sortIcon field="name" />
-                        <p-columnFilter type="text" field="name" display="menu" class="ml-auto" />
-                    </div>
-                </th>
-                <th pSortableColumn="country.name" style="min-width: 14rem">
-                    <div class="flex justify-between items-center gap-2">
-                        Demande
-                        <p-sortIcon field="country.name" />
-                        <p-columnFilter type="text" field="country.name" display="menu" class="ml-auto" />
-                    </div>
-                </th>
+        <th pSortableColumn="status" style="min-width: 14rem">
+          <div class="flex justify-between items-center gap-2">
+            Statut
+            <p-sortIcon field="status" />
+            <p-columnFilter
+              field="status"
+              matchMode="equals"
+              display="menu"
+              class="ml-auto"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [options]="statuses"
+                  placeholder="Any"
+                  [ngModel]="value"
+                  (ngModelChange)="filter($event)"
+                >
+                  <ng-template pTemplate="selectedItem" let-option>
+                    <p-tag [value]="option" [severity]="getSeverity(option)" />
+                  </ng-template>
+                  <ng-template pTemplate="item" let-option>
+                    <p-tag [value]="option" [severity]="getSeverity(option)" />
+                  </ng-template>
+                </p-dropdown>
+              </ng-template>
+            </p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="requestedAt" style="min-width: 14rem">
+          <div class="flex justify-between items-center gap-2">
+            Date de Demande
+            <p-sortIcon field="requestedAt" />
+            <p-columnFilter
+              type="date"
+              field="requestedAt"
+              display="menu"
+              class="ml-auto"
+            />
+          </div>
+        </th>
+        <th style="min-width: 8rem">
+          <div class="flex justify-between items-center gap-2">Action</div>
+        </th>
+      </tr>
+    </ng-template>
 
-
-
-                <th pSortableColumn="status" style="min-width: 14rem">
-                    <div class="flex justify-between items-center gap-2">
-                        Type de Demande
-                        <p-sortIcon field="status" />
-                        <p-columnFilter field="status" matchMode="equals" display="menu" class="ml-auto">
-                            <ng-template #filter let-value let-filter="filterCallback">
-                                <p-dropdown [options]="statuses" placeholder="Any">
-                                    <ng-template let-option #item>
-                                        <p-tag [value]="option.label" [severity]="getSeverity(option.label)" />
-                                    </ng-template>
-                                </p-dropdown>
-                            </ng-template>
-                        </p-columnFilter>
-                    </div>
-                </th>
-                <th pSortableColumn="date" style="min-width: 14rem">
-                    <div class="flex justify-between items-center gap-2">
-                        Date
-                        <p-sortIcon field="date" />
-                        <p-columnFilter type="date" field="date" display="menu" class="ml-auto" />
-                    </div>
-                </th>
-                 <th pSortableColumn="date" style="min-width: 14rem">
-                    <div class="flex justify-between items-center gap-2">
-                        Action
-                        
-                    </div>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-customer>
-            <tr class="p-selectable-row">
-                <td>
+    <ng-template pTemplate="body" let-demande>
+      <tr class="p-selectable-row">
+        <!-- <td>
                     <p-tableCheckbox [value]="customer" />
-                </td>
-                <td>
-                    <div class="flex items-center gap-2">
-                        <img [alt]="customer.representative.name"
-                            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}"
-                            width="32" style="vertical-align: middle" />
-                        <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
-                    </div>
-                </td>
-                <!-- <td>
-                    {{ customer.name }}
+                </td> -->
+        <td>
+          <div class="flex items-center gap-2">
+            <!-- <img
+              [alt]="demande.representative.name"
+              src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+                demande.representative.image
+              }}"
+              width="32"
+              style="vertical-align: middle"
+            /> -->
+            <span class="ml-1 align-middle">{{ demande.requesterName }}</span>
+          </div>
+        </td>
+        <!-- <td>
+                    {{ demande.name }}
                 </td> -->
 
-                <td>
-                    <div class="flex items-center gap-2">
+        <td>
+          <div class="flex items-center gap-2">
+            <span class="ml-1 align-middle">{{ demande.documentType }}</span>
+          </div>
+        </td>
 
-                        <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
-                    </div>
-                </td>
+        <td>
+          <span>{{ demande.description }}</span>
+        </td>
 
-                <!-- <td>
-                    {{ customer.balance | currency: 'USD' : 'symbol' }}
+        <!-- <td>
+                    {{ demande.balance | currency: 'USD' : 'symbol' }}
                 </td> -->
-                <td>
-                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
-                </td>
-                <td>
-                    {{ customer.date | date: 'MM/dd/yyyy' }}
-                </td>
-                <td>
-                    <p-button class="mr-2" icon="pi pi-reply" />
-                    <p-button   class="mr-2 text-red-600 bg-red-600" icon="pi pi-trash" />
-                </td>
+        <td>
+          <p-tag
+            [value]="demande.status"
+            [severity]="getSeverity(demande.status)"
+          />
+        </td>
+        <td>
+          {{ demande.createdAt | date : "MM/dd/yyyy" }}
+        </td>
+        <td>
+          <p-button
+            class="mr-2"
+            icon="pi pi-eye"
+            [outlined]="true"
+            severity="info"
+            size="small"
+            (click)="showDetailsDialog(demande)"
+          />
 
-
-            </tr>
-        </ng-template>
-        <!-- <ng-template #emptymessage>
+          <p-button
+            class="mr-2"
+            icon="pi pi-reply"
+            [outlined]="true"
+            severity="info"
+            size="small"
+            (click)="respondToRequest(demande)"
+          />
+          <p-button
+            class="mr-2"
+            icon="pi pi-trash"
+            [outlined]="true"
+            severity="danger"
+            size="small"
+            (click)="deleteRequest(demande)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+    <!-- <ng-template #emptymessage>
             <tr>
-                <td colspan="8">No customers found.</td>
+                <td colspan="8">No demandes found.</td>
             </tr>
         </ng-template> -->
-    </p-table>
+  </p-table>
 </div>
 
+<p-toast />
+<p-confirmdialog />
 
+<p-dialog
+  header="Ajouter une Demande"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '40rem' }"
+>
+  <span class="p-text-secondary block mb-8"
+    >Créer une nouvelle demande de document.</span
+  >
 
-<p-dialog header="Edit Profile"  [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
-    <span class="p-text-secondary block mb-8">Update your information.</span>
+  <div class="grid grid-cols-12 gap-4">
     <div class="col-span-12">
-        <label for="to"
-            class="text-surface-900 dark:text-surface-0 font-semibold">To</label><p-iconfield
-            class="p-iconfield mt-4 p-iconfield-left" style="height: 3.5rem;" pc6152=""><p-inputicon
-                class="pi pi-user p-inputicon" style="left: 1.5rem;" pc6153=""></p-inputicon><input id="to" type="text"
-                pinputtext="" fluid=""
-                class="p-inputtext p-component !pl-16 text-surface-900 dark:text-surface-0 font-semibold ng-pristine ng-valid p-inputtext-fluid ng-touched"
-                style="height: 3.5rem;" pc6154="">
-        </p-iconfield>
+      <label
+        for="documentType"
+        class="text-surface-900 dark:text-surface-0 font-semibold"
+      >
+        Type de Document
+      </label>
+      <p-iconField class="mt-4" style="height: 3.5rem">
+        <p-inputIcon class="pi pi-file" style="left: 1.5rem"></p-inputIcon>
+        <input
+          id="documentType"
+          type="text"
+          pInputText
+          [(ngModel)]="newRequest.documentType"
+          placeholder="Type de document"
+          fluid
+          class="!pl-16"
+          style="height: 3.5rem"
+        />
+      </p-iconField>
     </div>
 
-    <div class="col-span-12"><label for="Subject"
-            class="text-surface-900 dark:text-surface-0 font-semibold">Subject</label><p-iconfield
-            class="p-iconfield mt-4 p-iconfield-left" style="height: 3.5rem;" pc6155=""><p-inputicon
-                class="pi pi-pencil p-inputicon" style="left: 1.5rem;" pc6156=""></p-inputicon><input id="subject"
-                type="text" pinputtext="" placeholder="Subject" fluid=""
-                class="p-inputtext p-component !pl-16 text-surface-900 dark:text-surface-0 font-semibold ng-pristine ng-valid p-inputtext-fluid ng-touched"
-                style="height: 3.5rem;" pc6157=""></p-iconfield></div>
-    <div class="flex justify-end gap-2">
-
-        <p-editor [(ngModel)]="text" [style]="{ height: '320px' }" />
-
+    <div class="col-span-12">
+      <label
+        for="priority"
+        class="text-surface-900 dark:text-surface-0 font-semibold"
+      >
+        Priorité
+      </label>
+      <p-dropdown
+        id="priority"
+        [(ngModel)]="newRequest.priority"
+        [options]="priorities"
+        placeholder="Sélectionner une priorité"
+        class="mt-4 w-full"
+        [style]="{ height: '3.5rem' }"
+      />
     </div>
 
+    <div class="col-span-12">
+      <label
+        for="description"
+        class="text-surface-900 dark:text-surface-0 font-semibold"
+      >
+        Description
+      </label>
+      <textarea
+        id="description"
+        pInputTextarea
+        [(ngModel)]="newRequest.description"
+        placeholder="Description de la demande"
+        rows="4"
+        class="mt-4 w-full"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-2 mt-6">
+    <p-button label="Annuler" [outlined]="true" (click)="hideDialog()" />
+    <p-button label="Créer" (click)="createRequest()" />
+  </div>
 </p-dialog>
+
+<div class="card flex justify-center">
+  <p-dialog
+    header="Détails de la Demande"
+    [modal]="true"
+    [(visible)]="detailsDialog"
+    [style]="{ width: '50rem' }"
+    [closable]="true"
+  >
+    <div class="flex flex-col gap-6" *ngIf="selectedRequest">
+      <!-- Request Header -->
+      <div class="flex items-center justify-between border-b pb-4">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-file-text text-3xl text-blue-500"></i>
+          <div>
+            <h3 class="text-xl font-semibold m-0">
+              {{ selectedRequest.documentType }}
+            </h3>
+            <p class="text-sm text-gray-500 m-0">
+              Demande #{{ selectedRequest.id }}
+            </p>
+          </div>
+        </div>
+        <p-tag
+          [value]="selectedRequest.status"
+          [severity]="getSeverity(selectedRequest.status)"
+          class="text-sm"
+        />
+      </div>
+
+      <!-- Request Details Grid -->
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Left Column -->
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-4">
+            <!-- Requester Info -->
+            <div class="border rounded-lg p-4">
+              <h4 class="font-semibold mb-3 flex items-center gap-2">
+                <i class="pi pi-user text-blue-500"></i>
+                Informations du Demandeur
+              </h4>
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between">
+                  <span class="font-medium">Nom:</span>
+                  <span>{{ selectedRequest.requesterName }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-medium">Département:</span>
+                  <span>{{ selectedRequest.departmentName }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Request Info -->
+            <div class="border rounded-lg p-4">
+              <h4 class="font-semibold mb-3 flex items-center gap-2">
+                <i class="pi pi-info-circle text-green-500"></i>
+                Détails de la Demande
+              </h4>
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between">
+                  <span class="font-medium">Type:</span>
+                  <span>{{ selectedRequest.documentType }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-medium">Priorité:</span>
+                  <p-tag
+                    [value]="selectedRequest.priority"
+                    [severity]="getPrioritySeverity(selectedRequest.priority)"
+                    class="text-xs"
+                  />
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-medium">Statut:</span>
+                  <p-tag
+                    [value]="selectedRequest.status"
+                    [severity]="getSeverity(selectedRequest.status)"
+                    class="text-xs"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-4">
+            <!-- Dates -->
+            <div class="border rounded-lg p-4">
+              <h4 class="font-semibold mb-3 flex items-center gap-2">
+                <i class="pi pi-calendar text-purple-500"></i>
+                Dates
+              </h4>
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between">
+                  <span class="font-medium">Demandé le:</span>
+                  <span>{{
+                    selectedRequest.requestedAt | date : "dd/MM/yyyy HH:mm"
+                  }}</span>
+                </div>
+                <div
+                  class="flex justify-between"
+                  *ngIf="selectedRequest.respondedAt"
+                >
+                  <span class="font-medium">Répondu le:</span>
+                  <span>{{
+                    selectedRequest.respondedAt | date : "dd/MM/yyyy HH:mm"
+                  }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-medium">Créé le:</span>
+                  <span>{{
+                    selectedRequest.createdAt | date : "dd/MM/yyyy HH:mm"
+                  }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Processing Info -->
+            <div
+              class="border rounded-lg p-4"
+              *ngIf="
+                selectedRequest.processedByName ||
+                selectedRequest.responseDocumentName
+              "
+            >
+              <h4 class="font-semibold mb-3 flex items-center gap-2">
+                <i class="pi pi-cog text-orange-500"></i>
+                Traitement
+              </h4>
+              <div class="flex flex-col gap-2">
+                <div
+                  class="flex justify-between"
+                  *ngIf="selectedRequest.processedByName"
+                >
+                  <span class="font-medium">Traité par:</span>
+                  <span>{{ selectedRequest.processedByName }}</span>
+                </div>
+                <div
+                  class="flex justify-between"
+                  *ngIf="selectedRequest.responseDocumentName"
+                >
+                  <span class="font-medium">Document réponse:</span>
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-file-pdf text-red-500"></i>
+                    <span class="text-blue-600 cursor-pointer hover:underline">
+                      {{ selectedRequest.responseDocumentName }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description - Full Width -->
+        <div class="col-span-12">
+          <div class="border rounded-lg p-4">
+            <h4 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-align-left text-gray-500"></i>
+              Description
+            </h4>
+            <p class="text-gray-700 leading-relaxed">
+              {{ selectedRequest.description || "Aucune description fournie." }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-between items-center pt-4 border-t">
+        <div class="flex gap-2">
+          <p-button
+            *ngIf="selectedRequest.status === 'Pending'"
+            label="Répondre"
+            icon="pi pi-reply"
+            severity="success"
+            (click)="respondToRequest(selectedRequest); detailsDialog = false"
+          />
+          <p-button
+            *ngIf="selectedRequest.responseDocumentName"
+            label="Télécharger"
+            icon="pi pi-download"
+            severity="info"
+            [outlined]="true"
+            (click)="downloadResponseDocument(selectedRequest)"
+          />
+        </div>
+
+        <div class="flex gap-2">
+          <p-button
+            label="Modifier"
+            icon="pi pi-pencil"
+            [outlined]="true"
+            (click)="editRequest(selectedRequest); detailsDialog = false"
+          />
+          <p-button
+            label="Supprimer"
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            (click)="deleteRequest(selectedRequest); detailsDialog = false"
+          />
+          <p-button
+            label="Fermer"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            (click)="detailsDialog = false"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="!selectedRequest" class="flex justify-center items-center py-8">
+      <i class="pi pi-spin pi-spinner text-2xl"></i>
+      <span class="ml-2">Chargement des détails...</span>
+    </div>
+  </p-dialog>
+</div>
