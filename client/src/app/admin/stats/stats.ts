@@ -1,212 +1,172 @@
-
-
-
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject, NO_ERRORS_SCHEMA, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StarFillIcon } from 'primeng/icons/starfill';
-import { StarIcon } from 'primeng/icons/star';
-
+import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 // PrimeNG Imports
 import { ChartModule } from 'primeng/chart';
 import { KnobModule } from 'primeng/knob';
-import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import { AutoCompleteModule } from 'primeng/autocomplete'; // Changed from DropdownModule
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
+import { AvatarModule } from 'primeng/avatar';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { RatingModule } from 'primeng/rating';
-import { TagModule } from 'primeng/tag';
-import { PaginatorModule } from 'primeng/paginator';
+import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
-import { ChevronDownIcon } from 'primeng/icons/chevrondown';
-// Chart.js Types
-import { ChartOptions, ChartData } from 'chart.js';
 import { ThemeSwitcher } from '../themeswitcher';
-import { RouterModule } from '@angular/router';
 
-// Data Interfaces
-interface StatsData {
-  label: string;
-  value: string | number;
-  change: string;
-  changeType: 'positive' | 'negative';
-  icon?: string;
-  chartData?: any;
+interface Activity {
+  id: number;
+  userName: string;
+  userEmail: string;
+  action: string;
+  type: string;
+  timestamp: string;
+  ipAddress: string;
+  description?: string;
 }
 
-interface Product {
-  id?: string;
-  name?: string;
-  category?: string;
-  price?: number;
-  rating?: number;
-  status?: string;
-  inventoryStatus?: string;
-  image?: string;
+interface TopUser {
+  name: string;
+  department: string;
+  documentCount: number;
 }
 
-interface SelectOption {
+interface SystemHealth {
+  cpu: number;
+  memory: number;
+  storage: number;
+}
+
+interface PeriodOption {
   label: string;
   value: string;
 }
 
-
-
 @Component({
   selector: 'app-stats',
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   imports: [
-
-
-    RouterModule,
-
     CommonModule,
-    // PrimeNG Modules
+    FormsModule,
     ChartModule,
-    ThemeSwitcher,
-
-    SelectModule,
-
-
+    KnobModule,
     TableModule,
     ButtonModule,
-    InputTextModule,
+    AutoCompleteModule, // Changed from DropdownModule
+    ProgressBarModule,
+    TagModule,
+    AvatarModule,
+    DialogModule,
+    ToastModule,
     IconFieldModule,
     InputIconModule,
-    RatingModule,
-    TagModule,
-    PaginatorModule,
-    TooltipModule
+    InputTextModule,
+    TooltipModule,
+    ThemeSwitcher
   ],
+  providers: [MessageService],
   templateUrl: './stats.html',
-  styleUrl: './stats.css'
+  styleUrls: ['./stats.css']
 })
 export class Stats implements OnInit {
+
+  // Statistics Data
+  totalUsers = 1245;
+  totalDocuments = 8456;
+  totalFolders = 623;
+  storageUsed = 156.7;
+  storagePercentage = 78;
+
+  // Growth Percentages
+  userGrowthPercentage = 12;
+  documentGrowthPercentage = 24;
+  folderGrowthPercentage = 18;
+
   // Chart Data
-  revenueChartData: ChartData = {
-    datasets: [
-      {
-        label: 'Revenue',
-        backgroundColor: '#404040',
-        borderColor: 'var(--primary-color)',
-        data: [
-          2100, 8400, 2400, 7300, 4300, 3200, 5400, 7400, 3400, 6200, 4500, 8200
+  activityChartData: any;
+  activityChartOptions: any;
+  documentTypesData: any;
+  documentTypesOptions: any;
 
-        ]
-      },
-      {
-        label: 'Profit',
-        backgroundColor: 'c',
-        borderColor: 'var(--primary-200)',
-        data: [
-          4200, 5400, 2400, 4300, 2300, 1200, 3400, 4400, 1400, 3200, 2500, 4200
-        ]
-      }
-    ]
+  // Period Selection with AutoComplete
+  selectedPeriod: PeriodOption | null = null;
+  filteredPeriodOptions: PeriodOption[] = [];
+  periodOptions: PeriodOption[] = [
+    { label: 'Cette semaine', value: 'week' },
+    { label: 'Ce mois', value: 'month' },
+    { label: 'Ce trimestre', value: 'quarter' },
+    { label: 'Cette année', value: 'year' },
+    { label: 'Les 7 derniers jours', value: 'last7days' },
+    { label: 'Les 30 derniers jours', value: 'last30days' },
+    { label: 'Les 90 derniers jours', value: 'last90days' },
+    { label: 'Personnalisé', value: 'custom' }
+  ];
+
+  // Recent Activities
+  recentActivities: Activity[] = [];
+  loadingActivities = false;
+  totalActivities = 0;
+  searchTerm = '';
+  selectedActivity: Activity | null = null;
+  activityDetailsDialog = false;
+
+  // System Health
+  systemHealth: SystemHealth = {
+    cpu: 45,
+    memory: 67,
+    storage: 78
   };
-  revenueChartOptions: ChartOptions = {};
 
-  salesByCategoryData: ChartData = {
-    datasets: [
-      {
-        data: [300, 150, 100, 80, 60],
-        backgroundColor: [
-          'var(--primary-500)',
-          'var(--primary-400)',
-          'var(--primary-300)',
-          'var(--primary-200)',
-          'var(--primary-100)'
-        ],
-        borderWidth: 0
-      }
-    ]
-  };
-  salesByCategoryOptions: ChartOptions = {};
-
-  // Dropdown Options
-  timeRangeOptions: SelectOption[] = [
-    { label: 'Last Week', value: 'week' },
-    { label: 'Last Month', value: 'month' },
-    { label: 'Last Quarter', value: 'quarter' },
-    { label: 'Last Year', value: 'year' }
+  // Top Users
+  topUsers: TopUser[] = [
+    { name: 'Jean Dupont', department: 'IT', documentCount: 156 },
+    { name: 'Marie Martin', department: 'RH', documentCount: 134 },
+    { name: 'Pierre Bernard', department: 'Finance', documentCount: 98 },
+    { name: 'Sophie Dubois', department: 'Marketing', documentCount: 87 },
+    { name: 'Lucas Moreau', department: 'Opérations', documentCount: 76 }
   ];
 
-  selectedTimeRange: SelectOption = this.timeRangeOptions[0];
-
-  // Stats Widgets Data
-  statsData: StatsData[] = [
-    {
-      label: 'Sales',
-      value: 120,
-      change: '+12%',
-      changeType: 'positive'
-    },
-    {
-      label: 'Revenue',
-      value: '$4500',
-      change: '+20%',
-      changeType: 'positive'
-    },
-    {
-      label: 'Visitors',
-      value: 360,
-      change: '+24%',
-      changeType: 'negative'
-    },
-    {
-      label: 'Stock',
-      value: 164,
-      change: '+30%',
-      changeType: 'positive'
-    }
-  ];
-
-  // Knob value for stock
-  stockPercentage: number = 80;
-
-  // Table Data
-  recentSales: Product[] = [];
-  topProducts: Product[] = [];
-
-  // Table Columns
-  columns = [
-    { field: 'name', header: 'Name' },
-    { field: 'category', header: 'Category' },
-    { field: 'price', header: 'Price' },
-    { field: 'status', header: 'Status' }
-  ];
+  constructor(private messageService: MessageService) {
+    // Set default period
+    this.selectedPeriod = this.periodOptions[0];
+  }
 
   ngOnInit() {
     this.initializeCharts();
-    this.loadRecentSales();
-    this.loadTopProducts();
-    this.initChart();
+    this.loadRecentActivities();
   }
 
   initializeCharts() {
-    // Revenue Chart Configuration
-    this.revenueChartData = {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    // Activity Chart
+    this.activityChartData = {
+      labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
       datasets: [
         {
-          label: 'Revenue',
-          backgroundColor: 'var(--primary-color)',
-          borderColor: 'var(--primary-color)',
-          data: [2100, 8400, 2400, 7300, 4300, 3200, 5400, 7400, 3400, 6200, 4500, 8200]
+          label: 'Documents créés',
+          data: [12, 19, 3, 5, 2, 3, 9],
+          borderColor: '#3B82F6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          tension: 0.4,
+          fill: true
         },
         {
-          label: 'Profit',
-          backgroundColor: 'var(--primary-200)',
-          borderColor: 'var(--primary-200)',
-          data: [4200, 5400, 2400, 4300, 2300, 1200, 3400, 4400, 1400, 3200, 2500, 4200]
+          label: 'Documents consultés',
+          data: [25, 39, 20, 31, 56, 45, 38],
+          borderColor: '#10B981',
+          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+          tension: 0.4,
+          fill: true
         }
       ]
     };
 
-    this.revenueChartOptions = {
+    this.activityChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -215,243 +175,279 @@ export class Stats implements OnInit {
         }
       },
       scales: {
-        x: {
-          grid: {
-            display: false
-          }
-        },
         y: {
           beginAtZero: true,
           grid: {
-            color: 'var(--surface-border)'
+            color: 'rgba(0,0,0,0.1)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
           }
         }
       }
     };
 
-    // Sales by Category Chart Configuration
-    this.salesByCategoryData = {
-      labels: ['Electronics', 'Clothing', 'Accessories', 'Home & Garden', 'Sports'],
+    // Document Types Chart
+    this.documentTypesData = {
+      labels: ['PDF', 'Word', 'Excel', 'PowerPoint', 'Images', 'Autres'],
       datasets: [
         {
-          data: [300, 150, 100, 80, 60],
+          data: [45, 25, 15, 8, 5, 2],
           backgroundColor: [
-            'var(--primary-500)',
-            'var(--primary-400)',
-            'var(--primary-300)',
-            'var(--primary-200)',
-            'var(--primary-100)'
+            '#EF4444',
+            '#3B82F6',
+            '#10B981',
+            '#F59E0B',
+            '#8B5CF6',
+            '#6B7280'
           ],
           borderWidth: 0
         }
       ]
     };
 
-    this.salesByCategoryOptions = {
+    this.documentTypesOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-            padding: 20
-          }
+          position: 'bottom'
         }
       }
     };
   }
 
-  loadRecentSales() {
-    this.recentSales = [
-      {
-        id: '1',
-        name: 'Bamboo Watch',
-        category: 'Accessories',
-        price: 65,
-        rating: 5,
-        status: 'INSTOCK',
-        inventoryStatus: 'INSTOCK'
-      },
-      {
-        id: '2',
-        name: 'Black Watch',
-        category: 'Accessories',
-        price: 72,
-        rating: 4,
-        status: 'INSTOCK',
-        inventoryStatus: 'INSTOCK'
-      },
-      {
-        id: '3',
-        name: 'Blue Band',
-        category: 'Fitness',
-        price: 79,
-        rating: 3,
-        status: 'LOWSTOCK',
-        inventoryStatus: 'LOWSTOCK'
-      },
-      {
-        id: '4',
-        name: 'Blue T-Shirt',
-        category: 'Clothing',
-        price: 29,
-        rating: 5,
-        status: 'INSTOCK',
-        inventoryStatus: 'INSTOCK'
-      },
-      {
-        id: '5',
-        name: 'Bracelet',
-        category: 'Accessories',
-        price: 15,
-        rating: 4,
-        status: 'INSTOCK',
-        inventoryStatus: 'INSTOCK'
-      }
-    ];
+  loadRecentActivities() {
+    this.loadingActivities = true;
+    
+    // Mock data
+    setTimeout(() => {
+      this.recentActivities = [
+        {
+          id: 1,
+          userName: 'Jean Dupont',
+          userEmail: 'jean.dupont@company.com',
+          action: 'Document créé',
+          type: 'Creation',
+          timestamp: '2024-12-06T10:30:00',
+          ipAddress: '192.168.1.100',
+          description: 'Création du document "Rapport mensuel.pdf"'
+        },
+        {
+          id: 2,
+          userName: 'Marie Martin',
+          userEmail: 'marie.martin@company.com',
+          action: 'Dossier partagé',
+          type: 'Partage',
+          timestamp: '2024-12-06T09:45:00',
+          ipAddress: '192.168.1.101',
+          description: 'Partage du dossier "Projets 2024" avec l\'équipe'
+        },
+        {
+          id: 3,
+          userName: 'Pierre Bernard',
+          userEmail: 'pierre.bernard@company.com',
+          action: 'Document supprimé',
+          type: 'Suppression',
+          timestamp: '2024-12-06T08:15:00',
+          ipAddress: '192.168.1.102',
+          description: 'Suppression du document "Brouillon.docx"'
+        }
+      ];
+      this.totalActivities = 150;
+      this.loadingActivities = false;
+    }, 1000);
   }
 
-  loadTopProducts() {
-    this.topProducts = [
-      {
-        id: '1',
-        name: 'Bamboo Watch',
-        price: 65,
-        rating: 5,
-        image: 'bamboo-watch.jpg'
-      },
-      {
-        id: '2',
-        name: 'Black Watch',
-        price: 72,
-        rating: 4,
-        image: 'black-watch.jpg'
-      },
-      {
-        id: '3',
-        name: 'Blue Band',
-        price: 79,
-        rating: 3,
-        image: 'blue-band.jpg'
-      },
-      {
-        id: '4',
-        name: 'Blue T-Shirt',
-        price: 29,
-        rating: 5,
-        image: 'blue-t-shirt.jpg'
-      },
-      {
-        id: '5',
-        name: 'Bracelet',
-        price: 15,
-        rating: 4,
-        image: 'bracelet.jpg'
-      },
-      {
-        id: '6',
-        name: 'Brown Purse',
-        price: 120,
-        rating: 4,
-        image: 'brown-purse.jpg'
-      }
-    ];
+  // AutoComplete methods for period selection
+  searchPeriod(event: any) {
+    const query = event.query.toLowerCase();
+    this.filteredPeriodOptions = this.periodOptions.filter(option => 
+      option.label.toLowerCase().includes(query)
+    );
   }
 
-  // Chart Event Handlers
-  onTimeRangeChange(event: any) {
-    this.selectedTimeRange = event.value;
-    // Update chart data based on selected time range
-    this.updateChartData();
+  onPeriodSelect(event: any) {
+    this.selectedPeriod = event;
+    this.updateChartsForPeriod(event.value);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Période mise à jour',
+      detail: `Affichage des données pour: ${event.label}`
+    });
   }
 
-  updateChartData() {
-    // Logic to update chart data based on time range
-    // This would typically make an API call to fetch new data
-    console.log('Updating chart data for:', this.selectedTimeRange);
+  onPeriodClear() {
+    this.selectedPeriod = null;
+    this.updateChartsForPeriod('week'); // Default to week
   }
 
-  // Table Event Handlers
-  onSearch(event: any) {
-    // Implement search functionality
-    const searchTerm = event.target.value;
-    console.log('Searching for:', searchTerm);
-  }
-
-  onExport() {
-    // Implement export functionality
-    console.log('Exporting data...');
-  }
-
-  onProductView(product: Product) {
-    // Handle product view action
-    console.log('Viewing product:', product);
-  }
-
-  // Utility Methods
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
-    switch (status?.toUpperCase()) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
+  private updateChartsForPeriod(period: string) {
+    // Update chart data based on selected period
+    switch (period) {
+      case 'week':
+        this.updateWeeklyChartData();
+        break;
+      case 'month':
+        this.updateMonthlyChartData();
+        break;
+      case 'quarter':
+        this.updateQuarterlyChartData();
+        break;
+      case 'year':
+        this.updateYearlyChartData();
+        break;
       default:
-        return 'info';
+        this.updateWeeklyChartData();
     }
   }
 
-  formatCurrency(value: number): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(value);
-  }
-
-  getChangeIcon(changeType: 'positive' | 'negative'): string {
-    return changeType === 'positive' ? 'pi pi-arrow-up' : 'pi pi-arrow-down';
-  }
-
-  getChangeClass(changeType: 'positive' | 'negative'): string {
-    return changeType === 'positive' ? 'text-green-500' : 'text-pink-500';
-  }
-
-
-  data: any;
-
-  options: any;
-
-  platformId = inject(PLATFORM_ID);
-  cd = inject(ChangeDetectorRef);
-
-  initChart() {
-
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-
-    this.data = {
-      labels: ['A', 'B', 'C'],
+  private updateWeeklyChartData() {
+    this.activityChartData = {
+      ...this.activityChartData,
+      labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
       datasets: [
         {
-          data: [540, 325, 702],
-          backgroundColor: [documentStyle.getPropertyValue('--p-cyan-500'), documentStyle.getPropertyValue('--p-orange-500'), documentStyle.getPropertyValue('--p-gray-500')],
-          hoverBackgroundColor: [documentStyle.getPropertyValue('--p-cyan-400'), documentStyle.getPropertyValue('--p-orange-400'), documentStyle.getPropertyValue('--p-gray-400')]
+          ...this.activityChartData.datasets[0],
+          data: [12, 19, 3, 5, 2, 3, 9]
+        },
+        {
+          ...this.activityChartData.datasets[1],
+          data: [25, 39, 20, 31, 56, 45, 38]
         }
       ]
     };
+  }
 
-    this.options = {
-      plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            color: textColor
-          }
+  private updateMonthlyChartData() {
+    this.activityChartData = {
+      ...this.activityChartData,
+      labels: ['S1', 'S2', 'S3', 'S4'],
+      datasets: [
+        {
+          ...this.activityChartData.datasets[0],
+          data: [45, 52, 38, 67]
+        },
+        {
+          ...this.activityChartData.datasets[1],
+          data: [120, 145, 98, 156]
         }
-      }
+      ]
     };
-    this.cd.markForCheck()
+  }
+
+  private updateQuarterlyChartData() {
+    this.activityChartData = {
+      ...this.activityChartData,
+      labels: ['Jan', 'Fév', 'Mar'],
+      datasets: [
+        {
+          ...this.activityChartData.datasets[0],
+          data: [156, 189, 167]
+        },
+        {
+          ...this.activityChartData.datasets[1],
+          data: [456, 523, 489]
+        }
+      ]
+    };
+  }
+
+  private updateYearlyChartData() {
+    this.activityChartData = {
+      ...this.activityChartData,
+      labels: ['T1', 'T2', 'T3', 'T4'],
+      datasets: [
+        {
+          ...this.activityChartData.datasets[0],
+          data: [512, 623, 567, 689]
+        },
+        {
+          ...this.activityChartData.datasets[1],
+          data: [1456, 1623, 1489, 1756]
+        }
+      ]
+    };
+  }
+
+  onSearchActivity(event: any) {
+    // Implement search functionality
+    console.log('Searching:', this.searchTerm);
+  }
+
+  loadActivities(event: any) {
+    // Implement lazy loading
+    console.log('Loading activities:', event);
+  }
+
+  viewActivityDetails(activity: Activity) {
+    this.selectedActivity = activity;
+    this.activityDetailsDialog = true;
+  }
+
+  exportActivity() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export de l\'activité en cours...'
+    });
+  }
+
+  performBackup() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sauvegarde',
+      detail: 'Sauvegarde lancée avec succès'
+    });
+  }
+
+  cleanupSystem() {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Nettoyage',
+      detail: 'Nettoyage du système en cours...'
+    });
+  }
+
+  generateReport() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Rapport',
+      detail: 'Génération du rapport en cours...'
+    });
+  }
+
+  viewLogs() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Logs',
+      detail: 'Consultation des logs...'
+    });
+  }
+
+  getInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  }
+
+  getActivitySeverity(type: string): string {
+    switch (type) {
+      case 'Creation':
+        return 'success';
+      case 'Suppression':
+        return 'danger';
+      case 'Modification':
+        return 'warning';
+      case 'Partage':
+        return 'info';
+      default:
+        return 'secondary';
+    }
   }
 }
