@@ -29,7 +29,6 @@ import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
-import { Product } from '../../admin/doc-req-management/doc-req-management';
 
 @Component({
   selector: 'app-accueil',
@@ -199,9 +198,9 @@ export class Accueil implements OnInit {
     console.log('Saving folder:', this.newFolder);
   }
 
-  deleteProduct(product: Product) {
+  deleteProduct() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
+      message: 'Are you sure you want to delete ' + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonProps: {
