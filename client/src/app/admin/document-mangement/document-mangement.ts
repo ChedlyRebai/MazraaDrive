@@ -1,327 +1,421 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 
-// Import PrimeNG Modules (not components directly)
+// PrimeNG Imports
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { FileUploadModule } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
-import { TagModule } from 'primeng/tag';
+
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { InputNumberModule } from 'primeng/inputnumber';
+
+import { FileUploadModule } from 'primeng/fileupload';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TagModule } from 'primeng/tag';
+import { AvatarModule } from 'primeng/avatar';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
+import { ThemeSwitcher } from '../themeswitcher';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
-// Import Table component for ViewChild
-import { Table } from 'primeng/table';
+import { DatePickerModule } from 'primeng/datepicker';
 
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
-export interface Product {
-  id?: string;
-  code?: string;
-  name?: string;
+interface Document {
+  id?: number;
+  name: string;
+  category: string;
+  type: string;
+  size: number;
   description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: string;
-  category?: string;
-  image?: string;
-  rating?: number;
+  tags?: string[];
+  status: string;
+  accessLevel: string;
+  uploadedBy: string;
+  uploadedAt: Date;
+  expirationDate?: Date;
+  version?: string;
+  filePath?: string;
+  isActive: boolean;
 }
+
 @Component({
-  selector: 'app-document-mangement',
+  selector: 'app-document-management',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    // PrimeNG Modules
+    TableModule,
     ButtonModule,
     ToastModule,
     ToolbarModule,
-    FileUploadModule,
-    TableModule,
     DialogModule,
     InputTextModule,
     TextareaModule,
-    SelectModule,
+    AutoCompleteModule,
+    DatePickerModule,
     RadioButtonModule,
-    InputNumberModule,
-    RatingModule,
-    TagModule,
+    
+    FileUploadModule,
     ConfirmDialogModule,
+    TagModule,
+    AvatarModule,
     IconFieldModule,
     InputIconModule,
-    CheckboxModule,
-    RippleModule
+    TooltipModule,
+    ThemeSwitcher
   ],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './document-mangement.html',
-  styleUrl: './document-mangement.css',
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./document-mangement.css']
 })
-export class DocumentMangement {
- productDialog: boolean = false;
-  products: Product[] = [];
-  product: Product = {};
-  selectedProducts: Product[] | null = null;
-  submitted: boolean = false;
-  statuses: any[] = [];
-  cols: Column[] = [];
-  exportColumns: ExportColumn[] = [];
+export class DocumentMangement implements OnInit {
 
-  @ViewChild('dt') dt!: Table;
+  documents: Document[] = [];
+  selectedDocuments: Document[] = [];
+  selectedDocument: Document | null = null;
+  document: Document = this.getEmptyDocument();
+  
+  documentDialog = false;
+  previewDialog = false;
+  submitted = false;
+  loading = false;
+  saving = false;
+  
+  selectedFile: File | null = null;
+
+  categories = [
+    'Rapports',
+    'Contrats',
+    'Factures',
+    'Certificats',
+    'Politiques',
+    'Procédures',
+    'Formulaires',
+    'Images',
+    'Autres'
+  ];
+
+  statuses = [
+    'Actif',
+    'Archivé',
+    'Brouillon',
+    'En révision',
+    'Expiré'
+  ];
+
+  private baseUrl = 'http://localhost:5108/api';
 
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    this.loadDemoData();
+    this.loadDocuments();
   }
 
-  loadDemoData() {
-    // Load demo products
-    this.products = this.getProductsData();
+  get dialogTitle(): string {
+    return this.document.id ? 'Modifier le document' : 'Nouveau document';
+  }
 
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
-
-    this.cols = [
-      { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-      { field: 'name', header: 'Name' },
-      { field: 'image', header: 'Image' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' }
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({ 
-      title: col.header, 
-      dataKey: col.field 
-    }));
+  loadDocuments() {
+    this.loading = true;
+    
+    // Mock data for demonstration
+    setTimeout(() => {
+      this.documents = [
+        {
+          id: 1,
+          name: 'Rapport Mensuel Janvier 2024.pdf',
+          category: 'Rapports',
+          type: 'PDF',
+          size: 2457600, // 2.4 MB
+          description: 'Rapport mensuel des activités de janvier',
+          tags: ['rapport', 'janvier', '2024'],
+          status: 'Actif',
+          accessLevel: 'Public',
+          uploadedBy: 'Jean Dupont',
+          uploadedAt: new Date('2024-02-01'),
+          version: '1.0',
+          isActive: true
+        },
+        {
+          id: 2,
+          name: 'Contrat Employé - Marie Martin.docx',
+          category: 'Contrats',
+          type: 'DOCX',
+          size: 524288, // 512 KB
+          description: 'Contrat de travail pour Marie Martin',
+          tags: ['contrat', 'emploi', 'marie-martin'],
+          status: 'Actif',
+          accessLevel: 'Confidential',
+          uploadedBy: 'Admin RH',
+          uploadedAt: new Date('2024-01-15'),
+          version: '2.1',
+          isActive: true
+        },
+        {
+          id: 3,
+          name: 'Politique de Sécurité IT.pdf',
+          category: 'Politiques',
+          type: 'PDF',
+          size: 1048576, // 1 MB
+          description: 'Document de politique de sécurité informatique',
+          tags: ['politique', 'sécurité', 'IT'],
+          status: 'En révision',
+          accessLevel: 'Restricted',
+          uploadedBy: 'Chef IT',
+          uploadedAt: new Date('2024-01-20'),
+          expirationDate: new Date('2024-12-31'),
+          version: '3.0',
+          isActive: true
+        },
+        {
+          id: 4,
+          name: 'Facture Fournisseur ABC-001.pdf',
+          category: 'Factures',
+          type: 'PDF',
+          size: 204800, // 200 KB
+          description: 'Facture du fournisseur ABC pour commande 001',
+          tags: ['facture', 'ABC', 'commande-001'],
+          status: 'Archivé',
+          accessLevel: 'Private',
+          uploadedBy: 'Comptable',
+          uploadedAt: new Date('2023-12-15'),
+          version: '1.0',
+          isActive: true
+        }
+      ];
+      this.loading = false;
+    }, 1000);
   }
 
   openNew() {
-    this.product = {};
+    this.document = this.getEmptyDocument();
+    this.selectedFile = null;
     this.submitted = false;
-    this.productDialog = true;
+    this.documentDialog = true;
   }
 
-  editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
+  editDocument(document: Document) {
+    this.document = { ...document };
+    this.documentDialog = true;
   }
 
-  deleteSelectedProducts() {
+  viewDocument(document: Document) {
+    this.selectedDocument = document;
+    this.previewDialog = true;
+  }
+
+  deleteDocument(document: Document) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer "${document.name}"?`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-        this.selectedProducts = null;
+        this.documents = this.documents.filter(d => d.id !== document.id);
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000
+          summary: 'Succès',
+          detail: 'Document supprimé avec succès'
         });
       }
     });
   }
 
-  deleteProduct(product: Product) {
+  deleteSelectedDocuments() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedDocuments.length} document(s)?`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
-        this.product = {};
+        this.documents = this.documents.filter(d => !this.selectedDocuments.includes(d));
+        this.selectedDocuments = [];
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000
+          summary: 'Succès',
+          detail: 'Documents supprimés avec succès'
         });
       }
     });
   }
 
-  hideDialog() {
-    this.productDialog = false;
-    this.submitted = false;
+  downloadDocument(document: Document) {
+    // Simulate download
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement',
+      detail: `Téléchargement de "${document.name}" en cours...`
+    });
+    
+    // In real implementation, you would call your API to get the file
+    // this.http.get(`${this.baseUrl}/Document/${document.id}/download`, { responseType: 'blob' })
   }
 
-  saveProduct() {
+  saveDocument() {
     this.submitted = true;
 
-    if (this.product.name?.trim()) {
-      if (this.product.id) {
-        // Update existing product
-        const index = this.findIndexById(this.product.id);
+    if (!this.isDocumentValid()) {
+      return;
+    }
+
+    this.saving = true;
+
+    // Simulate API call with file upload
+    setTimeout(() => {
+      if (this.document.id) {
+        // Update existing document
+        const index = this.documents.findIndex(d => d.id === this.document.id);
         if (index !== -1) {
-          this.products[index] = this.product;
+          this.documents[index] = { ...this.document };
         }
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Updated',
-          life: 3000
+          summary: 'Succès',
+          detail: 'Document modifié avec succès'
         });
       } else {
-        // Create new product
-        this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
+        // Create new document
+        this.document.id = Math.max(...this.documents.map(d => d.id || 0)) + 1;
+        this.document.uploadedAt = new Date();
+        this.document.uploadedBy = 'Utilisateur Actuel'; // Get from auth service
+        this.document.isActive = true;
+        
+        if (this.selectedFile) {
+          this.document.type = this.getFileExtension(this.selectedFile.name);
+          this.document.size = this.selectedFile.size;
+        }
+        
+        this.documents.push({ ...this.document });
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000
+          summary: 'Succès',
+          detail: 'Document créé avec succès'
         });
       }
 
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
+      this.saving = false;
+      this.documentDialog = false;
+      this.document = this.getEmptyDocument();
+      this.selectedFile = null;
+    }, 2000);
+  }
+
+  hideDialog() {
+    this.documentDialog = false;
+    this.submitted = false;
+    this.document = this.getEmptyDocument();
+    this.selectedFile = null;
+  }
+
+  onFileSelect(event: any) {
+    this.selectedFile = event.files[0];
+    if (this.selectedFile && !this.document.name) {
+      this.document.name = this.selectedFile.name;
     }
   }
 
-  exportCSV() {
-    this.dt.exportCSV();
+  onImportDocuments(event: any) {
+    const files = event.files;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Import',
+      detail: `${files.length} fichier(s) importé(s)`
+    });
   }
 
-  findIndexById(id: string): number {
-    return this.products.findIndex(product => product.id === id);
+  exportDocuments() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export des documents en cours...'
+    });
   }
 
-  createId(): string {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
+  // Utility methods
+  getEmptyDocument(): Document {
+    return {
+      name: '',
+      category: '',
+      type: '',
+      size: 0,
+      description: '',
+      tags: [],
+      status: 'Actif',
+      accessLevel: 'Public',
+      uploadedBy: '',
+      uploadedAt: new Date(),
+      isActive: true
+    };
   }
 
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
+  isDocumentValid(): boolean {
+    return !!(
+      this.document.name?.trim() &&
+      this.document.category &&
+      (this.document.id || this.selectedFile)
+    );
+  }
+
+  getFileIcon(type: string): string {
+    const typeMap: { [key: string]: string } = {
+      'PDF': 'pi pi-file-pdf text-red-500',
+      'DOC': 'pi pi-file-word text-blue-500',
+      'DOCX': 'pi pi-file-word text-blue-500',
+      'XLS': 'pi pi-file-excel text-green-500',
+      'XLSX': 'pi pi-file-excel text-green-500',
+      'JPG': 'pi pi-image text-purple-500',
+      'JPEG': 'pi pi-image text-purple-500',
+      'PNG': 'pi pi-image text-purple-500',
+      'TXT': 'pi pi-file text-gray-500',
+      'ZIP': 'pi pi-file text-yellow-500'
+    };
+    return typeMap[type?.toUpperCase()] || 'pi pi-file text-gray-500';
+  }
+
+  getFileExtension(filename: string): string {
+    return filename.split('.').pop()?.toUpperCase() || '';
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  getInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  }
+
+  getStatusSeverity(status: string): string {
     switch (status) {
-      case 'INSTOCK':
+      case 'Actif':
         return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
+      case 'Archivé':
+        return 'secondary';
+      case 'Brouillon':
+        return 'warning';
+      case 'En révision':
+        return 'info';
+      case 'Expiré':
         return 'danger';
       default:
         return 'info';
     }
-  }
-
-  private getProductsData(): Product[] {
-    return [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1001',
-        code: 'nvklal433',
-        name: 'Black Watch',
-        description: 'Product Description',
-        image: 'black-watch.jpg',
-        price: 72,
-        category: 'Accessories',
-        quantity: 61,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 4
-      },
-      {
-        id: '1002',
-        code: 'zz21cz3c1',
-        name: 'Blue Band',
-        description: 'Product Description',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        quantity: 2,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 3
-      },
-      {
-        id: '1003',
-        code: '244wgerg2',
-        name: 'Blue T-Shirt',
-        description: 'Product Description',
-        image: 'blue-t-shirt.jpg',
-        price: 29,
-        category: 'Clothing',
-        quantity: 25,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1004',
-        code: 'h456wer53',
-        name: 'Bracelet',
-        description: 'Product Description',
-        image: 'bracelet.jpg',
-        price: 15,
-        category: 'Accessories',
-        quantity: 73,
-        inventoryStatus: 'INSTOCK',
-        rating: 4
-      }
-      // Add more products as needed...
-    ];
   }
 }

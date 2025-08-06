@@ -1,167 +1,493 @@
-
-
+<theme-switcher />
 <div class="card">
-    <p-toast />
-    <p-toolbar class="mb-6">
-        <ng-template #start>
-            <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-            <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
+  <p-toast />
+  <p-toolbar class="mb-6">
+    <ng-template #start>
+      <p-button
+        label="Nouveau Document"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew()"
+      />
+      <p-button
+        severity="danger"
+        label="Supprimer"
+        icon="pi pi-trash"
+        [outlined]="true"
+        (onClick)="deleteSelectedDocuments()"
+        [disabled]="!selectedDocuments || !selectedDocuments.length"
+      />
+    </ng-template>
 
-        <ng-template #end>
-             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
-            <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
-        </ng-template>
-    </p-toolbar>
+    <ng-template #end>
+      <p-fileUpload
+        mode="basic"
+        accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+        [maxFileSize]="10000000"
+        label="Importer"
+        chooseLabel="Importer"
+        [auto]="false"
+        customUpload
+        class="mr-2 inline-block"
+        [chooseButtonProps]="{ severity: 'secondary' }"
+        (uploadHandler)="onImportDocuments($event)"
+      />
+      <p-button
+        label="Exporter"
+        icon="pi pi-download"
+        severity="secondary"
+        (onClick)="exportDocuments()"
+      />
+    </ng-template>
+  </p-toolbar>
 
-    <p-table
-        #dt
-        [value]="products"
-        [rows]="10"
-        [columns]="cols"
-        [paginator]="true"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedProducts"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true"
-    >
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Manage Products</h5>
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text" placeholder="Search..." />
-                </p-iconfield>
+  <p-table
+    #dt
+    [value]="documents"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'category', 'type', 'uploadedBy', 'status']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedDocuments"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} documents"
+    [showCurrentPageReport]="true"
+    [loading]="loading"
+    [rowsPerPageOptions]="[10, 25, 50]"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">Gestion des Documents</h5>
+        <div class="flex gap-2">
+          <p-iconField iconPosition="left">
+            <p-inputIcon class="pi pi-search" />
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Rechercher..."
+            />
+          </p-iconField>
+          <p-button
+            icon="pi pi-refresh"
+            [outlined]="true"
+            (click)="loadDocuments()"
+            [loading]="loading"
+          />
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+        <th pSortableColumn="name" style="min-width: 16rem">
+          <div class="flex items-center gap-2">
+            Nom du Document
+            <p-sortIcon field="name" />
+          </div>
+        </th>
+        <th pSortableColumn="category" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Catégorie
+            <p-sortIcon field="category" />
+          </div>
+        </th>
+        <th pSortableColumn="type" style="min-width: 10rem">
+          <div class="flex items-center gap-2">
+            Type
+            <p-sortIcon field="type" />
+          </div>
+        </th>
+        <th pSortableColumn="size" style="min-width: 8rem">
+          <div class="flex items-center gap-2">
+            Taille
+            <p-sortIcon field="size" />
+          </div>
+        </th>
+        <th pSortableColumn="uploadedBy" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Téléchargé par
+            <p-sortIcon field="uploadedBy" />
+          </div>
+        </th>
+        <th pSortableColumn="uploadedAt" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Date de téléchargement
+            <p-sortIcon field="uploadedAt" />
+          </div>
+        </th>
+        <th pSortableColumn="status" style="min-width: 10rem">
+          <div class="flex items-center gap-2">
+            Statut
+            <p-sortIcon field="status" />
+          </div>
+        </th>
+        <th style="min-width: 12rem">Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-document>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="document" />
+        </td>
+        <td>
+          <div class="flex items-center gap-2">
+            <i
+              [class]="getFileIcon(document.type)"
+              style="font-size: 1.5rem"
+            ></i>
+            <span class="font-medium">{{ document.name }}</span>
+          </div>
+        </td>
+        <td>
+          <p-tag [value]="document.category" severity="info" />
+        </td>
+        <td>{{ document.type }}</td>
+        <td>{{ formatFileSize(document.size) }}</td>
+        <td>
+          <div class="flex items-center gap-2">
+            <p-avatar
+              [label]="getInitials(document.uploadedBy)"
+              shape="circle"
+            />
+            <span>{{ document.uploadedBy }}</span>
+          </div>
+        </td>
+        <td>{{ document.uploadedAt | date : "dd/MM/yyyy HH:mm" }}</td>
+        <td>
+          <p-tag
+            [value]="document.status"
+            [severity]="getStatusSeverity(document.status)"
+          />
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-eye"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="viewDocument(document)"
+              pTooltip="Voir"
+            />
+            <p-button
+              icon="pi pi-download"
+              severity="success"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="downloadDocument(document)"
+              pTooltip="Télécharger"
+            />
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="editDocument(document)"
+              pTooltip="Modifier"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="deleteDocument(document)"
+              pTooltip="Supprimer"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9" class="text-center py-4">
+          <div class="flex flex-col items-center gap-2">
+            <i
+              class="pi pi-file"
+              style="font-size: 2rem; color: var(--text-color-secondary)"
+            ></i>
+            <span>Aucun document trouvé.</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Document Dialog -->
+  <p-dialog
+    [(visible)]="documentDialog"
+    [style]="{ width: '50rem' }"
+    [header]="dialogTitle"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-6">
+        <!-- File Upload Area -->
+        <div
+          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          *ngIf="!document.id"
+        >
+          <p-fileUpload
+            #fileUpload
+            mode="basic"
+            accept=".pdf,.doc,.docx,.txt,.jpg,.png,.zip"
+            [maxFileSize]="10000000"
+            chooseLabel="Choisir un fichier"
+            [auto]="false"
+            (onSelect)="onFileSelect($event)"
+            class="mb-3"
+          />
+          <p class="text-sm text-gray-500 m-0">
+            Formats acceptés: PDF, DOC, DOCX, TXT, JPG, PNG, ZIP (Max: 10MB)
+          </p>
+        </div>
+
+        <!-- Selected File Info -->
+        <div
+          *ngIf="selectedFile || document.id"
+          class="bg-gray-50 p-4 rounded border"
+        >
+          <div class="flex items-center gap-3">
+            <i
+              [class]="getFileIcon(selectedFile?.type || document.type)"
+              style="font-size: 2rem"
+            ></i>
+            <div class="flex-1">
+              <h6 class="m-0">{{ selectedFile?.name || document.name }}</h6>
+              <p class="text-sm text-gray-500 m-0">
+                {{ formatFileSize(selectedFile?.size || document.size) }}
+              </p>
             </div>
-        </ng-template>
-        <ng-template #header>
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th style="min-width: 16rem">Code</th>
-                <th pSortableColumn="name" style="min-width:16rem">
-                    <div class="flex items-center gap-2">
-                        Name
-                        <p-sortIcon field="name" />
-                    </div>
-                </th>
-                <th>Image</th>
-                <th pSortableColumn="price" style="min-width: 8rem">
-                    <div class="flex items-center gap-2">
-                        Price
-                        <p-sortIcon field="price" />
-                    </div>
-                </th>
-                <th pSortableColumn="category" style="min-width:10rem">
-                    <div class="flex items-center gap-2">
-                        Category
-                        <p-sortIcon field="category" />
-                    </div>
-                </th>
-                <th pSortableColumn="rating" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Reviews
-                        <p-sortIcon field="rating" />
-                    </div>
-                </th>
-                <th pSortableColumn="inventoryStatus" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Status
-                        <p-sortIcon field="inventoryStatus" />
-                    </div>
-                </th>
-                <th style="min-width: 12rem"></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-product>
-            <tr>
-                <td style="width: 3rem">
-                    <p-tableCheckbox [value]="product" />
-                </td>
-                <td style="min-width: 12rem">{{ product.code }}</td>
-                <td style="min-width: 16rem">{{ product.name }}</td>
-                <td>
-                    <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" style="width: 64px" class="rounded" />
-                </td>
-                <td>{{ product.price | currency: 'USD' }}</td>
-                <td>{{ product.category }}</td>
-                <td>
-                    <p-rating [(ngModel)]="product.rating" [readonly]="true" />
-                </td>
-                <td>
-                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+          </div>
+        </div>
 
-    <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
-        <ng-template #content>
-            <div class="flex flex-col gap-6">
-                <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-4" *ngIf="product.image" />
-                <div>
-                    <label for="name" class="block font-bold mb-3">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus fluid />
-                    <small class="text-red-500" *ngIf="submitted && !product.name">Name is required.</small>
-                </div>
-                <div>
-                    <label for="description" class="block font-bold mb-3">Description</label>
-                    <textarea id="description" pTextarea [(ngModel)]="product.description" required rows="3" cols="20" fluid></textarea>
-                </div>
+        <!-- Document Information Form -->
+        <div class="grid grid-cols-12 gap-4">
+          <!-- Document Name -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="name" class="block font-bold mb-3"
+              >Nom du Document *</label
+            >
+            <input
+              type="text"
+              pInputText
+              id="name"
+              [(ngModel)]="document.name"
+              required
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !document.name"
+              >Le nom est requis.</small
+            >
+          </div>
 
-                <div>
-                    <label for="inventoryStatus" class="block font-bold mb-3">Inventory Status</label>
-                    <p-select [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" optionLabel="label" placeholder="Select a Status" fluid />
-                </div>
+          <!-- Category -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="category" class="block font-bold mb-3"
+              >Catégorie *</label
+            >
+            
+            <p-autocomplete
+              [(ngModel)]="document.category"
+              [dropdown]="true"
+              [suggestions]="categories"
+              
+            />
+            <small class="text-red-500" *ngIf="submitted && !document.category"
+              >La catégorie est requise.</small
+            >
+          </div>
 
-                <div>
-                    <span class="block font-bold mb-4">Category</span>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category1" name="category" value="Accessories" [(ngModel)]="product.category" />
-                            <label for="category1">Accessories</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category2" name="category" value="Clothing" [(ngModel)]="product.category" />
-                            <label for="category2">Clothing</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category3" name="category" value="Electronics" [(ngModel)]="product.category" />
-                            <label for="category3">Electronics</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category4" name="category" value="Fitness" [(ngModel)]="product.category" />
-                            <label for="category4">Fitness</label>
-                        </div>
-                    </div>
-                </div>
+          <!-- Description -->
+          <div class="col-span-12">
+            <label for="description" class="block font-bold mb-3"
+              >Description</label
+            >
+            <textarea
+              id="description"
+              pInputTextarea
+              [(ngModel)]="document.description"
+              rows="3"
+              fluid
+              placeholder="Description du document..."
+            ></textarea>
+          </div>
 
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-6">
-                        <label for="price" class="block font-bold mb-3">Price</label>
-                        <p-inputnumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US" fluid />
-                    </div>
-                    <div class="col-span-6">
-                        <label for="quantity" class="block font-bold mb-3">Quantity</label>
-                        <p-inputnumber id="quantity" [(ngModel)]="product.quantity" fluid />
-                    </div>
-                </div>
+          <!-- Tags -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="tags" class="block font-bold mb-3">Tags</label>
+            <p-chips
+              [(ngModel)]="document.tags"
+              placeholder="Ajouter des tags"
+              fluid
+            />
+          </div>
+
+          <!-- Status -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="status" class="block font-bold mb-3">Statut</label>
+             
+            <p-autocomplete
+              [(ngModel)]="document.category"
+              [dropdown]="true"
+              [suggestions]="categories"
+              
+            />
+          </div>
+
+          <!-- Access Level -->
+          <div class="col-span-12">
+            <label class="block font-bold mb-3">Niveau d'accès</label>
+            <div class="grid grid-cols-12 gap-4">
+              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
+                <p-radioButton
+                  id="public"
+                  name="access"
+                  value="Public"
+                  [(ngModel)]="document.accessLevel"
+                />
+                <label for="public">Public</label>
+              </div>
+              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
+                <p-radioButton
+                  id="private"
+                  name="access"
+                  value="Private"
+                  [(ngModel)]="document.accessLevel"
+                />
+                <label for="private">Privé</label>
+              </div>
+              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
+                <p-radioButton
+                  id="restricted"
+                  name="access"
+                  value="Restricted"
+                  [(ngModel)]="document.accessLevel"
+                />
+                <label for="restricted">Restreint</label>
+              </div>
+              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
+                <p-radioButton
+                  id="confidential"
+                  name="access"
+                  value="Confidential"
+                  [(ngModel)]="document.accessLevel"
+                />
+                <label for="confidential">Confidentiel</label>
+              </div>
             </div>
-        </ng-template>
+          </div>
 
-        <ng-template #footer>
-            <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-            <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
-        </ng-template>
-    </p-dialog>
+          <!-- Expiration Date -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="expirationDate" class="block font-bold mb-3"
+              >Date d'expiration</label
+            >
 
-    <p-confirmDialog [style]="{ width: '450px' }" />
+            <p-datepicker
+              [(ngModel)]="document.expirationDate"
+              [showIcon]="true"
+              inputId="buttondisplay"
+              [showOnFocus]="false"
+            />
+          </div>
+
+          <!-- Version -->
+          <div class="col-span-12 md:col-span-6" *ngIf="document.id">
+            <label for="version" class="block font-bold mb-3">Version</label>
+            <input
+              type="text"
+              pInputText
+              id="version"
+              [(ngModel)]="document.version"
+              fluid
+              placeholder="1.0"
+            />
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Annuler"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="hideDialog()"
+      />
+      <p-button
+        label="Sauvegarder"
+        icon="pi pi-check"
+        (click)="saveDocument()"
+        [loading]="saving"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <!-- Document Preview Dialog -->
+  <p-dialog
+    [(visible)]="previewDialog"
+    [style]="{ width: '70rem', height: '80vh' }"
+    header="Aperçu du Document"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-4 h-full" *ngIf="selectedDocument">
+        <!-- Document Info -->
+        <div class="flex items-center justify-between pb-4 border-b">
+          <div class="flex items-center gap-3">
+            <i
+              [class]="getFileIcon(selectedDocument.type)"
+              style="font-size: 2rem"
+            ></i>
+            <div>
+              <h4 class="m-0">{{ selectedDocument.name }}</h4>
+              <p class="text-sm text-gray-500 m-0">
+                {{ selectedDocument.category }} •
+                {{ formatFileSize(selectedDocument.size) }}
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-download"
+              severity="success"
+              [outlined]="true"
+              (click)="downloadDocument(selectedDocument)"
+              label="Télécharger"
+            />
+          </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="flex-1 bg-gray-50 rounded border p-4">
+          <div class="text-center">
+            <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600">
+              Aperçu non disponible pour ce type de fichier
+            </p>
+            <p class="text-sm text-gray-500">
+              Cliquez sur "Télécharger" pour ouvrir le fichier
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Fermer"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="previewDialog = false"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
