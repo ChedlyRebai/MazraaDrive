@@ -1,327 +1,494 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 
-// Import PrimeNG Modules (not components directly)
+// PrimeNG Imports
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { FileUploadModule } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
 
-// Import Table component for ViewChild
-import { Table } from 'primeng/table';
+// Models
+import { 
+  DepartmentDto, 
+  DepartmentCreateDTO, 
+  DepartmentUpdateDTO, 
+  DepartmentFilterDto, 
+  DepartmentPagedResult 
+} from '../../shared/models/department';
+import { DatePicker, DatePickerModule } from 'primeng/datepicker';
+import { Textarea, TextareaModule } from 'primeng/textarea';
+import { ThemeSwitcher } from '../themeswitcher';
 
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
+interface UserCountRange {
+  label: string;
+  minCount: number | null;
+  maxCount: number | null;
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
-export interface Product {
-  id?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: string;
-  category?: string;
-  image?: string;
-  rating?: number;
-}
 @Component({
-  selector: 'app-department-mangement',
+  selector: 'app-department-management',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    // PrimeNG Modules
+    TableModule,
     ButtonModule,
     ToastModule,
     ToolbarModule,
-    FileUploadModule,
-    TableModule,
     DialogModule,
     InputTextModule,
     TextareaModule,
-    SelectModule,
-    RadioButtonModule,
-    InputNumberModule,
-    RatingModule,
-    TagModule,
+    AutoCompleteModule,
+    DatePickerModule,
     ConfirmDialogModule,
+    TagModule,
     IconFieldModule,
     InputIconModule,
-    CheckboxModule,
-    RippleModule
+    TooltipModule,
+    ThemeSwitcher
   ],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './department-mangement.html',
-  styleUrl: './department-mangement.css',
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./department-mangement.css']
 })
-export class DepartmentMangement {
- productDialog: boolean = false;
-  products: Product[] = [];
-  product: Product = {};
-  selectedProducts: Product[] | null = null;
-  submitted: boolean = false;
-  statuses: any[] = [];
-  cols: Column[] = [];
-  exportColumns: ExportColumn[] = [];
+export class DepartmentMangement implements OnInit {
 
-  @ViewChild('dt') dt!: Table;
+  departments: DepartmentDto[] = [];
+  selectedDepartments: DepartmentDto[] = [];
+  selectedDepartment: DepartmentDto | null = null;
+  department: any = this.getEmptyDepartment();
+  
+  departmentDialog = false;
+  departmentDetailsDialog = false;
+  submitted = false;
+  loading = false;
+  saving = false;
+
+  // Pagination and filtering
+  totalRecords = 0;
+  filter: DepartmentFilterDto = {
+    pageNumber: 1,
+    pageSize: 10,
+    name: null,
+    createdFrom: null,
+    createdTo: null,
+    minUserCount: null,
+    maxUserCount: null,
+    search: null,
+    sortBy: null,
+    sortDirection: null
+  };
+
+  // Statistics
+  totalDepartments = 0;
+  totalUsers = 0;
+  avgUsersPerDepartment = 0;
+
+  // Filter options
+  selectedUserCountRange: UserCountRange | null = null;
+  filteredUserCountRanges: UserCountRange[] = [];
+  dateRange: Date[] = [];
+
+  userCountRanges: UserCountRange[] = [
+    { label: 'Tous', minCount: null, maxCount: null },
+    { label: '1-10 utilisateurs', minCount: 1, maxCount: 10 },
+    { label: '11-25 utilisateurs', minCount: 11, maxCount: 25 },
+    { label: '26-50 utilisateurs', minCount: 26, maxCount: 50 },
+    { label: '50+ utilisateurs', minCount: 51, maxCount: null }
+  ];
+
+  private baseUrl = 'http://localhost:5108/api';
 
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    this.loadDemoData();
+    this.loadDepartments();
   }
 
-  loadDemoData() {
-    // Load demo products
-    this.products = this.getProductsData();
+  get dialogTitle(): string {
+    return this.selectedDepartment ? 'Modifier le département' : 'Nouveau département';
+  }
 
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
+  loadDepartments() {
+    this.loading = true;
+    
+    // Mock data matching DepartmentDto interface
+    setTimeout(() => {
+      const mockResponse: DepartmentPagedResult = {
+        data: [
+          {
+            id: 1,
+            name: 'Ressources Humaines',
+            description: 'Gestion du personnel, recrutement, formation et développement des ressources humaines',
+            createdAt: '2024-01-15T08:30:00',
+            updatedAt: '2024-12-01T10:15:00',
+            userCount: 15,
+            folderCount: 25,
+            documentRequestCount: 45
+          },
+          {
+            id: 2,
+            name: 'Finance',
+            description: 'Gestion financière, comptabilité, budgets et contrôle de gestion',
+            createdAt: '2024-01-20T09:00:00',
+            updatedAt: '2024-11-28T14:30:00',
+            userCount: 12,
+            folderCount: 30,
+            documentRequestCount: 38
+          },
+          {
+            id: 3,
+            name: 'Technologies de l\'Information',
+            description: 'Développement logiciel, infrastructure IT, support technique et cybersécurité',
+            createdAt: '2024-02-01T10:00:00',
+            updatedAt: '2024-12-05T16:45:00',
+            userCount: 20,
+            folderCount: 40,
+            documentRequestCount: 25
+          },
+          {
+            id: 4,
+            name: 'Marketing et Communication',
+            description: 'Marketing digital, communication interne et externe, relations publiques',
+            createdAt: '2024-02-10T11:15:00',
+            updatedAt: '2024-11-30T09:20:00',
+            userCount: 8,
+            folderCount: 15,
+            documentRequestCount: 20
+          },
+          {
+            id: 5,
+            name: 'Opérations',
+            description: 'Gestion des opérations, production, logistique et chaîne d\'approvisionnement',
+            createdAt: '2024-01-25T13:45:00',
+            updatedAt: '2024-12-03T11:10:00',
+            userCount: 25,
+            folderCount: 35,
+            documentRequestCount: 55
+          },
+          {
+            id: 6,
+            name: 'Administration Générale',
+            description: 'Support administratif, gestion des installations et services généraux',
+            createdAt: '2024-03-01T08:00:00',
+            updatedAt: '2024-12-02T15:30:00',
+            userCount: 10,
+            folderCount: 20,
+            documentRequestCount: 30
+          }
+        ],
+        pageNumber: 1,
+        pageSize: 10,
+        totalRecords: 6,
+        totalPages: 1,
+        hasPreviousPage: false,
+        hasNextPage: false,
+        totalDepartments: 6,
+        totalUsers: 90,
+        search: null,
+        sortBy: null,
+        sortDirection: null
+      };
 
-    this.cols = [
-      { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-      { field: 'name', header: 'Name' },
-      { field: 'image', header: 'Image' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' }
-    ];
+      this.departments = mockResponse.data;
+      this.totalRecords = mockResponse.totalRecords;
+      this.totalDepartments = mockResponse.totalDepartments;
+      this.totalUsers = mockResponse.totalUsers;
+      this.avgUsersPerDepartment = Math.round(this.totalUsers / this.totalDepartments);
+      this.loading = false;
+    }, 1000);
 
-    this.exportColumns = this.cols.map((col) => ({ 
-      title: col.header, 
-      dataKey: col.field 
-    }));
+    // Real API call would be:
+    /*
+    this.http.get<DepartmentPagedResult>(`${this.baseUrl}/Department`, { params: this.filter as any }).subscribe({
+      next: (response) => {
+        this.departments = response.data;
+        this.totalRecords = response.totalCount;
+        this.totalDepartments = response.totalDepartments;
+        this.totalUsers = response.totalUsers;
+        this.avgUsersPerDepartment = Math.round(this.totalUsers / this.totalDepartments);
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading departments:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors du chargement des départements'
+        });
+        this.loading = false;
+      }
+    });
+    */
+  }
+
+  onPageChange(event: any) {
+    this.filter.pageNumber = event.page + 1;
+    this.filter.pageSize = event.rows;
+    this.loadDepartments();
+  }
+
+  onGlobalFilter(event: any) {
+    this.filter.name = event.target.value;
+    this.filter.pageNumber = 1;
+    this.loadDepartments();
+  }
+
+  // AutoComplete methods
+  searchUserCountRange(event: any) {
+    const query = event.query.toLowerCase();
+    this.filteredUserCountRanges = this.userCountRanges.filter(range => 
+      range.label.toLowerCase().includes(query)
+    );
+  }
+
+  onUserCountRangeSelect(event: any) {
+    this.filter.minUserCount = event.minCount;
+    this.filter.maxUserCount = event.maxCount;
+    this.filter.pageNumber = 1;
+    this.loadDepartments();
+  }
+
+  onUserCountRangeClear() {
+    this.selectedUserCountRange = null;
+    this.filter.minUserCount = null;
+    this.filter.maxUserCount = null;
+    this.filter.pageNumber = 1;
+    this.loadDepartments();
+  }
+
+  onDateRangeSelect(event: any) {
+    if (this.dateRange && this.dateRange.length === 2) {
+      this.filter.createdFrom = this.dateRange[0].toISOString();
+      this.filter.createdTo = this.dateRange[1].toISOString();
+      this.filter.pageNumber = 1;
+      this.loadDepartments();
+    }
+  }
+
+  onDateRangeClear() {
+    this.dateRange = [];
+    this.filter.createdFrom = null;
+    this.filter.createdTo = null;
+    this.filter.pageNumber = 1;
+    this.loadDepartments();
   }
 
   openNew() {
-    this.product = {};
+    this.department = this.getEmptyDepartment();
+    this.selectedDepartment = null;
     this.submitted = false;
-    this.productDialog = true;
+    this.departmentDialog = true;
   }
 
-  editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
+  editDepartment(department: DepartmentDto) {
+    this.selectedDepartment = department;
+    this.department = {
+      id: department.id,
+      name: department.name,
+      description: department.description,
+      userCount: department.userCount,
+      folderCount: department.folderCount,
+      documentRequestCount: department.documentRequestCount
+    };
+    this.departmentDialog = true;
   }
 
-  deleteSelectedProducts() {
+  viewDepartment(department: DepartmentDto) {
+    this.selectedDepartment = department;
+    this.departmentDetailsDialog = true;
+  }
+
+  deleteDepartment(department: DepartmentDto) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer le département "${department.name}"? Cette action affectera ${department.userCount} utilisateur(s).`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-        this.selectedProducts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000
-        });
+        this.performDeleteDepartment(department.id);
       }
     });
   }
 
-  deleteProduct(product: Product) {
+  deleteSelectedDepartments() {
+    const totalUsers = this.selectedDepartments.reduce((sum, dept) => sum + dept.userCount, 0);
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedDepartments.length} département(s)? Cette action affectera ${totalUsers} utilisateur(s).`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
-        this.product = {};
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000
-        });
+        this.performBulkDelete();
       }
     });
+  }
+
+  private performDeleteDepartment(departmentId: number) {
+    setTimeout(() => {
+      const deletedDept = this.departments.find(d => d.id === departmentId);
+      this.departments = this.departments.filter(d => d.id !== departmentId);
+      this.totalRecords--;
+      this.totalDepartments--;
+      if (deletedDept) {
+        this.totalUsers -= deletedDept.userCount;
+        this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+      }
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Département supprimé avec succès'
+      });
+    }, 500);
+  }
+
+  private performBulkDelete() {
+    const departmentIds = this.selectedDepartments.map(d => d.id);
+    const deletedUsersCount = this.selectedDepartments.reduce((sum, dept) => sum + dept.userCount, 0);
+    
+    setTimeout(() => {
+      this.departments = this.departments.filter(d => !departmentIds.includes(d.id));
+      this.selectedDepartments = [];
+      this.totalRecords -= departmentIds.length;
+      this.totalDepartments -= departmentIds.length;
+      this.totalUsers -= deletedUsersCount;
+      this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Départements supprimés avec succès'
+      });
+    }, 500);
+  }
+
+  saveDepartment() {
+    this.submitted = true;
+
+    if (!this.isDepartmentValid()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validation',
+        detail: 'Veuillez remplir tous les champs requis'
+      });
+      return;
+    }
+
+    this.saving = true;
+
+    if (this.selectedDepartment) {
+      this.updateDepartment();
+    } else {
+      this.createDepartment();
+    }
+  }
+
+  private createDepartment() {
+    const createDto: DepartmentCreateDTO = {
+      name: this.department.name,
+      description: this.department.description
+    };
+
+    setTimeout(() => {
+      const newDepartment: DepartmentDto = {
+        id: Math.max(...this.departments.map(d => d.id)) + 1,
+        name: createDto.name,
+        description: createDto.description,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        userCount: 0,
+        folderCount: 0,
+        documentRequestCount: 0
+      };
+
+      this.departments.unshift(newDepartment);
+      this.totalRecords++;
+      this.totalDepartments++;
+      this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Département créé avec succès'
+      });
+      this.hideDialog();
+    }, 1500);
+  }
+
+  private updateDepartment() {
+    if (!this.selectedDepartment) return;
+
+    const updateDto: DepartmentUpdateDTO = {
+      id: this.selectedDepartment.id,
+      name: this.department.name,
+      description: this.department.description
+    };
+
+    setTimeout(() => {
+      const index = this.departments.findIndex(d => d.id === this.selectedDepartment!.id);
+      if (index !== -1) {
+        this.departments[index] = {
+          ...this.departments[index],
+          name: updateDto.name,
+          description: updateDto.description,
+          updatedAt: new Date().toISOString()
+        };
+      }
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Département modifié avec succès'
+      });
+      this.hideDialog();
+    }, 1500);
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.departmentDialog = false;
     this.submitted = false;
+    this.saving = false;
+    this.department = this.getEmptyDepartment();
+    this.selectedDepartment = null;
   }
 
-  saveProduct() {
-    this.submitted = true;
-
-    if (this.product.name?.trim()) {
-      if (this.product.id) {
-        // Update existing product
-        const index = this.findIndexById(this.product.id);
-        if (index !== -1) {
-          this.products[index] = this.product;
-        }
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Updated',
-          life: 3000
-        });
-      } else {
-        // Create new product
-        this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000
-        });
-      }
-
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
-    }
+  exportDepartments() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export des départements en cours...'
+    });
   }
 
-  exportCSV() {
-    this.dt.exportCSV();
+  // Utility methods
+  getEmptyDepartment(): any {
+    return {
+      name: '',
+      description: '',
+      userCount: 0,
+      folderCount: 0,
+      documentRequestCount: 0
+    };
   }
 
-  findIndexById(id: string): number {
-    return this.products.findIndex(product => product.id === id);
+  isDepartmentValid(): boolean {
+    return !!(this.department.name?.trim() && this.department.description?.trim());
   }
 
-  createId(): string {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-  private getProductsData(): Product[] {
-    return [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1001',
-        code: 'nvklal433',
-        name: 'Black Watch',
-        description: 'Product Description',
-        image: 'black-watch.jpg',
-        price: 72,
-        category: 'Accessories',
-        quantity: 61,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 4
-      },
-      {
-        id: '1002',
-        code: 'zz21cz3c1',
-        name: 'Blue Band',
-        description: 'Product Description',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        quantity: 2,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 3
-      },
-      {
-        id: '1003',
-        code: '244wgerg2',
-        name: 'Blue T-Shirt',
-        description: 'Product Description',
-        image: 'blue-t-shirt.jpg',
-        price: 29,
-        category: 'Clothing',
-        quantity: 25,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1004',
-        code: 'h456wer53',
-        name: 'Bracelet',
-        description: 'Product Description',
-        image: 'bracelet.jpg',
-        price: 15,
-        category: 'Accessories',
-        quantity: 73,
-        inventoryStatus: 'INSTOCK',
-        rating: 4
-      }
-      // Add more products as needed...
-    ];
+  getRatio(numerator: number, denominator: number): string {
+    if (denominator === 0) return 'N/A';
+    return (numerator / denominator).toFixed(2);
   }
 }
