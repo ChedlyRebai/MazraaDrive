@@ -1,166 +1,481 @@
-<theme-switcher/>
-<div class="card ">
-    <p-toast />
-    <p-toolbar class="mb-6">
-        <ng-template #start>
-            <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-            <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
+<theme-switcher />
+<div class="card">
+  <p-toast />
+  <p-toolbar class="mb-6">
+    <ng-template #start>
+      <p-button
+        label="Nouvel Utilisateur"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew()"
+      />
+      <p-button
+        severity="danger"
+        label="Supprimer"
+        icon="pi pi-trash"
+        [outlined]="true"
+        (onClick)="deleteSelectedUsers()"
+        [disabled]="!selectedUsers || !selectedUsers.length"
+      />
+    </ng-template>
 
-        <ng-template #end>
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
-            <p-button label="Export" icon="pi pi-upload" severity="secondary"  />
-        </ng-template>
-    </p-toolbar>
-    <p-table
-        #dt
-        [value]="products"
-        [rows]="10"
-        [columns]="cols"
-        [paginator]="true"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedProducts"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true"
-    >
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Manage Products</h5>
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text"  placeholder="Search..." />
-                </p-iconfield>
+    <ng-template #end>
+      <p-fileUpload
+        mode="basic"
+        accept=".csv,.xlsx"
+        [maxFileSize]="5000000"
+        label="Importer"
+        chooseLabel="Importer"
+        [auto]="false"
+        customUpload
+        class="mr-2 inline-block"
+        [chooseButtonProps]="{ severity: 'secondary' }"
+        (uploadHandler)="onImportUsers($event)"
+      />
+      <p-button
+        label="Exporter"
+        icon="pi pi-download"
+        severity="secondary"
+        (onClick)="exportUsers()"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="users"
+    [rows]="10"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'fullName',
+      'email',
+      'userName',
+      'department',
+      'role'
+    ]"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedUsers"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} utilisateurs"
+    [showCurrentPageReport]="true"
+    [loading]="loading"
+    [rowsPerPageOptions]="[10, 25, 50]"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">Gestion des Utilisateurs</h5>
+        <div class="flex gap-2">
+          <p-iconField iconPosition="left">
+            <p-inputIcon class="pi pi-search" />
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Rechercher..."
+            />
+          </p-iconField>
+          <p-button
+            icon="pi pi-refresh"
+            [outlined]="true"
+            (click)="loadUsers()"
+            [loading]="loading"
+          />
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+        <th pSortableColumn="fullName" style="min-width: 16rem">
+          <div class="flex items-center gap-2">
+            Nom Complet
+            <p-sortIcon field="fullName" />
+          </div>
+        </th>
+        <th pSortableColumn="email" style="min-width: 16rem">
+          <div class="flex items-center gap-2">
+            Email
+            <p-sortIcon field="email" />
+          </div>
+        </th>
+        <th pSortableColumn="userName" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Nom d'utilisateur
+            <p-sortIcon field="userName" />
+          </div>
+        </th>
+        <th pSortableColumn="department" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Département
+            <p-sortIcon field="department" />
+          </div>
+        </th>
+        <th pSortableColumn="role" style="min-width: 10rem">
+          <div class="flex items-center gap-2">
+            Rôle
+            <p-sortIcon field="role" />
+          </div>
+        </th>
+        <th pSortableColumn="isActive" style="min-width: 8rem">
+          <div class="flex items-center gap-2">
+            Statut
+            <p-sortIcon field="isActive" />
+          </div>
+        </th>
+        <th pSortableColumn="createdAt" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Date de création
+            <p-sortIcon field="createdAt" />
+          </div>
+        </th>
+        <th style="min-width: 12rem">Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="user" />
+        </td>
+        <td>
+          <div class="flex items-center gap-2">
+            <p-avatar
+              [image]="user.profilePicture"
+              [label]="getInitials(user.fullName)"
+              shape="circle"
+              size="normal"
+            />
+            <span class="font-medium">{{ user.fullName }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="flex items-center gap-2">
+            <i class="pi pi-envelope text-gray-500"></i>
+            <span>{{ user.email }}</span>
+          </div>
+        </td>
+        <td>{{ user.userName }}</td>
+        <td>
+          <p-tag [value]="user.department" severity="info" />
+        </td>
+        <td>
+          <p-tag [value]="user.role" [severity]="getRoleSeverity(user.role)" />
+        </td>
+        <td>
+          <p-tag
+            [value]="user.isActive ? 'Actif' : 'Inactif'"
+            [severity]="user.isActive ? 'success' : 'danger'"
+          />
+        </td>
+        <td>{{ user.createdAt | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-eye"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="viewUser(user)"
+              pTooltip="Voir les détails"
+            />
+            <p-button
+              icon="pi pi-pencil"
+            
+              [rounded]="true"
+              [outlined]="true"
+              (click)="editUser(user)"
+              pTooltip="Modifier"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (click)="deleteUser(user)"
+              pTooltip="Supprimer"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9" class="text-center py-4">
+          <div class="flex flex-col items-center gap-2">
+            <i
+              class="pi pi-users"
+              style="font-size: 2rem; color: var(--text-color-secondary)"
+            ></i>
+            <span>Aucun utilisateur trouvé.</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- User Dialog -->
+  <p-dialog
+    [(visible)]="userDialog"
+    [style]="{ width: '50rem' }"
+    [header]="dialogTitle"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-6">
+        <!-- Profile Picture -->
+        <div class="flex justify-center">
+          <div class="flex flex-col items-center gap-3">
+            <p-avatar
+              [image]="user.profilePicture"
+              [label]="getInitials(user.fullName || 'NN')"
+              shape="circle"
+              size="xlarge"
+            />
+            <p-fileUpload
+              mode="basic"
+              accept="image/*"
+              [maxFileSize]="1000000"
+              chooseLabel="Changer la photo"
+              [auto]="false"
+              (onSelect)="onProfilePictureSelect($event)"
+            />
+          </div>
+        </div>
+
+        <!-- User Information Form -->
+        <div class="grid grid-cols-12 gap-4">
+          <!-- Full Name -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="fullName" class="block font-bold mb-3"
+              >Nom Complet *</label
+            >
+            <input
+              type="text"
+              pInputText
+              id="fullName"
+              [(ngModel)]="user.fullName"
+              required
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !user.fullName"
+              >Le nom complet est requis.</small
+            >
+          </div>
+
+          <!-- Username -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="userName" class="block font-bold mb-3"
+              >Nom d'utilisateur *</label
+            >
+            <input
+              type="text"
+              pInputText
+              id="userName"
+              [(ngModel)]="user.userName"
+              required
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !user.userName"
+              >Le nom d'utilisateur est requis.</small
+            >
+          </div>
+
+          <!-- Email -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="email" class="block font-bold mb-3">Email *</label>
+            <input
+              type="email"
+              pInputText
+              id="email"
+              [(ngModel)]="user.email"
+              required
+              fluid
+            />
+            <small class="text-red-500" *ngIf="submitted && !user.email"
+              >L'email est requis.</small
+            >
+          </div>
+
+          <!-- Phone -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="phoneNumber" class="block font-bold mb-3"
+              >Téléphone</label
+            >
+            <input
+              type="tel"
+              pInputText
+              id="phoneNumber"
+              [(ngModel)]="user.phoneNumber"
+              fluid
+            />
+          </div>
+
+          <!-- Department -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="department" class="block font-bold mb-3"
+              >Département *</label
+            >
+            
+             <p-autocomplete
+              [(ngModel)]="user.department"
+              [dropdown]="true"
+              [suggestions]="departments"
+              
+            />
+            <small class="text-red-500" *ngIf="submitted && !user.department"
+              >Le département est requis.</small
+            >
+          </div>
+
+          <!-- Role -->
+          <div class="col-span-12 md:col-span-6">
+            <label for="role" class="block font-bold mb-3">Rôle *</label>
+            <p-autocomplete
+              [(ngModel)]="user.role"
+              [dropdown]="true"
+              [suggestions]="roles"
+              
+            />
+           
+            <small class="text-red-500" *ngIf="submitted && !user.role"
+              >Le rôle est requis.</small
+            >
+          </div>
+
+          <!-- Password (only for new users) -->
+          <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
+            <label for="password" class="block font-bold mb-3"
+              >Mot de passe *</label
+            >
+            <p-password
+              [(ngModel)]="user.password"
+              [toggleMask]="true"
+              placeholder="Entrer le mot de passe"
+              fluid
+            />
+            <small
+              class="text-red-500"
+              *ngIf="submitted && !user.password && !user.id"
+              >Le mot de passe est requis.</small
+            >
+          </div>
+
+          <!-- Status -->
+          <div class="col-span-12 md:col-span-6">
+            <label class="block font-bold mb-3">Statut</label>
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                [(ngModel)]="user.isActive"
+                [binary]="true"
+                inputId="isActive"
+              />
+              <label for="isActive">Utilisateur actif</label>
             </div>
-        </ng-template>
-        <ng-template #header>
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th style="min-width: 16rem">Code</th>
-                <th pSortableColumn="name" style="min-width:16rem">
-                    <div class="flex items-center gap-2">
-                        Name
-                        <p-sortIcon field="name" />
-                    </div>
-                </th>
-                <th>Image</th>
-                <th pSortableColumn="price" style="min-width: 8rem">
-                    <div class="flex items-center gap-2">
-                        Price
-                        <p-sortIcon field="price" />
-                    </div>
-                </th>
-                <th pSortableColumn="category" style="min-width:10rem">
-                    <div class="flex items-center gap-2">
-                        Category
-                        <p-sortIcon field="category" />
-                    </div>
-                </th>
-                <th pSortableColumn="rating" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Reviews
-                        <p-sortIcon field="rating" />
-                    </div>
-                </th>
-                <th pSortableColumn="inventoryStatus" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Status
-                        <p-sortIcon field="inventoryStatus" />
-                    </div>
-                </th>
-                <th style="min-width: 12rem"></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-product>
-            <tr>
-                <td style="width: 3rem">
-                    <p-tableCheckbox [value]="product" />
-                </td>
-                <td style="min-width: 12rem">{{ product.code }}</td>
-                <td style="min-width: 16rem">{{ product.name }}</td>
-                <td>
-                    <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" style="width: 64px" class="rounded" />
-                </td>
-                <td>{{ product.price | currency: 'USD' }}</td>
-                <td>{{ product.category }}</td>
-                <td>
-                    <p-rating [(ngModel)]="product.rating" [readonly]="true"  />
-                </td>
-                <td>
-                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
-    <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
-        <ng-template #content>
-            <div class="flex flex-col gap-6">
-                <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-4" *ngIf="product.image" />
-                <div>
-                    <label for="name" class="block font-bold mb-3">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus fluid />
-                    <small class="text-red-500" *ngIf="submitted && !product.name">Name is required.</small>
-                </div>
-                <div>
-                    <label for="description" class="block font-bold mb-3">Description</label>
-                    <textarea id="description" pTextarea [(ngModel)]="product.description" required rows="3" cols="20" fluid></textarea>
-                </div>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Annuler"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="hideDialog()"
+      />
+      <p-button
+        label="Sauvegarder"
+        icon="pi pi-check"
+        (click)="saveUser()"
+        [loading]="saving"
+      />
+    </ng-template>
+  </p-dialog>
 
-                <div>
-                    <label for="inventoryStatus" class="block font-bold mb-3">Inventory Status</label>
-                    <p-select [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" optionLabel="label" placeholder="Select a Status" fluid />
-                </div>
+  <!-- User Details Dialog -->
+  <p-dialog
+    [(visible)]="userDetailsDialog"
+    [style]="{ width: '40rem' }"
+    header="Détails de l'utilisateur"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-4" *ngIf="selectedUser">
+        <!-- Profile Section -->
+        <div class="flex items-center gap-4 pb-4 border-b">
+          <p-avatar
+            [image]="selectedUser.profilePicture"
+            [label]="getInitials(selectedUser.fullName)"
+            shape="circle"
+            size="xlarge"
+          />
+          <div>
+            <h3 class="m-0">{{ selectedUser.fullName }}</h3>
+            <p class="text-gray-600 m-0">{{ selectedUser.email }}</p>
+            <p-tag
+              [value]="selectedUser.role"
+              [severity]="getRoleSeverity(selectedUser.role)"
+              class="mt-2"
+            />
+          </div>
+        </div>
 
-                <div>
-                    <span class="block font-bold mb-4">Category</span>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category1" name="category" value="Accessories" [(ngModel)]="product.category" />
-                            <label for="category1">Accessories</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category2" name="category" value="Clothing" [(ngModel)]="product.category" />
-                            <label for="category2">Clothing</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category3" name="category" value="Electronics" [(ngModel)]="product.category" />
-                            <label for="category3">Electronics</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category4" name="category" value="Fitness" [(ngModel)]="product.category" />
-                            <label for="category4">Fitness</label>
-                        </div>
-                    </div>
-                </div>
+        <!-- Details Grid -->
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-6">
+            <label class="font-semibold">Nom d'utilisateur:</label>
+            <p>{{ selectedUser.userName }}</p>
+          </div>
+          <div class="col-span-6">
+            <label class="font-semibold">Département:</label>
+            <p>{{ selectedUser.department }}</p>
+          </div>
+          <div class="col-span-6">
+            <label class="font-semibold">Téléphone:</label>
+            <p>{{ selectedUser.phoneNumber || "Non renseigné" }}</p>
+          </div>
+          <div class="col-span-6">
+            <label class="font-semibold">Statut:</label>
+            <p-tag
+              [value]="selectedUser.isActive ? 'Actif' : 'Inactif'"
+              [severity]="selectedUser.isActive ? 'success' : 'danger'"
+            />
+          </div>
+          <div class="col-span-6">
+            <label class="font-semibold">Date de création:</label>
+            <p>{{ selectedUser.createdAt | date : "dd/MM/yyyy HH:mm" }}</p>
+          </div>
+          <div class="col-span-6">
+            <label class="font-semibold">Dernière connexion:</label>
+            <p>
+              {{
+                selectedUser.lastLoginAt ? (selectedUser.lastLoginAt | date : "dd/MM/yyyy HH:mm") : "Jamais"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-6">
-                        <label for="price" class="block font-bold mb-3">Price</label>
-                        <p-inputnumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US" fluid />
-                    </div>
-                    <div class="col-span-6">
-                        <label for="quantity" class="block font-bold mb-3">Quantity</label>
-                        <p-inputnumber id="quantity" [(ngModel)]="product.quantity" fluid />
-                    </div>
-                </div>
-            </div>
-        </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Fermer"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="userDetailsDialog = false"
+      />
+      <p-button
+        label="Modifier"
+        icon="pi pi-pencil"
+        (click)="selectedUser && editUser(selectedUser); userDetailsDialog = false"
+      />
+    </ng-template>
+  </p-dialog>
 
-        <ng-template #footer>
-            <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-            <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
-        </ng-template>
-    </p-dialog>
-
-    <p-confirmDialog [style]="{ width: '450px' }" />
-    
+  <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
