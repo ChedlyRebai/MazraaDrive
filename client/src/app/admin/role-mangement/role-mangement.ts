@@ -1,54 +1,29 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 
-// Import PrimeNG Modules (not components directly)
+// PrimeNG Imports
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { FileUploadModule } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
+
+import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
 
-// Import Table component for ViewChild
-import { Table } from 'primeng/table';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
-export interface Product {
-  id?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: string;
-  category?: string;
-  image?: string;
-  rating?: number;
-}
+// Models
+import { RoleDto, CreateRoleDto, UpdateRoleDto, RoleFilterDto, RolePagedResult } from '../../shared/models/role';
+import { ThemeSwitcher } from '../themeswitcher';
+import { Textarea } from 'primeng/textarea';
+import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-role-management',
@@ -56,274 +31,480 @@ export interface Product {
   imports: [
     CommonModule,
     FormsModule,
-    // PrimeNG Modules
+    TableModule,
     ButtonModule,
     ToastModule,
     ToolbarModule,
-    FileUploadModule,
-    TableModule,
     DialogModule,
     InputTextModule,
-    TextareaModule,
-    SelectModule,
-    RadioButtonModule,
-    InputNumberModule,
-    RatingModule,
-    TagModule,
+    Textarea,
+    AutoCompleteModule,
+    CheckboxModule,
     ConfirmDialogModule,
+    TagModule,
     IconFieldModule,
     InputIconModule,
-    CheckboxModule,
-    RippleModule
+    TooltipModule,
+    ThemeSwitcher
   ],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './role-mangement.html',
-   styleUrl: './role-mangement.css',
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./role-mangement.css']
 })
 export class RoleManagementComponent implements OnInit {
-  productDialog: boolean = false;
-  products: Product[] = [];
-  product: Product = {};
-  selectedProducts: Product[] | null = null;
-  submitted: boolean = false;
-  statuses: any[] = [];
-  cols: Column[] = [];
-  exportColumns: ExportColumn[] = [];
 
-  @ViewChild('dt') dt!: Table;
+  roles: RoleDto[] = [];
+  selectedRoles: RoleDto[] = [];
+  selectedRole: RoleDto | null = null;
+  role: CreateRoleDto = this.getEmptyRole();
+  
+  roleDialog = false;
+  roleDetailsDialog = false;
+  submitted = false;
+  loading = false;
+  saving = false;
+
+  // Pagination and filtering
+  currentPage = 0;
+  pageSize = 10;
+  totalRecords = 0;
+  filter: RoleFilterDto = {
+    pageNumber: 1,
+    pageSize: 10,
+    name: null,
+    isActive: null,
+    createdFrom: null,
+    createdTo: null,
+    search: null,
+    sortBy: null,
+    sortDirection: null
+  };
+
+  // Statistics from API response
+  totalRoles = 0;
+  activeRoles = 0;
+  inactiveRoles = 0;
+
+  statusOptions = [
+    { label: 'Tous', value: null },
+    { label: 'Actif', value: true },
+    { label: 'Inactif', value: false }
+  ];
+
+  private baseUrl = 'http://localhost:5108/api';
 
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    this.loadDemoData();
+    this.loadRoles();
   }
 
-  loadDemoData() {
-    // Load demo products
-    this.products = this.getProductsData();
+  get dialogTitle(): string {
+    return this.selectedRole ? 'Modifier le rôle' : 'Nouveau rôle';
+  }
 
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
+  loadRoles() {
+    this.loading = true;
+    
+    // Mock data matching your RoleDto interface
+    setTimeout(() => {
+      const mockResponse: RolePagedResult = {
+        data: [
+          {
+            id: 1,
+            name: 'Super Admin',
+            description: 'Accès complet au système avec toutes les permissions',
+            isActive: true
+          },
+          {
+            id: 2,
+            name: 'Administrateur',
+            description: 'Accès administratif avec la plupart des permissions',
+            isActive: true
+          },
+          {
+            id: 3,
+            name: 'Manager',
+            description: 'Accès de niveau management pour la supervision',
+            isActive: true
+          },
+          {
+            id: 4,
+            name: 'Employé',
+            description: 'Accès standard pour les employés',
+            isActive: true
+          },
+          {
+            id: 5,
+            name: 'Consultant',
+            description: 'Accès limité pour les consultants externes',
+            isActive: false
+          },
+          {
+            id: 6,
+            name: 'Lecteur',
+            description: 'Accès en lecture seule',
+            isActive: false
+          }
+        ],
+        pageNumber: 1,
+        pageSize: 10,
+        totalRecords: 6,
+        totalPages: 1,
+        hasPreviousPage: false,
+        hasNextPage: false,
+        totalRoles: 6,
+        activeRoles: 4,
+        inactiveRoles: 2,
+        search: null,
+        sortBy: null,
+        sortDirection: null
+      };
 
-    this.cols = [
-      { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-      { field: 'name', header: 'Name' },
-      { field: 'image', header: 'Image' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' }
-    ];
+      this.roles = mockResponse.data;
+      this.totalRecords = mockResponse.totalRecords;
+      this.totalRoles = mockResponse.totalRoles;
+      this.activeRoles = mockResponse.activeRoles;
+      this.inactiveRoles = mockResponse.inactiveRoles;
+      this.loading = false;
+    }, 1000);
 
-    this.exportColumns = this.cols.map((col) => ({ 
-      title: col.header, 
-      dataKey: col.field 
-    }));
+    // Real API call would be:
+    /*
+    this.http.get<RolePagedResult>(`${this.baseUrl}/Role`, { params: this.filter as any }).subscribe({
+      next: (response) => {
+        this.roles = response.data;
+        this.totalRecords = response.totalCount;
+        this.totalRoles = response.totalRoles;
+        this.activeRoles = response.activeRoles;
+        this.inactiveRoles = response.inactiveRoles;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading roles:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors du chargement des rôles'
+        });
+        this.loading = false;
+      }
+    });
+    */
+  }
+
+  onPageChange(event: any) {
+    this.filter.pageNumber = event.page + 1;
+    this.filter.pageSize = event.rows;
+    this.loadRoles();
+  }
+
+  onGlobalFilter(event: any) {
+    this.filter.name = event.target.value;
+    this.filter.pageNumber = 1;
+    this.loadRoles();
+  }
+
+  onStatusFilter(event: any) {
+    this.filter.isActive = event.value;
+    this.filter.pageNumber = 1;
+    this.loadRoles();
   }
 
   openNew() {
-    this.product = {};
+    this.role = this.getEmptyRole();
+    this.selectedRole = null;
     this.submitted = false;
-    this.productDialog = true;
+    this.roleDialog = true;
   }
 
-  editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
+  editRole(role: RoleDto) {
+    this.selectedRole = role;
+    this.role = {
+      name: role.name,
+      description: role.description,
+      isActive: role.isActive
+    };
+    this.roleDialog = true;
   }
 
-  deleteSelectedProducts() {
+  viewRole(role: RoleDto) {
+    this.selectedRole = role;
+    this.roleDetailsDialog = true;
+  }
+
+  deleteRole(role: RoleDto) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer le rôle "${role.name}"?`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-        this.selectedProducts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000
-        });
+        this.performDeleteRole(role.id);
       }
     });
   }
 
-  deleteProduct(product: Product) {
+  deleteSelectedRoles() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
+      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedRoles.length} rôle(s)?`,
+      header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
       accept: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
-        this.product = {};
+        this.performBulkDelete();
+      }
+    });
+  }
+
+  private performDeleteRole(roleId: number) {
+    // Mock delete
+    setTimeout(() => {
+      this.roles = this.roles.filter(r => r.id !== roleId);
+      this.totalRecords--;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Rôle supprimé avec succès'
+      });
+    }, 500);
+
+    // Real API call would be:
+    /*
+    this.http.delete(`${this.baseUrl}/Role/${roleId}`).subscribe({
+      next: () => {
+        this.loadRoles();
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000
+          summary: 'Succès',
+          detail: 'Rôle supprimé avec succès'
+        });
+      },
+      error: (error) => {
+        console.error('Error deleting role:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la suppression du rôle'
         });
       }
     });
+    */
+  }
+
+  private performBulkDelete() {
+    const roleIds = this.selectedRoles.map(r => r.id);
+    
+    // Mock bulk delete
+    setTimeout(() => {
+      this.roles = this.roles.filter(r => !roleIds.includes(r.id));
+      this.selectedRoles = [];
+      this.totalRecords -= roleIds.length;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Rôles supprimés avec succès'
+      });
+    }, 500);
+
+    // Real API call would be:
+    /*
+    this.http.delete(`${this.baseUrl}/Role/bulk`, { body: roleIds }).subscribe({
+      next: () => {
+        this.loadRoles();
+        this.selectedRoles = [];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Rôles supprimés avec succès'
+        });
+      },
+      error: (error) => {
+        console.error('Error deleting roles:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la suppression des rôles'
+        });
+      }
+    });
+    */
+  }
+
+  saveRole() {
+    this.submitted = true;
+
+    if (!this.isRoleValid()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Validation',
+        detail: 'Veuillez remplir tous les champs requis'
+      });
+      return;
+    }
+
+    this.saving = true;
+
+    if (this.selectedRole) {
+      this.updateRole();
+    } else {
+      this.createRole();
+    }
+  }
+
+  private createRole() {
+    const createDto: CreateRoleDto = { ...this.role };
+
+    // Mock create
+    setTimeout(() => {
+      const newRole: RoleDto = {
+        id: Math.max(...this.roles.map(r => r.id)) + 1,
+        ...createDto
+      };
+      this.roles.unshift(newRole);
+      this.totalRecords++;
+      this.activeRoles = this.roles.filter(r => r.isActive).length;
+      this.inactiveRoles = this.roles.filter(r => !r.isActive).length;
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Rôle créé avec succès'
+      });
+      this.hideDialog();
+    }, 1500);
+
+    // Real API call would be:
+    /*
+    this.http.post<RoleDto>(`${this.baseUrl}/Role`, createDto).subscribe({
+      next: (response) => {
+        this.loadRoles();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Rôle créé avec succès'
+        });
+        this.hideDialog();
+      },
+      error: (error) => {
+        console.error('Error creating role:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la création du rôle'
+        });
+        this.saving = false;
+      }
+    });
+    */
+  }
+
+  private updateRole() {
+    if (!this.selectedRole) return;
+
+    const updateDto: UpdateRoleDto = {
+      name: this.role.name !== this.selectedRole.name ? this.role.name : null,
+      description: this.role.description !== this.selectedRole.description ? this.role.description : null,
+      isActive: this.role.isActive !== this.selectedRole.isActive ? this.role.isActive : null
+    };
+
+    // Mock update
+    setTimeout(() => {
+      const index = this.roles.findIndex(r => r.id === this.selectedRole!.id);
+      if (index !== -1) {
+        this.roles[index] = { ...this.selectedRole!, ...this.role };
+      }
+      this.activeRoles = this.roles.filter(r => r.isActive).length;
+      this.inactiveRoles = this.roles.filter(r => !r.isActive).length;
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Rôle modifié avec succès'
+      });
+      this.hideDialog();
+    }, 1500);
+
+    // Real API call would be:
+    /*
+    this.http.put<RoleDto>(`${this.baseUrl}/Role/${this.selectedRole.id}`, updateDto).subscribe({
+      next: (response) => {
+        this.loadRoles();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Rôle modifié avec succès'
+        });
+        this.hideDialog();
+      },
+      error: (error) => {
+        console.error('Error updating role:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la modification du rôle'
+        });
+        this.saving = false;
+      }
+    });
+    */
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.roleDialog = false;
     this.submitted = false;
+    this.saving = false;
+    this.role = this.getEmptyRole();
+    this.selectedRole = null;
   }
 
-  saveProduct() {
-    this.submitted = true;
+  exportRoles() {
+    // Mock export
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export des rôles en cours...'
+    });
 
-    if (this.product.name?.trim()) {
-      if (this.product.id) {
-        // Update existing product
-        const index = this.findIndexById(this.product.id);
-        if (index !== -1) {
-          this.products[index] = this.product;
-        }
+    // Real export would be:
+    /*
+    this.http.get(`${this.baseUrl}/Role/export`, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'roles.xlsx';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error exporting roles:', error);
         this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Updated',
-          life: 3000
-        });
-      } else {
-        // Create new product
-        this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de l\'export'
         });
       }
-
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
-    }
+    });
+    */
   }
 
-  exportCSV() {
-    this.dt.exportCSV();
+  // Utility methods
+  getEmptyRole(): CreateRoleDto {
+    return {
+      name: '',
+      description: '',
+      isActive: true
+    };
   }
 
-  findIndexById(id: string): number {
-    return this.products.findIndex(product => product.id === id);
+  isRoleValid(): boolean {
+    return !!(this.role.name?.trim() && this.role.description?.trim());
   }
 
-  createId(): string {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-  private getProductsData(): Product[] {
-    return [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1001',
-        code: 'nvklal433',
-        name: 'Black Watch',
-        description: 'Product Description',
-        image: 'black-watch.jpg',
-        price: 72,
-        category: 'Accessories',
-        quantity: 61,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 4
-      },
-      {
-        id: '1002',
-        code: 'zz21cz3c1',
-        name: 'Blue Band',
-        description: 'Product Description',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        quantity: 2,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 3
-      },
-      {
-        id: '1003',
-        code: '244wgerg2',
-        name: 'Blue T-Shirt',
-        description: 'Product Description',
-        image: 'blue-t-shirt.jpg',
-        price: 29,
-        category: 'Clothing',
-        quantity: 25,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1004',
-        code: 'h456wer53',
-        name: 'Bracelet',
-        description: 'Product Description',
-        image: 'bracelet.jpg',
-        price: 15,
-        category: 'Accessories',
-        quantity: 73,
-        inventoryStatus: 'INSTOCK',
-        rating: 4
-      }
-      // Add more products as needed...
-    ];
+  getRoleDisplayName(role: RoleDto): string {
+    return `${role.name} ${role.isActive ? '' : '(Inactif)'}`;
   }
 }
