@@ -96,7 +96,7 @@ export interface Customer {
     AvatarModule,
     MenuModule,
     FormsModule,
-    Editor,
+   
     PaginatorModule,
     SelectModule,
     DialogModule,
