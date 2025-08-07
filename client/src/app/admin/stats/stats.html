@@ -184,7 +184,7 @@
               class="w-full"
               style="border-radius: 2rem"
               [(ngModel)]="searchTerm"
-              (input)="onSearchActivity($event)"
+              (ngModelChange)="onSearchActivity($event)"
             />
           </p-iconField>
           <p-button

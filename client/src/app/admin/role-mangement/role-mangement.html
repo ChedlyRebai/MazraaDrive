@@ -93,7 +93,8 @@
             <input
               pInputText
               type="text"
-              (input)="onGlobalFilter($event)"
+              [(ngModel)]="globalFilterValue"
+              (ngModelChange)="onGlobalFilter($event)"
               placeholder="Rechercher..."
             />
           </p-iconField>

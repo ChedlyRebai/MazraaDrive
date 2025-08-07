@@ -84,7 +84,7 @@
                 <div class="flex gap-2">
                     <p-iconField iconPosition="left">
                         <p-inputIcon class="pi pi-search" />
-                        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Rechercher..." />
+                        <input pInputText type="text" [(ngModel)]="globalFilterValue" (ngModelChange)="onGlobalFilter($event)" placeholder="Rechercher..." />
                     </p-iconField>
                     <div class="card flex justify-center">
                         <p-autocomplete 

@@ -4,7 +4,7 @@ export const routes: Routes = [
   { path: 'home', loadChildren: () => import('./home/home-routing-module').then(m => m.HomeRoutingModule) },
   { path: 'admin', loadChildren: () => import('./admin/admin-routing-module').then(m => m.AdminRoutingModule) },
   {
-    path: 'auth',
+    path: 'login',
     loadChildren: () => import('./auth/auth-routing.module').then(m => m.AuthRoutingModule)
   },
   {

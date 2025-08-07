@@ -105,7 +105,10 @@ export class UserMangement implements OnInit {
     private confirmationService: ConfirmationService,
     private http: HttpClient
   ) {}
-
+  onGlobalFilter(event: Event, dt: any) {
+  const input = event.target as HTMLInputElement | null;
+  dt.filterGlobal(input?.value || '', 'contains');
+}
   ngOnInit() {
     this.loadUsers();
   }

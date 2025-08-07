@@ -144,6 +144,7 @@ export class DocReqManagement implements OnInit {
   ];
 
   private baseUrl = 'http://localhost:5108/api';
+globalFilterValue: any;
 
   constructor(
     private messageService: MessageService,

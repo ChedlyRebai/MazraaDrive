@@ -1,14 +1,14 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import { DomHandler } from 'primeng/dom';
 
 @Component({
   selector: 'app-home',
-  standalone: true, 
-  imports: [CommonModule, RouterOutlet], 
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, RouterModule],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
