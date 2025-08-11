@@ -1,158 +1,726 @@
-<theme-switcher />
+<theme-switcher/>
+
 <div class="layout-content-wrapper">
-    <div class="">
-        <nav app-breadcrumb="" class="layout-breadcrumb">
-            <p-breadcrumb class="layout-readcrumb" [model]="items" [home]="home" />
+  <div class="containe mx-auto  py-6">
+    
+    <!-- Breadcrumb Navigation -->
+    <nav app-breadcrumb class="layout-breadcrumb mb-6">
+      <p-breadcrumb class="layout-breadcrumb" [model]="items" [home]="home" />
+    </nav>
 
+    <!-- Page Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
+            Gestionnaire de Fichiers 📁
+          </h1>
+          <p class="text-surface-600 dark:text-surface-300">
+            Organisez et gérez vos documents en toute simplicité
+          </p>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex gap-3">
+          <p-button 
+            label="Actualiser" 
+            icon="pi pi-refresh" 
+            severity="secondary"
+            [outlined]="true"
+            (click)="refreshFolders()"
+          />
+          <p-button 
+            label="Nouveau Dossier" 
+            icon="pi pi-plus" 
+            (click)="openNew()"
+          />
+          <p-button 
+            label="Importer" 
+            icon="pi pi-upload" 
+            severity="help"
+            [outlined]="true"
+            (click)="openImportDialog()"
+          />
+        </div>
+      </div>
 
-        </nav><router-outlet></router-outlet><app-files class="ng-star-inserted">
-
-
-            <div class="grid grid-cols-12 gap-4">
-
-
-
-
-                <!-- <div class="col-span-12 md:col-span-5 xl:col-span-3">
-
-                    <div class="card">
-                        <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Categories</div>
-                        <ul class="list-none p-0 m-0">
-                            <li
-                                class="p-4 mb-4 flex items-center justify-between cursor-pointer rounded bg-indigo-50 text-indigo-900">
-                                <div class="flex items-center"><i class="pi pi-image text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Images</span></div><span
-                                    class="text-lg font-bold">85</span>
-                            </li>
-                            <li
-                                class="p-4 mb-4 flex items-center justify-between cursor-pointer rounded bg-purple-50 text-purple-900">
-                                <div class="flex items-center"><i class="pi pi-file text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Documents</span></div><span
-                                    class="text-lg font-bold">231</span>
-                            </li>
-                            <li
-                                class="p-4 flex items-center justify-between cursor-pointer rounded bg-teal-50 text-teal-900">
-                                <div class="flex items-center"><i class="pi pi-video text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Videos</span></div><span
-                                    class="text-lg font-bold">40</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
-                <!-- <div class="col-span-12 md:col-span-7 xl:col-span-9"> -->
-                <div class="col-span-12 ">
-                    <div class="card">
-                        <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Folders</div>
-                         <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-                        <div class="grid grid-cols-12 gap-4">
-                            <div class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
-                                <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                                    <!-- File info section -->
-                                    <div class="p-4  ">
-                                        <div class=" flex flex-col items-start">
-                                            <div class="flex items-center w-full justify-between ">
-                                                <!-- Icon for the file -->
-                                                <div class="bg-blue-100  p-3 rounded-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-
-                                                </div>
-                                                <p class=" text-gray-500">10.7 KB</p>
-                                            </div>
-                                            <div class="my-2">
-
-                                                <h6 class="font-bold  text-gray-800 w bold">Students CSV File.csv</h6>
-                                                <!-- <p class="text-sm text-gray-500">10.7 KB</p> -->
-                                                <div class="flex flex-col  justify-between  text-gray-600">
-                                                    <div>
-                                                        <h3 class="font-semibold my-1">10:29am, 31 Oct</h3>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="my-1">By: Faizan</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div *ngFor="let folder of folders.data; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
-                                <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                                    <!-- File info section -->
-                                    <div class="p-4  ">
-                                        <div class=" flex flex-col items-start">
-                                            <div class="flex items-center w-full justify-between ">
-                                                <!-- Icon for the file -->
-                                                <div class="bg-blue-100  p-3 rounded-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-
-                                                </div>
-                                                <!-- <p class=" text-gray-500">10.7 KB</p> -->
-                                            </div>
-                                            <div class="my-2">
-
-                                                <h6 class="font-bold  text-gray-800 w bold">{{ folder.name }}</h6>
-                                                <!-- <p class="text-sm text-gray-500">10.7 KB</p> -->
-                                                <div class="flex flex-col  justify-between  text-gray-600">
-                                                    <div>
-                                                        <h3 class="font-semibold my-1">{{ folder.createdAt | date: 'short' }}</h3>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="my-1">By: {{ folder.createdByName }}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-100 text-sm">Total Dossiers</p>
+              <p class="text-2xl font-bold">{{ totalFolders }}</p>
             </div>
-        </app-files>
-
-        <p-dialog [(visible)]="folderDialog" [style]="{ width: '450px' }" header="New Folder" [modal]="true">
-        <ng-template #content>
-            <div class="flex flex-col gap-6">
-              
-                <div>
-                    <label for="name" class="block font-bold mb-3">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="newFolder.name" required autofocus fluid />
-                    <small class="text-red-500" *ngIf="submitted && !newFolder.name">Name is required.</small>
-                </div>
-                <div>
-                    <label for="description" class="block font-bold mb-3">Description</label>
-                    <textarea id="description" pTextarea [(ngModel)]="newFolder.description" required rows="3" cols="20" fluid></textarea>
-                </div>
-
-              
-               
-
-               
+            <i class="pi pi-folder text-3xl text-blue-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm">Documents</p>
+              <p class="text-2xl font-bold">{{ totalDocuments }}</p>
             </div>
-        </ng-template>
-
-        <ng-template #footer>
-            <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-            <p-button label="Save" icon="pi pi-check" (click)="saveFolder()" />
-        </ng-template>
-    </p-dialog>
-     <p-confirmDialog [style]="{ width: '450px' }" />
+            <i class="pi pi-file text-3xl text-purple-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-100 text-sm">Taille Totale</p>
+              <p class="text-2xl font-bold">{{ totalSize }}</p>
+            </div>
+            <i class="pi pi-database text-3xl text-green-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-orange-100 text-sm">Récents</p>
+              <p class="text-2xl font-bold">{{ recentFiles }}</p>
+            </div>
+            <i class="pi pi-clock text-3xl text-orange-200"></i>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="card mb-6">
+      <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+        <div class="flex flex-wrap gap-4 items-center">
+          <p-iconField iconPosition="left">
+            <p-inputIcon class="pi pi-search" />
+            <input 
+              pInputText 
+              type="text" 
+              placeholder="Rechercher des dossiers..." 
+              [(ngModel)]="searchTerm"
+              (input)="onSearch($event)"
+              class="w-80"
+            />
+          </p-iconField>
+          
+          <!-- <p-dropdown
+            [(ngModel)]="sortBy"
+            [options]="sortOptions"
+            placeholder="Trier par"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="onSort($event)"
+            class="w-48"
+          />
+          
+          <p-dropdown
+            [(ngModel)]="viewMode"
+            [options]="viewModeOptions"
+            placeholder="Affichage"
+            optionLabel="label"
+            optionValue="value"
+            (onChange)="onViewModeChange($event)"
+            class="w-40"
+          /> -->
+        </div>
+        
+        <div class="flex gap-2">
+          <p-button 
+            icon="pi pi-th-large" 
+            severity="secondary"
+            [outlined]="viewMode !== 'grid'"
+            pTooltip="Vue grille"
+            (click)="setViewMode('grid')"
+          />
+          <p-button 
+            icon="pi pi-list" 
+            severity="secondary"
+            [outlined]="viewMode !== 'list'"
+            pTooltip="Vue liste"
+            (click)="setViewMode('list')"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="grid grid-cols-12 gap-6">
+      
+      <!-- Sidebar Categories (Optional) -->
+      <div class="col-span-12 lg:col-span-3" *ngIf="showSidebar">
+        <div class="card sticky top-4">
+          <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4 flex items-center gap-2">
+            <i class="pi pi-filter"></i>
+            Catégories
+          </div>
+          <ul class="list-none p-0 m-0">
+            <li class="p-3 mb-3 flex items-center justify-between cursor-pointer rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+                (click)="filterByCategory('documents')">
+              <div class="flex items-center">
+                <i class="pi pi-file-text text-2xl mr-3 text-blue-500"></i>
+                <span class="text-lg font-medium">Documents</span>
+              </div>
+              <span class="text-lg font-bold text-blue-600">{{ documentCount }}</span>
+            </li>
+            <li class="p-3 mb-3 flex items-center justify-between cursor-pointer rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+                (click)="filterByCategory('images')">
+              <div class="flex items-center">
+                <i class="pi pi-image text-2xl mr-3 text-purple-500"></i>
+                <span class="text-lg font-medium">Images</span>
+              </div>
+              <span class="text-lg font-bold text-purple-600">{{ imageCount }}</span>
+            </li>
+            <li class="p-3 flex items-center justify-between cursor-pointer rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+                (click)="filterByCategory('videos')">
+              <div class="flex items-center">
+                <i class="pi pi-video text-2xl mr-3 text-green-500"></i>
+                <span class="text-lg font-medium">Vidéos</span>
+              </div>
+              <span class="text-lg font-bold text-green-600">{{ videoCount }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Folders Content Area -->
+      <div [class]="showSidebar ? 'col-span-12 lg:col-span-9' : 'col-span-12'">
+        <div class="card">
+          
+          <!-- Section Header -->
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <i class="pi pi-folder text-2xl text-blue-500"></i>
+              <h2 class="text-xl font-semibold text-surface-900 dark:text-surface-0">
+                Mes Dossiers
+              </h2>
+              <p-tag 
+                [value]="filteredFolders.length.toString()" 
+                severity="info"
+              />
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <p-button 
+                icon="pi pi-eye" 
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                pTooltip="Basculer la sidebar"
+                (click)="toggleSidebar()"
+              />
+              <p-button 
+                icon="pi pi-download" 
+                severity="help"
+                [outlined]="true"
+                size="small"
+                pTooltip="Exporter"
+                (click)="exportFolders()"
+              />
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="loading" class="flex justify-center items-center py-12">
+            <p-progressSpinner />
+            <span class="ml-3 text-surface-600">Chargement des dossiers...</span>
+          </div>
+
+          <!-- Grid View -->
+          <div *ngIf="!loading && viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            <!-- Sample Folder (Remove this in production) -->
+            <div class="group cursor-pointer transform hover:scale-105 transition-all duration-200">
+              <div class="bg-white dark:bg-surface-800 rounded-lg shadow-md hover:shadow-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex items-start justify-between mb-4">
+                    <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
+                      <i class="pi pi-file-text text-3xl text-blue-500"></i>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <p-button 
+                        icon="pi pi-ellipsis-v" 
+                        [text]="true" 
+                        size="small"
+                        (click)="showContextMenu($event, null)"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <h3 class="font-bold text-lg text-surface-800 dark:text-surface-200 truncate">
+                      Fichier d'exemple
+                    </h3>
+                    <p class="text-sm text-surface-500 dark:text-surface-400">
+                      10.7 KB
+                    </p>
+                    <div class="space-y-1">
+                      <p class="text-sm font-medium text-surface-600 dark:text-surface-300">
+                        10:29am, 31 Oct
+                      </p>
+                      <p class="text-xs text-surface-400">
+                        Par: Utilisateur
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Hover Actions -->
+                <div class="px-6 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="flex gap-2">
+                    <p-button 
+                      icon="pi pi-eye" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Voir"
+                    />
+                    <p-button 
+                      icon="pi pi-download" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Télécharger"
+                    />
+                    <p-button 
+                      icon="pi pi-share-alt" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Partager"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Folders -->
+            <div *ngFor="let folder of filteredFolders; let i = index" 
+                 class="group cursor-pointer transform hover:scale-105 transition-all duration-200"
+                 (click)="openFolder(folder)"
+                 (contextmenu)="showContextMenu($event, folder)">
+              
+              <div class="bg-white dark:bg-surface-800 rounded-lg shadow-md hover:shadow-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
+                <div class="p-6">
+                  <div class="flex items-start justify-between mb-4">
+                    <div class="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg">
+                      <i class="pi pi-folder text-3xl text-amber-500"></i>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <p-button 
+                        icon="pi pi-ellipsis-v" 
+                        [text]="true" 
+                        size="small"
+                        (click)="showContextMenu($event, folder); $event.stopPropagation()"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div class="space-y-2">
+                    <h3 class="font-bold text-lg text-surface-800 dark:text-surface-200 truncate" 
+                        [title]="folder.name">
+                      {{ folder.name }}
+                    </h3>
+                    <p class="text-sm text-surface-500 dark:text-surface-400" 
+                       *ngIf="folder.description">
+                      {{ folder.description | slice:0:60 }}{{ folder.description.length > 60 ? '...' : '' }}
+                    </p>
+                    <div class="space-y-1">
+                      <p class="text-sm font-medium text-surface-600 dark:text-surface-300">
+                        {{ folder.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+                      </p>
+                      <p class="text-xs text-surface-400">
+                        Par: {{ folder.createdByName }}
+                      </p>
+                      <div class="flex items-center gap-2 text-xs text-surface-500">
+                        <span>{{ folder.fileCount || 0 }} fichiers</span>
+                        <span>•</span>
+                        <span>{{ folder.size || '0 KB' }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Hover Actions -->
+                <div class="px-6 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="flex gap-2">
+                    <p-button 
+                      icon="pi pi-folder-open" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Ouvrir"
+                      (click)="openFolder(folder); $event.stopPropagation()"
+                    />
+                    <p-button 
+                      icon="pi pi-pencil" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Modifier"
+                      (click)="editFolder(folder); $event.stopPropagation()"
+                    />
+                    <p-button 
+                      icon="pi pi-share-alt" 
+                      size="small"
+                      [outlined]="true"
+                      pTooltip="Partager"
+                      (click)="shareFolder(folder); $event.stopPropagation()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- List View -->
+          <div *ngIf="!loading && viewMode === 'list'">
+            <p-table 
+              [value]="filteredFolders"
+              [paginator]="true"
+              [rows]="10"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} dossiers"
+              responsiveLayout="scroll"
+              styleClass="p-datatable-striped">
+              
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="name">
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-folder"></i>
+                      Nom
+                      <p-sortIcon field="name" />
+                    </div>
+                  </th>
+                  <th>Description</th>
+                  <th pSortableColumn="createdAt">
+                    <div class="flex items-center gap-2">
+                      Date de création
+                      <p-sortIcon field="createdAt" />
+                    </div>
+                  </th>
+                  <th>Créé par</th>
+                  <th>Taille</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-folder>
+                <tr class="hover:bg-surface-50 dark:hover:bg-surface-700 cursor-pointer" (click)="openFolder(folder)">
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <i class="pi pi-folder text-2xl text-amber-500"></i>
+                      <div>
+                        <div class="font-medium">{{ folder.name }}</div>
+                        <div class="text-sm text-surface-500">{{ folder.fileCount || 0 }} fichiers</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="text-sm">{{ folder.description || 'Aucune description' }}</span>
+                  </td>
+                  <td>
+                    <div>
+                      <div class="font-medium">{{ folder.createdAt | date:'dd/MM/yyyy' }}</div>
+                      <div class="text-sm text-surface-600">{{ folder.createdAt | date:'HH:mm' }}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <p-avatar 
+                        [label]="getInitials(folder.createdByName)"
+                        shape="circle"
+                       
+                      />
+                      <span>{{ folder.createdByName }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="text-sm">{{ folder.size || '0 KB' }}</span>
+                  </td>
+                  <td>
+                    <div class="flex items-center gap-1">
+                      <p-button 
+                        icon="pi pi-folder-open" 
+                        [text]="true" 
+                        size="small"
+                        pTooltip="Ouvrir"
+                        (click)="openFolder(folder); $event.stopPropagation()"
+                      />
+                      <p-button 
+                        icon="pi pi-pencil" 
+                        [text]="true" 
+                        size="small"
+                        pTooltip="Modifier"
+                        (click)="editFolder(folder); $event.stopPropagation()"
+                      />
+                      <p-button 
+                        icon="pi pi-share-alt" 
+                        [text]="true" 
+                        size="small"
+                        pTooltip="Partager"
+                        (click)="shareFolder(folder); $event.stopPropagation()"
+                      />
+                      <p-button 
+                        icon="pi pi-trash" 
+                        [text]="true" 
+                        size="small"
+                        severity="danger"
+                        pTooltip="Supprimer"
+                        (click)="deleteFolder(folder); $event.stopPropagation()"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6" class="text-center py-8">
+                    <div class="flex flex-col items-center gap-3">
+                      <i class="pi pi-folder-open text-4xl text-surface-400"></i>
+                      <div>
+                        <h3 class="font-medium mb-2">Aucun dossier trouvé</h3>
+                        <p class="text-surface-600 text-sm">
+                          {{ searchTerm ? 'Aucun résultat pour votre recherche' : 'Commencez par créer votre premier dossier' }}
+                        </p>
+                      </div>
+                      <p-button 
+                        label="Nouveau Dossier" 
+                        icon="pi pi-plus"
+                        (click)="openNew()"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!loading && filteredFolders.length === 0 && viewMode === 'grid'" 
+               class="flex flex-col items-center justify-center py-16">
+            <i class="pi pi-folder-open text-6xl text-surface-300 mb-4"></i>
+            <h3 class="text-xl font-semibold text-surface-700 dark:text-surface-300 mb-2">
+              {{ searchTerm ? 'Aucun résultat trouvé' : 'Aucun dossier' }}
+            </h3>
+            <p class="text-surface-500 dark:text-surface-400 mb-6 text-center max-w-md">
+              {{ searchTerm ? 
+                'Essayez de modifier vos critères de recherche' : 
+                'Créez votre premier dossier pour commencer à organiser vos fichiers' 
+              }}
+            </p>
+            <p-button 
+              label="Nouveau Dossier" 
+              icon="pi pi-plus"
+              (click)="openNew()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- New/Edit Folder Dialog -->
+<p-dialog 
+  [(visible)]="folderDialog" 
+  [style]="{ width: '500px' }" 
+  [header]="editMode ? 'Modifier le Dossier' : 'Nouveau Dossier'" 
+  [modal]="true"
+  [closable]="true">
+  
+  <ng-template #content>
+    <div class="flex flex-col gap-6">
+      
+      <!-- Header Info -->
+      <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-folder-plus text-3xl text-blue-500"></i>
+          <div>
+            <h4 class="text-lg font-semibold m-0">
+              {{ editMode ? 'Modification du dossier' : 'Création d\'un nouveau dossier' }}
+            </h4>
+            <p class="text-sm text-surface-600 dark:text-surface-300 m-0">
+              {{ editMode ? 'Modifiez les informations du dossier' : 'Saisissez les informations pour créer un nouveau dossier' }}
+            </p>
+          </div>
+        </div>
+      </div>
 
+      <!-- Form Fields -->
+      <div class="space-y-4">
+        <div>
+          <label for="folderName" class="block text-sm font-medium mb-2">
+            <i class="pi pi-tag mr-2"></i>
+            Nom du dossier *
+          </label>
+          <input 
+            type="text" 
+            pInputText 
+            id="folderName" 
+            [(ngModel)]="newFolder.name" 
+            placeholder="Saisir le nom du dossier..."
+            required 
+            autofocus 
+            fluid 
+            class="w-full"
+          />
+          <small class="text-red-500" *ngIf="submitted && !newFolder.name">
+            Le nom du dossier est requis.
+          </small>
+        </div>
+
+        <div>
+          <label for="folderDescription" class="block text-sm font-medium mb-2">
+            <i class="pi pi-align-left mr-2"></i>
+            Description
+          </label>
+          <textarea 
+            id="folderDescription" 
+            [(ngModel)]="newFolder.description" 
+            placeholder="Description optionnelle du dossier..."
+            rows="4" 
+            cols="20" 
+            fluid
+            class="w-full p-3 border border-surface-300 rounded-md resize-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-surface-600 dark:bg-surface-700 dark:text-surface-0"
+            maxlength="200">
+          </textarea>
+          <div class="flex justify-between items-center mt-1">
+            <small class="text-surface-500">
+              Description optionnelle pour identifier le contenu
+            </small>
+            <small class="text-surface-400">
+              {{ (newFolder.description || '').length }}/200
+            </small>
+          </div>
+        </div>
+
+        <!-- Permissions (if needed) -->
+        <div>
+          <label class="block text-sm font-medium mb-2">
+            <i class="pi pi-lock mr-2"></i>
+            Permissions
+          </label>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center">
+              <p-radioButton 
+                inputId="private" 
+                value="private" 
+                [(ngModel)]="newFolder.visibility"
+              />
+              <label for="private" class="ml-2 text-sm">Privé</label>
+            </div>
+            <div class="flex items-center">
+              <p-radioButton 
+                inputId="shared" 
+                value="shared" 
+                [(ngModel)]="newFolder.visibility"
+              />
+              <label for="shared" class="ml-2 text-sm">Partagé</label>
+            </div>
+          </div>
+          <small class="text-surface-500">
+            Choisissez qui peut accéder à ce dossier
+          </small>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="bg-surface-50 dark:bg-surface-800 rounded-lg p-4">
+        <h5 class="font-semibold mb-3 flex items-center gap-2">
+          <i class="pi pi-eye text-purple-500"></i>
+          Aperçu
+        </h5>
+        <div class="flex items-start gap-3">
+          <div class="bg-amber-100 dark:bg-amber-900/30 p-2 rounded-lg">
+            <i class="pi pi-folder text-2xl text-amber-500"></i>
+          </div>
+          <div>
+            <h6 class="font-medium">{{ newFolder.name || 'Nom du dossier' }}</h6>
+            <p class="text-sm text-surface-600 dark:text-surface-300">
+              {{ newFolder.description || 'Aucune description' }}
+            </p>
+            <div class="flex items-center gap-2 text-xs text-surface-500 mt-1">
+              <i class="pi pi-lock" *ngIf="newFolder.visibility === 'private'"></i>
+              <i class="pi pi-users" *ngIf="newFolder.visibility === 'shared'"></i>
+              <span>{{ newFolder.visibility === 'private' ? 'Privé' : 'Partagé' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #footer>
+    <div class="flex justify-between items-center w-full">
+      <small class="text-surface-500">
+        * Champs obligatoires
+      </small>
+      <div class="flex gap-2">
+        <p-button 
+          label="Annuler" 
+          icon="pi pi-times" 
+          severity="secondary"
+          [outlined]="true"
+          (click)="hideDialog()" 
+        />
+        <p-button 
+          [label]="editMode ? 'Modifier' : 'Créer'" 
+          [icon]="editMode ? 'pi pi-check' : 'pi pi-plus'"
+          [loading]="saving"
+          (click)="saveFolder()" 
+        />
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Context Menu -->
+<p-contextMenu #contextMenu [model]="contextMenuItems" />
+
+<!-- Import Dialog -->
+<p-dialog 
+  [(visible)]="importDialog" 
+  [style]="{ width: '600px' }" 
+  header="Importer des Fichiers" 
+  [modal]="true">
+  
+  <div class="flex flex-col gap-4">
+    <p-fileUpload
+      mode="advanced"
+      name="files"
+      [multiple]="true"
+      accept="*/*"
+      [maxFileSize]="50000000"
+      [auto]="false"
+      chooseLabel="Choisir des fichiers"
+      uploadLabel="Importer"
+      cancelLabel="Annuler"
+      [showUploadButton]="false"
+      [showCancelButton]="false"
+      (onSelect)="onFilesSelect($event)"
+    >
+      <ng-template pTemplate="content">
+        <div class="text-center py-8">
+          <i class="pi pi-cloud-upload text-4xl text-primary-500 mb-4"></i>
+          <p class="text-lg font-medium mb-2">Glissez-déposez vos fichiers ici</p>
+          <p class="text-surface-500">ou cliquez pour sélectionner</p>
+        </div>
+      </ng-template>
+    </p-fileUpload>
+  </div>
+
+  <ng-template #footer>
+    <p-button 
+      label="Fermer" 
+      icon="pi pi-times" 
+      severity="secondary"
+      [outlined]="true"
+      (click)="importDialog = false" 
+    />
+  </ng-template>
+</p-dialog>
+
+<!-- Confirmation Dialog -->
+<p-confirmDialog [style]="{ width: '450px' }" />
+
+<!-- Toast Messages -->
+<p-toast />
+
+<!-- Progress Spinner -->
+<p-progressSpinner *ngIf="loading" />
