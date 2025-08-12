@@ -54,6 +54,7 @@ namespace Api.Controllers
                     InactiveRoles = roleDtos.Count(r => !r.IsActive)
                 };
 
+                await _auditLogger.LogAsync("GetRoles", "Retrieved paged list of roles", "10", "Role");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -72,6 +73,8 @@ namespace Api.Controllers
                     return NotFound(new ResponseAPI(404, "Role not found"));
 
                 var roleDto = _mapper.Map<RoleDto>(role);
+
+                await _auditLogger.LogAsync("GetRole", "Retrieved role details", "10", "Role");
                 return Ok(roleDto);
             }
             catch (Exception ex)
@@ -104,6 +107,7 @@ namespace Api.Controllers
                 // Map back to DTO
                 var roleDto = _mapper.Map<RoleDto>(createdRole);
 
+                await _auditLogger.LogAsync("CreateRole", "Created new role", "10", "Role");
                 return CreatedAtAction(nameof(GetRole), new { id = roleDto.Id },
                     new { success = true, data = roleDto });
             }
@@ -137,6 +141,8 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var roleDto = _mapper.Map<RoleDto>(existingRole);
+
+                await _auditLogger.LogAsync("UpdateRole", "Updated role details", "10", "Role");
                 return Ok(roleDto);
             }
             catch (Exception ex)
@@ -160,6 +166,7 @@ namespace Api.Controllers
                 // IMPORTANT: Save changes
                 await _unitOfWork.SaveChangesAsync();
 
+                await _auditLogger.LogAsync("DeleteRole", "Deleted role", "10", "Role");
                 return Ok(new ResponseAPI(200, "Role deleted successfully"));
             }
             catch (Exception ex)

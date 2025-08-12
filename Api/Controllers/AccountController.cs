@@ -47,6 +47,8 @@ namespace Api.Controllers
                 SameSite = SameSiteMode.Strict,
             });
 
+            await _auditLogger.LogAsync("Login", "User logged in", "10", "Auth");
+
             return Ok(new ResponseAPI(200, "Login successful"));
         }
 
