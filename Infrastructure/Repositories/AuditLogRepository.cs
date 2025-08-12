@@ -4,6 +4,7 @@ using Core.DTO;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -11,10 +12,32 @@ namespace Infrastructure.Repositories;
 public class AuditLogRepository : IAuditLogRepository
 {
      private readonly AppDbContext _context;
+     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuditLogRepository(AppDbContext context)
+    public AuditLogRepository(AppDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
+         _httpContextAccessor = httpContextAccessor;
+    }
+
+     public async Task LogAsync(string actionType, string description, string? userId = null)
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+        var ipAddress = httpContext?.Connection?.RemoteIpAddress?.ToString();
+        var userAgent = httpContext?.Request?.Headers["User-Agent"].ToString();
+
+        var log = new AuditLog
+        {
+            UserId = userId,
+            ActionType = actionType,
+            Description = description,
+            CreatedAt = DateTime.UtcNow,
+            IPAddress = ipAddress,
+            UserAgent = userAgent
+        };
+
+        _context.AuditLogs.Add(log);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<AuditLog> CreateAsync(AuditLog auditLog)
