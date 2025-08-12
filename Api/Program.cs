@@ -63,7 +63,7 @@ builder.Services.AddControllers();
 
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
-
+builder.Services.AddHttpContextAccessor();
 //  builder.Services.AddIdentity<AppUser, AppRole>()
 //      .AddEntityFrameworkStores<AppDbContext>()
 //      .AddDefaultTokenProviders();
@@ -74,7 +74,23 @@ builder.Services.infrastructureRegistration(builder.Configuration);
 //     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddResponseCompression();
 var app = builder.Build();
+//app.UseMiddleware<GlobalAuditMiddleware>();
+app.Use(async (context, next) =>
+{
+    // Log request details
+    Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
+
+    var ipAddress = context?.Connection?.RemoteIpAddress?.ToString();
+    var userAgent = context?.Request?.Headers["User-Agent"].ToString();
+    Console.WriteLine($"Request IP: {ipAddress}");
+    Console.WriteLine($"Request User-Agent: {userAgent}");
+    await next();
+
+    // Log response details
+    Console.WriteLine($"Response: {context.Response.StatusCode}");
+});
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -113,3 +129,28 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
  app.UseResponseCaching();
 app.MapControllers();
 app.Run();
+
+
+
+// public class GlobalAuditMiddleware
+// {
+//     private readonly RequestDelegate _next;
+
+//     public GlobalAuditMiddleware(RequestDelegate next)
+//     {
+//         _next = next;
+//     }
+
+//     public async Task InvokeAsync(HttpContext context, IAuditLogger auditLogger)
+//     {
+//         // Continue request
+//         await _next(context);
+
+//         // Example: log access to restricted endpoint
+//         if (context.Response.StatusCode == 403)
+//         {
+//             await auditLogger.LogAsync("AccessDenied",
+//                 $"Access denied to {context.Request.Path}");
+//         }
+//     }
+// }

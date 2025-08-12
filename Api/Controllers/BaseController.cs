@@ -10,11 +10,15 @@ namespace Api.Controllers
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
+         public readonly IAuditLogRepository _auditLogger;
+        // protected readonly IAuditLogger _auditLogger;
 
-        public BaseController(IUnitOfWork unitOfWork, IMapper mapper)
+        public BaseController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
         {
-               _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _auditLogger = auditLogger;
+            //_auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));
         }
     }
 }

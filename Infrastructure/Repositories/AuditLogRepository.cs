@@ -20,7 +20,7 @@ public class AuditLogRepository : IAuditLogRepository
          _httpContextAccessor = httpContextAccessor;
     }
 
-     public async Task LogAsync(string actionType, string description, string? userId = null)
+     public async Task LogAsync(string actionType, string description, string? userId = null, string? targetEntity = null)
     {
         var httpContext = _httpContextAccessor.HttpContext;
         var ipAddress = httpContext?.Connection?.RemoteIpAddress?.ToString();
@@ -29,6 +29,8 @@ public class AuditLogRepository : IAuditLogRepository
         var log = new AuditLog
         {
             UserId = userId,
+            Action = httpContext?.Request?.Path,
+            TargetEntity = targetEntity,
             ActionType = actionType,
             Description = description,
             CreatedAt = DateTime.UtcNow,

@@ -12,8 +12,10 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class DepartmentController : BaseController
     {
-        public DepartmentController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public readonly IAuditLogRepository _auditLogger;
+        public DepartmentController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
         {
+            _auditLogger = auditLogger;
         }
 
         [HttpGet("test")]
@@ -55,6 +57,8 @@ namespace Api.Controllers
                     TotalDepartments = departmentDtos.Count(),
                    
                 };
+                // Log the action
+                await _auditLogger.LogAsync("GetDepartments", "Retrieved paged list of departments", "10","Department");
 
                 return Ok(new { success = true, data = result });
             }
@@ -74,6 +78,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Department not found" });
 
                 var departmentDto = _mapper.Map<DepartmentDto>(department);
+                await _auditLogger.LogAsync("GetDepartment", "Retrieved department details", "10", "Department");
                 return Ok(departmentDto);
             }
             catch (Exception ex)
@@ -118,7 +123,8 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var departmentDto = _mapper.Map<DepartmentDto>(createdDepartment);
-                return CreatedAtAction(nameof(GetDepartment), new { id = departmentDto.Id }, 
+                await _auditLogger.LogAsync("CreateDepartment", "Created new department", "10", "Department");
+                return CreatedAtAction(nameof(GetDepartment), new { id = departmentDto.Id },
                     new { success = true, data = departmentDto });
             }
             catch (Exception ex)
@@ -153,6 +159,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var departmentDto = _mapper.Map<DepartmentDto>(existingDepartment);
+                await _auditLogger.LogAsync("UpdateDepartment", "Updated department details", "10", "Department");
                 return Ok(departmentDto);
             }
             catch (Exception ex)
@@ -176,7 +183,7 @@ namespace Api.Controllers
 
                 await _unitOfWork.DepartmentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-
+                await _auditLogger.LogAsync("DeleteDepartment", "Deleted department", "10", "Department");
                 return Ok(new ResponseAPI(200, "Department deleted successfully"));
             }
             catch (Exception ex)
@@ -194,19 +201,22 @@ namespace Api.Controllers
                 if (department == null)
                     return NotFound(new { success = false, message = "Department not found" });
 
-                var users = department.Users?.Select(u => new {
+                var users = department.Users?.Select(u => new
+                {
                     u.Id,
                     u.UserName,
                     u.Email,
-                    
+
                     u.IsActive
                 }).ToList();
 
+                await _auditLogger.LogAsync("GetDepartmentUsers", "Retrieved users for department", "10", "Department");
                 return Ok(users);
+                
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500 , ex.Message));
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -226,7 +236,7 @@ namespace Api.Controllers
                     DocumentRequestCount = department.DocumentRequests?.Count ?? 0,
                     ActiveUsers = department.Users?.Count(u => u.IsActive) ?? 0
                 };
-
+                await _auditLogger.LogAsync("GetDepartmentStats", "Retrieved department statistics", "10", "Department");
                 return Ok(stats);
             }
             catch (Exception ex)

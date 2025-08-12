@@ -8,7 +8,8 @@ namespace Core.Interfaces;
 public interface IAuditLogRepository:IGenericRepository<AuditLog>
 {
 
-    Task LogAsync(string actionType, string description, string? userId = null);
+
+    Task LogAsync(string actionType, string description, string? userId = null, string? targetEntity = null);
     Task<AuditLog> CreateAsync(AuditLog auditLog);
     Task<AuditLog> GetByIdAsync(int id);
     Task<IEnumerable<AuditLog>> GetAllAsync();
