@@ -7,9 +7,8 @@ namespace Core.Entities;
 public class AuditLog : BaseEntity<int>
 {
     [Required]
-    public string UserId { get; set; }  // FIXED: Changed from Guid to string
+    public string UserId { get; set; }
     public string ActionType { get; set; }
-
 
     public string? UserAgent { get; set; }
 
