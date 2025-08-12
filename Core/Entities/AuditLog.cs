@@ -21,7 +21,6 @@ public class AuditLog : BaseEntity<int>
     public string TargetEntity { get; set; }
  // FIXED: Changed from Guid to int
 
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
     [ForeignKey(nameof(UserId))]

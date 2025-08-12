@@ -35,7 +35,7 @@ public class AuditLogRepository : IAuditLogRepository
     {
         return await _context.AuditLogs
             .Include(al => al.User)
-            .OrderByDescending(al => al.Timestamp)
+            .OrderByDescending(al => al.CreatedAt)
             .ToListAsync();
     }
 
@@ -103,12 +103,12 @@ public class AuditLogRepository : IAuditLogRepository
 
         if (startDate.HasValue)
         {
-            query = query.Where(al => al.Timestamp >= startDate.Value);
+            query = query.Where(al => al.CreatedAt >= startDate.Value);
         }
 
         if (endDate.HasValue)
         {
-            query = query.Where(al => al.Timestamp <= endDate.Value);
+            query = query.Where(al => al.CreatedAt <= endDate.Value);
         }
 
         // Apply search filter
@@ -188,7 +188,7 @@ public class AuditLogRepository : IAuditLogRepository
     {
         var query = _context.AuditLogs
             .Include(al => al.User)
-            .Where(al => al.Timestamp >= startDate && al.Timestamp <= endDate);
+            .Where(al => al.CreatedAt >= startDate && al.CreatedAt <= endDate);
 
         // Apply search filter
         if (!string.IsNullOrEmpty(paginationParams.Search))
@@ -225,21 +225,21 @@ public class AuditLogRepository : IAuditLogRepository
     {
         if (string.IsNullOrEmpty(sortBy))
         {
-            return query.OrderByDescending(al => al.Timestamp);
+            return query.OrderByDescending(al => al.CreatedAt);
         }
 
         var isDescending = sortDirection?.ToLower() == "desc";
 
         return sortBy.ToLower() switch
         {
-            "timestamp" => isDescending ? query.OrderByDescending(al => al.Timestamp) : query.OrderBy(al => al.Timestamp),
+            "CreatedAt" => isDescending ? query.OrderByDescending(al => al.CreatedAt) : query.OrderBy(al => al.CreatedAt),
             "action" => isDescending ? query.OrderByDescending(al => al.Action) : query.OrderBy(al => al.Action),
             "actiontype" => isDescending ? query.OrderByDescending(al => al.ActionType) : query.OrderBy(al => al.ActionType),
             "targetentity" => isDescending ? query.OrderByDescending(al => al.TargetEntity) : query.OrderBy(al => al.TargetEntity),
             "userid" => isDescending ? query.OrderByDescending(al => al.UserId) : query.OrderBy(al => al.UserId),
             "username" => isDescending ? query.OrderByDescending(al => al.User.UserName) : query.OrderBy(al => al.User.UserName),
             "ipaddress" => isDescending ? query.OrderByDescending(al => al.IPAddress) : query.OrderBy(al => al.IPAddress),
-            _ => query.OrderByDescending(al => al.Timestamp)
+            _ => query.OrderByDescending(al => al.CreatedAt)
         };
     }
 
@@ -248,7 +248,7 @@ public class AuditLogRepository : IAuditLogRepository
         return await _context.AuditLogs
             .Include(al => al.User)
             .Where(al => al.UserId == userId)
-            .OrderByDescending(al => al.Timestamp)
+            .OrderByDescending(al => al.CreatedAt)
             .ToListAsync();
     }
 
@@ -257,7 +257,7 @@ public class AuditLogRepository : IAuditLogRepository
         return await _context.AuditLogs
             .Include(al => al.User)
             .Where(al => al.ActionType == actionType)
-            .OrderByDescending(al => al.Timestamp)
+            .OrderByDescending(al => al.CreatedAt)
             .ToListAsync();
     }
 
@@ -265,8 +265,8 @@ public class AuditLogRepository : IAuditLogRepository
     {
         return await _context.AuditLogs
             .Include(al => al.User)
-            .Where(al => al.Timestamp >= startDate && al.Timestamp <= endDate)
-            .OrderByDescending(al => al.Timestamp)
+            .Where(al => al.CreatedAt >= startDate && al.CreatedAt <= endDate)
+            .OrderByDescending(al => al.CreatedAt)
             .ToListAsync();
     }
 

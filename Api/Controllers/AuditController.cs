@@ -46,7 +46,7 @@ public class AuditLogController : ControllerBase
                 Description = al.Description,
                 IPAddress = al.IPAddress,
                 UserAgent = al.UserAgent,
-                Timestamp = al.Timestamp
+                CreatedAt = al.CreatedAt
             });
 
             var pagedResult = auditLogDtos.ToPagedResult(
@@ -94,7 +94,7 @@ public class AuditLogController : ControllerBase
                 Description = al.Description,
                 IPAddress = al.IPAddress,
                 UserAgent = al.UserAgent,
-                Timestamp = al.Timestamp
+                CreatedAt = al.CreatedAt
             });
 
             var pagedResult = auditLogDtos.ToPagedResult(
@@ -141,7 +141,7 @@ public class AuditLogController : ControllerBase
                 Description = auditLog.Description,
                 IPAddress = auditLog.IPAddress,
                 UserAgent = auditLog.UserAgent,
-                Timestamp = auditLog.Timestamp
+                CreatedAt = auditLog.CreatedAt
             };
 
             return Ok(auditLogDto);
@@ -181,7 +181,7 @@ public class AuditLogController : ControllerBase
                 Description = al.Description,
                 IPAddress = al.IPAddress,
                 UserAgent = al.UserAgent,
-                Timestamp = al.Timestamp
+                CreatedAt = al.CreatedAt
             });
 
             var pagedResult = auditLogDtos.ToPagedResult(
@@ -225,7 +225,7 @@ public class AuditLogController : ControllerBase
                 Description = al.Description,
                 IPAddress = al.IPAddress,
                 UserAgent = al.UserAgent,
-                Timestamp = al.Timestamp
+                CreatedAt = al.CreatedAt
             });
 
             var pagedResult = auditLogDtos.ToPagedResult(
@@ -275,7 +275,7 @@ public class AuditLogController : ControllerBase
                 Description = al.Description,
                 IPAddress = al.IPAddress,
                 UserAgent = al.UserAgent,
-                Timestamp = al.Timestamp
+                CreatedAt = al.CreatedAt
             });
 
             var pagedResult = auditLogDtos.ToPagedResult(
@@ -318,7 +318,7 @@ public class AuditLogController : ControllerBase
                 Description = createDto.Description,
                 IPAddress = createDto.IPAddress ?? GetClientIpAddress(),
                 UserAgent = createDto.UserAgent ?? Request.Headers["User-Agent"].ToString(),
-                Timestamp = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow
             };
 
             var createdAuditLog = await _auditLogRepository.CreateAsync(auditLog);
@@ -334,7 +334,7 @@ public class AuditLogController : ControllerBase
                 Description = createdAuditLog.Description,
                 IPAddress = createdAuditLog.IPAddress,
                 UserAgent = createdAuditLog.UserAgent,
-                Timestamp = createdAuditLog.Timestamp
+                CreatedAt = createdAuditLog.CreatedAt
             };
 
             return CreatedAtAction(nameof(GetAuditLog), new { id = auditLogDto.Id }, auditLogDto);
@@ -383,7 +383,7 @@ public class AuditLogController : ControllerBase
                 Description = updatedAuditLog.Description,
                 IPAddress = updatedAuditLog.IPAddress,
                 UserAgent = updatedAuditLog.UserAgent,
-                Timestamp = updatedAuditLog.Timestamp
+                CreatedAt = updatedAuditLog.CreatedAt
             };
 
             return Ok(auditLogDto);

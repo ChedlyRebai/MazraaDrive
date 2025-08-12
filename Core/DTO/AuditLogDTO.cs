@@ -13,7 +13,7 @@ namespace Core.DTOs
     public string Description { get; set; }
     public string IPAddress { get; set; }
     public string UserAgent { get; set; }
-    public DateTime Timestamp { get; set; }
+    public DateTime CreatedAt { get; set; }
 }
 
 public class CreateAuditLogDto
