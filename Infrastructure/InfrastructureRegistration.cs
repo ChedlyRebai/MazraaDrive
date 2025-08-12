@@ -48,6 +48,7 @@ public static class InfrastructureRegistration
         // .AddDefaultTokenProviders();
 
         // Register repositories and services
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDocRequestRepository, DocRequestRepository>();
@@ -60,7 +61,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IGenerateToken, GenrateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
-        services.AddSingleton<IFileProvider>(provider => 
+        services.AddSingleton<IFileProvider>(provider =>
     new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")));
         services.AddApiVersioning(options =>
         {

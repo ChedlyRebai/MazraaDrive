@@ -27,7 +27,7 @@ public class UnitOfWork : IUnitOfWork
     // private readonly IGenerateToken? _token;
 
     public IAuth Auth { get; }
-
+    
     public IDocRequestRepository DocRequestRepository { get; }
 
     public IDocument DocumentRepository { get; }
@@ -59,7 +59,8 @@ public class UnitOfWork : IUnitOfWork
         IHomeRepository homeRepository,
         IDocument documentRepository,
         IUserRepository userRepository,
-        IDocRequestRepository docRequestRepository
+        IDocRequestRepository docRequestRepository,
+        IAuditLogRepository auditLogRepository
         //IConnectionMultiplexer redis, 
         // UserManager<AppUser> userManager,
         // SignInManager<AppUser> signInManager,
@@ -89,7 +90,7 @@ public class UnitOfWork : IUnitOfWork
         // _signInManager = signInManager;
         //_emailService = emailService;
         // _token = token;
-
+        AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         // Initialize Auth with proper null checks
         // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
     }
