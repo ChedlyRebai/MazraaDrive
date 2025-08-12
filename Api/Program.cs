@@ -103,12 +103,13 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
- 
+
 // var connectionString = builder.Configuration.GetConnectionString("GameStore");
 // builder.Services.AddDbContext<AppDbContext>(options =>
 //     options.UseMySql(
 //         connectionString, ServerVersion.AutoDetect(connectionString)
 //     ));
-
+ app.UseResponseCompression();
+ app.UseResponseCaching();
 app.MapControllers();
 app.Run();

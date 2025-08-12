@@ -24,9 +24,9 @@ namespace Api.Controllers
         }
 
 
-        
 
-          [HttpGet]
+
+        [HttpGet]
         // [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PagedResult<AccessRightDto>>> GetAccessRights([FromQuery] AccessRightFilterDto filter)
         {
@@ -54,7 +54,7 @@ namespace Api.Controllers
 
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<PagedResult<AccessRightDto>>> GetUserAccessRights(
-            string userId, 
+            string userId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -91,7 +91,7 @@ namespace Api.Controllers
         [HttpGet("document/{documentId}")]
         // [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PagedResult<AccessRightDto>>> GetDocumentAccessRights(
-            int documentId, 
+            int documentId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -121,7 +121,7 @@ namespace Api.Controllers
         [HttpGet("folder/{folderId}")]
         // [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PagedResult<AccessRightDto>>> GetFolderAccessRights(
-            int folderId, 
+            int folderId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -166,9 +166,9 @@ namespace Api.Controllers
             }
         }
 
-       
 
-        
+
+
 
         [HttpPost]
         // public async Task<ActionResult<AccessRightDto>> CreateAccessRight([FromBody] CreateAccessRightDto createAccessRightDto)
@@ -255,7 +255,7 @@ namespace Api.Controllers
                         CanRead = bulkDto.CanRead,
                         CanUpdate = bulkDto.CanUpdate,
                         CanDelete = bulkDto.CanDelete,
-                      
+
                     };
 
                     accessRights.Add(accessRight);
@@ -289,7 +289,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(existingAccessRight);
-                return Ok(accessRightDto );
+                return Ok(accessRightDto);
             }
             catch (Exception ex)
             {
