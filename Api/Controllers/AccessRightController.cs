@@ -14,17 +14,13 @@ namespace Api.Controllers
     public class AccessRightController : BaseController
     {
         public AccessRightController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-        {
-        }
+        {}
 
         [HttpGet("test")]
         public string TestApi()
         {
             return "AccessRight API is working!";
         }
-
-
-
 
         [HttpGet]
         // [Authorize(Roles = "Admin,Manager")]
@@ -172,73 +168,6 @@ namespace Api.Controllers
         }
 
 
-
-
-
-        [HttpPost]
-        // public async Task<ActionResult<AccessRightDto>> CreateAccessRight([FromBody] CreateAccessRightDto createAccessRightDto)
-        // {
-        //     try
-        //     {
-        //         if (createAccessRightDto == null)
-        //             return BadRequest(new { success = false, message = "Access right data is required" });
-
-        //         if (!ModelState.IsValid)
-        //             return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
-
-        //         if (!createAccessRightDto.IsValid)
-        //             return BadRequest(new { success = false, message = "Either DocumentId or FolderId must be provided, but not both" });
-
-        //         // Check if user exists
-        //         var user = await _unitOfWork.UserRepository.;
-        //         if (user == null)
-        //             return BadRequest(new { success = false, message = "User not found" });
-
-        //         // Check if document/folder exists
-        //         if (createAccessRightDto.DocumentId.HasValue)
-        //         {
-        //             var document = await _unitOfWork.DocumentRepository.GetByIdAsync(createAccessRightDto.DocumentId.Value);
-        //             if (document == null)
-        //                 return BadRequest(new { success = false, message = "Document not found" });
-        //         }
-
-        //         if (createAccessRightDto.FolderId.HasValue)
-        //         {
-        //             var folder = await _unitOfWork.FolderRepository.GetByIdAsync(createAccessRightDto.FolderId.Value);
-        //             if (folder == null)
-        //                 return BadRequest(new { success = false, message = "Folder not found" });
-        //         }
-
-        //         // Check if access right already exists
-        //         AccessRight? existingAccess = null;
-        //         if (createAccessRightDto.DocumentId.HasValue)
-        //         {
-        //             existingAccess = await _unitOfWork.PermissionsRepository.GetUserDocumentAccessAsync(
-        //                 createAccessRightDto.UserId, createAccessRightDto.DocumentId.Value);
-        //         }
-        //         else if (createAccessRightDto.FolderId.HasValue)
-        //         {
-        //             existingAccess = await _unitOfWork.PermissionsRepository.GetUserFolderAccessAsync(
-        //                 createAccessRightDto.UserId, createAccessRightDto.FolderId.Value);
-        //         }
-
-        //         if (existingAccess != null)
-        //             return BadRequest(new { success = false, message = "Access right already exists for this user and resource" });
-
-        //         var accessRight = _mapper.Map<AccessRight>(createAccessRightDto);
-        //         var createdAccessRight = await _unitOfWork.PermissionsRepository.AddAsync(accessRight);
-        //         await _unitOfWork.SaveChangesAsync();
-
-        //         var accessRightDto = _mapper.Map<AccessRightDto>(createdAccessRight);
-        //         return CreatedAtAction(nameof(GetAccessRight), new { id = accessRightDto.Id }, 
-        //             new { success = true, data = accessRightDto });
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return StatusCode(500, new { success = false, message = ex.Message });
-        //     }
-        // }
-
         [HttpPost("bulk")]
         public async Task<ActionResult> CreateBulkAccessRights([FromBody] BulkAccessRightDto bulkDto)
         {
@@ -331,7 +260,7 @@ namespace Api.Controllers
             try
             {
                 var hasPermission = await _unitOfWork.PermissionsRepository.HasPermissionAsync(userId, documentId, folderId, permission);
-                await _auditLogger.LogAsync("CheckUserPermissions", "Checked user permissions", "10", "AccessRight");   
+                await _auditLogger.LogAsync("CheckUserPermissions", "Checked user permissions", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, hasPermission ? "User has permission" : "User does not have permission"));
             }
             catch (Exception ex)
