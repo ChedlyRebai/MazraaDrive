@@ -1,169 +1,143 @@
 <theme-switcher />
 <div class="layout-content-wrapper">
-    <div class="">
-        <nav app-breadcrumb="" class="layout-breadcrumb">
-            <p-breadcrumb class="layout-readcrumb" [model]="items" [home]="home" />
-
-
-        </nav><router-outlet></router-outlet><app-files class="ng-star-inserted">
-
-
-            <div class="grid grid-cols-12 gap-4">
-
-
-
-
-                <!-- <div class="col-span-12 md:col-span-5 xl:col-span-3">
-
-                    <div class="card">
-                        <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Categories</div>
-                        <ul class="list-none p-0 m-0">
-                            <li
-                                class="p-4 mb-4 flex items-center justify-between cursor-pointer rounded bg-indigo-50 text-indigo-900">
-                                <div class="flex items-center"><i class="pi pi-image text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Images</span></div><span
-                                    class="text-lg font-bold">85</span>
-                            </li>
-                            <li
-                                class="p-4 mb-4 flex items-center justify-between cursor-pointer rounded bg-purple-50 text-purple-900">
-                                <div class="flex items-center"><i class="pi pi-file text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Documents</span></div><span
-                                    class="text-lg font-bold">231</span>
-                            </li>
-                            <li
-                                class="p-4 flex items-center justify-between cursor-pointer rounded bg-teal-50 text-teal-900">
-                                <div class="flex items-center"><i class="pi pi-video text-2xl mr-4"></i><span
-                                        class="text-lg font-medium">Videos</span></div><span
-                                    class="text-lg font-bold">40</span>
-                            </li>
-                        </ul>
+    <nav app-breadcrumb class="layout-breadcrumb">
+        <p-breadcrumb class="layout-readcrumb" [model]="items" [home]="home" />
+    </nav>
+    <router-outlet></router-outlet>
+    <app-files class="ng-star-inserted">
+        <div class="grid grid-cols-12 gap-4">
+            <!-- Statistics Cards -->
+            <div class="col-span-12 md:col-span-3">
+                <div class="bg-blue-500 text-white p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold">{{ folders?.totalFolders || 0 }}</div>
+                            <div class="text-sm opacity-75">Total Folders</div>
+                        </div>
+                        <i class="pi pi-folder text-3xl opacity-75"></i>
                     </div>
-                </div> -->
-                <!-- <div class="col-span-12 md:col-span-7 xl:col-span-9"> -->
-                <div class="col-span-12 ">
-                    <div class="card">
-                        <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Folders</div>
-                                                 <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-                        <div class="grid grid-cols-12 gap-4">
-                            <div class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
-                                <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                                    <!-- File info section -->
-                                    <div class="p-4  ">
-                                        <div class=" flex flex-col items-start">
-                                            <div class="flex items-center w-full justify-between ">
-                                                <!-- Icon for the file -->
-                                                <div class="bg-blue-100  p-3 rounded-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
+                </div>
+            </div>
+            <div class="col-span-12 md:col-span-3">
+                <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold">{{ folders?.totalFolders || 0 }}</div>
+                            <div class="text-sm opacity-75">Total Files</div>
+                        </div>
+                        <i class="pi pi-file text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-12 md:col-span-3">
+                <div class="bg-purple-500 text-white p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold">{{ folders?.totalPages  || 0    }}</div>
+                            <div class="text-sm opacity-75">Total Size</div>
+                        </div>
+                        <i class="pi pi-database text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-12 md:col-span-3">
+                <div class="bg-orange-500 text-white p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold">{{ folders?.totalPages || 0 }}</div>
+                            <div class="text-sm opacity-75">Recent Files</div>
+                        </div>
+                        <i class="pi pi-clock text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                                </div>
-                                                <p class=" text-gray-500">10.7 KB</p>
+        <!-- Folders & Files List -->
+        <div class="col-span-12">
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold">Folders</div>
+                    <div>
+                        <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+                        <p-button label="Refresh" icon="pi pi-refresh"  severity="secondary" [outlined]="true" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-12 gap-4">
+                    <div *ngFor="let folder in folders" class="col-span-12 md:col-span-6 xl:col-span-4">
+                        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden cursor-pointer" >
+                            <div class="p-4">
+                                <div class="flex flex-col items-start">
+                                    <div class="flex items-center w-full justify-between">
+                                        <div class="bg-blue-100 p-3 rounded-lg">
+                                            <i class="pi pi-folder text-3xl text-blue-500"></i>
+                                        </div>
+                                        <p class="text-gray-500">{{ folder.size }}</p>
+                                    </div>
+                                    <div class="my-2">
+                                        <h6 class="font-bold text-gray-800">{{ folder.name }}</h6>
+                                        <div class="flex flex-col justify-between text-gray-600">
+                                            <div>
+                                                <h3 class="font-semibold my-1">{{ folder.createdAt | date: 'short' }}</h3>
                                             </div>
-                                            <div class="my-2">
-
-                                                <h6 class="font-bold  text-gray-800 w bold">Students CSV File.csv</h6>
-                                                <!-- <p class="text-sm text-gray-500">10.7 KB</p> -->
-                                                <div class="flex flex-col  justify-between  text-gray-600">
-                                                    <div>
-                                                        <h3 class="font-semibold my-1">10:29am, 31 Oct</h3>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="my-1">By: Faizan</h4>
-                                                    </div>
-                                                </div>
+                                            <div>
+                                                <h4 class="my-1">By: {{ folder.createdByName }}</h4>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <div *ngFor="let intem of folders.subFolders; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
-                                <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-
-                                    <div class="p-4  ">
-                                        <div class=" flex flex-col items-start">
-                                            <div class="flex items-center w-full justify-between ">
-
-                                                <div class="bg-blue-100  p-3 rounded-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-
-                                                </div>
-
-                                            </div>
-                                            <div class="my-2">
-
-                                                <h6 class="font-bold  text-gray-800 w bold">{{ intem.name }}</h6>
-
-                                                <div class="flex flex-col  justify-between  text-gray-600">
-                                                    <div>
-                                                        <h3 class="font-semibold my-1">{{ intem.createdAt | date: 'short' }}</h3>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="my-1">By: {{ intem.createdBy.userName }}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-
-                            <!-- <div *ngFor="let intem of folders.documents; let i = index"  class="col-span-12 md:col-span-6 xl:col-span-4 ng-star-inserted">
-                                <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-
-                                    <div class="p-4  ">
-                                        <div class=" flex flex-col items-start">
-                                            <div class="flex items-center w-full justify-between ">
-
-                                                <div class="bg-blue-100  p-3 rounded-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-
-                                                </div>
-
-                                            </div>
-                                            <div class="my-2">
-                                                <h6 class="font-bold  text-gray-800 w bold">{{ intem.name }}</h6>
-
-                                                <div class="flex flex-col  justify-between  text-gray-600">
-                                                    <div>
-                                                        <h3 class="font-semibold my-1">{{ intem.createdAt | date: 'short' }}</h3>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="my-1">By: {{ intem.uploadedByName }}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-
                         </div>
                     </div>
+                    <!-- <div *ngIf="folders?.length === 0" class="col-span-12 text-center text-gray-500 py-8">
+                        Aucun dossier trouvé.
+                    </div> -->
                 </div>
             </div>
-        </app-files><!---->
-          <p-dialog [(visible)]="folderDialog" [style]="{ width: '450px' }" header="New Folder" [modal]="true">
+        </div>
+
+        <!-- Files List -->
+        <div class="col-span-12 mt-6">
+            <div class="card">
+                <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4">Files</div>
+                <div class="grid grid-cols-12 gap-4">
+                    <div *ngFor="let file in folders" class="col-span-12 md:col-span-6 xl:col-span-4">
+                        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden cursor-pointer" >
+                            <div class="p-4">
+                                <div class="flex flex-col items-start">
+                                    <div class="flex items-center w-full justify-between">
+                                        <div class="bg-green-100 p-3 rounded-lg">
+                                            <i class="pi pi-file text-3xl text-green-500"></i>
+                                        </div>
+                                        <p class="text-gray-500">{{ file.size }}</p>
+                                    </div>
+                                    <div class="my-2">
+                                        <h6 class="font-bold text-gray-800">{{ file.name }}</h6>
+                                        <div class="flex flex-col justify-between text-gray-600">
+                                            <div>
+                                                <h3 class="font-semibold my-1">{{ file.createdAt | date: 'short' }}</h3>
+                                            </div>
+                                            <div>
+                                                <h4 class="my-1">By: {{ file.uploadedByName }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="folders.length === 0" class="col-span-12 text-center text-gray-500 py-8">
+                        Aucun fichier trouvé.
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </app-files>
+
+    <!-- New Folder Dialog -->
+    <p-dialog [(visible)]="folderDialog" [style]="{ width: '450px' }" header="New Folder" [modal]="true">
         <ng-template #content>
             <div class="flex flex-col gap-6">
-
                 <div>
                     <label for="name" class="block font-bold mb-3">Name</label>
                     <input type="text" pInputText id="name" [(ngModel)]="newFolder.name" required autofocus fluid />
@@ -173,19 +147,12 @@
                     <label for="description" class="block font-bold mb-3">Description</label>
                     <textarea id="description" pTextarea [(ngModel)]="newFolder.description" required rows="3" cols="20" fluid></textarea>
                 </div>
-
-
-
-
-
             </div>
         </ng-template>
-
         <ng-template #footer>
             <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
             <p-button label="Save" icon="pi pi-check" (click)="saveFolder()" />
         </ng-template>
     </p-dialog>
-     <p-confirmDialog [style]="{ width: '450px' }" />
-    </div>
+    <p-confirmDialog [style]="{ width: '450px' }" />
 </div>

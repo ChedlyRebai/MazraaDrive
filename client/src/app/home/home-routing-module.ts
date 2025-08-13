@@ -4,6 +4,9 @@ import { Demandes } from './demandes/demandes';
 import { Documents } from './documents/documents';
 import { Home } from './home';
 import { Accueil } from './accueil/accueil';
+import { FolderDetails } from './folder-details/folder-details';
+import { FileViewer } from './file-viewer/file-viewer';
+import { DocumentRecherche } from './document-recherche/document-recherche';
 
 const routes: Routes = [
   {
@@ -16,27 +19,20 @@ const routes: Routes = [
       { path: 'accueil', component: Accueil },
       {
         path: 'documents',
-        loadComponent: () =>
-          import('./documents/documents').then((m) => m.Documents),
+       component: Documents,
       },
       {
         path: 'folder/:id',
-        loadComponent: () =>
-          import('./folder-details/folder-details').then(
-            (m) => m.FolderDetails
-          ),
+        component: FolderDetails,
       },
       {
         path: 'file/:id',
-        loadComponent: () =>
-          import('./file-viewer/file-viewer').then((m) => m.FileViewer),
+        component: FileViewer,
       },
       {
         path: 'document-search',
-        loadComponent: () =>
-          import('./document-recherche/document-recherche').then(
-            (m) => m.DocumentRecherche
-          ),
+        component: DocumentRecherche,
+       
       },
     ],
   },

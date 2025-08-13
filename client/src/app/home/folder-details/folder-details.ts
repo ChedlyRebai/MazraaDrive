@@ -88,6 +88,30 @@ export class FolderDetails implements OnInit {
       { label: 'Wireless' }
     ];
 
+    this.folders.data = [
+      {
+        id: 1,
+        name: 'Folder 1',
+        description: 'Description for Folder 1',
+        createdById: 'user1',
+        departmentId: 10,
+        isActive: true,
+        parentFolderId: null,
+        parentFolderName: null,
+        departmentName: '',
+        createdByName: '',
+        createdAt: '',
+        updatedAt: null,
+        subFolderCount: 0,
+
+        subFolders: [],
+        documents: [],
+        documentCount: 0,
+        parentFolder: {} as FolderDTO,
+      },
+      
+    ]
+
     this.home = { icon: 'pi pi-home', routerLink: '/' };
     this.id = this.activatedRoute.snapshot.paramMap.get('id') || '';
     console.log('Current folder ID:', this.id);
