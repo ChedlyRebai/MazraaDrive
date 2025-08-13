@@ -1,481 +1,562 @@
+<!-- Stats & Actions Header -->
 <theme-switcher />
-<div class="card">
-  <p-toast />
-  <p-toolbar class="mb-6">
-    <ng-template #start>
-      <p-button
-        label="Nouvel Utilisateur"
-        icon="pi pi-plus"
-        class="mr-2"
-        (onClick)="openNew()"
-      />
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedUsers()"
-        [disabled]="!selectedUsers || !selectedUsers.length"
-      />
-    </ng-template>
 
-    <ng-template #end>
-      <p-fileUpload
-        mode="basic"
-        accept=".csv,.xlsx"
-        [maxFileSize]="5000000"
-        label="Importer"
-        chooseLabel="Importer"
-        [auto]="false"
-        customUpload
-        class="mr-2 inline-block"
-        [chooseButtonProps]="{ severity: 'secondary' }"
-        (uploadHandler)="onImportUsers($event)"
-      />
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+    <div class="">
+      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
+        Gestion des utilisateurs 📋
+      </h1>
+      <p class="text-surface-600 dark:text-surface-300">
+        Gérez et suivez tous les utilisateurs
+      </p>
+    </div>
+    <div class="flex gap-3">
       <p-button
-        label="Exporter"
-        icon="pi pi-download"
+        label="Actualiser"
+        icon="pi pi-refresh"
         severity="secondary"
-        (onClick)="exportUsers()"
+        [outlined]="true"
       />
-    </ng-template>
-  </p-toolbar>
+      <p-button label="Nouvelle Demande" icon="pi pi-plus" />
+    </div>
+  </div>
 
-  <p-table
-    #dt
-    [value]="users"
-    [rows]="10"
-    [paginator]="true"
-    [globalFilterFields]="[
-      'fullName',
-      'email',
-      'userName',
-      'department',
-      'role'
-    ]"
-    [tableStyle]="{ 'min-width': '75rem' }"
-    [(selection)]="selectedUsers"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} utilisateurs"
-    [showCurrentPageReport]="true"
-    [loading]="loading"
-    [rowsPerPageOptions]="[1,5,10, 25, 50]"
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex items-center justify-between">
-        <h5 class="m-0">Gestion des Utilisateurs</h5>
-        <div class="flex gap-2">
-          <p-iconField iconPosition="left">
-            <p-inputIcon class="pi pi-search" />
-            <input
-              pInputText
-              type="text"
-              
-              placeholder="Rechercher..."
-            />
-          </p-iconField>
+  <div class="mb-4 grid gap-4 grid-cols-12">
+    
+    <div class="col-span-12 md:col-span-3">
+      
+      <div
+        class="rounded-lg p-4 bg-primary text-white flex items-center justify-between"
+      >
+        <div>
+          <div class="text-sm opacity-80">Total</div>
+          <div class="text-2xl font-semibold">
+            {{ totalUsers || users?.length || 0 }}
+          </div>
+        </div>
+        <i class="pi pi-users text-3xl opacity-70"></i>
+      </div>
+    </div>
+    <div class="col-span-12 md:col-span-3">
+      <div
+        class="rounded-lg p-4 bg-green-500 text-white flex items-center justify-between"
+      >
+        <div>
+          <div class="text-sm opacity-80">Actifs</div>
+          <div class="text-2xl font-semibold">{{ activeUsers || 0 }}</div>
+        </div>
+        <i class="pi pi-check-circle text-3xl opacity-70"></i>
+      </div>
+    </div>
+    <div class="col-span-12 md:col-span-3">
+      <div
+        class="rounded-lg p-4 bg-amber-500 text-white flex items-center justify-between"
+      >
+        <div>
+          <div class="text-sm opacity-80">Inactifs</div>
+          <div class="text-2xl font-semibold">{{ inactiveUsers || 0 }}</div>
+        </div>
+        <i class="pi pi-ban text-3xl opacity-70"></i>
+      </div>
+    </div>
+    <div class="col-span-12 md:col-span-3">
+      <div
+        class="rounded-lg p-4 bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 flex flex-col gap-1"
+      >
+        <div class="text-sm font-medium">Dernière Importation</div>
+        <div class="text-lg font-semibold">
+          {{ lastImportAt ? lastImportAt : "—" }}
+        </div>
+        <div class="text-xs text-color-secondary">Mises à jour périodiques</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p-toast />
+    <p-toolbar class="mb-4">
+      <ng-template #start>
+        <div class="flex flex-wrap gap-2">
+          <p-button
+            label="Nouvel Utilisateur"
+            icon="pi pi-user-plus"
+            (onClick)="openNew()"
+          />
+          <p-button
+            severity="danger"
+            label="Supprimer"
+            icon="pi pi-trash"
+            [outlined]="true"
+            (onClick)="deleteSelectedUsers()"
+            [disabled]="!selectedUsers || !selectedUsers.length"
+          />
+        </div>
+      </ng-template>
+      <ng-template #end>
+        <div class="flex flex-wrap gap-2">
+          <p-fileUpload
+            mode="basic"
+            accept=".csv,.xlsx"
+            [maxFileSize]="5000000"
+            label="Importer"
+            chooseLabel="Importer"
+            [auto]="false"
+            customUpload
+            [chooseButtonProps]="{ severity: 'secondary' }"
+            (uploadHandler)="onImportUsers($event)"
+          />
+          <p-button
+            label="Exporter"
+            icon="pi pi-download"
+            severity="secondary"
+            (onClick)="exportUsers()"
+          />
           <p-button
             icon="pi pi-refresh"
             [outlined]="true"
-            (click)="loadUsers()"
+            (onClick)="loadUsers()"
             [loading]="loading"
           />
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
+    </p-toolbar>
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 3rem">
-          <p-tableHeaderCheckbox />
-        </th>
-        <th pSortableColumn="fullName" style="min-width: 16rem">
-          <div class="flex items-center gap-2">
+    <!-- Quick Filters -->
+    <div class="mb-4 grid grid-cols-12 gap-4">
+      <div class="col-span-12 md:col-span-3">
+        <p-floatLabel>
+          <p-autocomplete
+            inputId="fRole"
+            [(ngModel)]="filter.role"
+            [suggestions]="roleFiltered"
+            (completeMethod)="completeRole($event)"
+            [forceSelection]="true"
+            [dropdown]="true"
+            optionLabel="label"
+            optionValue="value"
+            (onSelect)="applyFilters()"
+            (onClear)="clearRole()"
+            placeholder="Rôle"
+            showClear
+          />
+          <label for="fRole">Rôle</label>
+        </p-floatLabel>
+      </div>
+      <div class="col-span-12 md:col-span-3">
+        <p-floatLabel>
+          <p-autocomplete
+            inputId="fDept"
+            [(ngModel)]="filter.dept"
+            [suggestions]="departmentFiltered"
+            (completeMethod)="completeDepartment($event)"
+            [forceSelection]="true"
+            [dropdown]="true"
+            optionLabel="label"
+            optionValue="value"
+            (onSelect)="applyFilters()"
+            (onClear)="clearDept()"
+            placeholder="Département"
+            showClear
+          />
+          <label for="fDept">Département</label>
+        </p-floatLabel>
+      </div>
+      <div class="col-span-12 md:col-span-3">
+        <p-floatLabel>
+          <p-autocomplete
+            inputId="fStatus"
+            [(ngModel)]="filter.status"
+            [suggestions]="statusFiltered"
+            (completeMethod)="completeStatus($event)"
+            [forceSelection]="true"
+            [dropdown]="true"
+            optionLabel="label"
+            optionValue="value"
+            (onSelect)="applyFilters()"
+            (onClear)="clearStatus()"
+            placeholder="Statut"
+            showClear
+          />
+          <label for="fStatus">Statut</label>
+        </p-floatLabel>
+      </div>
+      <div class="col-span-12 md:col-span-3">
+        <p-iconField iconPosition="left" class="w-full">
+          <p-inputIcon class="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            placeholder="Rechercher..."
+            (input)="onGlobalSearch($event)"
+          />
+        </p-iconField>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <p-table
+      #dt
+      [value]="users"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Affichage {first} - {last} sur {totalRecords}"
+      [showCurrentPageReport]="true"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm"
+      [globalFilterFields]="[
+        'fullName',
+        'email',
+        'userName',
+        'department',
+        'role'
+      ]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th pSortableColumn="fullName">
             Nom Complet
             <p-sortIcon field="fullName" />
-          </div>
-        </th>
-        <th pSortableColumn="email" style="min-width: 16rem">
-          <div class="flex items-center gap-2">
+          </th>
+          <th pSortableColumn="email">
             Email
             <p-sortIcon field="email" />
-          </div>
-        </th>
-        <th pSortableColumn="userName" style="min-width: 12rem">
-          <div class="flex items-center gap-2">
+          </th>
+          <th pSortableColumn="userName">
             Nom d'utilisateur
             <p-sortIcon field="userName" />
-          </div>
-        </th>
-        <th pSortableColumn="department" style="min-width: 12rem">
-          <div class="flex items-center gap-2">
+          </th>
+          <th pSortableColumn="department">
             Département
             <p-sortIcon field="department" />
-          </div>
-        </th>
-        <th pSortableColumn="role" style="min-width: 10rem">
-          <div class="flex items-center gap-2">
+          </th>
+          <th pSortableColumn="role">
             Rôle
             <p-sortIcon field="role" />
-          </div>
-        </th>
-        <th pSortableColumn="isActive" style="min-width: 8rem">
-          <div class="flex items-center gap-2">
+          </th>
+          <th pSortableColumn="isActive">
             Statut
             <p-sortIcon field="isActive" />
-          </div>
-        </th>
-        <th pSortableColumn="createdAt" style="min-width: 12rem">
-          <div class="flex items-center gap-2">
-            Date de création
+          </th>
+          <th pSortableColumn="createdAt">
+            Créé le
             <p-sortIcon field="createdAt" />
-          </div>
-        </th>
-        <th style="min-width: 12rem">Actions</th>
-      </tr>
-    </ng-template>
+          </th>
+          <th style="width: 4rem"></th>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="body" let-user>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="user" />
-        </td>
-        <td>
-          <div class="flex items-center gap-2">
-            <p-avatar
-              [image]="user.profilePicture"
-              [label]="getInitials(user.fullName)"
-              shape="circle"
-              size="normal"
-            />
-            <span class="font-medium">{{ user.fullName }}</span>
-          </div>
-        </td>
-        <td>
-          <div class="flex items-center gap-2">
-            <i class="pi pi-envelope text-gray-500"></i>
-            <span>{{ user.email }}</span>
-          </div>
-        </td>
-        <td>{{ user.userName }}</td>
-        <td>
-          <p-tag [value]="user.department" severity="info" />
-        </td>
-        <td>
-          <p-tag [value]="user.role" [severity]="getRoleSeverity(user.role)" />
-        </td>
-        <td>
-          <p-tag
-            [value]="user.isActive ? 'Actif' : 'Inactif'"
-            [severity]="user.isActive ? 'success' : 'danger'"
-          />
-        </td>
-        <td>{{ user.createdAt | date : "dd/MM/yyyy" }}</td>
-        <td>
-          <div class="flex gap-2">
-            <p-button
-              icon="pi pi-eye"
-              severity="info"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="viewUser(user)"
-              pTooltip="Voir les détails"
-            />
-            <p-button
-              icon="pi pi-pencil"
-            
-              [rounded]="true"
-              [outlined]="true"
-              (click)="editUser(user)"
-              pTooltip="Modifier"
-            />
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="deleteUser(user)"
-              pTooltip="Supprimer"
-            />
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="9" class="text-center py-4">
-          <div class="flex flex-col items-center gap-2">
-            <i
-              class="pi pi-users"
-              style="font-size: 2rem; color: var(--text-color-secondary)"
-            ></i>
-            <span>Aucun utilisateur trouvé.</span>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-
-  <!-- User Dialog -->
-  <p-dialog
-    [(visible)]="userDialog"
-    [style]="{ width: '50rem' }"
-    [header]="dialogTitle"
-    [modal]="true"
-  >
-    <ng-template pTemplate="content">
-      <div class="flex flex-col gap-6">
-        <!-- Profile Picture -->
-        <div class="flex justify-center">
-          <div class="flex flex-col items-center gap-3">
-            <p-avatar
-              [image]="user.profilePicture"
-              [label]="getInitials(user.fullName || 'NN')"
-              shape="circle"
-              size="xlarge"
-            />
-            <p-fileUpload
-              mode="basic"
-              accept="image/*"
-              [maxFileSize]="1000000"
-              chooseLabel="Changer la photo"
-              [auto]="false"
-              (onSelect)="onProfilePictureSelect($event)"
-            />
-          </div>
-        </div>
-
-        <!-- User Information Form -->
-        <div class="grid grid-cols-12 gap-4">
-          <!-- Full Name -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="fullName" class="block font-bold mb-3"
-              >Nom Complet *</label
-            >
-            <input
-              type="text"
-              pInputText
-              id="fullName"
-              [(ngModel)]="user.fullName"
-              required
-              fluid
-            />
-            <small class="text-red-500" *ngIf="submitted && !user.fullName"
-              >Le nom complet est requis.</small
-            >
-          </div>
-
-          <!-- Username -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="userName" class="block font-bold mb-3"
-              >Nom d'utilisateur *</label
-            >
-            <input
-              type="text"
-              pInputText
-              id="userName"
-              [(ngModel)]="user.userName"
-              required
-              fluid
-            />
-            <small class="text-red-500" *ngIf="submitted && !user.userName"
-              >Le nom d'utilisateur est requis.</small
-            >
-          </div>
-
-          <!-- Email -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="email" class="block font-bold mb-3">Email *</label>
-            <input
-              type="email"
-              pInputText
-              id="email"
-              [(ngModel)]="user.email"
-              required
-              fluid
-            />
-            <small class="text-red-500" *ngIf="submitted && !user.email"
-              >L'email est requis.</small
-            >
-          </div>
-
-          <!-- Phone -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="phoneNumber" class="block font-bold mb-3"
-              >Téléphone</label
-            >
-            <input
-              type="tel"
-              pInputText
-              id="phoneNumber"
-              [(ngModel)]="user.phoneNumber"
-              fluid
-            />
-          </div>
-
-          <!-- Department -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="department" class="block font-bold mb-3"
-              >Département *</label
-            >
-            
-             <p-autocomplete
-              [(ngModel)]="user.department"
-              [dropdown]="true"
-              [suggestions]="departments"
-              
-            />
-            <small class="text-red-500" *ngIf="submitted && !user.department"
-              >Le département est requis.</small
-            >
-          </div>
-
-          <!-- Role -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="role" class="block font-bold mb-3">Rôle *</label>
-            <p-autocomplete
-              [(ngModel)]="user.role"
-              [dropdown]="true"
-              [suggestions]="roles"
-              
-            />
-           
-            <small class="text-red-500" *ngIf="submitted && !user.role"
-              >Le rôle est requis.</small
-            >
-          </div>
-
-          <!-- Password (only for new users) -->
-          <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
-            <label for="password" class="block font-bold mb-3"
-              >Mot de passe *</label
-            >
-            <p-password
-              [(ngModel)]="user.password"
-              [toggleMask]="true"
-              placeholder="Entrer le mot de passe"
-              fluid
-            />
-            <small
-              class="text-red-500"
-              *ngIf="submitted && !user.password && !user.id"
-              >Le mot de passe est requis.</small
-            >
-          </div>
-
-          <!-- Status -->
-          <div class="col-span-12 md:col-span-6">
-            <label class="block font-bold mb-3">Statut</label>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td><p-tableCheckbox [value]="user" /></td>
+          <td>
             <div class="flex items-center gap-2">
+              <p-avatar
+                [image]="user.profilePicture"
+                [label]="getInitials(user.fullName)"
+                shape="circle"
+                size="normal"
+              />
+              <span class="font-medium">{{ user.fullName }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="flex items-center gap-2">
+              <i class="pi pi-envelope text-color-secondary"></i
+              >{{ user.email }}
+            </span>
+          </td>
+          <td>{{ user.userName }}</td>
+          <td><p-tag [value]="user.department" severity="info" /></td>
+          <td>
+            <p-tag
+              [value]="user.role"
+              [severity]="getRoleSeverity(user.role)"
+            />
+          </td>
+          <td>
+            <p-tag
+              [value]="user.isActive ? 'Actif' : 'Inactif'"
+              [severity]="user.isActive ? 'success' : 'danger'"
+            />
+          </td>
+          <td>{{ user.createdAt }}</td>
+          <td class="text-center"></td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9">
+            <div
+              class="flex flex-col items-center gap-2 py-4 text-color-secondary"
+            >
+              <i class="pi pi-users text-3xl"></i>
+              <span>Aucun utilisateur trouvé.</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+        <tr *ngFor="let s of [1, 2, 3, 4, 5]">
+          <td colspan="9"></td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- User Dialog -->
+    <p-dialog
+      [(visible)]="userDialog"
+      [style]="{ width: '48rem' }"
+      [header]="dialogTitle"
+      [modal]="true"
+      [draggable]="false"
+      [breakpoints]="{ '960px': '95vw', '640px': '100vw' }"
+    >
+      <ng-template pTemplate="content">
+        <div class="flex flex-col gap-6">
+          <div class="flex justify-center">
+            <div class="flex flex-col items-center gap-3">
+              <p-avatar
+                [image]="user.profilePicture"
+                [label]="getInitials(user.fullName || 'NN')"
+                shape="circle"
+                size="xlarge"
+              />
+              <p-fileUpload
+                mode="basic"
+                accept="image/*"
+                [maxFileSize]="1000000"
+                chooseLabel="Changer la photo"
+                [auto]="false"
+                (onSelect)="onProfilePictureSelect($event)"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  id="fullName"
+                  type="text"
+                  [(ngModel)]="user.fullName"
+                  required
+                />
+                <label for="fullName">Nom Complet *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.fullName"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  id="userName"
+                  type="text"
+                  [(ngModel)]="user.userName"
+                  required
+                />
+                <label for="userName">Nom d'utilisateur *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.userName"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  id="email"
+                  type="email"
+                  [(ngModel)]="user.email"
+                  required
+                />
+                <label for="email">Email *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.email"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  id="phoneNumber"
+                  type="tel"
+                  [(ngModel)]="user.phoneNumber"
+                />
+                <label for="phoneNumber">Téléphone</label>
+              </p-floatLabel>
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <p-autocomplete
+                  inputId="department"
+                  [(ngModel)]="user.department"
+                  [suggestions]="departmentFilteredDialog"
+                  (completeMethod)="completeDepartmentDialog($event)"
+                  [forceSelection]="true"
+                  [dropdown]="true"
+                  optionLabel="label"
+                  optionValue="value"
+                  showClear
+                />
+                <label for="department">Département *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.department"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p-floatLabel>
+                <p-autocomplete
+                  inputId="role"
+                  [(ngModel)]="user.role"
+                  [suggestions]="roleFilteredDialog"
+                  (completeMethod)="completeRoleDialog($event)"
+                  [forceSelection]="true"
+                  [dropdown]="true"
+                  optionLabel="label"
+                  optionValue="value"
+                  showClear
+                />
+                <label for="role">Rôle *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.role"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
+              <p-floatLabel>
+                <p-password
+                  inputId="password"
+                  [(ngModel)]="user.password"
+                  [toggleMask]="true"
+                  placeholder="Mot de passe"
+                />
+                <label for="password">Mot de passe *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.password"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6 flex items-center gap-3">
               <p-checkbox
                 [(ngModel)]="user.isActive"
                 [binary]="true"
                 inputId="isActive"
               />
-              <label for="isActive">Utilisateur actif</label>
+              <label for="isActive" class="font-medium"
+                >Utilisateur actif</label
+              >
             </div>
           </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Annuler"
+          icon="pi pi-times"
+          [text]="true"
+          (click)="hideDialog()"
+        />
+        <p-button
+          label="Sauvegarder"
+          icon="pi pi-check"
+          (click)="saveUser()"
+          [loading]="saving"
+        />
+      </ng-template>
+    </p-dialog>
 
-    <ng-template pTemplate="footer">
-      <p-button
-        label="Annuler"
-        icon="pi pi-times"
-        [text]="true"
-        (click)="hideDialog()"
-      />
-      <p-button
-        label="Sauvegarder"
-        icon="pi pi-check"
-        (click)="saveUser()"
-        [loading]="saving"
-      />
-    </ng-template>
-  </p-dialog>
-
-  <!-- User Details Dialog -->
-  <p-dialog
-    [(visible)]="userDetailsDialog"
-    [style]="{ width: '40rem' }"
-    header="Détails de l'utilisateur"
-    [modal]="true"
-  >
-    <ng-template pTemplate="content">
-      <div class="flex flex-col gap-4" *ngIf="selectedUser">
-        <!-- Profile Section -->
-        <div class="flex items-center gap-4 pb-4 border-b">
-          <p-avatar
-            [image]="selectedUser.profilePicture"
-            [label]="getInitials(selectedUser.fullName)"
-            shape="circle"
-            size="xlarge"
-          />
-          <div>
-            <h3 class="m-0">{{ selectedUser.fullName }}</h3>
-            <p class="text-gray-600 m-0">{{ selectedUser.email }}</p>
-            <p-tag
-              [value]="selectedUser.role"
-              [severity]="getRoleSeverity(selectedUser.role)"
-              class="mt-2"
+    <!-- User Details Dialog -->
+    <p-dialog
+      [(visible)]="userDetailsDialog"
+      [style]="{ width: '40rem' }"
+      header="Détails de l'utilisateur"
+      [modal]="true"
+      [draggable]="false"
+    >
+      <ng-template pTemplate="content">
+        <div class="flex flex-col gap-4" *ngIf="selectedUser">
+          <div class="flex items-center gap-4 pb-4 border-b">
+            <p-avatar
+              [image]="selectedUser?.profilePicture"
+              [label]="getInitials(selectedUser?.fullName)"
+              shape="circle"
+              size="xlarge"
             />
+            <div>
+              <h3 class="m-0">{{ selectedUser?.fullName }}</h3>
+              <p class="text-color-secondary m-0">{{ selectedUser?.email }}</p>
+              <p-tag [value]="selectedUser?.role" class="mt-2" />
+            </div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 text-sm">
+            <div class="col-span-6">
+              <span class="font-semibold">Nom d'utilisateur:</span>
+              <div>{{ selectedUser?.userName }}</div>
+            </div>
+            <div class="col-span-6">
+              <span class="font-semibold">Département:</span>
+              <div>{{ selectedUser?.department }}</div>
+            </div>
+            <div class="col-span-6">
+              <span class="font-semibold">Téléphone:</span>
+              <div>{{ selectedUser?.phoneNumber || "—" }}</div>
+            </div>
+            <div class="col-span-6">
+              <span class="font-semibold">Statut:</span>
+              <p-tag
+                [value]="selectedUser?.isActive ? 'Actif' : 'Inactif'"
+                [severity]="selectedUser?.isActive ? 'success' : 'danger'"
+              />
+            </div>
+            <div class="col-span-6">
+              <span class="font-semibold">Créé le:</span>
+              <div>{{ selectedUser?.createdAt }}</div>
+            </div>
+            <div class="col-span-6">
+              <span class="font-semibold">Dernière connexion:</span>
+              <div>
+                {{
+                  selectedUser?.lastLoginAt
+                    ? selectedUser?.lastLoginAt
+                    : "Jamais"
+                }}
+              </div>
+            </div>
           </div>
         </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Fermer"
+          icon="pi pi-times"
+          [text]="true"
+          (click)="userDetailsDialog = false"
+        />
+        <p-button
+          label="Modifier"
+          icon="pi pi-pencil"
+          (click)="
+            selectedUser && editUser(selectedUser); userDetailsDialog = false
+          "
+        />
+      </ng-template>
+    </p-dialog>
 
-        <!-- Details Grid -->
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-6">
-            <label class="font-semibold">Nom d'utilisateur:</label>
-            <p>{{ selectedUser.userName }}</p>
-          </div>
-          <div class="col-span-6">
-            <label class="font-semibold">Département:</label>
-            <p>{{ selectedUser.department }}</p>
-          </div>
-          <div class="col-span-6">
-            <label class="font-semibold">Téléphone:</label>
-            <p>{{ selectedUser.phoneNumber || "Non renseigné" }}</p>
-          </div>
-          <div class="col-span-6">
-            <label class="font-semibold">Statut:</label>
-            <p-tag
-              [value]="selectedUser.isActive ? 'Actif' : 'Inactif'"
-              [severity]="selectedUser.isActive ? 'success' : 'danger'"
-            />
-          </div>
-          <div class="col-span-6">
-            <label class="font-semibold">Date de création:</label>
-            <p>{{ selectedUser.createdAt | date : "dd/MM/yyyy HH:mm" }}</p>
-          </div>
-          <div class="col-span-6">
-            <label class="font-semibold">Dernière connexion:</label>
-            <p>
-              {{
-                selectedUser.lastLoginAt ? (selectedUser.lastLoginAt | date : "dd/MM/yyyy HH:mm") : "Jamais"
-              }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-      <p-button
-        label="Fermer"
-        icon="pi pi-times"
-        [text]="true"
-        (click)="userDetailsDialog = false"
-      />
-      <p-button
-        label="Modifier"
-        icon="pi pi-pencil"
-        (click)="selectedUser && editUser(selectedUser); userDetailsDialog = false"
-      />
-    </ng-template>
-  </p-dialog>
-
-  <p-confirmDialog [style]="{ width: '450px' }" />
+    <p-confirmDialog [style]="{ width: '450px' }" />
+  </div>
 </div>

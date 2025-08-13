@@ -1,404 +1,293 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedModule } from "../../shared/shared.module";
+import { Avatar } from "primeng/avatar";
+import { Checkbox } from "primeng/checkbox";
+import { Password } from "primeng/password";
+import { AutoComplete } from "primeng/autocomplete";
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ThemeSwitcher } from "../themeswitcher";
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MessageService, ConfirmationService } from 'primeng/api';
-import { HttpClient } from '@angular/common/http';
-
-// PrimeNG Imports
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-
-import { CheckboxModule } from 'primeng/checkbox';
-import { PasswordModule } from 'primeng/password';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TagModule } from 'primeng/tag';
-import { AvatarModule } from 'primeng/avatar';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { TooltipModule } from 'primeng/tooltip';
-import { ThemeSwitcher } from '../themeswitcher';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-
 interface User {
-  id?: number;
+  id: string;
   fullName: string;
   userName: string;
   email: string;
-  phoneNumber?: string;
   department: string;
   role: string;
+  phoneNumber?: string;
   isActive: boolean;
+  createdAt: string;
+  lastLoginAt?: string;
   profilePicture?: string;
+}
+
+interface EditableUser extends Partial<User> {
   password?: string;
-  createdAt: Date;
-  updatedAt?: Date;
-  lastLoginAt?: Date;
+}
+
+interface UserFilter {
+  role: string | null;
+  dept: string | null;
+  status: boolean | null;
 }
 
 @Component({
-  selector: 'app-user-management',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    TableModule,
-    ButtonModule,
-    ToastModule,
-    ToolbarModule,
-    DialogModule,
-    InputTextModule,
-    AutoCompleteModule,
-    CheckboxModule,
-    PasswordModule,
-    FileUploadModule,
-    ConfirmDialogModule,
-    TagModule,
-    AvatarModule,
-    IconFieldModule,
-    InputIconModule,
-    TooltipModule,
-    ThemeSwitcher
-  ],
-  providers: [MessageService, ConfirmationService],
+  selector: 'app-user-mangement',
   templateUrl: './user-mangement.html',
-  styleUrls: ['./user-mangement.css']
+  providers: [MessageService, ConfirmationService],
+  imports: [SharedModule, Avatar,FormsModule ,Checkbox, Password, AutoComplete, FloatLabelModule, ThemeSwitcher]
 })
 export class UserMangement implements OnInit {
 
-  users: User[] = [];
-  selectedUsers: User[] = [];
-  user: User = this.getEmptyUser();
-  selectedUser: User | null = null;
-  
-  userDialog = false;
-  userDetailsDialog = false;
-  submitted = false;
   loading = false;
   saving = false;
 
-  departments = [
-    'Ressources Humaines',
-    'Finance',
-    'IT',
-    'Marketing',
-    'Opérations',
-    'Ventes',
-    'Administration'
+  users: User[] = [];
+  selectedUsers: User[] = [];
+
+  userDialog = false;
+  userDetailsDialog = false;
+  dialogTitle = 'Nouvel Utilisateur';
+
+  user: EditableUser = {};
+  selectedUser: User | null = null;
+  submitted = false;
+
+  totalUsers = 0;
+  activeUsers = 0;
+  inactiveUsers = 0;
+  lastImportAt: Date | null = null;
+
+  filter: UserFilter = { role: null, dept: null, status: null };
+
+  // Option sources
+  roleOptions = [
+    { label: 'Administrateur', value: 'Admin' },
+    { label: 'Manager', value: 'Manager' },
+    { label: 'Utilisateur', value: 'User' }
+  ];
+  departmentOptions = [
+    { label: 'Finance', value: 'Finance' },
+    { label: 'IT', value: 'IT' },
+    { label: 'RH', value: 'HR' }
+  ];
+  statusOptions = [
+    { label: 'Actif', value: true },
+    { label: 'Inactif', value: false }
   ];
 
-  roles = [
-    'Admin',
-    'Manager',
-    'Employee',
-    'Viewer'
-  ];
+  // Filter autocomplete suggestions
+  roleFiltered: any[] = [];
+  departmentFiltered: any[] = [];
+  statusFiltered: any[] = [];
 
-  private baseUrl = 'http://localhost:5108/api';
+  // Dialog autocomplete suggestions (separate to avoid interference if desired)
+  roleFilteredDialog: any[] = [];
+  departmentFilteredDialog: any[] = [];
+
+  profilePictureFile: File | null = null;
 
   constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private http: HttpClient
+    private message: MessageService,
+    private confirm: ConfirmationService
   ) {}
-  onGlobalFilter(event: Event, dt: any) {
-  const input = event.target as HTMLInputElement | null;
-  dt.filterGlobal(input?.value || '', 'contains');
-}
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.loadUsers();
   }
 
-  get dialogTitle(): string {
-    return this.user.id ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur';
+  // Autocomplete complete methods (filters)
+  completeRole(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.roleFiltered = this.roleOptions.filter(o => o.label.toLowerCase().includes(q));
+  }
+  completeDepartment(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.departmentFiltered = this.departmentOptions.filter(o => o.label.toLowerCase().includes(q));
+  }
+  completeStatus(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.statusFiltered = this.statusOptions.filter(o => o.label.toLowerCase().includes(q));
   }
 
-  loadUsers() {
-    this.loading = true;
-    
-    // Mock data for demonstration
-    setTimeout(() => {
-      this.users = [
-        {
-          id: 1,
-          fullName: 'Jean Dupont',
-          userName: 'jdupont',
-          email: 'jean.dupont@company.com',
-          phoneNumber: '+33 1 23 45 67 89',
-          department: 'IT',
-          role: 'Admin',
-          isActive: true,
-          createdAt: new Date('2024-01-15'),
-          lastLoginAt: new Date('2024-12-06')
-        },
-        {
-          id: 2,
-          fullName: 'Marie Martin',
-          userName: 'mmartin',
-          email: 'marie.martin@company.com',
-          phoneNumber: '+33 1 98 76 54 32',
-          department: 'Ressources Humaines',
-          role: 'Manager',
-          isActive: true,
-          createdAt: new Date('2024-02-01'),
-          lastLoginAt: new Date('2024-12-05')
-        },
-        {
-          id: 3,
-          fullName: 'Pierre Bernard',
-          userName: 'pbernard',
-          email: 'pierre.bernard@company.com',
-          department: 'Finance',
-          role: 'Employee',
-          isActive: false,
-          createdAt: new Date('2024-03-10'),
-          lastLoginAt: new Date('2024-11-20')
-        },
-        {
-          id: 4,
-          fullName: 'Sophie Dubois',
-          userName: 'sdubois',
-          email: 'sophie.dubois@company.com',
-          phoneNumber: '+33 1 55 44 33 22',
-          department: 'Marketing',
-          role: 'Manager',
-          isActive: true,
-          createdAt: new Date('2024-04-05'),
-          lastLoginAt: new Date('2024-12-04')
-        }
-      ];
-      this.loading = false;
-    }, 1000);
+  // Autocomplete complete methods (dialog)
+  completeRoleDialog(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.roleFilteredDialog = this.roleOptions.filter(o => o.label.toLowerCase().includes(q));
+  }
+  completeDepartmentDialog(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.departmentFilteredDialog = this.departmentOptions.filter(o => o.label.toLowerCase().includes(q));
+  }
 
-    // Uncomment this for real API call
-    /*
-    this.http.get<any>(`${this.baseUrl}/User`).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.users = response.data;
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading users:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors du chargement des utilisateurs'
-        });
-        this.loading = false;
-      }
-    });
-    */
+  applyFilters() {
+    this.loadUsers();
+  }
+  clearRole() { this.filter.role = null; this.loadUsers(); }
+  clearDept() { this.filter.dept = null; this.loadUsers(); }
+  clearStatus() { this.filter.status = null; this.loadUsers(); }
+
+  onGlobalSearch(ev: any) {
+    // hook if server-side global search required
+  }
+
+  loadUsers(): void {
+    this.loading = true;
+    setTimeout(() => {
+      const mock: User[] = [
+        { id: '1', fullName: 'John Doe', userName: 'jdoe', email: 'jdoe@example.com', department: 'IT', role: 'Admin', isActive: true, createdAt: new Date().toISOString() },
+        { id: '2', fullName: 'Jane Smith', userName: 'jsmith', email: 'jsmith@example.com', department: 'Finance', role: 'User', isActive: false, createdAt: new Date().toISOString() }
+      ];
+      let data = [...mock];
+      if (this.filter.role) data = data.filter(u => u.role === this.filter.role);
+      if (this.filter.dept) data = data.filter(u => u.department === this.filter.dept);
+      if (this.filter.status !== null) data = data.filter(u => u.isActive === this.filter.status);
+      this.users = data;
+      this.computeStats();
+      this.loading = false;
+    }, 300);
+  }
+
+  computeStats() {
+    this.totalUsers = this.users.length;
+    this.activeUsers = this.users.filter(u => u.isActive).length;
+    this.inactiveUsers = this.totalUsers - this.activeUsers;
   }
 
   openNew() {
-    this.user = this.getEmptyUser();
+    this.user = { isActive: true };
+    this.dialogTitle = 'Nouvel Utilisateur';
     this.submitted = false;
+    this.profilePictureFile = null;
     this.userDialog = true;
   }
 
-  editUser(user: User) {
-    this.user = { ...user };
+  editUser(u: User) {
+    this.user = { ...u };
+    this.dialogTitle = 'Modifier Utilisateur';
+    this.submitted = false;
+    this.profilePictureFile = null;
     this.userDialog = true;
   }
 
-  viewUser(user: User) {
-    this.selectedUser = user;
+  viewUser(u: User) {
+    this.selectedUser = u;
     this.userDetailsDialog = true;
   }
 
-  deleteUser(user: User) {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer ${user.fullName}?`,
-      header: 'Confirmer la suppression',
+  hideDialog() {
+    this.userDialog = false;
+  }
+
+  saveUser() {
+    this.submitted = true;
+    if (!this.user.fullName || !this.user.userName || !this.user.email ||
+        !this.user.department || !this.user.role || (!this.user.id && !this.user.password)) {
+      this.message.add({ severity: 'warn', summary: 'Validation', detail: 'Champs requis manquants.' });
+      return;
+    }
+    this.saving = true;
+    const isNew = !this.user.id;
+    setTimeout(() => {
+      if (isNew) {
+        this.users.unshift({
+          id: (Math.random()*100000).toFixed(0),
+          fullName: this.user.fullName!,
+            userName: this.user.userName!,
+            email: this.user.email!,
+            department: this.user.department!,
+            role: this.user.role!,
+            phoneNumber: this.user.phoneNumber,
+            isActive: this.user.isActive ?? true,
+            createdAt: new Date().toISOString(),
+            profilePicture: this.user.profilePicture
+        });
+        this.message.add({ severity: 'success', summary: 'Créé', detail: 'Utilisateur ajouté.' });
+      } else {
+        const i = this.users.findIndex(x => x.id === this.user.id);
+        if (i > -1) this.users[i] = { ...(this.users[i]), ...(this.user as User) };
+        this.message.add({ severity: 'success', summary: 'Mis à jour', detail: 'Utilisateur modifié.' });
+      }
+      this.computeStats();
+      this.saving = false;
+      this.userDialog = false;
+    }, 500);
+  }
+
+  deleteUser(u: User) {
+    this.confirm.confirm({
+      message: `Supprimer l'utilisateur ${u.fullName} ?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter(u => u.id !== user.id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Utilisateur supprimé avec succès'
-        });
+        this.users = this.users.filter(x => x.id !== u.id);
+        this.computeStats();
+        this.message.add({ severity: 'success', summary: 'Supprimé', detail: 'Utilisateur supprimé.' });
       }
     });
   }
 
   deleteSelectedUsers() {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedUsers.length} utilisateur(s)?`,
-      header: 'Confirmer la suppression',
+    if (!this.selectedUsers?.length) return;
+    this.confirm.confirm({
+      message: `Supprimer ${this.selectedUsers.length} utilisateurs ?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter(u => !this.selectedUsers.includes(u));
+        const ids = new Set(this.selectedUsers.map(u => u.id));
+        this.users = this.users.filter(u => !ids.has(u.id));
         this.selectedUsers = [];
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Utilisateurs supprimés avec succès'
-        });
+        this.computeStats();
+        this.message.add({ severity: 'success', summary: 'Supprimés', detail: 'Utilisateurs supprimés.' });
       }
     });
   }
 
-  saveUser() {
-    this.submitted = true;
+  getInitials(name: string | undefined): string {
+    if (!name) return '';
+    return name.split(/\s+/).slice(0,2).map(p => p[0]?.toUpperCase()).join('');
+  }
 
-    if (!this.isUserValid()) {
-      return;
+  getRoleSeverity(role: string): 'success' | 'info' | 'warning' | 'danger' | undefined {
+    switch (role) {
+      case 'Admin': return 'danger';
+      case 'Manager': return 'warning';
+      case 'User': return 'info';
+      default: return undefined;
     }
-
-    this.saving = true;
-
-    // Simulate API call
-    setTimeout(() => {
-      if (this.user.id) {
-        // Update existing user
-        const index = this.users.findIndex(u => u.id === this.user.id);
-        if (index !== -1) {
-          this.users[index] = { ...this.user, updatedAt: new Date() };
-        }
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Utilisateur modifié avec succès'
-        });
-      } else {
-        // Create new user
-        this.user.id = Math.max(...this.users.map(u => u.id || 0)) + 1;
-        this.user.createdAt = new Date();
-        this.users.push({ ...this.user });
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Utilisateur créé avec succès'
-        });
-      }
-
-      this.saving = false;
-      this.userDialog = false;
-      this.user = this.getEmptyUser();
-    }, 1500);
-
-    // Real API call would be:
-    /*
-    const request = this.user.id 
-      ? this.http.put(`${this.baseUrl}/User/${this.user.id}`, this.user)
-      : this.http.post(`${this.baseUrl}/User`, this.user);
-
-    request.subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.loadUsers();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Succès',
-            detail: this.user.id ? 'Utilisateur modifié' : 'Utilisateur créé'
-          });
-        }
-        this.saving = false;
-        this.userDialog = false;
-        this.user = this.getEmptyUser();
-      },
-      error: (error) => {
-        console.error('Error saving user:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la sauvegarde'
-        });
-        this.saving = false;
-      }
-    });
-    */
-  }
-
-  hideDialog() {
-    this.userDialog = false;
-    this.submitted = false;
-    this.user = this.getEmptyUser();
   }
 
   onProfilePictureSelect(event: any) {
-    const file = event.files[0];
+    const file: File = event.files?.[0];
     if (file) {
+      this.profilePictureFile = file;
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.user.profilePicture = e.target.result;
-      };
+      reader.onload = () => this.user.profilePicture = reader.result as string;
       reader.readAsDataURL(file);
     }
   }
 
   onImportUsers(event: any) {
-    const file = event.files[0];
-    // Handle CSV/Excel import
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Import',
-      detail: 'Fonctionnalité d\'import en cours de développement'
-    });
+    const file: File = event.files?.[0];
+    if (!file) return;
+    this.message.add({ severity: 'info', summary: 'Import', detail: `Fichier ${file.name} en cours...` });
+    setTimeout(() => {
+      this.lastImportAt = new Date();
+      this.message.add({ severity: 'success', summary: 'Import', detail: 'Import terminé.' });
+      this.loadUsers();
+    }, 1000);
   }
 
   exportUsers() {
-    // Handle export functionality
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Export',
-      detail: 'Fonctionnalité d\'export en cours de développement'
-    });
-  }
-
-  // Utility methods
-  getEmptyUser(): User {
-    return {
-      fullName: '',
-      userName: '',
-      email: '',
-      phoneNumber: '',
-      department: '',
-      role: '',
-      isActive: true,
-      createdAt: new Date()
-    };
-  }
-
-  isUserValid(): boolean {
-    return !!(
-      this.user.fullName?.trim() &&
-      this.user.userName?.trim() &&
-      this.user.email?.trim() &&
-      this.user.department &&
-      this.user.role &&
-      (this.user.id || this.user.password?.trim())
-    );
-  }
-
-  getInitials(name: string): string {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  }
-
-  getRoleSeverity(role: string): string {
-    switch (role) {
-      case 'Admin':
-        return 'danger';
-      case 'Manager':
-        return 'warning';
-      case 'Employee':
-        return 'info';
-      case 'Viewer':
-        return 'secondary';
-      default:
-        return 'info';
-    }
+    // const csv = [
+    //   'Id,Nom complet,Username,Email,Département,Rôle,Actif',
+    //   ...this.users.map(u =>
+    //     `${u.id},"${u.fullName}",${u.userName},${u.email},${u.department},${u.role},${u.isActive}`)
+    // ].join('\n');
+    // const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    // saveAs(blob, 'utilisateurs.csv');}
   }
 }

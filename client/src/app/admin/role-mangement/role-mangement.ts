@@ -1,235 +1,184 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MessageService, ConfirmationService } from 'primeng/api';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService, LazyLoadEvent } from 'primeng/api';
+import { PagedResult, PaginationParams } from '../../shared/models/pageresult';
+import { Checkbox } from "primeng/checkbox";
+import { Dialog } from "primeng/dialog";
+import { Button } from "primeng/button";
+import { SharedModule } from "../../shared/shared.module";
+import { AutoComplete } from "primeng/autocomplete";
+import { ThemeSwitcher } from "../themeswitcher";
 
-// PrimeNG Imports
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
 
-import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TagModule } from 'primeng/tag';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { TooltipModule } from 'primeng/tooltip';
-
-// Models
-import { RoleDto, CreateRoleDto, UpdateRoleDto, RoleFilterDto, RolePagedResult } from '../../shared/models/role';
-import { ThemeSwitcher } from '../themeswitcher';
-import { Textarea } from 'primeng/textarea';
-import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+export interface RoleDto {
+  id: number;
+  name: string;
+  description: string;
+  isActive: boolean;
+}
+export interface CreateRoleDto {
+  name: string;
+  description: string;
+  isActive: boolean;
+}
+export interface UpdateRoleDto {
+  name: string | null;
+  description: string | null;
+  isActive: boolean | null;
+}
+export interface RoleFilterDto extends PaginationParams {
+  name: string | null;
+  isActive: boolean | null;
+  createdFrom: string | null;
+  createdTo: string | null;
+}
+export interface RolePagedResult extends PagedResult<RoleDto> {
+  totalRoles: number;
+  activeRoles: number;
+  inactiveRoles: number;
+}
 
 @Component({
-  selector: 'app-role-management',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    TableModule,
-    ButtonModule,
-    ToastModule,
-    ToolbarModule,
-    DialogModule,
-    InputTextModule,
-    Textarea,
-    AutoCompleteModule,
-    CheckboxModule,
-    ConfirmDialogModule,
-    TagModule,
-    IconFieldModule,
-    InputIconModule,
-    TooltipModule,
-    ThemeSwitcher
-  ],
-  providers: [MessageService, ConfirmationService],
+  selector: 'app-role-mangement',
   templateUrl: './role-mangement.html',
-  styleUrls: ['./role-mangement.css']
+  providers: [MessageService, ConfirmationService],
+  imports: [Checkbox, Dialog, FormsModule,Button, SharedModule, AutoComplete, ThemeSwitcher]
 })
-export class RoleManagementComponent implements OnInit {
+export class RoleMangementComponent implements OnInit {
 
+  constructor(
+    private message: MessageService,
+    private confirm: ConfirmationService
+  ) {}
   roles: RoleDto[] = [];
   selectedRoles: RoleDto[] = [];
-  selectedRole: RoleDto | null = null;
-  role: CreateRoleDto = this.getEmptyRole();
-  
-  roleDialog = false;
-  roleDetailsDialog = false;
-  submitted = false;
+  totalRecords = 0;
+
+  // Stats
+  totalRoles = 0;
+  activeRoles = 0;
+  inactiveRoles = 0;
+
+  // UI State
   loading = false;
   saving = false;
+  roleDialog = false;
+  roleDetailsDialog = false;
+  dialogTitle = 'Nouveau Rôle';
+  submitted = false;
 
-  // Pagination and filtering
-  currentPage = 0;
-  pageSize = 10;
-  totalRecords = 0;
-  filter: RoleFilterDto = {
+  // Form model
+  roleForm: CreateRoleDto & { id?: number } = { name: '', description: '', isActive: true };
+  selectedRole: RoleDto | null = null;
+
+  // Filters
+  globalFilterValue = '';
+  roleFilter: any = {
     pageNumber: 1,
     pageSize: 10,
     name: null,
     isActive: null,
     createdFrom: null,
-    createdTo: null,
-    search: null,
-    sortBy: null,
-    sortDirection: null
+    createdTo: null
   };
 
-  // Statistics from API response
-  totalRoles = 0;
-  activeRoles = 0;
-  inactiveRoles = 0;
-
+  // Status autocomplete
   statusOptions = [
-    { label: 'Tous', value: null },
     { label: 'Actif', value: true },
     { label: 'Inactif', value: false }
   ];
+  statusFiltered: any[] = [];
+  statusSelection: any = null;
 
-  private baseUrl = 'http://localhost:5108/api';
-globalFilterValue: any;
-
-  constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private http: HttpClient
-  ) {}
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadRoles();
   }
 
-  get dialogTitle(): string {
-    return this.selectedRole ? 'Modifier le rôle' : 'Nouveau rôle';
+  completeStatus(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.statusFiltered = this.statusOptions.filter(o => o.label.toLowerCase().includes(q));
+  }
+
+  onStatusSelect() {
+    this.roleFilter.isActive = this.statusSelection?.value ?? null;
+    this.reload();
+  }
+
+  clearStatus() {
+    this.statusSelection = null;
+    this.roleFilter.isActive = null;
+    this.reload();
+  }
+
+  onGlobalFilter(val: string) {
+    this.roleFilter.name = val ? val : null;
+    this.roleFilter.pageNumber = 1;
+    this.loadRoles();
+  }
+
+  onPageChange(event: LazyLoadEvent) {
+    if (event.rows != null && event.first != null) {
+      this.roleFilter.pageSize = event.rows;
+      this.roleFilter.pageNumber = Math.floor(event.first / event.rows) + 1;
+      this.loadRoles();
+    }
+  }
+
+  reload() {
+    this.roleFilter.pageNumber = 1;
+    this.loadRoles();
   }
 
   loadRoles() {
     this.loading = true;
-    
-    // Mock data matching your RoleDto interface
+    // TODO: Replace mock with service call:
+    // this.roleService.getRoles(this.roleFilter).subscribe(...)
     setTimeout(() => {
-      const mockResponse: RolePagedResult = {
-        data: [
-          {
-            id: 1,
-            name: 'Super Admin',
-            description: 'Accès complet au système avec toutes les permissions',
-            isActive: true
-          },
-          {
-            id: 2,
-            name: 'Administrateur',
-            description: 'Accès administratif avec la plupart des permissions',
-            isActive: true
-          },
-          {
-            id: 3,
-            name: 'Manager',
-            description: 'Accès de niveau management pour la supervision',
-            isActive: true
-          },
-          {
-            id: 4,
-            name: 'Employé',
-            description: 'Accès standard pour les employés',
-            isActive: true
-          },
-          {
-            id: 5,
-            name: 'Consultant',
-            description: 'Accès limité pour les consultants externes',
-            isActive: false
-          },
-          {
-            id: 6,
-            name: 'Lecteur',
-            description: 'Accès en lecture seule',
-            isActive: false
-          }
-        ],
-        pageNumber: 1,
-        pageSize: 10,
-        totalRecords: 6,
-        totalPages: 1,
-        hasPreviousPage: false,
-        hasNextPage: false,
-        totalRoles: 6,
-        activeRoles: 4,
-        inactiveRoles: 2,
-        search: null,
-        sortBy: null,
-        sortDirection: null
+      const all: RoleDto[] = [
+        { id: 1, name: 'Administrateur', description: 'Accès complet', isActive: true },
+        { id: 2, name: 'Manager', description: 'Gestion d\'équipe', isActive: true },
+        { id: 3, name: 'Employé', description: 'Accès standard', isActive: true },
+        { id: 4, name: 'Archive', description: 'Rôle désactivé', isActive: false }
+      ];
+
+      let filtered = [...all];
+      if (this.roleFilter.name)
+        filtered = filtered.filter(r => r.name.toLowerCase().includes(this.roleFilter.name!.toLowerCase()));
+      if (this.roleFilter.isActive !== null)
+        filtered = filtered.filter(r => r.isActive === this.roleFilter.isActive);
+
+      const start = (this.roleFilter.pageNumber - 1) * this.roleFilter.pageSize;
+      const pageItems = filtered.slice(start, start + this.roleFilter.pageSize);
+
+      // Simulate RolePagedResult
+      const result: any = {
+        items: pageItems,
+        total: filtered.length,
+        totalRoles: all.length,
+        activeRoles: all.filter(r => r.isActive).length,
+        inactiveRoles: all.filter(r => !r.isActive).length
       };
 
-      this.roles = mockResponse.data;
-      this.totalRecords = mockResponse.totalRecords;
-      this.totalRoles = mockResponse.totalRoles;
-      this.activeRoles = mockResponse.activeRoles;
-      this.inactiveRoles = mockResponse.inactiveRoles;
+      this.roles = result.items;
+      this.totalRecords = result.total;
+      this.totalRoles = result.totalRoles;
+      this.activeRoles = result.activeRoles;
+      this.inactiveRoles = result.inactiveRoles;
       this.loading = false;
-    }, 1000);
-
-    // Real API call would be:
-    /*
-    this.http.get<RolePagedResult>(`${this.baseUrl}/Role`, { params: this.filter as any }).subscribe({
-      next: (response) => {
-        this.roles = response.data;
-        this.totalRecords = response.totalCount;
-        this.totalRoles = response.totalRoles;
-        this.activeRoles = response.activeRoles;
-        this.inactiveRoles = response.inactiveRoles;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading roles:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors du chargement des rôles'
-        });
-        this.loading = false;
-      }
-    });
-    */
-  }
-
-  onPageChange(event: any) {
-    this.filter.pageNumber = event.page + 1;
-    this.filter.pageSize = event.rows;
-    this.loadRoles();
-  }
-
-  onGlobalFilter(event: any) {
-    this.filter.name = event.target.value;
-    this.filter.pageNumber = 1;
-    this.loadRoles();
-  }
-
-  onStatusFilter(event: any) {
-    this.filter.isActive = event.value;
-    this.filter.pageNumber = 1;
-    this.loadRoles();
+    }, 300);
   }
 
   openNew() {
-    this.role = this.getEmptyRole();
-    this.selectedRole = null;
+    this.roleForm = { name: '', description: '', isActive: true };
+    this.dialogTitle = 'Nouveau Rôle';
     this.submitted = false;
     this.roleDialog = true;
   }
 
   editRole(role: RoleDto) {
-    this.selectedRole = role;
-    this.role = {
-      name: role.name,
-      description: role.description,
-      isActive: role.isActive
-    };
+    this.roleForm = { id: role.id, name: role.name, description: role.description, isActive: role.isActive };
+    this.dialogTitle = 'Modifier Rôle';
+    this.submitted = false;
     this.roleDialog = true;
   }
 
@@ -238,274 +187,101 @@ globalFilterValue: any;
     this.roleDetailsDialog = true;
   }
 
+  hideDialog() {
+    this.roleDialog = false;
+  }
+
+  saveRole() {
+    this.submitted = true;
+    if (!this.roleForm.name || !this.roleForm.description) return;
+
+    this.saving = true;
+    const isNew = !this.roleForm.id;
+
+    // Build DTOs
+    if (isNew) {
+      const create: CreateRoleDto = {
+        name: this.roleForm.name,
+        description: this.roleForm.description,
+        isActive: this.roleForm.isActive
+      };
+      // TODO: service.createRole(create)
+      setTimeout(() => {
+        this.roles.unshift({
+          id: Math.floor(Math.random() * 100000),
+          ...create
+        });
+        this.messageSuccess('Rôle créé.');
+      }, 400);
+    } else {
+      const update: UpdateRoleDto = {
+        name: this.roleForm.name,
+        description: this.roleForm.description,
+        isActive: this.roleForm.isActive
+      };
+      // TODO: service.updateRole(this.roleForm.id!, update)
+      setTimeout(() => {
+        const i = this.roles.findIndex(r => r.id === this.roleForm.id);
+        if (i > -1) this.roles[i] = {
+          id: this.roleForm.id!,
+          name: update.name ?? '',
+          description: update.description ?? '',
+          isActive: update.isActive ?? false
+        };
+        this.messageSuccess('Rôle mis à jour.');
+      }, 400);
+    }
+
+    setTimeout(() => {
+      this.computeStatsFromCurrent();
+      this.saving = false;
+      this.roleDialog = false;
+    }, 450);
+  }
+
   deleteRole(role: RoleDto) {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer le rôle "${role.name}"?`,
-      header: 'Confirmer la suppression',
+    this.confirm.confirm({
+      message: `Supprimer le rôle "${role.name}" ?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.performDeleteRole(role.id);
+        // TODO: service.deleteRole(role.id)
+        this.roles = this.roles.filter(r => r.id !== role.id);
+        this.computeStatsFromCurrent();
+        this.messageSuccess('Rôle supprimé.');
       }
     });
   }
 
   deleteSelectedRoles() {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedRoles.length} rôle(s)?`,
-      header: 'Confirmer la suppression',
+    if (!this.selectedRoles.length) return;
+    this.confirm.confirm({
+      message: `Supprimer ${this.selectedRoles.length} rôles ?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.performBulkDelete();
-      }
-    });
-  }
-
-  private performDeleteRole(roleId: number) {
-    // Mock delete
-    setTimeout(() => {
-      this.roles = this.roles.filter(r => r.id !== roleId);
-      this.totalRecords--;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Rôle supprimé avec succès'
-      });
-    }, 500);
-
-    // Real API call would be:
-    /*
-    this.http.delete(`${this.baseUrl}/Role/${roleId}`).subscribe({
-      next: () => {
-        this.loadRoles();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Rôle supprimé avec succès'
-        });
-      },
-      error: (error) => {
-        console.error('Error deleting role:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la suppression du rôle'
-        });
-      }
-    });
-    */
-  }
-
-  private performBulkDelete() {
-    const roleIds = this.selectedRoles.map(r => r.id);
-    
-    // Mock bulk delete
-    setTimeout(() => {
-      this.roles = this.roles.filter(r => !roleIds.includes(r.id));
-      this.selectedRoles = [];
-      this.totalRecords -= roleIds.length;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Rôles supprimés avec succès'
-      });
-    }, 500);
-
-    // Real API call would be:
-    /*
-    this.http.delete(`${this.baseUrl}/Role/bulk`, { body: roleIds }).subscribe({
-      next: () => {
-        this.loadRoles();
+        const ids = new Set(this.selectedRoles.map(r => r.id));
+        this.roles = this.roles.filter(r => !ids.has(r.id));
         this.selectedRoles = [];
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Rôles supprimés avec succès'
-        });
-      },
-      error: (error) => {
-        console.error('Error deleting roles:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la suppression des rôles'
-        });
+        this.computeStatsFromCurrent();
+        this.messageSuccess('Rôles supprimés.');
       }
     });
-    */
-  }
-
-  saveRole() {
-    this.submitted = true;
-
-    if (!this.isRoleValid()) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis'
-      });
-      return;
-    }
-
-    this.saving = true;
-
-    if (this.selectedRole) {
-      this.updateRole();
-    } else {
-      this.createRole();
-    }
-  }
-
-  private createRole() {
-    const createDto: CreateRoleDto = { ...this.role };
-
-    // Mock create
-    setTimeout(() => {
-      const newRole: RoleDto = {
-        id: Math.max(...this.roles.map(r => r.id)) + 1,
-        ...createDto
-      };
-      this.roles.unshift(newRole);
-      this.totalRecords++;
-      this.activeRoles = this.roles.filter(r => r.isActive).length;
-      this.inactiveRoles = this.roles.filter(r => !r.isActive).length;
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Rôle créé avec succès'
-      });
-      this.hideDialog();
-    }, 1500);
-
-    // Real API call would be:
-    /*
-    this.http.post<RoleDto>(`${this.baseUrl}/Role`, createDto).subscribe({
-      next: (response) => {
-        this.loadRoles();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Rôle créé avec succès'
-        });
-        this.hideDialog();
-      },
-      error: (error) => {
-        console.error('Error creating role:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la création du rôle'
-        });
-        this.saving = false;
-      }
-    });
-    */
-  }
-
-  private updateRole() {
-    if (!this.selectedRole) return;
-
-    const updateDto: UpdateRoleDto = {
-      name: this.role.name !== this.selectedRole.name ? this.role.name : null,
-      description: this.role.description !== this.selectedRole.description ? this.role.description : null,
-      isActive: this.role.isActive !== this.selectedRole.isActive ? this.role.isActive : null
-    };
-
-    // Mock update
-    setTimeout(() => {
-      const index = this.roles.findIndex(r => r.id === this.selectedRole!.id);
-      if (index !== -1) {
-        this.roles[index] = { ...this.selectedRole!, ...this.role };
-      }
-      this.activeRoles = this.roles.filter(r => r.isActive).length;
-      this.inactiveRoles = this.roles.filter(r => !r.isActive).length;
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Rôle modifié avec succès'
-      });
-      this.hideDialog();
-    }, 1500);
-
-    // Real API call would be:
-    /*
-    this.http.put<RoleDto>(`${this.baseUrl}/Role/${this.selectedRole.id}`, updateDto).subscribe({
-      next: (response) => {
-        this.loadRoles();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Rôle modifié avec succès'
-        });
-        this.hideDialog();
-      },
-      error: (error) => {
-        console.error('Error updating role:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la modification du rôle'
-        });
-        this.saving = false;
-      }
-    });
-    */
-  }
-
-  hideDialog() {
-    this.roleDialog = false;
-    this.submitted = false;
-    this.saving = false;
-    this.role = this.getEmptyRole();
-    this.selectedRole = null;
   }
 
   exportRoles() {
-    // Mock export
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Export',
-      detail: 'Export des rôles en cours...'
-    });
 
-    // Real export would be:
-    /*
-    this.http.get(`${this.baseUrl}/Role/export`, { responseType: 'blob' }).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'roles.xlsx';
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        console.error('Error exporting roles:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de l\'export'
-        });
-      }
-    });
-    */
   }
 
-  // Utility methods
-  getEmptyRole(): CreateRoleDto {
-    return {
-      name: '',
-      description: '',
-      isActive: true
-    };
+  computeStatsFromCurrent() {
+    this.totalRoles = this.roles.length;
+    this.activeRoles = this.roles.filter(r => r.isActive).length;
+    this.inactiveRoles = this.totalRoles - this.activeRoles;
   }
 
-  isRoleValid(): boolean {
-    return !!(this.role.name?.trim() && this.role.description?.trim());
+  private messageSuccess(detail: string) {
+    this.message.add({ severity: 'success', summary: 'Succès', detail });
   }
 
-  getRoleDisplayName(role: RoleDto): string {
-    return `${role.name} ${role.isActive ? '' : '(Inactif)'}`;
-  }
+
 }
