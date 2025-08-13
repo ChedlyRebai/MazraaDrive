@@ -9,17 +9,13 @@ public class AccessRight : BaseEntity<int>
     [Required]
     public string UserId { get; set; }
 
-
     public int? DocumentId { get; set; }  // FIXED: Changed from Guid to int
     [ForeignKey(nameof(DocumentId))]
     public virtual Document Document { get; set; }
-
     public AccessRightType Type => DocumentId.HasValue ? AccessRightType.Document : AccessRightType.Folder;
-
     public int? FolderId { get; set; }
     [ForeignKey(nameof(FolderId))]
     public virtual Folder Folder { get; set; }
-    // CORRECT: AppUser.Id is string
 
     public bool CanCreate
     { get; set; } = false;

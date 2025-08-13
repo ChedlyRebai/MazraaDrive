@@ -35,7 +35,7 @@ public class DocumentRequest : BaseEntity<int>
 
     [ForeignKey("ProcessedBy")]
     public string? ProcessedById { get; set; }
-
+// For document requests
     // Navigation properties
     public AppUser Requester { get; set; } = null!;
     public Department Department { get; set; } = null!;
