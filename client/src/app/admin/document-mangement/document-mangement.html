@@ -118,7 +118,7 @@
   >
     <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
-        <h5 class="m-0">Gestion des Documents</h5>
+        <h5 class="m-0"></h5>
         <div class="flex gap-2">
           <p-iconField iconPosition="left">
             <p-inputIcon class="pi pi-search" />
@@ -145,12 +145,12 @@
             <p-sortIcon field="name" />
           </div>
         </th>
-        <th pSortableColumn="category" style="min-width: 12rem">
+        <!-- <th pSortableColumn="category" style="min-width: 12rem">
           <div class="flex items-center gap-2">
             Catégorie
             <p-sortIcon field="category" />
           </div>
-        </th>
+        </th> -->
         <th pSortableColumn="type" style="min-width: 10rem">
           <div class="flex items-center gap-2">
             Type
@@ -199,9 +199,9 @@
             <span class="font-medium">{{ document.name }}</span>
           </div>
         </td>
-        <td>
+        <!-- <td>
           <p-tag [value]="document.category" severity="info" />
-        </td>
+        </td> -->
         <td>{{ document.type }}</td>
         <td>{{ formatFileSize(document.size) }}</td>
         <td>
@@ -342,7 +342,7 @@
           </div>
 
           <!-- Category -->
-          <div class="col-span-12 md:col-span-6">
+          <!-- <div class="col-span-12 md:col-span-6">
             <label for="category" class="block font-bold mb-3"
               >Catégorie *</label
             >
@@ -355,7 +355,7 @@
             <small class="text-red-500" *ngIf="submitted && !document.category"
               >La catégorie est requise.</small
             >
-          </div>
+          </div> -->
 
           <!-- Description -->
           <div class="col-span-12">
@@ -372,83 +372,9 @@
             ></textarea>
           </div>
 
-          <!-- Tags -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="tags" class="block font-bold mb-3">Tags</label>
-            <p-chips
-              [(ngModel)]="document.tags"
-              placeholder="Ajouter des tags"
-              fluid
-            />
-          </div>
+      
 
-          <!-- Status -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="status" class="block font-bold mb-3">Statut</label>
-
-            <p-autocomplete
-              [(ngModel)]="document.category"
-              [dropdown]="true"
-              [suggestions]="categories"
-            />
-          </div>
-
-          <!-- Access Level -->
-          <div class="col-span-12">
-            <label class="block font-bold mb-3">Niveau d'accès</label>
-            <div class="grid grid-cols-12 gap-4">
-              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
-                <p-radioButton
-                  id="public"
-                  name="access"
-                  value="Public"
-                  [(ngModel)]="document.accessLevel"
-                />
-                <label for="public">Public</label>
-              </div>
-              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
-                <p-radioButton
-                  id="private"
-                  name="access"
-                  value="Private"
-                  [(ngModel)]="document.accessLevel"
-                />
-                <label for="private">Privé</label>
-              </div>
-              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
-                <p-radioButton
-                  id="restricted"
-                  name="access"
-                  value="Restricted"
-                  [(ngModel)]="document.accessLevel"
-                />
-                <label for="restricted">Restreint</label>
-              </div>
-              <div class="flex items-center gap-2 col-span-6 md:col-span-3">
-                <p-radioButton
-                  id="confidential"
-                  name="access"
-                  value="Confidential"
-                  [(ngModel)]="document.accessLevel"
-                />
-                <label for="confidential">Confidentiel</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Expiration Date -->
-          <div class="col-span-12 md:col-span-6">
-            <label for="expirationDate" class="block font-bold mb-3"
-              >Date d'expiration</label
-            >
-
-            <p-datepicker
-              [(ngModel)]="document.expirationDate"
-              [showIcon]="true"
-              inputId="buttondisplay"
-              [showOnFocus]="false"
-            />
-          </div>
+         
 
           <!-- Version -->
           <div class="col-span-12 md:col-span-6" *ngIf="document.id">

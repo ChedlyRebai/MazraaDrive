@@ -11,15 +11,7 @@
         Gérez et suivez tous les utilisateurs
       </p>
     </div>
-    <div class="flex gap-3">
-      <p-button
-        label="Actualiser"
-        icon="pi pi-refresh"
-        severity="secondary"
-        [outlined]="true"
-      />
-      <p-button label="Nouvelle Demande" icon="pi pi-plus" />
-    </div>
+    
   </div>
 
   <div class="mb-4 grid gap-4 grid-cols-12">
@@ -27,7 +19,7 @@
     <div class="col-span-12 md:col-span-3">
       
       <div
-        class="rounded-lg p-4 bg-primary text-white flex items-center justify-between"
+        class="rounded-lg p-4 bg-gray-500 text-white flex items-center justify-between"
       >
         <div>
           <div class="text-sm opacity-80">Total</div>
@@ -38,6 +30,7 @@
         <i class="pi pi-users text-3xl opacity-70"></i>
       </div>
     </div>
+    
     <div class="col-span-12 md:col-span-3">
       <div
         class="rounded-lg p-4 bg-green-500 text-white flex items-center justify-between"
@@ -95,17 +88,7 @@
       </ng-template>
       <ng-template #end>
         <div class="flex flex-wrap gap-2">
-          <p-fileUpload
-            mode="basic"
-            accept=".csv,.xlsx"
-            [maxFileSize]="5000000"
-            label="Importer"
-            chooseLabel="Importer"
-            [auto]="false"
-            customUpload
-            [chooseButtonProps]="{ severity: 'secondary' }"
-            (uploadHandler)="onImportUsers($event)"
-          />
+          
           <p-button
             label="Exporter"
             icon="pi pi-download"
