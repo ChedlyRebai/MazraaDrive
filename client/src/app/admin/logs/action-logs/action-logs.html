@@ -50,11 +50,11 @@
 
     <p-table
         #dt
-        [value]="logs?.data"
+        [value]="logs!.data"
         [rows]="logs?.pageSize"
         [paginator]="true"
         [lazy]="true"
-        [totalRecords]="logs?.totalRecords"
+        [totalRecords]="logs!.totalRecords"
         (onLazyLoad)="onPageChange($event)"
         [globalFilterFields]="['userName', 'actionType', 'action', 'targetEntity', 'description', 'ipAddress', 'userAgent']"
         [tableStyle]="{ 'min-width': '75rem' }"

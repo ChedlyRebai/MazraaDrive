@@ -1,3 +1,4 @@
+import { PagedResult } from './../../../shared/models/pageresult';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuditLogDto, AuditLogStatisticsDto } from '../../../shared/models/logs';
@@ -15,7 +16,7 @@ import { ThemeSwitcher } from "../../themeswitcher";
   imports: [Button, Dialog, SharedModule, AutoComplete, ThemeSwitcher]
 })
 export class ActionLogs implements OnInit {
-  logs: any = null; // Should be PagedResult<AuditLogDto>
+  logs: PagedResult<AuditLogDto> = {  } as PagedResult<AuditLogDto>;
   statistics: AuditLogStatisticsDto | null = null;
   selectedLogs: AuditLogDto[] = [];
   loading = false;
@@ -51,24 +52,46 @@ export class ActionLogs implements OnInit {
     const sortField = event?.sortField || null;
     const sortOrder = event?.sortOrder === 1 ? 'asc' : 'desc';
 
-    // this.auditLogService.getPagedLogs({
-    //   pageNumber: page,
-    //   pageSize: pageSize,
-    //   search: this.globalFilterValue,
-    //   sortBy: sortField,
-    //   sortDirection: sortOrder,
-    //   actionType: this.selectedActionType?.label,
-    //   targetEntity: this.selectedTargetEntity?.label
-    // }).subscribe({
-    //   next: (res) => {
-    //     this.logs = res;
-    //     this.loading = false;
-    //   },
-    //   error: () => {
-    //     this.loading = false;
-    //     this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors du chargement des logs.' });
-    //   }
-    // });
+
+    this.logs = {
+      data: [
+        {
+          id: 1,
+          actionType: 'CREATE',
+          targetEntity: 'Folder',
+          description: 'Created a new folder named "Project X"',
+          iPAddress: '192.168.1.1',
+          userAgent: 'Mozilla/5.0',
+          userId: 'user1',
+          userName: 'John Doe',
+          createdAt: new Date().toISOString(),
+          action: 'Created a new folder named "Project X"'
+        },
+        {
+          id: 2,
+          actionType: 'CREATE',
+          targetEntity: 'Folder',
+          description: 'Created a new folder named "Project X"',
+          iPAddress: '192.168.1.1',
+          userAgent: 'Mozilla/5.0',
+          userId: 'user1',
+          userName: 'John Doe',
+          createdAt: new Date().toISOString(),
+          action: 'Created a new folder named "Project X"'
+          
+        },
+        
+      ], // Should be fetched from service
+      totalRecords: 2,
+      pageNumber: page,
+      pageSize: pageSize,
+      totalPages: 1,
+      hasPreviousPage: false,
+      hasNextPage: false,
+      search: this.globalFilterValue,
+      sortBy: sortField,
+      sortDirection: sortOrder
+    };
   }
 
   loadStatistics() {

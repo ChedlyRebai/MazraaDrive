@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'document', loadComponent: () => import('./document-mangement/document-mangement').then(m => m.DocumentMangement) },
       { path: 'doc-req', loadComponent: () => import('./doc-req-management/doc-req-management').then(m => m.DocReqManagement) },
       { path: 'department', loadComponent: () => import('./department-mangement/department-mangement').then(m => m.DepartmentMangement) },
-      { path: 'permissions', loadComponent: () => import('./role-mangement/role-mangement').then(m => m.RoleMangementComponent) },
+      { path: 'permissions', loadComponent: () => import('./pemission/pemission').then(m => m.Pemission) },
       { path: 'logs', loadChildren: () => import('./logs/logs-module').then(m => m.LogsModule) },
       { path: '**', redirectTo: 'stats' }
     ]
