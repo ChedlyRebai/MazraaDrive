@@ -1,166 +1,354 @@
+<theme-switcher />
+<p-toast />
+<p-confirmDialog />
 
-<div class="card">
-    <p-toast />
-    <p-toolbar class="mb-6">
-        <ng-template #start>
-            <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-            <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length" />
-        </ng-template>
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold mb-2">Gestion des Droits d'Accès 🔐</h1>
+      <p class="text-surface-600 dark:text-surface-300">
+        Filtrer, créer, modifier et supprimer les droits sur documents / dossiers
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <p-button label="Actualiser" icon="pi pi-refresh" [outlined]="true" severity="secondary" (click)="load()" />
+      <p-button label="Nouveau" icon="pi pi-plus" (click)="openCreate()" />
+      <p-button label="Bulk" icon="pi pi-clone" severity="help" (click)="openBulk()" />
+    </div>
+  </div>
 
-        <ng-template #end>
-             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
-            <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
-        </ng-template>
-    </p-toolbar>
+  <!-- Summary -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" *ngIf="summary">
+    <div class="rounded-lg p-4 bg-primary text-white"><div class="text-sm opacity-80">Total</div><div class="text-2xl font-semibold">{{ summary.totalRights }}</div></div>
+    <div class="rounded-lg p-4 bg-blue-500 text-white"><div class="text-sm opacity-80">Documents</div><div class="text-2xl font-semibold">{{ summary.documentRights }}</div></div>
+    <div class="rounded-lg p-4 bg-indigo-500 text-white"><div class="text-sm opacity-80">Dossiers</div><div class="text-2xl font-semibold">{{ summary.folderRights }}</div></div>
+    <div class="rounded-lg p-4 bg-emerald-500 text-white"><div class="text-sm opacity-80">Création</div><div class="text-2xl font-semibold">{{ summary.createRights }}</div></div>
+  </div>
 
+  <!-- Filters -->
+  <div class="card mb-5">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12 md:col-span-3">
+        <span class="text-xs font-medium">Utilisateur</span>
+        <p-autoComplete
+          [(ngModel)]="acUser"
+            [suggestions]="userSuggestions"
+            (completeMethod)="searchUsers($event)"
+            field="display"
+            [showClear]="true"
+            (onSelect)="applyUserFilter()"
+            (onClear)="applyUserFilter()"
+            placeholder="Utilisateur"
+            class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">Type</span>
+        <p-autoComplete
+          [(ngModel)]="acType"
+          [suggestions]="typeSuggestions"
+          (completeMethod)="searchTypes($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="applyTypeFilter()"
+          (onClear)="applyTypeFilter()"
+          placeholder="Type"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">Actif</span>
+        <p-autoComplete
+          [(ngModel)]="acActive"
+          [suggestions]="boolSuggestions"
+          (completeMethod)="searchBool($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="applyActiveFilter()"
+          (onClear)="applyActiveFilter()"
+          placeholder="Actif"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">Lecture</span>
+        <p-autoComplete
+          [(ngModel)]="acRead"
+          [suggestions]="boolSuggestions"
+          (completeMethod)="searchBool($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="applyReadFilter()"
+          (onClear)="applyReadFilter()"
+          placeholder="Lecture"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">Document</span>
+        <p-autoComplete
+          [(ngModel)]="acDocument"
+          [suggestions]="documentSuggestions"
+          (completeMethod)="searchDocuments($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="applyDocumentFilter()"
+          (onClear)="applyDocumentFilter()"
+          placeholder="Document"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">Dossier</span>
+        <p-autoComplete
+          [(ngModel)]="acFolder"
+          [suggestions]="folderSuggestions"
+          (completeMethod)="searchFolders($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="applyFolderFilter()"
+          (onClear)="applyFolderFilter()"
+          placeholder="Dossier"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">De</span>
+        <!-- <p-calendar [(ngModel)]="filter.createdFrom" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" /> -->
+      </div>
+      <div class="col-span-6 md:col-span-2">
+        <span class="text-xs font-medium">À</span>
+        <!-- <p-calendar [(ngModel)]="filter.createdTo" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" /> -->
+      </div>
+      <div class="col-span-12 flex gap-2 justify-end">
+        <p-button label="Chercher" icon="pi pi-search" (click)="filter.pageNumber=1; load()" />
+        <p-button label="Reset" icon="pi pi-filter-slash" severity="secondary" [outlined]="true" (click)="clearFilters()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card">
     <p-table
-        #dt
-        [value]="products"
-        [rows]="10"
-        [columns]="cols"
-        [paginator]="true"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedProducts"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showCurrentPageReport]="true"
-    >
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Manage Products</h5>
-                <p-iconfield>
-                    <p-inputicon class="pi pi-search" />
-                    <input pInputText type="text" placeholder="Search..." />
-                </p-iconfield>
+      [value]="rights"
+      [paginator]="true"
+      [rows]="filter.pageSize"
+      [totalRecords]="totalRecords"
+      [lazy]="true"
+      (onPage)="onPage($event)"
+      [loading]="loading"
+      dataKey="id"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm"
+      [(selection)]="selection"
+      selectionMode="multiple">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:2.5rem"><p-tableHeaderCheckbox /></th>
+          <th>Utilisateur</th>
+          <th>Cible</th>
+          <th>Type</th>
+          <th>Permissions</th>
+          <th>Actif</th>
+          <th>Créé</th>
+          <th style="width:7rem">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-r>
+        <tr>
+          <td><p-tableCheckbox [value]="r" /></td>
+          <td>
+            <div class="flex items-center gap-2">
+              <p-avatar [label]="(r.userFullName||r.userName).substring(0,2).toUpperCase()" shape="circle"></p-avatar>
+              <div class="font-medium">{{ r.userFullName || r.userName }}</div>
             </div>
-        </ng-template>
-        <ng-template #header>
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th style="min-width: 16rem">Code</th>
-                <th pSortableColumn="name" style="min-width:16rem">
-                    <div class="flex items-center gap-2">
-                        Name
-                        <p-sortIcon field="name" />
-                    </div>
-                </th>
-                <th>Image</th>
-                <th pSortableColumn="price" style="min-width: 8rem">
-                    <div class="flex items-center gap-2">
-                        Price
-                        <p-sortIcon field="price" />
-                    </div>
-                </th>
-                <th pSortableColumn="category" style="min-width:10rem">
-                    <div class="flex items-center gap-2">
-                        Category
-                        <p-sortIcon field="category" />
-                    </div>
-                </th>
-                <th pSortableColumn="rating" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Reviews
-                        <p-sortIcon field="rating" />
-                    </div>
-                </th>
-                <th pSortableColumn="inventoryStatus" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Status
-                        <p-sortIcon field="inventoryStatus" />
-                    </div>
-                </th>
-                <th style="min-width: 12rem"></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-product>
-            <tr>
-                <td style="width: 3rem">
-                    <p-tableCheckbox [value]="product" />
-                </td>
-                <td style="min-width: 12rem">{{ product.code }}</td>
-                <td style="min-width: 16rem">{{ product.name }}</td>
-                <td>
-                    <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" style="width: 64px" class="rounded" />
-                </td>
-                <td>{{ product.price | currency: 'USD' }}</td>
-                <td>{{ product.category }}</td>
-                <td>
-                    <p-rating [(ngModel)]="product.rating" [readonly]="true" />
-                </td>
-                <td>
-                    <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct(product)" />
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(product)" />
-                </td>
-            </tr>
-        </ng-template>
+          </td>
+          <td>
+            <div *ngIf="r.type==='Document'">
+              <i class="pi pi-file text-blue-500 mr-1"></i>{{ r.documentName || ('Doc#'+r.documentId) }}
+            </div>
+            <div *ngIf="r.type==='Folder'">
+              <i class="pi pi-folder text-amber-500 mr-1"></i>{{ r.folderName || ('Folder#'+r.folderId) }}
+            </div>
+          </td>
+          <td><p-tag [value]="r.type" [severity]="r.type==='Document' ? 'info':'warning'"></p-tag></td>
+          <td>
+            <div class="flex gap-1">
+              <p-tag *ngIf="r.canRead" value="R" severity="info"></p-tag>
+              <p-tag *ngIf="r.canCreate" value="C" severity="success"></p-tag>
+              <p-tag *ngIf="r.canUpdate" value="U" severity="warning"></p-tag>
+              <p-tag *ngIf="r.canDelete" value="D" severity="danger"></p-tag>
+            </div>
+          </td>
+          <td><p-tag [value]="r.isActive ? 'Oui':'Non'" [severity]="r.isActive ? 'success':'danger'"></p-tag></td>
+          <td>{{ r.createdAt | date:'short' }}</td>
+          <td class="text-right">
+            <div class="flex gap-1 justify-end">
+              <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="openEdit(r)" pTooltip="Modifier"></p-button>
+              <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="confirmDelete(r)" pTooltip="Supprimer"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr><td colspan="8" class="text-center py-6 text-color-secondary">Aucun droit trouvé.</td></tr>
+      </ng-template>
     </p-table>
-
-    <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true">
-        <ng-template #content>
-            <div class="flex flex-col gap-6">
-                <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-4" *ngIf="product.image" />
-                <div>
-                    <label for="name" class="block font-bold mb-3">Name</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus fluid />
-                    <small class="text-red-500" *ngIf="submitted && !product.name">Name is required.</small>
-                </div>
-                <div>
-                    <label for="description" class="block font-bold mb-3">Description</label>
-                    <textarea id="description" pTextarea [(ngModel)]="product.description" required rows="3" cols="20" fluid></textarea>
-                </div>
-
-                <div>
-                    <label for="inventoryStatus" class="block font-bold mb-3">Inventory Status</label>
-                    <p-select [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses" optionLabel="label" placeholder="Select a Status" fluid />
-                </div>
-
-                <div>
-                    <span class="block font-bold mb-4">Category</span>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category1" name="category" value="Accessories" [(ngModel)]="product.category" />
-                            <label for="category1">Accessories</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category2" name="category" value="Clothing" [(ngModel)]="product.category" />
-                            <label for="category2">Clothing</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category3" name="category" value="Electronics" [(ngModel)]="product.category" />
-                            <label for="category3">Electronics</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radiobutton id="category4" name="category" value="Fitness" [(ngModel)]="product.category" />
-                            <label for="category4">Fitness</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-6">
-                        <label for="price" class="block font-bold mb-3">Price</label>
-                        <p-inputnumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US" fluid />
-                    </div>
-                    <div class="col-span-6">
-                        <label for="quantity" class="block font-bold mb-3">Quantity</label>
-                        <p-inputnumber id="quantity" [(ngModel)]="product.quantity" fluid />
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template #footer>
-            <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-            <p-button label="Save" icon="pi pi-check" (click)="saveProduct()" />
-        </ng-template>
-    </p-dialog>
-
-    <p-confirmDialog [style]="{ width: '450px' }" />
+  </div>
 </div>
+
+<!-- Create Dialog -->
+<p-dialog [(visible)]="createDialog" [modal]="true" [style]="{width:'40rem'}" header="Nouveau Droit">
+  <div class="flex flex-col gap-5 text-sm">
+    <div>
+      <label class="font-medium mb-1 block">Utilisateur *</label>
+      <p-autoComplete
+        [(ngModel)]="createUser"
+        [suggestions]="userSuggestions"
+        (completeMethod)="searchUsers($event)"
+        field="display"
+        [showClear]="true"
+        (onSelect)="createModel.userId=createUser?.id||''"
+        (onClear)="createModel.userId=''; createUser=null"
+        placeholder="Rechercher utilisateur"
+        class="w-full"
+      />
+    </div>
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-6">
+        <label class="font-medium mb-1 block">Document</label>
+        <p-autoComplete
+          [(ngModel)]="createDocument"
+          [suggestions]="documentSuggestions"
+          (completeMethod)="searchDocuments($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="createModel.documentId=createDocument?.id||null"
+          (onClear)="createModel.documentId=null; createDocument=null"
+          placeholder="Document"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6">
+        <label class="font-medium mb-1 block">Dossier</label>
+        <p-autoComplete
+          [(ngModel)]="createFolder"
+          [suggestions]="folderSuggestions"
+          (completeMethod)="searchFolders($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="createModel.folderId=createFolder?.id||null"
+          (onClear)="createModel.folderId=null; createFolder=null"
+          placeholder="Dossier"
+          class="w-full"
+        />
+      </div>
+    </div>
+    <div>
+      <label class="font-medium mb-2 block">Permissions *</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="createModel.canRead" [binary]="true" inputId="crd"/><label for="crd">Read</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="createModel.canCreate" [binary]="true" inputId="ccr"/><label for="ccr">Create</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="createModel.canUpdate" [binary]="true" inputId="cud"/><label for="cud">Update</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="createModel.canDelete" [binary]="true" inputId="cdl"/><label for="cdl">Delete</label></div>
+      </div>
+    </div>
+    <small class="text-surface-500">Sélectionner Document OU Dossier. Utilisateur requis.</small>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" [text]="true" icon="pi pi-times" (click)="createDialog=false"></p-button>
+    <p-button label="Créer" icon="pi pi-check" (click)="submitCreate()"
+              [disabled]="!createModel.userId || (!createModel.documentId && !createModel.folderId)"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Dialog -->
+<p-dialog [(visible)]="editDialog" [modal]="true" [style]="{width:'32rem'}" header="Modifier Droit" (onHide)="selected=null">
+  <div class="flex flex-col gap-4 text-sm" *ngIf="selected">
+    <div class="font-medium">{{ selected.userFullName || selected.userName }}</div>
+    <div>
+      <label class="block font-medium mb-2">Permissions</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="editModel.canRead" [binary]="true" inputId="er"/><label for="er">Read</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="editModel.canCreate" [binary]="true" inputId="ec"/><label for="ec">Create</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="editModel.canUpdate" [binary]="true" inputId="eu"/><label for="eu">Update</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="editModel.canDelete" [binary]="true" inputId="ed"/><label for="ed">Delete</label></div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox [(ngModel)]="editModel.isActive" [binary]="true" inputId="ea" />
+      <label for="ea">Actif</label>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" [text]="true" icon="pi pi-times" (click)="editDialog=false"></p-button>
+    <p-button label="Sauvegarder" icon="pi pi-check" (click)="submitEdit()" [disabled]="!selected"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Bulk Dialog -->
+<p-dialog [(visible)]="bulkDialog" [modal]="true" [style]="{width:'44rem'}" header="Bulk Rights">
+  <div class="flex flex-col gap-5 text-sm">
+    <div>
+      <label class="font-medium mb-1 block">Utilisateurs *</label>
+      <p-autoComplete
+        [(ngModel)]="bulkUsers"
+        [suggestions]="userSuggestions"
+        (completeMethod)="searchUsers($event)"
+        field="display"
+        [multiple]="true"
+        [showClear]="true"
+        (onSelect)="syncBulkUsers()"
+        (onUnselect)="syncBulkUsers()"
+        (onClear)="bulkModel.userIds=[]; bulkUsers=[]"
+        placeholder="Ajouter utilisateurs"
+        class="w-full"
+      />
+    </div>
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-6">
+        <label class="font-medium mb-1 block">Document</label>
+        <p-autoComplete
+          [(ngModel)]="bulkDocument"
+          [suggestions]="documentSuggestions"
+          (completeMethod)="searchDocuments($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="bulkModel.documentId=bulkDocument?.id||null"
+          (onClear)="bulkModel.documentId=null; bulkDocument=null"
+          placeholder="Document"
+          class="w-full"
+        />
+      </div>
+      <div class="col-span-6">
+        <label class="font-medium mb-1 block">Dossier</label>
+        <p-autoComplete
+          [(ngModel)]="bulkFolder"
+          [suggestions]="folderSuggestions"
+          (completeMethod)="searchFolders($event)"
+          field="display"
+          [showClear]="true"
+          (onSelect)="bulkModel.folderId=bulkFolder?.id||null"
+          (onClear)="bulkModel.folderId=null; bulkFolder=null"
+          placeholder="Dossier"
+          class="w-full"
+        />
+      </div>
+    </div>
+    <div>
+      <label class="font-medium mb-1 block">Permissions</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="bulkModel.canRead" [binary]="true" inputId="br"/><label for="br">Read</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="bulkModel.canCreate" [binary]="true" inputId="bc"/><label for="bc">Create</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="bulkModel.canUpdate" [binary]="true" inputId="bu"/><label for="bu">Update</label></div>
+        <div class="flex items-center gap-2"><p-checkbox [(ngModel)]="bulkModel.canDelete" [binary]="true" inputId="bd"/><label for="bd">Delete</label></div>
+      </div>
+    </div>
+    <small class="text-surface-500">Au moins un utilisateur et une cible.</small>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" [text]="true" icon="pi pi-times" (click)="bulkDialog=false"></p-button>
+    <p-button label="Appliquer" icon="pi pi-check" (click)="submitBulk()"
+              [disabled]="!bulkModel.userIds.length || (!bulkModel.documentId && !bulkModel.folderId)"></p-button>
+  </ng-template>
+</p-dialog>

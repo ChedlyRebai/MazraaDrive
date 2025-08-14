@@ -1,327 +1,415 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedModule } from './../../shared/shared.module';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
-// Import PrimeNG Modules (not components directly)
+/* PrimeNG */
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { FileUploadModule } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
+import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
 
-// Import Table component for ViewChild
-import { Table } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AvatarModule } from 'primeng/avatar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ThemeSwitcher } from '../themeswitcher';
+import {
+  AccessRightDto,
+  AccessRightFilterDto,
+  AccessRightSummaryDto,
+  BulkAccessRightDto,
+  CreateAccessRightDto,
+  UpdateAccessRightDto,
+} from '../../shared/models/access-right';
 
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
-
-export interface Product {
-  id?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: string;
-  category?: string;
-  image?: string;
-  rating?: number;
-}
 @Component({
-  selector: 'app-pemission',
+  selector: 'app-access-rights',
+  standalone: true,
+  templateUrl: './pemission.html',
+  styleUrls: ['./pemission.css'],
   imports: [
+    
+    FormsModule,
+    AutoCompleteModule,
+    CheckboxModule,
     CommonModule,
     FormsModule,
-    // PrimeNG Modules
-    ButtonModule,
-    ToastModule,
-    ToolbarModule,
-    FileUploadModule,
-    TableModule,
-    DialogModule,
-    InputTextModule,
-    TextareaModule,
-    SelectModule,
-    RadioButtonModule,
-    InputNumberModule,
-    RatingModule,
-    TagModule,
-    ConfirmDialogModule,
-    IconFieldModule,
-    InputIconModule,
+    AutoCompleteModule,
     CheckboxModule,
-    RippleModule
-  ],
-  templateUrl: './pemission.html',
-  styleUrl: './pemission.css',
-  providers: [MessageService, ConfirmationService]
-})
-export class Pemission {
-productDialog: boolean = false;
-  products: Product[] = [];
-  product: Product = {};
-  selectedProducts: Product[] | null = null;
-  submitted: boolean = false;
-  statuses: any[] = [];
-  cols: Column[] = [];
-  exportColumns: ExportColumn[] = [];
+    CommonModule,
+    FormsModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    TagModule,
+    CheckboxModule,
+    InputTextModule,
 
-  @ViewChild('dt') dt!: Table;
+    ToastModule,
+    ConfirmDialogModule,
+    AvatarModule,
+    AutoCompleteModule,
+    ThemeSwitcher,
+  ],
+  providers: [MessageService, ConfirmationService],
+})
+export class Pemission implements OnInit {
+  loading = false;
+  rights: AccessRightDto[] = [];
+  totalRecords = 0;
+  summary: AccessRightSummaryDto | null = null;
+
+  filter: AccessRightFilterDto = {
+    pageNumber: 1,
+    pageSize: 15,
+    userId: null,
+    userName: null,
+    documentId: null,
+    folderId: null,
+    type: null,
+    isActive: null,
+    canCreate: null,
+    canRead: null,
+    canUpdate: null,
+    canDelete: null,
+    createdFrom: null,
+    createdTo: null,
+    sortBy: null,
+    sortDirection: null,
+    search: null,
+  };
+
+  selection: AccessRightDto[] = [];
+  selected: AccessRightDto | null = null;
+
+  // Autocomplete models
+  acUser: any = null;
+  acType: any = null;
+  acActive: any = null;
+  acRead: any = null;
+  acDocument: any = null;
+  acFolder: any = null;
+
+  // Create dialog models
+  createUser: any = null;
+  createDocument: any = null;
+  createFolder: any = null;
+
+  // Bulk dialog models
+  bulkUsers: any[] = [];
+  bulkDocument: any = null;
+  bulkFolder: any = null;
+
+  // Suggestions arrays
+  userSuggestions: any[] = [];
+  typeSuggestions: any[] = [];
+  boolSuggestions: any[] = [];
+  documentSuggestions: any[] = [];
+  folderSuggestions: any[] = [];
+
+  // Static option bases
+  readonly typeOptions = ['Document', 'Folder'];
+  readonly boolOptions = [
+    { label: 'Oui', value: true },
+    { label: 'Non', value: false },
+  ];
+
+  createDialog = false;
+  editDialog = false;
+  bulkDialog = false;
+
+  createModel: CreateAccessRightDto = {
+    userId: '',
+    documentId: null,
+    folderId: null,
+    canCreate: false,
+    canRead: true,
+    canUpdate: false,
+    canDelete: false,
+    isValid: true,
+  };
+
+  editModel: UpdateAccessRightDto = {
+    canCreate: null,
+    canRead: null,
+    canUpdate: null,
+    canDelete: null,
+    isActive: null,
+  };
+
+  bulkModel: BulkAccessRightDto = {
+    userIds: [],
+    documentId: null,
+    folderId: null,
+    canCreate: false,
+    canRead: true,
+    canUpdate: false,
+    canDelete: false,
+  };
 
   constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private cd: ChangeDetectorRef
+    // private svc: AccessRightsService,
+    private toast: MessageService,
+    private confirm: ConfirmationService
   ) {}
 
-  ngOnInit() {
-    this.loadDemoData();
+  ngOnInit(): void {
+    this.load();
   }
 
-  loadDemoData() {
-    // Load demo products
-    this.products = this.getProductsData();
-
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
-
-    this.cols = [
-      { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
-      { field: 'name', header: 'Name' },
-      { field: 'image', header: 'Image' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' }
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({ 
-      title: col.header, 
-      dataKey: col.field 
-    }));
+  load() {
+    this.loading = true;
+    // this.svc.getPaged(this.filter).subscribe({
+    //   next: r => {
+    //     this.rights = r.items;
+    //     this.totalRecords = r.totalCount;
+    //     this.summary = r.summary;
+    //     this.loading = false;
+    //   },
+    //   error: _ => (this.loading = false)
+    // });
   }
 
-  openNew() {
-    this.product = {};
-    this.submitted = false;
-    this.productDialog = true;
+  onPage(e: any) {
+    this.filter.pageNumber = e.page + 1;
+    this.filter.pageSize = e.rows;
+    this.load();
   }
 
-  editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
+  // Autocomplete search handlers
+  searchUsers(e: any) {
+    const q = (e.query || '').trim();
+    if (!q) {
+      this.userSuggestions = [];
+      return;
+    }
+    // this.svc.users(q).subscribe({
+    //   next: res => this.userSuggestions = res.map(u => ({ id: u.id, display: u.fullName || u.userName || u.name }))
+    // });
   }
 
-  deleteSelectedProducts() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
-      accept: () => {
-        this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-        this.selectedProducts = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000
-        });
-      }
+  searchTypes(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.typeSuggestions = this.typeOptions
+      .filter((t) => !q || t.toLowerCase().includes(q))
+      .map((t) => ({ value: t, display: t }));
+  }
+
+  searchBool(e: any) {
+    const q = (e.query || '').toLowerCase();
+    this.boolSuggestions = this.boolOptions
+      .filter((o) => !q || o.label.toLowerCase().includes(q))
+      .map((o) => ({ value: o.value, display: o.label }));
+  }
+
+  searchDocuments(e: any) {
+    const q = (e.query || '').trim();
+    if (!q) {
+      this.documentSuggestions = [];
+      return;
+    }
+    // this.svc.documents(q).subscribe({
+    //   next: res => this.documentSuggestions = res.map(d => ({ id: d.id, display: d.name || ('Doc#'+d.id) }))
+    // });
+  }
+
+  searchFolders(e: any) {
+    const q = (e.query || '').trim();
+    if (!q) {
+      this.folderSuggestions = [];
+      return;
+    }
+    // this.svc.folders(q).subscribe({
+    //   next: res => this.folderSuggestions = res.map(f => ({ id: f.id, display: f.name || ('Folder#'+f.id) }))
+    // });
+  }
+
+  applyUserFilter() {
+    this.filter.userId = this.acUser?.id || null;
+    this.filter.userName = this.acUser?.display || null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  applyTypeFilter() {
+    this.filter.type = this.acType?.value || null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  applyActiveFilter() {
+    this.filter.isActive = this.acActive ? this.acActive.value : null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  applyReadFilter() {
+    this.filter.canRead = this.acRead ? this.acRead.value : null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  applyDocumentFilter() {
+    this.filter.documentId = this.acDocument?.id || null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  applyFolderFilter() {
+    this.filter.folderId = this.acFolder?.id || null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  clearFilters() {
+    Object.assign(this.filter, {
+      userId: null,
+      userName: null,
+      documentId: null,
+      folderId: null,
+      type: null,
+      isActive: null,
+      canCreate: null,
+      canRead: null,
+      canUpdate: null,
+      canDelete: null,
+      createdFrom: null,
+      createdTo: null,
+      search: null,
+    });
+    this.acUser =
+      this.acType =
+      this.acActive =
+      this.acRead =
+      this.acDocument =
+      this.acFolder =
+        null;
+    this.filter.pageNumber = 1;
+    this.load();
+  }
+
+  // Create
+  openCreate() {
+    this.createDialog = true;
+    this.createModel = {
+      userId: '',
+      documentId: null,
+      folderId: null,
+      canCreate: false,
+      canRead: true,
+      canUpdate: false,
+      canDelete: false,
+      isValid: true,
+    };
+    this.createUser = this.createDocument = this.createFolder = null;
+  }
+
+  submitCreate() {
+    if (
+      !this.createModel.userId ||
+      (!this.createModel.documentId && !this.createModel.folderId)
+    ) {
+      this.toast.add({
+        severity: 'warn',
+        summary: 'Validation',
+        detail: 'Utilisateur et cible requis.',
+      });
+      return;
+    }
+    // this.svc.create(this.createModel).subscribe({
+    //   next: _ => {
+    //     this.toast.add({ severity: 'success', summary: 'Créé' });
+    //     this.createDialog = false;
+    //     this.load();
+    //   }
+    // });
+  }
+
+  // Edit
+  openEdit(r: AccessRightDto) {
+    this.selected = r;
+    this.editModel = {
+      canCreate: r.canCreate,
+      canRead: r.canRead,
+      canUpdate: r.canUpdate,
+      canDelete: r.canDelete,
+      isActive: r.isActive,
+    };
+    this.editDialog = true;
+  }
+
+  submitEdit() {
+    if (!this.selected) return;
+    // this.svc.update(this.selected.id, this.editModel).subscribe({
+    //   next: _ => {
+    //     this.toast.add({ severity: 'success', summary: 'Mis à jour' });
+    //     this.editDialog = false;
+    //     this.load();
+    //   }
+    // });
+  }
+
+  confirmDelete(r: AccessRightDto) {
+    this.confirm.confirm({
+      message: 'Supprimer ce droit ?',
+      accept: () => {},
+      // this.svc.delete(r.id).subscribe({
+      //   next: _ => {
+      //     this.toast.add({ severity: 'success', summary: 'Supprimé' });
+      //     this.load();
+      //   }
+      // })
     });
   }
 
-  deleteProduct(product: Product) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + product.name + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'No',
-        severity: 'secondary',
-        variant: 'text'
-      },
-      acceptButtonProps: {
-        severity: 'danger',
-        label: 'Yes'
-      },
-      accept: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
-        this.product = {};
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000
-        });
-      }
-    });
+  // Bulk
+  openBulk() {
+    this.bulkDialog = true;
+    this.bulkModel = {
+      userIds: [],
+      documentId: null,
+      folderId: null,
+      canCreate: false,
+      canRead: true,
+      canUpdate: false,
+      canDelete: false,
+    };
+    this.bulkUsers = [];
+    this.bulkDocument = null;
+    this.bulkFolder = null;
   }
 
-  hideDialog() {
-    this.productDialog = false;
-    this.submitted = false;
+  syncBulkUsers() {
+    this.bulkModel.userIds = (this.bulkUsers || []).map((u) => u.id);
   }
 
-  saveProduct() {
-    this.submitted = true;
-
-    if (this.product.name?.trim()) {
-      if (this.product.id) {
-        // Update existing product
-        const index = this.findIndexById(this.product.id);
-        if (index !== -1) {
-          this.products[index] = this.product;
-        }
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Updated',
-          life: 3000
-        });
-      } else {
-        // Create new product
-        this.product.id = this.createId();
-        this.product.image = 'product-placeholder.svg';
-        this.products.push(this.product);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000
-        });
-      }
-
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
+  submitBulk() {
+    if (
+      !this.bulkModel.userIds.length ||
+      (!this.bulkModel.documentId && !this.bulkModel.folderId)
+    ) {
+      this.toast.add({
+        severity: 'warn',
+        summary: 'Validation',
+        detail: 'Utilisateurs et cible requis.',
+      });
+      return;
     }
+    // this.svc.bulk(this.bulkModel).subscribe({
+    //   next: _ => {
+    //     this.toast.add({ severity: 'success', summary: 'Appliqué' });
+    //     this.bulkDialog = false;
+    //     this.load();
+    //   }
+    // });
   }
 
-  exportCSV() {
-    this.dt.exportCSV();
-  }
-
-  findIndexById(id: string): number {
-    return this.products.findIndex(product => product.id === id);
-  }
-
-  createId(): string {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
-  getSeverity(status: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-  private getProductsData(): Product[] {
-    return [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1001',
-        code: 'nvklal433',
-        name: 'Black Watch',
-        description: 'Product Description',
-        image: 'black-watch.jpg',
-        price: 72,
-        category: 'Accessories',
-        quantity: 61,
-        inventoryStatus: 'OUTOFSTOCK',
-        rating: 4
-      },
-      {
-        id: '1002',
-        code: 'zz21cz3c1',
-        name: 'Blue Band',
-        description: 'Product Description',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        quantity: 2,
-        inventoryStatus: 'LOWSTOCK',
-        rating: 3
-      },
-      {
-        id: '1003',
-        code: '244wgerg2',
-        name: 'Blue T-Shirt',
-        description: 'Product Description',
-        image: 'blue-t-shirt.jpg',
-        price: 29,
-        category: 'Clothing',
-        quantity: 25,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-      },
-      {
-        id: '1004',
-        code: 'h456wer53',
-        name: 'Bracelet',
-        description: 'Product Description',
-        image: 'bracelet.jpg',
-        price: 15,
-        category: 'Accessories',
-        quantity: 73,
-        inventoryStatus: 'INSTOCK',
-        rating: 4
-      }
-      // Add more products as needed...
-    ];
+  statusSeverity(active: boolean) {
+    return active ? 'success' : 'danger';
   }
 }

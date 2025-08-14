@@ -29,6 +29,8 @@ navLinks: { label: string; path: string; icon: string; badge?: string | number; 
   { label: 'Logs', path: '/admin/logs/action-logs', icon: 'pi pi-history' },
   { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' }
 ];
+
+
 logout() {
   
 }
