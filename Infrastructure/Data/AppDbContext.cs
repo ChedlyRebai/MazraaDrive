@@ -12,7 +12,6 @@ namespace Infrastructure.Data
         {
         }
 
-
         public virtual DbSet<AccessRequest> AccessRequests { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<AccessRight> AccessRights { get; set; }
