@@ -27,7 +27,8 @@ public class UnitOfWork : IUnitOfWork
     // private readonly IGenerateToken? _token;
 
     public IAuth Auth { get; }
-    
+
+    public IAccessRequestRepository AccessRequestRepository { get; }    
     public IDocRequestRepository DocRequestRepository { get; }
 
     public IDocument DocumentRepository { get; }
@@ -57,6 +58,7 @@ public class UnitOfWork : IUnitOfWork
         IPermissionsRepository permissionsRepository,
         IRoleRepository roleRepository,
         IHomeRepository homeRepository,
+        IAccessRequestRepository accessRequestRepository,
         IDocument documentRepository,
         IUserRepository userRepository,
         IDocRequestRepository docRequestRepository,
@@ -85,6 +87,7 @@ public class UnitOfWork : IUnitOfWork
         Auth = auth ?? throw new ArgumentNullException(nameof(auth));
         HomeRepository = homeRepository ?? throw new ArgumentNullException(nameof(homeRepository));
         DocRequestRepository = docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
+        AccessRequestRepository = accessRequestRepository ?? throw new ArgumentNullException(nameof(accessRequestRepository));
         //_redis = redis;
         //_userManager = userManager;
         // _signInManager = signInManager;

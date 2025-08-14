@@ -10,7 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.FileProviders; // Add this for ApiVersioning
+using Microsoft.Extensions.FileProviders;
+using Infrastructure.Services; // Add this for ApiVersioning
 namespace Infrastructure;
 
 public static class InfrastructureRegistration
@@ -57,11 +58,13 @@ public static class InfrastructureRegistration
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         //services.AddScoped<IAuditLogger, AuditLogger>();
+        services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IGenerateToken, GenrateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
+        services.AddScoped<IAccessRightService, AccessRightService>();
         services.AddSingleton<IFileProvider>(provider =>
     new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")));
         services.AddApiVersioning(options =>

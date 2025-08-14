@@ -18,7 +18,7 @@ public interface IUnitOfWork
     public IDocRequestRepository DocRequestRepository { get; }
     public IDocument DocumentRepository { get; }
     public IHomeRepository HomeRepository { get; }
-
+    public IAccessRequestRepository AccessRequestRepository { get; }
     public IFolderRepository FolderRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public IUserRepository UserRepository { get; }

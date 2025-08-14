@@ -96,7 +96,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "E-Commerce API v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mazraa Drive Api v1");
         c.RoutePrefix = string.Empty; // Set Swagger UI at the root (optional)
     });
 }

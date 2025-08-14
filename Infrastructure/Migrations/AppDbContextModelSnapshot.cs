@@ -75,6 +75,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DocumentId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("RequestDelete")
                         .HasColumnType("boolean");
 
