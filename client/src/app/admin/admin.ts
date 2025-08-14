@@ -24,9 +24,10 @@ navLinks: { label: string; path: string; icon: string; badge?: string | number; 
   { label: 'Documents', path: '/admin/document', icon: 'pi pi-file' },
   { label: 'Departments', path: '/admin/department', icon: 'pi pi-sitemap' },
   { label: 'Roles', path: '/admin/role', icon: 'pi pi-shield' },
-  { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' },
+  { label: 'Doc Access Requests', path: '/admin/access-req', icon: 'pi pi-inbox' },
   { label: 'Permissions', path: '/admin/permissions', icon: 'pi pi-lock' },
-  { label: 'Logs', path: '/admin/logs/action-logs', icon: 'pi pi-history' }
+  { label: 'Logs', path: '/admin/logs/action-logs', icon: 'pi pi-history' },
+  { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' }
 ];
 logout() {
   

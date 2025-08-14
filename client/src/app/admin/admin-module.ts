@@ -25,6 +25,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ThemeSwitcher } from './themeswitcher';
 import { LogsModule } from './logs/logs-module';
 import { RoleMangementComponent } from './role-mangement/role-mangement';
+import { AccessRequest } from './access-request/access-request';
 
 
 const PRIMENG_MODULES = [
@@ -48,7 +49,9 @@ const PRIMENG_MODULES = [
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+
+  ],
   imports: [
     LogsModule,
     ThemeSwitcher,

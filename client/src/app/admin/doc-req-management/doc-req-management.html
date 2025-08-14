@@ -65,7 +65,7 @@
     <p-toast />
     <p-toolbar class="mb-6">
         <ng-template #start>
-            <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+            <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
             <p-button severity="danger" label="Supprimer" icon="pi pi-trash" [outlined]="true" (onClick)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length" />
         </ng-template>
 
