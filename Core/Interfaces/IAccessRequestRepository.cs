@@ -13,4 +13,5 @@ public interface IAccessRequestRepository
     Task DeleteAsync(AccessRequest entity);
 
     Task<AccessRequestDto> UpdateAsync(AccessRequest entity);
+    Task UpdateAsync(AccessRequestDto entity);
 }

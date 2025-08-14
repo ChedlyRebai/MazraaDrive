@@ -143,4 +143,9 @@ public class AccessRequestRepository : IAccessRequestRepository
 
         return Task.FromResult(dto);
     }
+
+    public Task UpdateAsync(AccessRequestDto entity)
+    {
+        throw new NotImplementedException();
+    }
 }

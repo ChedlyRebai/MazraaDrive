@@ -7,33 +7,38 @@ using Core.DTOs.AccessRequests;
 using Core.Entities;
 using System.Security.Claims;
 using Core.DTO;
+using Api.Controllers;
+using AutoMapper;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 // [Authorize]
-public class AccessRequestsController : ControllerBase
+public class AccessRequestsController : BaseController
 {
-    private readonly IAccessRequestRepository _repo;
+
+    private readonly IAccessRequestRepository _unitOfWork;
     private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
-    public AccessRequestsController(IAccessRequestRepository repo, IAccessRightService accessRightService)
+    
+    private readonly IAuditLogRepository _auditLogger;
+    public AccessRequestsController(IUnitOfWork unitOfWork, IAccessRightService accessRightService, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
     {
-        _repo = repo;
+        _auditLogger = auditLogger;
         _accessRightService = accessRightService;
     }
-
+   
     [HttpGet]
     public async Task<IActionResult> GetPaged([FromQuery] PaginationParams p)
     {
-        var result = await _repo.GetPagedAsync(p);
+        var result = await _unitOfWork.GetPagedAsync(p);
         return Ok(result);
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await _unitOfWork.GetByIdAsync(id);
         return entity == null ? NotFound() : Ok(entity);
     }
 
@@ -44,11 +49,12 @@ public class AccessRequestsController : ControllerBase
         var userId = "10";
         if (!dto.RequestRead && !dto.RequestWrite && !dto.RequestDelete)
             return BadRequest("At least one permission must be requested.");
-        if (await _repo.ExistsPendingAsync(dto.DocumentId, userId))
+        if (await _unitOfWork.ExistsPendingAsync(dto.DocumentId, userId))
             return Conflict("A pending request already exists for this document.");
 
         var entity = new AccessRequest
         {
+            Message = dto.Message,
             DocumentId = dto.DocumentId,
             RequesterId = userId,
             RequestRead = dto.RequestRead,
@@ -56,8 +62,8 @@ public class AccessRequestsController : ControllerBase
             RequestDelete = dto.RequestDelete,
             Status = "Pending"
         };
-        await _repo.AddAsync(entity);
-        await _repo.SaveChangesAsync();
+        await _unitOfWork.AddAsync(entity);
+        await _unitOfWork.SaveChangesAsync();
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
     }
 
@@ -65,7 +71,7 @@ public class AccessRequestsController : ControllerBase
     // [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Decide(int id, [FromBody] AccessRequestDecisionDto dto)
     {
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await _unitOfWork.GetByIdAsync(id);
         if (entity == null) return NotFound();
         if (entity.Status != "Pending") return BadRequest("Already decided.");
 
@@ -80,22 +86,41 @@ public class AccessRequestsController : ControllerBase
                 read: entity.RequestRead, write: entity.RequestWrite, delete: entity.RequestDelete);
         }
 
-        await _repo.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
+        return Ok(entity);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] AccessRequestCreateDto dto)
+    {
+        var entity = await _unitOfWork.GetByIdAsync(id);
+        if (entity == null) return NotFound();
+
+        entity.DocumentId = dto.DocumentId;
+        entity.RequestRead = dto.RequestRead;
+        entity.RequestWrite = dto.RequestWrite;
+        entity.RequestDelete = dto.RequestDelete;
+        entity.Message = dto.Message;
+
+        
+        
+        await _unitOfWork.UpdateAsync(entity);
+        await _unitOfWork.SaveChangesAsync();
         return Ok(entity);
     }
 
   // [HttpDelete("{id}")]
-// [Authorize(Roles = "Admin")]
-// public async Task<IActionResult> Delete(int id)
-// {
-//     var entity = await _repo.GetByIdAsync(id);
-//     if (entity == null) return NotFound();
+    // [Authorize(Roles = "Admin")]
+    // public async Task<IActionResult> Delete(int id)
+    // {
+    //     var entity = await _unitOfWork.GetByIdAsync(id);
+    //     if (entity == null) return NotFound();
 
-//     // implement actual delete logic
-//      await _repo.DeleteAsync(entity);
-//      await _repo.SaveChangesAsync();
+    //     // implement actual delete logic
+    //      await _unitOfWork.DeleteAsync(entity);
+    //      await _unitOfWork.SaveChangesAsync();
 
-//     return NoContent();
-// }
+    //     return NoContent();
+    // }
 
 }
