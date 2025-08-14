@@ -148,12 +148,7 @@
       >
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="requesterName" style="min-width: 12rem">
-              <div class="flex items-center gap-2">
-                Demandeur
-                <p-sortIcon field="requesterName" />
-              </div>
-            </th>
+            
             <th pSortableColumn="documentType" style="min-width: 12rem">
               <div class="flex items-center gap-2">
                 Type de Document
@@ -184,19 +179,7 @@
 
         <ng-template pTemplate="body" let-request>
           <tr class="hover:bg-surface-50 dark:hover:bg-surface-700">
-            <td>
-              <div class="flex items-center gap-3">
-                <p-avatar 
-                  [label]="getInitials(request.requesterName)"
-                  shape="circle"
-                 
-                />
-                <div>
-                  <div class="font-medium">{{ request.requesterName }}</div>
-                  <div class="text-sm text-surface-600">{{ request.departmentName }}</div>
-                </div>
-              </div>
-            </td>
+            
             <td>
               <div class="flex items-center gap-2">
                 <i [class]="getDocumentTypeIcon(request.documentType)" 
@@ -356,27 +339,6 @@
             />
             <small class="text-surface-500">
               Indiquez le niveau d'urgence de votre demande
-            </small>
-          </div>
-
-          <!-- Department -->
-          <div>
-            <label for="department" class="block text-sm font-medium mb-2">
-              <i class="pi pi-building mr-2"></i>
-              Département *
-            </label>
-            <p-autoComplete
-              id="department"
-              [(ngModel)]="newRequest.departmentId"
-              [suggestions]="departmentSuggestions"
-              (completeMethod)="searchDepartment($event)"
-              placeholder="Sélectionner le département"
-              field="name"
-              [showClear]="true"
-              class="w-full"
-            />
-            <small class="text-surface-500">
-              Département concerné par la demande
             </small>
           </div>
         </div>
@@ -545,10 +507,7 @@
                 <span class="font-medium">Département:</span>
                 <span>{{ selectedRequest.departmentName }}</span>
               </div>
-              <div class="flex justify-between">
-                <span class="font-medium">Email:</span>
-                <span class="text-blue-600">{{ selectedRequest.requesterEmail }}</span>
-              </div>
+             
             </div>
           </div>
 
@@ -781,23 +740,7 @@
             />
           </div>
 
-          <!-- Response Message -->
-          <div>
-            <label for="responseMessage" class="block text-sm font-medium mb-2">
-              <i class="pi pi-comment mr-2"></i>
-              Message de Réponse *
-            </label>
-            <textarea
-              id="responseMessage"
-              [(ngModel)]="responseForm.message"
-              placeholder="Saisir votre réponse détaillée..."
-              rows="6"
-              class="w-full p-3 border border-surface-300 rounded-md resize-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-surface-600 dark:bg-surface-700 dark:text-surface-0"
-            ></textarea>
-            <small class="text-surface-500">
-              Fournissez une explication claire de votre réponse
-            </small>
-          </div>
+        
         </div>
       </div>
 
@@ -865,7 +808,7 @@
                 fluid
                 (click)="quickReject()"
               />
-              <p-button
+              <!-- <p-button
                 label="Demander Info"
                 icon="pi pi-question-circle"
                 severity="help"
@@ -873,38 +816,14 @@
                 [outlined]="true"
                 fluid
                 (click)="requestMoreInfo()"
-              />
+              /> -->
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Preview Section -->
-    <div class="pt-4">
-      <h5 class="font-semibold mb-3 flex items-center gap-2">
-        <i class="pi pi-eye text-surface-500"></i>
-        Aperçu de la Réponse
-      </h5>
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded border">
-        <div class="text-sm">
-          <p><strong>Statut:</strong>
-            <p-tag
-              [value]="getDisplayValue(responseForm.status) || 'Non défini'"
-              [severity]="getResponseStatusSeverity(getSelectedValue(responseForm.status))"
-              class="ml-2"
-            />
-          </p>
-          <p class="mt-2"><strong>Message:</strong></p>
-          <p class="text-surface-600 dark:text-surface-300 mt-1">
-            {{ responseForm.message || 'Aucun message saisi' }}
-          </p>
-          <p class="mt-2" *ngIf="selectedFile">
-            <strong>Document joint:</strong> {{ selectedFile.name }}
-          </p>
-        </div>
-      </div>
-    </div>
+ 
 
     <!-- Action Buttons -->
     <div class="flex justify-between items-center pt-4 border-t">
@@ -921,13 +840,7 @@
           [outlined]="true"
           (click)="cancelResponse()"
         />
-        <p-button
-          label="Sauvegarder Brouillon"
-          icon="pi pi-save"
-          severity="help"
-          [outlined]="true"
-          (click)="saveDraft()"
-        />
+        
         <p-button
           label="Envoyer Réponse"
           icon="pi pi-send"
