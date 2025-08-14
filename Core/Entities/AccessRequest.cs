@@ -19,9 +19,13 @@ public class AccessRequest : BaseEntity<int>
     public DateTime? DecisionAt { get; set; }
     public string? DecidedById { get; set; }
 
-    // Navigation
+    [ForeignKey(nameof(DocumentId))]
     public Document Document { get; set; } = null!;
+
+    [ForeignKey(nameof(RequesterId))]
     public AppUser Requester { get; set; } = null!;
+
+    [ForeignKey(nameof(DecidedById))]
     public AppUser? DecidedBy { get; set; }
 }
 

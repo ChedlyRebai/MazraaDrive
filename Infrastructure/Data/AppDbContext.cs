@@ -12,8 +12,8 @@ namespace Infrastructure.Data
         {
         }
 
-        // DbSets
-        //public virtual DbSet<Address> Addresses { get; set; }
+
+        public virtual DbSet<AccessRequest> AccessRequests { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<AccessRight> AccessRights { get; set; }
         public virtual DbSet<Folder> Folders { get; set; }
@@ -24,13 +24,7 @@ namespace Infrastructure.Data
         public virtual DbSet<Role> Role { get; set; }
         public DbSet<Folder> Folder { get; set; }
         public virtual DbSet<AppUser> User { get; set; }
-        //public virtual DbSet<Message> Messages { get; set; }
-        //public virtual DbSet<MailFolder> MailFolders { get; set; }
-        //public virtual DbSet<MailMessageFolder> MailMessageFolders { get; set; }
-        // public virtual DbSet<Role> Roles { get; set; }
-        // public virtual DbSet<RolePermission> RolePermissions { get; set; }
-
-
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -55,6 +55,57 @@ namespace Infrastructure.Migrations
                     b.ToTable("AIQueryLogs");
                 });
 
+            modelBuilder.Entity("Core.Entities.AccessRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DecidedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DecisionAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("RequestDelete")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RequestRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RequestWrite")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RequesterId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DecidedById");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("AccessRequests");
+                });
+
             modelBuilder.Entity("Core.Entities.AccessRight", b =>
                 {
                     b.Property<int>("Id")
@@ -724,6 +775,31 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.AccessRequest", b =>
+                {
+                    b.HasOne("Core.Entities.AppUser", "DecidedBy")
+                        .WithMany()
+                        .HasForeignKey("DecidedById");
+
+                    b.HasOne("Core.Entities.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.AppUser", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DecidedBy");
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Requester");
                 });
 
             modelBuilder.Entity("Core.Entities.AccessRight", b =>
