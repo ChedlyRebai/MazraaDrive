@@ -66,7 +66,7 @@ MazraaDrive est une application de gestion documentaire et de communication prof
 - **Entity Framework Core** (modélisation et persistance des données)
 - **JWT Authentication**
 - **Swagger** (documentation API)
-- **MailKit** (service de messagerie)
+
 - **PostgreSQL** (base de données)
 - **AutoMapper** (mappage objet)
 - **Gestion des rôles, permissions et audit**
