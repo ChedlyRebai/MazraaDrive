@@ -43,6 +43,7 @@ navLinks: { label: string; path: string; icon: string; badge?: string | number; 
   { label: 'Accueil', path: '/home/accueil', icon: 'pi pi-home' },
   { label: 'Documents', path: '/home/documents', icon: 'pi pi-file' },
   { label: 'Demandes', path: '/home/demandes', icon: 'pi pi-inbox' },
+  { label: 'Access', path: '/home/access', icon: 'pi pi-lock' },
   { label: 'Admin', path: '/admin', icon: 'pi pi-cog' }
 ];
 

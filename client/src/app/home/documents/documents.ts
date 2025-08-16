@@ -76,7 +76,7 @@ export class Documents implements OnInit {
   @ViewChild('contextMenu') contextMenu: any;
 
   // User and stats data
-  currentUser = { name: 'Jean Dupont', email: 'jean.dupont@company.com' };
+  currentUser = { name: 'Chedly Rebai', email: 'jean.dupont@company.com' };
   totalFiles = 718;
   totalFolders = 45;
   sharedFiles = 156;
@@ -140,7 +140,7 @@ export class Documents implements OnInit {
     { name: 'Documents', type: 'document', icon: 'pi pi-file', color: '#8B5CF6', count: 231 },
     { name: 'Vidéos', type: 'video', icon: 'pi pi-video', color: '#10B981', count: 40 },
     { name: 'Audio', type: 'audio', icon: 'pi pi-volume-up', color: '#F59E0B', count: 12 },
-    { name: 'Archives', type: 'archive', icon: 'pi pi-file-o', color: '#6B7280', count: 18 }
+
   ];
 
   // Recent files and folders
@@ -151,7 +151,7 @@ export class Documents implements OnInit {
       type: 'pdf',
       size: '2.3 MB',
       modifiedDate: new Date('2024-12-06T10:30:00'),
-      owner: 'Jean Dupont',
+      owner: 'Chedly Rebai',
       isShared: true,
       path: '/documents'
     },

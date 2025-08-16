@@ -125,7 +125,7 @@ export class Stats implements OnInit {
 
   // Top Users
   topUsers: TopUser[] = [
-    { name: 'Jean Dupont', department: 'IT', documentCount: 156 },
+    { name: 'Chedly Rebai', department: 'IT', documentCount: 156 },
     { name: 'Marie Martin', department: 'RH', documentCount: 134 },
     { name: 'Pierre Bernard', department: 'Finance', documentCount: 98 },
     { name: 'Sophie Dubois', department: 'Marketing', documentCount: 87 },
@@ -227,7 +227,7 @@ export class Stats implements OnInit {
       this.recentActivities = [
         {
           id: 1,
-          userName: 'Jean Dupont',
+          userName: 'Chedly Rebai',
           userEmail: 'jean.dupont@company.com',
           action: 'Document créé',
           type: 'Creation',

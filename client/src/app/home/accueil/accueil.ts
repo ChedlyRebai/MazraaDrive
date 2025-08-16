@@ -22,6 +22,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ThemeSwitcher } from "../../admin/themeswitcher";
+import { AdminRoutingModule } from "../../admin/admin-routing-module";
 
 
 interface Folder {
@@ -60,7 +61,8 @@ interface Folder {
     BreadcrumbModule,
     ContextMenuModule,
     RadioButtonModule,
-    ThemeSwitcher
+    ThemeSwitcher,
+    AdminRoutingModule
 ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './accueil.html',
@@ -190,7 +192,7 @@ export class Accueil implements OnInit {
           name: 'Projets 2024',
           description: 'Dossiers des projets en cours pour l\'année 2024',
           createdAt: new Date('2024-11-15T14:20:00'),
-          createdByName: 'Jean Dupont',
+          createdByName: 'Chedly Rebai',
           createdById: '2',
           fileCount: 42,
           size: '32.8 MB',
@@ -337,6 +339,8 @@ export class Accueil implements OnInit {
       summary: 'Navigation',
       detail: `Ouverture du dossier: ${folder.name}`
     });
+
+    this.router.navigate([`/home/folder/${folder.id}`]);
     
     // Navigate to folder content - implement navigation logic here
     // this.router.navigate(['/folder', folder.id]);
@@ -436,9 +440,11 @@ export class Accueil implements OnInit {
   // Context Menu
   showContextMenu(event: any, folder: Folder | null) {
     event.preventDefault();
+
     if (folder) {
       this.selectedFolder = folder;
       this.contextMenu.show(event);
+      
     }
   }
 

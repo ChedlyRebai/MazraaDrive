@@ -20,7 +20,5 @@ public class BaseEntity<T>
     // }
 
     // public override int GetHashCode() => Id.GetHashCode();
-
     // public override bool Equals(object? obj) => Equals(obj as BaseEntity<T>);
-
 }

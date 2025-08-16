@@ -1,600 +1,875 @@
 <theme-switcher/>
-<div class="mb-8">
-  <div class="flex items-center justify-between mb-4">
-    <div>
-      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
-        Gestionnaire de Demandes 📁
-      </h1>
-      <p class="text-surface-600 dark:text-surface-300">
-        Organisez et gérez vos demandes en toute simplicité
-      </p>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-    <div
-      class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white"
-    >
-      <div class="flex items-center justify-between">
+
+<div class="layout-content-wrapper">
+  <div class="containr mx-auto  py-6">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <p class="text-blue-100 text-sm">Total Demandes</p>
-          <p class="text-2xl font-bold">4</p>
+          <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
+            Gestion des Demandes 📋
+          </h1>
+          <p class="text-surface-600 dark:text-surface-300">
+            Gérez et suivez toutes les demandes de documents
+          </p>
         </div>
-        <i class="pi pi-folder text-3xl text-blue-200"></i>
-      </div>
-    </div>
-    <div
-      class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white"
-    >
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-purple-100 text-sm">Demandes en Cours</p>
-          <p class="text-2xl font-bold">93</p>
+        <div class="flex gap-3">
+          <p-button 
+            label="Actualiser" 
+            icon="pi pi-refresh" 
+            severity="secondary"
+            [outlined]="true"
+            (click)="refreshRequests()"
+          />
+          <p-button 
+            label="Nouvelle Demande" 
+            icon="pi pi-plus" 
+            (click)="showCreateDialog()"
+          />
         </div>
-        <i class="pi pi-file text-3xl text-purple-200"></i>
       </div>
-    </div>
-    <div
-      class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white"
-    >
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-green-100 text-sm">Taille Totale</p>
-          <p class="text-2xl font-bold"></p>
-        </div>
-        <i class="pi pi-database text-3xl text-green-200"></i>
-      </div>
-    </div>
-    <div
-      class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white"
-    >
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-orange-100 text-sm">Récents</p>
-          <p class="text-2xl font-bold">12s</p>
-        </div>
-        <i class="pi pi-clock text-3xl text-orange-200"></i>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-<div class="card">
-    <p-toast />
-    <p-toolbar class="mb-6">
-        <ng-template #start>
-            <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
-            <p-button severity="danger" label="Supprimer" icon="pi pi-trash" [outlined]="true" (onClick)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length" />
-        </ng-template>
-
-        <ng-template #end>
-            <p-button label="Exporter" icon="pi pi-download" severity="secondary" (onClick)="exportRequests()" />
-        </ng-template>
-    </p-toolbar>
-
-   
-
-    <p-table
-        #dt
-        [value]="documentRequests"
-        [rows]="10"
-        [paginator]="true"
-        [lazy]="true"
-        [totalRecords]="totalRecords"
-        (onLazyLoad)="onPageChange($event)"
-        [globalFilterFields]="['requesterName', 'departmentName', 'documentType', 'status', 'priority']"
-        [tableStyle]="{ 'min-width': '75rem' }"
-        [(selection)]="selectedRequests"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} demandes"
-        [showCurrentPageReport]="true"
-        [loading]="loading"
-        [rowsPerPageOptions]="[10, 25, 50]"
-    >
-        <ng-template pTemplate="caption">
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Gestion des Demandes de Documents</h5>
-                <div class="flex gap-2">
-                    <p-iconField iconPosition="left">
-                        <p-inputIcon class="pi pi-search" />
-                        <input pInputText type="text" [(ngModel)]="globalFilterValue" (ngModelChange)="onGlobalFilter($event)" placeholder="Rechercher..." />
-                    </p-iconField>
-                    <div class=" flex justify-center">
-                        <p-autocomplete 
-                            [(ngModel)]="selectedStatus" 
-                            [dropdown]="true" 
-                            [suggestions]="filteredStatusOptions" 
-                            (completeMethod)="searchStatus($event)"
-                            placeholder="Tous les statuts"
-                            field="label"
-                            (onSelect)="onStatusSelect($event)"
-                            (onClear)="onStatusClear()"
-                            [style]="{ minWidth: '150px' }"
-                        />
-                    </div>
-                    <div class=" flex justify-center">
-                        <p-autocomplete 
-                            [(ngModel)]="selectedPriority" 
-                            [dropdown]="true" 
-                            [suggestions]="filteredPriorityOptions" 
-                            (completeMethod)="searchPriority($event)"
-                            placeholder="Toutes les priorités"
-                            field="label"
-                            (onSelect)="onPrioritySelect($event)"
-                            (onClear)="onPriorityClear()"
-                            [style]="{ minWidth: '150px' }"
-                        />
-                    </div>
-                    <p-button icon="pi pi-refresh" [outlined]="true" (click)="loadDocumentRequests()" [loading]="loading" />
-                </div>
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-100 text-sm">Total Demandes</p>
+              <p class="text-2xl font-bold">{{ totalRequests }}</p>
             </div>
-        </ng-template>
+            <i class="pi pi-file-text text-3xl text-blue-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-orange-100 text-sm">En Attente</p>
+              <p class="text-2xl font-bold">{{ pendingRequests }}</p>
+            </div>
+            <i class="pi pi-clock text-3xl text-orange-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-100 text-sm">Approuvées</p>
+              <p class="text-2xl font-bold">{{ approvedRequests }}</p>
+            </div>
+            <i class="pi pi-check text-3xl text-green-200"></i>
+          </div>
+        </div>
+        <div class="bg-gradient-to-r from-red-500 to-red-600 p-4 rounded-lg text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-red-100 text-sm">Rejetées</p>
+              <p class="text-2xl font-bold">{{ rejectedRequests }}</p>
+            </div>
+            <i class="pi pi-times text-3xl text-red-200"></i>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Filters and Search -->
+    <div class="card mb-6">
+      <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+        <div class="flex flex-wrap gap-4 items-center">
+          <p-iconField iconPosition="left">
+            <p-inputIcon class="pi pi-search" />
+            <input 
+              pInputText 
+              type="text" 
+              placeholder="Rechercher..." 
+              [(ngModel)]="searchTerm"
+              (input)="onSearch($event)"
+              class="w-80"
+            />
+          </p-iconField>
+          
+          <p-autoComplete
+            [(ngModel)]="statusFilter"
+            [suggestions]="statusFilterSuggestions"
+            (completeMethod)="searchStatusFilter($event)"
+            placeholder="Filtrer par statut"
+            field="label"
+            [showClear]="true"
+            (onSelect)="onStatusFilter($event)"
+            (onClear)="onStatusFilter(null)"
+            class="w-48"
+          />
+          
+          <p-autoComplete
+            [(ngModel)]="priorityFilter"
+            [suggestions]="priorityFilterSuggestions"
+            (completeMethod)="searchPriorityFilter($event)"
+            placeholder="Filtrer par priorité"
+            field="label"
+            [showClear]="true"
+            (onSelect)="onPriorityFilter($event)"
+            (onClear)="onPriorityFilter(null)"
+            class="w-48"
+          />
+        </div>
+        
+        <div class="flex gap-2">
+          <p-button 
+            icon="pi pi-filter-slash" 
+            severity="secondary"
+            [outlined]="true"
+            pTooltip="Effacer les filtres"
+            (click)="clearFilters()"
+          />
+          <p-button 
+            icon="pi pi-download" 
+            severity="help"
+            [outlined]="true"
+            pTooltip="Exporter"
+            (click)="exportRequests()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="card">
+      <p-table
+        #dt
+        [value]="filteredRequests"
+        [loading]="loading"
+        [paginator]="true"
+        [rows]="15"
+        [rowsPerPageOptions]="[10, 15, 25, 50]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} demandes"
+        [sortField]="'requestedAt'"
+        [sortOrder]="-1"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-striped"
+      >
         <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox />
-                </th>
-                <th pSortableColumn="id" style="min-width: 8rem">
-                    <div class="flex items-center gap-2">
-                        ID
-                        <p-sortIcon field="id" />
-                    </div>
-                </th>
-                <th pSortableColumn="requesterName" style="min-width: 14rem">
-                    <div class="flex items-center gap-2">
-                        Demandeur
-                        <p-sortIcon field="requesterName" />
-                    </div>
-                </th>
-                <th pSortableColumn="departmentName" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Département
-                        <p-sortIcon field="departmentName" />
-                    </div>
-                </th>
-                <th pSortableColumn="documentType" style="min-width: 14rem">
-                    <div class="flex items-center gap-2">
-                        Type de Document
-                        <p-sortIcon field="documentType" />
-                    </div>
-                </th>
-                <th pSortableColumn="priority" style="min-width: 10rem">
-                    <div class="flex items-center gap-2">
-                        Priorité
-                        <p-sortIcon field="priority" />
-                    </div>
-                </th>
-                <th pSortableColumn="status" style="min-width: 10rem">
-                    <div class="flex items-center gap-2">
-                        Statut
-                        <p-sortIcon field="status" />
-                    </div>
-                </th>
-                <th pSortableColumn="requestedAt" style="min-width: 12rem">
-                    <div class="flex items-center gap-2">
-                        Date de Demande
-                        <p-sortIcon field="requestedAt" />
-                    </div>
-                </th>
-                <th style="min-width: 12rem">Actions</th>
-            </tr>
+          <tr>
+            <th pSortableColumn="requesterName" style="min-width: 12rem">
+              <div class="flex items-center gap-2">
+                Demandeur
+                <p-sortIcon field="requesterName" />
+              </div>
+            </th>
+            <th pSortableColumn="documentType" style="min-width: 12rem">
+              <div class="flex items-center gap-2">
+                Type de Document
+                <p-sortIcon field="documentType" />
+              </div>
+            </th>
+            <th pSortableColumn="priority" style="min-width: 8rem">
+              <div class="flex items-center gap-2">
+                Priorité
+                <p-sortIcon field="priority" />
+              </div>
+            </th>
+            <th pSortableColumn="status" style="min-width: 8rem">
+              <div class="flex items-center gap-2">
+                Statut
+                <p-sortIcon field="status" />
+              </div>
+            </th>
+            <th pSortableColumn="requestedAt" style="min-width: 10rem">
+              <div class="flex items-center gap-2">
+                Date
+                <p-sortIcon field="requestedAt" />
+              </div>
+            </th>
+            <th style="min-width: 12rem">Actions</th>
+          </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-request>
-            <tr>
-                <td>
-                    <p-tableCheckbox [value]="request" />
-                </td>
-                <td>
-                    <span class="font-mono text-sm">{{ request.id }}</span>
-                </td>
-                <td>
-                    <div class="flex items-center gap-2">
-                        <p-avatar 
-                            [label]="getInitials(request.requesterName)"
-                            shape="circle"
-                           
-                        />
-                        <span class="font-medium">{{ request.requesterName }}</span>
-                    </div>
-                </td>
-                <td>
-                    <p-tag [value]="request.departmentName" severity="info" />
-                </td>
-                <td>
-                    <div class="flex items-center gap-2">
-                        <i [class]="getDocumentTypeIcon(request.documentType)" style="font-size: 1.2rem"></i>
-                        <span>{{ request.documentType }}</span>
-                    </div>
-                </td>
-                <td>
-                    <p-tag 
-                        [value]="request.priority" 
-                        [severity]="getPrioritySeverity(request.priority)"
-                    />
-                </td>
-                <td>
-                    <p-tag 
-                        [value]="request.status" 
-                        [severity]="getStatusSeverity(request.status)"
-                    />
-                </td>
-                <td>{{ request.requestedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
-                <td>
-                    <div class="flex gap-2">
-                        <p-button 
-                            icon="pi pi-eye" 
-                            severity="info"
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="viewRequest(request)"
-                            pTooltip="Voir les détails"
-                        />
-                        <p-button 
-                            icon="pi pi-check" 
-                            severity="success"
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="processRequest(request)"
-                            pTooltip="Traiter"
-                            *ngIf="request.status === 'En Attente'"
-                        />
-                        <p-button 
-                            icon="pi pi-pencil" 
-                           
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="editRequest(request)"
-                            pTooltip="Modifier"
-                        />
-                        <p-button 
-                            icon="pi pi-trash" 
-                            severity="danger" 
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="deleteRequest(request)"
-                            pTooltip="Supprimer"
-                        />
-                    </div>
-                </td>
-            </tr>
+          <tr class="hover:bg-surface-50 dark:hover:bg-surface-700">
+            <td>
+              <div class="flex items-center gap-3">
+                <p-avatar 
+                  [label]="getInitials(request.requesterName)"
+                  shape="circle"
+                 
+                />
+                <div>
+                  <div class="font-medium">{{ request.requesterName }}</div>
+                  <div class="text-sm text-surface-600">{{ request.departmentName }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <i [class]="getDocumentTypeIcon(request.documentType)" 
+                   [style.color]="getDocumentTypeColor(request.documentType)"></i>
+                <span>{{ request.documentType }}</span>
+              </div>
+            </td>
+            <td>
+              <p-tag 
+                [value]="request.priority"
+                [severity]="getPrioritySeverity(request.priority)"
+                [icon]="getPriorityIcon(request.priority)"
+              />
+            </td>
+            <td>
+              <p-tag 
+                [value]="request.status"
+                [severity]="getStatusSeverity(request.status)"
+                [icon]="getStatusIcon(request.status)"
+              />
+            </td>
+            <td>
+              <div>
+                <div class="font-medium">{{ request.requestedAt | date:'dd/MM/yyyy' }}</div>
+                <div class="text-sm text-surface-600">{{ request.requestedAt | date:'HH:mm' }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center gap-1">
+                <p-button 
+                  icon="pi pi-eye" 
+                  severity="info"
+                  [text]="true" 
+                  size="small"
+                  pTooltip="Voir les détails"
+                  (click)="showDetailsDialog(request)"
+                />
+                <p-button 
+                  icon="pi pi-reply" 
+                  severity="success"
+                  [text]="true" 
+                  size="small"
+                  pTooltip="Répondre"
+                  [disabled]="request.status !== 'Pending'"
+                  (click)="respondToRequest(request)"
+                />
+                <p-button 
+                  icon="pi pi-pencil" 
+                  severity="help"
+                  [text]="true" 
+                  size="small"
+                  pTooltip="Modifier"
+                  [disabled]="request.status !== 'Pending'"
+                  (click)="editRequest(request)"
+                />
+                <p-button 
+                  icon="pi pi-trash" 
+                  severity="danger"
+                  [text]="true" 
+                  size="small"
+                  pTooltip="Supprimer"
+                  (click)="deleteRequest(request)"
+                />
+              </div>
+            </td>
+          </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="9" class="text-center py-4">
-                    <div class="flex flex-col items-center gap-2">
-                        <i class="pi pi-file-o" style="font-size: 2rem; color: var(--text-color-secondary)"></i>
-                        <span>Aucune demande trouvée.</span>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-
-    <!-- Document Request Dialog -->
-    <p-dialog 
-        [(visible)]="requestDialog" 
-        [style]="{ width: '50rem' }" 
-        [header]="dialogTitle" 
-        [modal]="true"
-    >
-        <ng-template pTemplate="content">
-            <div class="flex flex-col gap-6">
-                <!-- Request Information Form -->
-                <div class="grid grid-cols-12 gap-4">
-                    <!-- Requester (read-only for existing requests) -->
-                    <div class="col-span-12 md:col-span-6">
-                        <label for="requesterName" class="block font-bold mb-3">Demandeur</label>
-                        <input 
-                            type="text" 
-                            pInputText 
-                            id="requesterName" 
-                            [value]="request.requesterName || 'Utilisateur Actuel'"
-                            readonly
-                            fluid 
-                        />
-                    </div>
-
-                    <!-- Department -->
-                    <div class="col-span-12 md:col-span-6">
-                        <label for="departmentId" class="block font-bold mb-3">Département *</label>
-                        <div class="card flex justify-center">
-                            <p-autocomplete 
-                                [(ngModel)]="selectedDepartment" 
-                                [dropdown]="true" 
-                                [suggestions]="filteredDepartments" 
-                                (completeMethod)="searchDepartment($event)"
-                                placeholder="Sélectionner un département"
-                                field="name"
-                                (onSelect)="onDepartmentSelect($event)"
-                                fluid 
-                            />
-                        </div>
-                        <small class="text-red-500" *ngIf="submitted && !request.departmentId">Le département est requis.</small>
-                    </div>
-
-                    <!-- Document Type -->
-                    <div class="col-span-12 md:col-span-6">
-                        <label for="documentType" class="block font-bold mb-3">Type de Document *</label>
-                        <div class="card flex justify-center">
-                            <p-autocomplete 
-                                [(ngModel)]="request.documentType" 
-                                [dropdown]="true" 
-                                [suggestions]="filteredDocumentTypes" 
-                                (completeMethod)="searchDocumentType($event)"
-                                placeholder="Sélectionner le type"
-                                (onSelect)="onDocumentTypeSelect($event)"
-                                fluid 
-                            />
-                        </div>
-                        <small class="text-red-500" *ngIf="submitted && !request.documentType">Le type de document est requis.</small>
-                    </div>
-
-                    <!-- Priority -->
-                    <div class="col-span-12 md:col-span-6">
-                        <label for="priority" class="block font-bold mb-3">Priorité *</label>
-                        <div class="card flex justify-center">
-                            <p-autocomplete 
-                                [(ngModel)]="selectedRequestPriority" 
-                                [dropdown]="true" 
-                                [suggestions]="filteredRequestPriorityOptions" 
-                                (completeMethod)="searchRequestPriority($event)"
-                                placeholder="Sélectionner la priorité"
-                                field="label"
-                                (onSelect)="onRequestPrioritySelect($event)"
-                                fluid 
-                            />
-                        </div>
-                        <small class="text-red-500" *ngIf="submitted && !request.priority">La priorité est requise.</small>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="col-span-12">
-                        <label for="description" class="block font-bold mb-3">Description *</label>
-                        <textarea 
-                            id="description" 
-                            pInputTextarea 
-                            [(ngModel)]="request.description" 
-                            required 
-                            rows="4" 
-                            fluid
-                            placeholder="Décrivez votre demande de document..."
-                        ></textarea>
-                        <small class="text-red-500" *ngIf="submitted && !request.description">La description est requise.</small>
-                    </div>
-
-                    <!-- Status (only for editing) -->
-                    <div class="col-span-12 md:col-span-6" *ngIf="request.id">
-                        <label for="status" class="block font-bold mb-3">Statut</label>
-                        <div class="card flex justify-center">
-                            <p-autocomplete 
-                                [(ngModel)]="selectedRequestStatus" 
-                                [dropdown]="true" 
-                                [suggestions]="filteredRequestStatusOptions" 
-                                (completeMethod)="searchRequestStatus($event)"
-                                placeholder="Sélectionner le statut"
-                                field="label"
-                                (onSelect)="onRequestStatusSelect($event)"
-                                fluid 
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Response Document (only for processed requests) -->
-                    <div class="col-span-12 md:col-span-6" *ngIf="request.id && request.status !== 'En Attente'">
-                        <label for="responseDocument" class="block font-bold mb-3">Document de Réponse</label>
-                        <div class="flex items-center gap-2">
-                            <p-fileUpload 
-                                mode="basic" 
-                                accept=".pdf,.doc,.docx,.txt,.jpg,.png" 
-                                [maxFileSize]="5000000" 
-                                chooseLabel="Choisir le document"
-                                [auto]="false"
-                                (onSelect)="onResponseDocumentSelect($event)"
-                            />
-                            <span *ngIf="request.responseDocumentName" class="text-sm text-gray-600">
-                                {{ request.responseDocumentName }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Request Details (for existing requests) -->
-                <div *ngIf="request.id" class="border-t pt-4">
-                    <h6 class="font-semibold mb-3">Informations de Traitement</h6>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="col-span-6" *ngIf="request.processedByName">
-                            <label class="font-semibold">Traité par:</label>
-                            <p>{{ request.processedByName }}</p>
-                        </div>
-                        <div class="col-span-6" *ngIf="request.respondedAt">
-                            <label class="font-semibold">Date de traitement:</label>
-                            <p>{{ request.respondedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="footer">
-            <p-button 
-                label="Annuler" 
-                icon="pi pi-times" 
-                [text]="true" 
-                (click)="hideDialog()" 
-            />
-            <p-button 
-                label="Sauvegarder" 
-                icon="pi pi-check" 
-                (click)="saveRequest()" 
-                [loading]="saving"
-            />
-        </ng-template>
-    </p-dialog>
-
-    <!-- Request Details Dialog -->
-    <p-dialog 
-        [(visible)]="requestDetailsDialog" 
-        [style]="{ width: '50rem' }" 
-        header="Détails de la Demande" 
-        [modal]="true"
-    >
-        <ng-template pTemplate="content">
-            <div class="flex flex-col gap-4" *ngIf="selectedRequest">
-                <!-- Request Header -->
-                <div class="flex items-center justify-between pb-4 border-b">
-                    <div class="flex items-center gap-3">
-                        <i class="pi pi-file-o text-4xl text-blue-500"></i>
-                        <div>
-                            <h4 class="m-0">Demande #{{ selectedRequest.id }}</h4>
-                            <p class="text-sm text-gray-600 m-0">{{ selectedRequest.documentType }}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-end gap-2">
-                        <p-tag 
-                            [value]="selectedRequest.status" 
-                            [severity]="getStatusSeverity(selectedRequest.status)"
-                        />
-                        <p-tag 
-                            [value]="selectedRequest.priority" 
-                            [severity]="getPrioritySeverity(selectedRequest.priority)"
-                        />
-                    </div>
-                </div>
-
-                <!-- Details Grid -->
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-6">
-                        <label class="font-semibold">Demandeur:</label>
-                        <p>{{ selectedRequest.requesterName }}</p>
-                    </div>
-                    <div class="col-span-6">
-                        <label class="font-semibold">Département:</label>
-                        <p>{{ selectedRequest.departmentName }}</p>
-                    </div>
-                    <div class="col-span-6">
-                        <label class="font-semibold">Date de demande:</label>
-                        <p>{{ selectedRequest.requestedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
-                    </div>
-                    <div class="col-span-6" *ngIf="selectedRequest.respondedAt">
-                        <label class="font-semibold">Date de traitement:</label>
-                        <p>{{ selectedRequest.respondedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
-                    </div>
-                    <div class="col-span-6" *ngIf="selectedRequest.processedByName">
-                        <label class="font-semibold">Traité par:</label>
-                        <p>{{ selectedRequest.processedByName }}</p>
-                    </div>
-                    <div class="col-span-12">
-                        <label class="font-semibold">Description:</label>
-                        <p class="text-gray-700">{{ selectedRequest.description }}</p>
-                    </div>
-                    <div class="col-span-12" *ngIf="selectedRequest.responseDocumentName">
-                        <label class="font-semibold">Document de réponse:</label>
-                        <div class="flex items-center gap-2">
-                            <i class="pi pi-file text-blue-500"></i>
-                            <span>{{ selectedRequest.responseDocumentName }}</span>
-                            <p-button 
-                                icon="pi pi-download" 
-                                severity="secondary"
-                                size="small"
-                                [outlined]="true"
-                                (click)="downloadResponseDocument(selectedRequest)"
-                                label="Télécharger"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="footer">
-            <p-button 
-                label="Fermer" 
-                icon="pi pi-times" 
-                [text]="true" 
-                (click)="requestDetailsDialog = false" 
-            />
-            <p-button 
-                label="Traiter" 
-                icon="pi pi-check" 
-                (click)="processRequest(selectedRequest!); requestDetailsDialog = false"
-                *ngIf="selectedRequest?.status === 'En Attente'"
-            />
-        </ng-template>
-    </p-dialog>
-
-    <!-- Process Request Dialog -->
-    <p-dialog 
-        [(visible)]="processDialog" 
-        [style]="{ width: '40rem' }" 
-        header="Traiter la Demande" 
-        [modal]="true"
-    >
-        <ng-template pTemplate="content">
-            <div class="flex flex-col gap-4" *ngIf="selectedRequest">
-                <div class="bg-blue-50 p-4 rounded border">
-                    <h6 class="m-0 mb-2">Demande #{{ selectedRequest.id }}</h6>
-                    <p class="text-sm text-gray-600 m-0">{{ selectedRequest.documentType }} - {{ selectedRequest.requesterName }}</p>
-                </div>
-
+          <tr>
+            <td colspan="6" class="text-center py-8">
+              <div class="flex flex-col items-center gap-3">
+                <i class="pi pi-inbox text-4xl text-surface-400"></i>
                 <div>
-                    <label class="block font-bold mb-3">Action *</label>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radioButton id="approve" name="action" value="Approuvé" [(ngModel)]="processAction" />
-                            <label for="approve">Approuver</label>
-                        </div>
-                        <div class="flex items-center gap-2 col-span-6">
-                            <p-radioButton id="reject" name="action" value="Rejeté" [(ngModel)]="processAction" />
-                            <label for="reject">Rejeter</label>
-                        </div>
-                    </div>
+                  <h3 class="font-medium mb-2">Aucune demande trouvée</h3>
+                  <p class="text-surface-600 text-sm">
+                    {{ hasFilters() ? 'Aucun résultat pour les filtres appliqués' : 'Commencez par créer votre première demande' }}
+                  </p>
                 </div>
-
-                <div *ngIf="processAction === 'Approuvé'">
-                    <label class="block font-bold mb-3">Document de Réponse</label>
-                    <p-fileUpload 
-                        mode="basic" 
-                        accept=".pdf,.doc,.docx,.txt,.jpg,.png" 
-                        [maxFileSize]="5000000" 
-                        chooseLabel="Choisir le document"
-                        [auto]="false"
-                        (onSelect)="onResponseDocumentSelect($event)"
-                    />
-                </div>
-
-                <div>
-                    <label for="processNote" class="block font-bold mb-3">Note de traitement</label>
-                    <textarea 
-                        id="processNote" 
-                        pInputTextarea 
-                        [(ngModel)]="processNote" 
-                        rows="3" 
-                        fluid
-                        placeholder="Ajouter une note sur le traitement..."
-                    ></textarea>
-                </div>
-            </div>
+                <p-button 
+                  label="Nouvelle Demande" 
+                  icon="pi pi-plus"
+                  (click)="showCreateDialog()"
+                />
+              </div>
+            </td>
+          </tr>
         </ng-template>
-
-        <ng-template pTemplate="footer">
-            <p-button 
-                label="Annuler" 
-                icon="pi pi-times" 
-                [text]="true" 
-                (click)="processDialog = false" 
-            />
-            <p-button 
-                label="Confirmer" 
-                icon="pi pi-check" 
-                (click)="confirmProcess()"
-                [loading]="processing"
-            />
-        </ng-template>
-    </p-dialog>
-
-    <p-confirmDialog [style]="{ width: '450px' }" />
+      </p-table>
+    </div>
+  </div>
 </div>
+
+<!-- Create Request Dialog -->
+<p-dialog
+  header="Nouvelle Demande de Document"
+  [modal]="true"
+  [(visible)]="createDialog"
+  [style]="{ width: '50rem' }"
+  [closable]="true"
+>
+  <div class="flex flex-col gap-6">
+    <!-- Header Info -->
+    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+      <div class="flex items-center gap-3">
+        <i class="pi pi-file-plus text-3xl text-blue-500"></i>
+        <div>
+          <h4 class="text-lg font-semibold m-0">Créer une nouvelle demande</h4>
+          <p class="text-sm text-surface-600 dark:text-surface-300 m-0">
+            Remplissez les informations ci-dessous pour soumettre votre demande
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Fields -->
+    <div class="grid grid-cols-12 gap-6">
+      <!-- Left Column -->
+      <div class="col-span-12 md:col-span-6">
+        <div class="flex flex-col gap-4">
+          <!-- Document Type -->
+          <div>
+            <label for="documentType" class="block text-sm font-medium mb-2">
+              <i class="pi pi-file mr-2"></i>
+              Type de Document *
+            </label>
+            <p-autoComplete
+              id="documentType"
+              [(ngModel)]="newRequest.documentType"
+              [suggestions]="documentTypeSuggestions"
+              (completeMethod)="searchDocumentType($event)"
+              placeholder="Sélectionner le type de document"
+              field="label"
+              [showClear]="true"
+              class="w-full"
+            />
+            <small class="text-surface-500">
+              Choisissez le type de document que vous souhaitez demander
+            </small>
+          </div>
+
+          <!-- Priority -->
+          <div>
+            <label for="priority" class="block text-sm font-medium mb-2">
+              <i class="pi pi-flag mr-2"></i>
+              Priorité *
+            </label>
+            <p-autoComplete
+              id="priority"
+              [(ngModel)]="newRequest.priority"
+              [suggestions]="prioritySuggestions"
+              (completeMethod)="searchPriority($event)"
+              placeholder="Sélectionner la priorité"
+              field="label"
+              [showClear]="true"
+              class="w-full"
+            />
+            <small class="text-surface-500">
+              Indiquez le niveau d'urgence de votre demande
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-span-12 md:col-span-6">
+        <div class="flex flex-col gap-4">
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-medium mb-2">
+              <i class="pi pi-align-left mr-2"></i>
+              Description détaillée *
+            </label>
+            <textarea
+              id="description"
+              [(ngModel)]="newRequest.description"
+              placeholder="Décrivez précisément votre demande..."
+              rows="8"
+              class="w-full p-3 border border-surface-300 rounded-md resize-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-surface-600 dark:bg-surface-700 dark:text-surface-0"
+              maxlength="500"
+            ></textarea>
+            <div class="flex justify-between items-center mt-1">
+              <small class="text-surface-500">
+                Soyez aussi précis que possible dans votre description
+              </small>
+              <small class="text-surface-400">
+                {{ (newRequest.description || '').length }}/500
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Preview -->
+    <div class="bg-surface-50 dark:bg-surface-800 rounded-lg p-4">
+      <h5 class="font-semibold mb-3 flex items-center gap-2">
+        <i class="pi pi-eye text-purple-500"></i>
+        Aperçu de votre demande
+      </h5>
+      <div class="grid grid-cols-12 gap-2 text-sm">
+        <div class="col-span-12 md:col-span-6">
+          <p><strong>Type:</strong> {{ getDisplayValue(newRequest.documentType) || 'Non sélectionné' }}</p>
+          <p><strong>Priorité:</strong>
+            <p-tag
+              *ngIf="newRequest.priority"
+              [value]="getDisplayValue(newRequest.priority)"
+              [severity]="getPrioritySeverity(getSelectedValue(newRequest.priority))"
+              class="ml-2"
+            />
+            <span *ngIf="!newRequest.priority" class="text-surface-400">Non sélectionnée</span>
+          </p>
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <p><strong>Département:</strong> {{ getDisplayValue(newRequest.departmentId) || 'Non sélectionné' }}</p>
+        </div>
+        <div class="col-span-12" *ngIf="newRequest.description">
+          <p><strong>Description:</strong></p>
+          <p class="text-surface-600 dark:text-surface-300 mt-1">
+            {{ (newRequest.description || '') | slice:0:100 }}{{ (newRequest.description || '').length > 100 ? '...' : '' }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validation Messages -->
+    <div *ngIf="validationErrors.length > 0" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+      <h6 class="font-semibold text-red-800 dark:text-red-400 mb-2 flex items-center gap-2">
+        <i class="pi pi-exclamation-triangle"></i>
+        Erreurs de validation
+      </h6>
+      <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-300">
+        <li *ngFor="let error of validationErrors">{{ error }}</li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center pt-4 border-t">
+      <div class="flex items-center gap-2 text-sm text-surface-500">
+        <i class="pi pi-info-circle"></i>
+        <span>Tous les champs marqués d'un * sont obligatoires</span>
+      </div>
+
+      <div class="flex gap-2">
+        <p-button
+          label="Annuler"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (click)="cancelCreate()"
+        />
+        <p-button
+          label="Réinitialiser"
+          icon="pi pi-refresh"
+          severity="help"
+          [outlined]="true"
+          (click)="resetForm()"
+        />
+        <p-button
+          label="Créer la Demande"
+          icon="pi pi-send"
+          severity="success"
+          (click)="createRequest()"
+          [loading]="creatingRequest"
+          [disabled]="!isFormValid()"
+        />
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Details Dialog -->
+<p-dialog
+  header="Détails de la Demande"
+  [modal]="true"
+  [(visible)]="detailsDialog"
+  [style]="{ width: '60rem' }"
+  [closable]="true"
+>
+  <div class="flex flex-col gap-6" *ngIf="selectedRequest">
+    <!-- Request Header -->
+    <div class="flex items-center justify-between border-b pb-4">
+      <div class="flex items-center gap-3">
+        <i class="pi pi-file-text text-3xl text-blue-500"></i>
+        <div>
+          <h3 class="text-xl font-semibold m-0">
+            {{ selectedRequest.documentType }}
+          </h3>
+          <p class="text-sm text-surface-500 m-0">
+            Demande #{{ selectedRequest.id }}
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <p-tag
+          [value]="selectedRequest.priority"
+          [severity]="getPrioritySeverity(selectedRequest.priority)"
+          [icon]="getPriorityIcon(selectedRequest.priority)"
+        />
+        <p-tag
+          [value]="selectedRequest.status"
+          [severity]="getStatusSeverity(selectedRequest.status)"
+          [icon]="getStatusIcon(selectedRequest.status)"
+        />
+      </div>
+    </div>
+
+    <!-- Request Details Grid -->
+    <div class="grid grid-cols-12 gap-4">
+      <!-- Left Column -->
+      <div class="col-span-12 md:col-span-6">
+        <div class="flex flex-col gap-4">
+          <!-- Requester Info -->
+          <div class="border rounded-lg p-4">
+            <h4 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-user text-blue-500"></i>
+              Informations du Demandeur
+            </h4>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <span class="font-medium">Nom:</span>
+                <span>{{ selectedRequest.requesterName }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Département:</span>
+                <span>{{ selectedRequest.departmentName }}</span>
+              </div>
+             
+            </div>
+          </div>
+
+          <!-- Request Info -->
+          <div class="border rounded-lg p-4">
+            <h4 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-info-circle text-green-500"></i>
+              Détails de la Demande
+            </h4>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <span class="font-medium">Type:</span>
+                <span>{{ selectedRequest.documentType }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Priorité:</span>
+                <p-tag
+                  [value]="selectedRequest.priority"
+                  [severity]="getPrioritySeverity(selectedRequest.priority)"
+                  size="small"
+                />
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Statut:</span>
+                <p-tag
+                  [value]="selectedRequest.status"
+                  [severity]="getStatusSeverity(selectedRequest.status)"
+                  size="small"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-span-12 md:col-span-6">
+        <div class="flex flex-col gap-4">
+          <!-- Dates -->
+          <div class="border rounded-lg p-4">
+            <h4 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-calendar text-purple-500"></i>
+              Dates
+            </h4>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between">
+                <span class="font-medium">Demandé le:</span>
+                <span>{{ selectedRequest.requestedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="flex justify-between" *ngIf="selectedRequest.respondedAt">
+                <span class="font-medium">Répondu le:</span>
+                <span>{{ selectedRequest.respondedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-medium">Créé le:</span>
+                <span>{{ selectedRequest.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Processing Info -->
+          <div class="border rounded-lg p-4" *ngIf="selectedRequest.processedByName || selectedRequest.responseDocumentName">
+            <h4 class="font-semibold mb-3 flex items-center gap-2">
+              <i class="pi pi-cog text-orange-500"></i>
+              Traitement
+            </h4>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between" *ngIf="selectedRequest.processedByName">
+                <span class="font-medium">Traité par:</span>
+                <span>{{ selectedRequest.processedByName }}</span>
+              </div>
+              <div class="flex justify-between" *ngIf="selectedRequest.responseDocumentName">
+                <span class="font-medium">Document réponse:</span>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-file-pdf text-red-500"></i>
+                  <span class="text-blue-600 cursor-pointer hover:underline">
+                    {{ selectedRequest.responseDocumentName }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description - Full Width -->
+      <div class="col-span-12">
+        <div class="border rounded-lg p-4">
+          <h4 class="font-semibold mb-3 flex items-center gap-2">
+            <i class="pi pi-align-left text-surface-500"></i>
+            Description
+          </h4>
+          <p class="text-surface-700 dark:text-surface-300 leading-relaxed">
+            {{ selectedRequest.description || "Aucune description fournie." }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center pt-4 border-t">
+      <div class="flex gap-2">
+        <p-button
+          *ngIf="selectedRequest.status === 'Pending'"
+          label="Répondre"
+          icon="pi pi-reply"
+          severity="success"
+          (click)="respondToRequest(selectedRequest); detailsDialog = false"
+        />
+        <p-button
+          *ngIf="selectedRequest.responseDocumentName"
+          label="Télécharger"
+          icon="pi pi-download"
+          severity="info"
+          [outlined]="true"
+          (click)="downloadResponseDocument(selectedRequest)"
+        />
+      </div>
+
+      <div class="flex gap-2">
+        <p-button
+          label="Modifier"
+          icon="pi pi-pencil"
+          [outlined]="true"
+          [disabled]="selectedRequest.status !== 'Pending'"
+          (click)="editRequest(selectedRequest); detailsDialog = false"
+        />
+        <p-button
+          label="Supprimer"
+          icon="pi pi-trash"
+          severity="danger"
+          [outlined]="true"
+          (click)="deleteRequest(selectedRequest); detailsDialog = false"
+        />
+        <p-button
+          label="Fermer"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (click)="detailsDialog = false"
+        />
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Response Dialog -->
+<p-dialog
+  header="Répondre à la Demande"
+  [modal]="true"
+  [(visible)]="responseDialog"
+  [style]="{ width: '70rem' }"
+  [closable]="true"
+>
+  <div class="flex flex-col gap-6" *ngIf="selectedRequest">
+    <!-- Request Summary -->
+    <div class="bg-surface-50 dark:bg-surface-800 rounded-lg p-4">
+      <h4 class="font-semibold mb-3 flex items-center gap-2">
+        <i class="pi pi-info-circle text-blue-500"></i>
+        Résumé de la Demande
+      </h4>
+      <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-2 text-sm">
+            <div class="flex justify-between">
+              <span class="font-medium">Demandeur:</span>
+              <span>{{ selectedRequest.requesterName }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-medium">Type:</span>
+              <span>{{ selectedRequest.documentType }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-medium">Priorité:</span>
+              <p-tag
+                [value]="selectedRequest.priority"
+                [severity]="getPrioritySeverity(selectedRequest.priority)"
+                size="small"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <div class="flex flex-col gap-2 text-sm">
+            <div class="flex justify-between">
+              <span class="font-medium">Département:</span>
+              <span>{{ selectedRequest.departmentName }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-medium">Date demande:</span>
+              <span>{{ selectedRequest.requestedAt | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-medium">Demande #:</span>
+              <span>{{ selectedRequest.id }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-12">
+          <div class="mt-2">
+            <span class="font-medium text-sm">Description:</span>
+            <p class="text-sm text-surface-600 dark:text-surface-300 mt-1">
+              {{ selectedRequest.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Response Form -->
+    <div class="grid grid-cols-12 gap-6">
+      <!-- Left Column - Response Details -->
+      <div class="col-span-12 md:col-span-8">
+        <div class="flex flex-col gap-4">
+          <!-- Response Status -->
+          <div>
+            <label for="responseStatus" class="block text-sm font-medium mb-2">
+              <i class="pi pi-flag mr-2"></i>
+              Statut de la Réponse *
+            </label>
+            <p-autoComplete
+              id="responseStatus"
+              [(ngModel)]="responseForm.status"
+              [suggestions]="responseStatusSuggestions"
+              (completeMethod)="searchResponseStatus($event)"
+              placeholder="Sélectionner un statut"
+              field="label"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+
+        
+        </div>
+      </div>
+
+      <!-- Right Column - Document Upload & Quick Actions -->
+      <div class="col-span-12 md:col-span-4">
+        <div class="border rounded-lg p-4 h-fit">
+          <h5 class="font-semibold mb-3 flex items-center gap-2">
+            <i class="pi pi-upload text-green-500"></i>
+            Document de Réponse
+          </h5>
+
+          <!-- File Upload -->
+          <p-fileUpload
+            mode="basic"
+            name="responseDocument"
+            accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+            [maxFileSize]="10000000"
+            [auto]="false"
+            chooseLabel="Choisir un fichier"
+            class="mb-3"
+            (onSelect)="onFileSelect($event)"
+          />
+
+          <small class="text-surface-500 block mb-3">
+            Formats acceptés: PDF, DOC, DOCX, TXT, JPG, PNG (Max: 10MB)
+          </small>
+
+          <!-- Selected File Info -->
+          <div *ngIf="selectedFile" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border">
+            <div class="flex items-center gap-2">
+              <i class="pi pi-file text-blue-500"></i>
+              <div class="flex-1">
+                <p class="text-sm font-medium">{{ selectedFile.name }}</p>
+                <p class="text-xs text-surface-500">{{ formatFileSize(selectedFile.size) }}</p>
+              </div>
+              <p-button
+                icon="pi pi-times"
+                severity="danger"
+                [outlined]="true"
+                size="small"
+                (click)="removeSelectedFile()"
+              />
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="mt-4">
+            <h6 class="font-medium mb-2">Actions Rapides</h6>
+            <div class="flex flex-col gap-2">
+              <p-button
+                label="Approuver"
+                icon="pi pi-check"
+                severity="success"
+                size="small"
+                [outlined]="true"
+                fluid
+                (click)="quickApprove()"
+              />
+              <p-button
+                label="Rejeter"
+                icon="pi pi-times"
+                severity="danger"
+                size="small"
+                [outlined]="true"
+                fluid
+                (click)="quickReject()"
+              />
+              <!-- <p-button
+                label="Demander Info"
+                icon="pi pi-question-circle"
+                severity="help"
+                size="small"
+                [outlined]="true"
+                fluid
+                (click)="requestMoreInfo()"
+              /> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center pt-4 border-t">
+      <div class="flex items-center gap-2 text-sm text-surface-500">
+        <i class="pi pi-info-circle"></i>
+        <span>La réponse sera envoyée automatiquement au demandeur</span>
+      </div>
+
+      <div class="flex gap-2">
+        <p-button
+          label="Annuler"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (click)="cancelResponse()"
+        />
+        
+        <p-button
+          label="Envoyer Réponse"
+          icon="pi pi-send"
+          severity="success"
+          (click)="sendResponse()"
+          [loading]="sendingResponse"
+          [disabled]="!isResponseValid()"
+        />
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-toast />
+<p-confirmDialog />

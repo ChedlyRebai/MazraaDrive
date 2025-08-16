@@ -19,6 +19,7 @@ pageTitle = 'Dashboard';
 currentUser = { fullName: 'Tom Cook', role: 'Admin' };
 
 navLinks: { label: string; path: string; icon: string; badge?: string | number; }[] = [
+  {label:'Home' , path:'/home/accueil', icon:'pi pi-home'},
   { label: 'Dashboard', path: '/admin/stats', icon: 'pi pi-chart-bar' },
   { label: 'Users', path: '/admin/user', icon: 'pi pi-users' },
   { label: 'Documents', path: '/admin/document', icon: 'pi pi-file' },
@@ -32,7 +33,7 @@ navLinks: { label: string; path: string; icon: string; badge?: string | number; 
 
 
 logout() {
-  
+  window.location.href = '/login';
 }
 
 }

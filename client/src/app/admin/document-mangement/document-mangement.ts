@@ -142,7 +142,7 @@ export class DocumentMangement implements OnInit {
           tags: ['rapport', 'janvier', '2024'],
           status: 'Actif',
           accessLevel: 'Public',
-          uploadedBy: 'Jean Dupont',
+          uploadedBy: 'Chedly Rebai',
           uploadedAt: new Date('2024-02-01'),
           version: '1.0',
           isActive: true

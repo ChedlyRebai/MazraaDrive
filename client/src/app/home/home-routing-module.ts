@@ -7,32 +7,53 @@ import { Accueil } from './accueil/accueil';
 import { FolderDetails } from './folder-details/folder-details';
 import { FileViewer } from './file-viewer/file-viewer';
 import { DocumentRecherche } from './document-recherche/document-recherche';
+import { Access } from './access/access';
 
 const routes: Routes = [
   {
     path: '',
+    
     loadComponent() {
       return import('./home').then((m) => m.Home);
     },
     children: [
-      { path: 'demandes', component: Demandes },
-      { path: 'accueil', component: Accueil },
+      {
+        path: 'demandes',
+        loadComponent() {
+          return import('./demandes/demandes').then((m) => m.Demandes);
+        },
+      },
+      { path: 'accueil', loadComponent() {
+          return import('./accueil/accueil').then((m) => m.Accueil);
+        },
+      },
       {
         path: 'documents',
-       component: Documents,
+        loadComponent() {
+          return import('./documents/documents').then((m) => m.Documents);
+        },
+      },
+      {
+        path: 'access',
+        loadComponent() {
+          return import('./access/access').then((m) => m.Access);
+        },
       },
       {
         path: 'folder/:id',
-        component: FolderDetails,
+        loadComponent(){
+          return import('./folder-details/folder-details').then((m) => m.FolderDetails);
+        }
       },
       {
         path: 'file/:id',
-        component: FileViewer,
+        loadComponent(){
+          return import('./file-viewer/file-viewer').then((m) => m.FileViewer);
+        }
       },
       {
         path: 'document-search',
         component: DocumentRecherche,
-       
       },
     ],
   },

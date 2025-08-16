@@ -225,9 +225,9 @@
 
           <!-- Grid View -->
           <div *ngIf="!loading && viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            
+
             <!-- Sample Folder (Remove this in production) -->
-            <div class="group cursor-pointer transform hover:scale-105 transition-all duration-200">
+            <!-- <div class="group cursor-pointer transform hover:scale-105 transition-all duration-200">
               <div class="bg-white dark:bg-surface-800 rounded-lg shadow-md hover:shadow-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
                 <div class="p-6">
                   <div class="flex items-start justify-between mb-4">
@@ -262,7 +262,7 @@
                   </div>
                 </div>
                 
-                <!-- Hover Actions -->
+                
                 <div class="px-6 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div class="flex gap-2">
                     <p-button 
@@ -286,13 +286,15 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Dynamic Folders -->
             <div *ngFor="let folder of filteredFolders; let i = index" 
                  class="group cursor-pointer transform hover:scale-105 transition-all duration-200"
                  (click)="openFolder(folder)"
-                 (contextmenu)="showContextMenu($event, folder)">
+                 (contextmenu)="showContextMenu($event, folder)"
+                 
+                 >
               
               <div class="bg-white dark:bg-surface-800 rounded-lg shadow-md hover:shadow-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
                 <div class="p-6">
@@ -591,7 +593,7 @@
         </div>
 
         <!-- Permissions (if needed) -->
-        <div>
+        <!-- <div>
           <label class="block text-sm font-medium mb-2">
             <i class="pi pi-lock mr-2"></i>
             Permissions
@@ -617,7 +619,7 @@
           <small class="text-surface-500">
             Choisissez qui peut accéder à ce dossier
           </small>
-        </div>
+        </div> -->
       </div>
 
       <!-- Preview -->

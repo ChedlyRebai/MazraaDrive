@@ -2,557 +2,604 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { HttpClient } from '@angular/common/http';
 
 // PrimeNG Imports
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AvatarModule } from 'primeng/avatar';
+import { FileUploadModule } from 'primeng/fileupload';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
-
-// Models
-import { 
-  DocumentRequestDTO, 
-  CreateDocumentRequestDTO, 
-  UpdateDocumentRequestDTO, 
-  DocumentRequestFilterDTO, 
-  DocumentRequestPagedResult 
-} from '../../shared/models/docrequest'
 import { ThemeSwitcher } from '../themeswitcher';
-import { Textarea } from 'primeng/textarea';
-import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 
-interface Department {
-  id: number;
-  name: string;
+
+interface Request {
+  id: string;
+  requesterName: string;
+  requesterEmail: string;
+  departmentName: string;
+  departmentId: string;
+  documentType: string;
+  priority: string;
+  status: string;
+  description: string;
+  requestedAt: Date;
+  createdAt: Date;
+  respondedAt?: Date;
+  processedByName?: string;
+  responseDocumentName?: string;
 }
 
 @Component({
-  selector: 'app-doc-req-management',
+  selector: 'app-demandes',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     TableModule,
     ButtonModule,
-    ToastModule,
-    ToolbarModule,
     DialogModule,
     InputTextModule,
-    Textarea,
     AutoCompleteModule,
-    RadioButtonModule,
-    FileUploadModule,
-    ConfirmDialogModule,
     TagModule,
+    ToastModule,
+    ConfirmDialogModule,
     AvatarModule,
+    FileUploadModule,
     IconFieldModule,
     InputIconModule,
     TooltipModule,
+   
     ThemeSwitcher
-  ],
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './doc-req-management.html',
   styleUrls: ['./doc-req-management.css']
 })
 export class DocReqManagement implements OnInit {
-
-  documentRequests: DocumentRequestDTO[] = [];
-  selectedRequests: DocumentRequestDTO[] = [];
-  selectedRequest: DocumentRequestDTO | null = null;
-  request: any = this.getEmptyRequest();
+  // Data
+  requests: Request[] = [];
+  filteredRequests: Request[] = [];
+  selectedRequest: Request | null = null;
   
-  requestDialog = false;
-  requestDetailsDialog = false;
-  processDialog = false;
-  submitted = false;
+  // Stats
+  totalRequests = 0;
+  pendingRequests = 0;
+  approvedRequests = 0;
+  rejectedRequests = 0;
+
+  // Dialog states
+  createDialog = false;
+  detailsDialog = false;
+  responseDialog = false;
   loading = false;
-  saving = false;
-  processing = false;
+  creatingRequest = false;
+  sendingResponse = false;
 
-  // Process variables
-  processAction = '';
-  processNote = '';
-  responseDocument: File | null = null;
+  // Filters
+  searchTerm = '';
+  statusFilter: any = '';
+  priorityFilter: any = '';
 
-  // Pagination and filtering
-  totalRecords = 0;
-  filter: DocumentRequestFilterDTO = {
-    pageNumber: 1,
-    pageSize: 10,
-    requesterId: null,
-    departmentId: null,
-    documentType: null,
-    priority: null,
-    status: null,
-    requestedFrom: null,
-    requestedTo: null,
-    processedById: null,
-    search: null,
-    sortBy: null,
-    sortDirection: null
+  // Forms
+  newRequest: Partial<Request> = {};
+  responseForm = {
+    status: '',
+    message: '',
+    notes: ''
   };
 
-  // Statistics
-  totalPendingRequests = 0;
-  totalProcessedRequests = 0;
-  totalRejectedRequests = 0;
+  // File upload
+  selectedFile: File | null = null;
+  uploadUrl = '/api/upload';
+
+  // Validation
+  validationErrors: string[] = [];
+
+  // AutoComplete Suggestions
+  statusFilterSuggestions: any[] = [];
+  priorityFilterSuggestions: any[] = [];
+  documentTypeSuggestions: any[] = [];
+  prioritySuggestions: any[] = [];
+  departmentSuggestions: any[] = [];
+  responseStatusSuggestions: any[] = [];
 
   // Options
-  departments: Department[] = [
-    { id: 1, name: 'Ressources Humaines' },
-    { id: 2, name: 'Finance' },
-    { id: 3, name: 'IT' },
-    { id: 4, name: 'Marketing' },
-    { id: 5, name: 'Opérations' },
-    { id: 6, name: 'Administration' }
-  ];
-
   documentTypes = [
-    'Certificat de Travail',
-    'Attestation de Salaire',
-    'Contrat de Travail',
-    'Relevé de Notes',
-    'Certificat Médical',
-    'Justificatif de Domicile',
-    'Pièce d\'Identité',
-    'Autre'
+    { label: 'Certificat de travail', value: 'certificat_travail' },
+    { label: 'Attestation de salaire', value: 'attestation_salaire' },
+    { label: 'Congé payé', value: 'conge_paye' },
+    { label: 'Bulletin de paie', value: 'bulletin_paie' },
+    { label: 'Contrat de travail', value: 'contrat_travail' },
+    { label: 'Formation professionnelle', value: 'formation' },
+    { label: 'Autres', value: 'autres' }
   ];
 
   priorityOptions = [
-    { label: 'Faible', value: 'Faible' },
-    { label: 'Normale', value: 'Normale' },
-    { label: 'Élevée', value: 'Élevée' },
-    { label: 'Urgente', value: 'Urgente' }
+    { label: 'Urgent', value: 'urgent' },
+    { label: 'Haute', value: 'haute' },
+    { label: 'Normale', value: 'normale' },
+    { label: 'Basse', value: 'basse' }
   ];
 
-  statusOptions = [
-    { label: 'En Attente', value: 'En Attente' },
-    { label: 'En Cours', value: 'En Cours' },
-    { label: 'Approuvé', value: 'Approuvé' },
-    { label: 'Rejeté', value: 'Rejeté' }
+  departments = [
+    { id: '1', name: 'Ressources Humaines' },
+    { id: '2', name: 'Informatique' },
+    { id: '3', name: 'Finance' },
+    { id: '4', name: 'Marketing' },
+    { id: '5', name: 'Opérations' }
   ];
 
-  private baseUrl = 'http://localhost:5108/api';
-globalFilterValue: any;
+  statusFilterOptions = [
+    { label: 'En attente', value: 'Pending' },
+    { label: 'Approuvé', value: 'Approved' },
+    { label: 'Rejeté', value: 'Rejected' },
+    { label: 'En cours', value: 'In Progress' }
+  ];
+
+  priorityFilterOptions = [
+    { label: 'Urgent', value: 'urgent' },
+    { label: 'Haute', value: 'haute' },
+    { label: 'Normale', value: 'normale' },
+    { label: 'Basse', value: 'basse' }
+  ];
+
+  responseStatuses = [
+    { label: 'Approuvé', value: 'Approved' },
+    { label: 'Rejeté', value: 'Rejected' },
+    { label: 'En cours', value: 'In Progress' },
+    { label: 'Information nécessaire', value: 'More Info Required' }
+  ];
 
   constructor(
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private http: HttpClient
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
-    this.loadDocumentRequests();
+    this.loadRequests();
   }
 
-  get dialogTitle(): string {
-    return this.request.id ? 'Modifier la demande' : 'Nouvelle demande';
-  }
-
-  loadDocumentRequests() {
+  loadRequests() {
     this.loading = true;
     
-    // Mock data for demonstration
+    // Mock data
     setTimeout(() => {
-      const mockResponse: DocumentRequestPagedResult = {
-        data: [
-          {
-            id: 1,
-            requesterId: 'user1',
-            requesterName: 'Jean Dupont',
-            departmentId: 1,
-            departmentName: 'Ressources Humaines',
-            documentType: 'Certificat de Travail',
-            description: 'Demande de certificat de travail pour candidature externe',
-            priority: 'Normale',
-            status: 'En Attente',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-06T09:30:00',
-            respondedAt: null,
-            processedById: null,
-            processedByName: null,
-            createdAt: '2024-12-06T09:30:00',
-            updatedAt: null,
-            isActive: true
-          },
-          {
-            id: 2,
-            requesterId: 'user2',
-            requesterName: 'Marie Martin',
-            departmentId: 2,
-            departmentName: 'Finance',
-            documentType: 'Attestation de Salaire',
-            description: 'Attestation de salaire pour demande de prêt bancaire',
-            priority: 'Élevée',
-            status: 'Approuvé',
-            responseDocumentId: 101,
-            responseDocumentName: 'attestation_salaire_marie_martin.pdf',
-            requestedAt: '2024-12-05T14:15:00',
-            respondedAt: '2024-12-05T16:30:00',
-            processedById: 'admin1',
-            processedByName: 'Admin RH',
-            createdAt: '2024-12-05T14:15:00',
-            updatedAt: '2024-12-05T16:30:00',
-            isActive: true
-          },
-          {
-            id: 3,
-            requesterId: 'user3',
-            requesterName: 'Pierre Bernard',
-            departmentId: 3,
-            departmentName: 'IT',
-            documentType: 'Contrat de Travail',
-            description: 'Copie du contrat de travail pour dossier personnel',
-            priority: 'Faible',
-            status: 'En Cours',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-04T11:00:00',
-            respondedAt: null,
-            processedById: 'admin1',
-            processedByName: 'Admin RH',
-            createdAt: '2024-12-04T11:00:00',
-            updatedAt: '2024-12-06T08:00:00',
-            isActive: true
-          },
-          {
-            id: 4,
-            requesterId: 'user4',
-            requesterName: 'Sophie Dubois',
-            departmentId: 4,
-            departmentName: 'Marketing',
-            documentType: 'Justificatif de Domicile',
-            description: 'Justificatif de domicile pour mise à jour du dossier',
-            priority: 'Urgente',
-            status: 'Rejeté',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-03T16:45:00',
-            respondedAt: '2024-12-04T09:15:00',
-            processedById: 'admin2',
-            processedByName: 'Admin Finance',
-            createdAt: '2024-12-03T16:45:00',
-            updatedAt: '2024-12-04T09:15:00',
-            isActive: true
-          }
-        ],
-        pageNumber: 1,
-        pageSize: 10,
-        totalRecords: 4,
-        totalPages: 1,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        totalPendingRequests: 1,
-        totalProcessedRequests: 2,
-        totalRejectedRequests: 1,
-        search: null,
-        sortBy: null,
-        sortDirection: null
-      };
-
-      this.documentRequests = mockResponse.data;
-      this.totalRecords = mockResponse.totalRecords;
-      this.totalPendingRequests = mockResponse.totalPendingRequests;
-      this.totalProcessedRequests = mockResponse.totalProcessedRequests;
-      this.totalRejectedRequests = mockResponse.totalRejectedRequests;
+      this.requests = [
+        {
+          id: '1',
+          requesterName: 'Chedly Rebai',
+          requesterEmail: 'jean.dupont@company.com',
+          departmentName: 'Informatique',
+          departmentId: '2',
+          documentType: 'Certificat de travail',
+          priority: 'haute',
+          status: 'Pending',
+          description: 'J\'ai besoin d\'un certificat de travail pour ma demande de prêt bancaire.',
+          requestedAt: new Date('2024-12-06T10:30:00'),
+          createdAt: new Date('2024-12-06T10:30:00')
+        },
+        {
+          id: '2',
+          requesterName: 'Marie Martin',
+          requesterEmail: 'marie.martin@company.com',
+          departmentName: 'Ressources Humaines',
+          departmentId: '1',
+          documentType: 'Bulletin de paie',
+          priority: 'normale',
+          status: 'Approved',
+          description: 'Demande des bulletins de paie des 3 derniers mois.',
+          requestedAt: new Date('2024-12-05T14:22:00'),
+          createdAt: new Date('2024-12-05T14:22:00'),
+          respondedAt: new Date('2024-12-05T16:30:00'),
+          processedByName: 'Sophie Admin'
+        }
+      ];
+      
+      this.filteredRequests = [...this.requests];
+      this.updateStats();
       this.loading = false;
     }, 1000);
-
-    // Real API call would be:
-    /*
-    this.http.get<DocumentRequestPagedResult>(`${this.baseUrl}/DocumentRequest`, { params: this.filter as any }).subscribe({
-      next: (response) => {
-        this.documentRequests = response.data;
-        this.totalRecords = response.totalCount;
-        this.totalPendingRequests = response.totalPendingRequests;
-        this.totalProcessedRequests = response.totalProcessedRequests;
-        this.totalRejectedRequests = response.totalRejectedRequests;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading document requests:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors du chargement des demandes'
-        });
-        this.loading = false;
-      }
-    });
-    */
   }
 
-  onPageChange(event: any) {
-    this.filter.pageNumber = event.page + 1;
-    this.filter.pageSize = event.rows;
-    this.loadDocumentRequests();
+  updateStats() {
+    this.totalRequests = this.requests.length;
+    this.pendingRequests = this.requests.filter(r => r.status === 'Pending').length;
+    this.approvedRequests = this.requests.filter(r => r.status === 'Approved').length;
+    this.rejectedRequests = this.requests.filter(r => r.status === 'Rejected').length;
   }
 
-  onGlobalFilter(event: any) {
-    this.filter.search = event.target.value;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
+  // AutoComplete search methods
+  searchStatusFilter(event: any) {
+    const query = event.query.toLowerCase();
+    this.statusFilterSuggestions = this.statusFilterOptions.filter(option =>
+      option.label.toLowerCase().includes(query)
+    );
+  }
+
+  searchPriorityFilter(event: any) {
+    const query = event.query.toLowerCase();
+    this.priorityFilterSuggestions = this.priorityFilterOptions.filter(option =>
+      option.label.toLowerCase().includes(query)
+    );
+  }
+
+  searchDocumentType(event: any) {
+    const query = event.query.toLowerCase();
+    this.documentTypeSuggestions = this.documentTypes.filter(type =>
+      type.label.toLowerCase().includes(query)
+    );
+  }
+
+  searchPriority(event: any) {
+    const query = event.query.toLowerCase();
+    this.prioritySuggestions = this.priorityOptions.filter(priority =>
+      priority.label.toLowerCase().includes(query)
+    );
+  }
+
+  searchDepartment(event: any) {
+    const query = event.query.toLowerCase();
+    this.departmentSuggestions = this.departments.filter(dept =>
+      dept.name.toLowerCase().includes(query)
+    );
+  }
+
+  searchResponseStatus(event: any) {
+    const query = event.query.toLowerCase();
+    this.responseStatusSuggestions = this.responseStatuses.filter(status =>
+      status.label.toLowerCase().includes(query)
+    );
+  }
+
+  // Filter methods
+  onSearch(event: any) {
+    this.applyFilters();
   }
 
   onStatusFilter(event: any) {
-    this.filter.status = event.value;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
+    if (event && event.value) {
+      this.statusFilter = event.value;
+    } else if (event === null) {
+      this.statusFilter = '';
+    }
+    this.applyFilters();
   }
 
   onPriorityFilter(event: any) {
-    this.filter.priority = event.value;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
+    if (event && event.value) {
+      this.priorityFilter = event.value;
+    } else if (event === null) {
+      this.priorityFilter = '';
+    }
+    this.applyFilters();
   }
 
-  openNew() {
-    this.request = this.getEmptyRequest();
-    this.submitted = false;
-    this.requestDialog = true;
-  }
-
-  editRequest(request: DocumentRequestDTO) {
-    this.request = { ...request };
-    this.requestDialog = true;
-  }
-
-  viewRequest(request: DocumentRequestDTO) {
-    this.selectedRequest = request;
-    this.requestDetailsDialog = true;
-  }
-
-  processRequest(request: DocumentRequestDTO) {
-    this.selectedRequest = request;
-    this.processAction = '';
-    this.processNote = '';
-    this.responseDocument = null;
-    this.processDialog = true;
-  }
-
-  deleteRequest(request: DocumentRequestDTO) {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer la demande #${request.id}?`,
-      header: 'Confirmer la suppression',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.performDeleteRequest(request.id);
-      }
+  applyFilters() {
+    this.filteredRequests = this.requests.filter(request => {
+      const matchesSearch = !this.searchTerm || 
+        request.requesterName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        request.documentType.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        request.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+      
+      const statusValue = this.getSelectedValue(this.statusFilter);
+      const priorityValue = this.getSelectedValue(this.priorityFilter);
+      
+      const matchesStatus = !statusValue || request.status === statusValue;
+      const matchesPriority = !priorityValue || request.priority === priorityValue;
+      
+      return matchesSearch && matchesStatus && matchesPriority;
     });
   }
 
-  deleteSelectedRequests() {
-    this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer ${this.selectedRequests.length} demande(s)?`,
-      header: 'Confirmer la suppression',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.performBulkDelete();
-      }
-    });
+  clearFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.priorityFilter = '';
+    this.filteredRequests = [...this.requests];
   }
 
-  private performDeleteRequest(requestId: number) {
-    setTimeout(() => {
-      this.documentRequests = this.documentRequests.filter(r => r.id !== requestId);
-      this.totalRecords--;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Demande supprimée avec succès'
-      });
-    }, 500);
+  hasFilters(): boolean {
+    return !!(this.searchTerm || this.statusFilter || this.priorityFilter);
   }
 
-  private performBulkDelete() {
-    const requestIds = this.selectedRequests.map(r => r.id);
-    setTimeout(() => {
-      this.documentRequests = this.documentRequests.filter(r => !requestIds.includes(r.id));
-      this.selectedRequests = [];
-      this.totalRecords -= requestIds.length;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Demandes supprimées avec succès'
-      });
-    }, 500);
+  // Dialog methods
+  showCreateDialog() {
+    this.createDialog = true;
+    this.resetForm();
   }
 
-  saveRequest() {
-    this.submitted = true;
+  showDetailsDialog(request: Request) {
+    this.selectedRequest = request;
+    this.detailsDialog = true;
+  }
 
-    if (!this.isRequestValid()) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis'
-      });
+  // CRUD operations
+  createRequest() {
+    this.validationErrors = this.validateForm();
+    if (this.validationErrors.length > 0) {
       return;
     }
 
-    this.saving = true;
-
-    if (this.request.id) {
-      this.updateRequest();
-    } else {
-      this.createRequest();
-    }
-  }
-
-  private createRequest() {
-    const createDto: CreateDocumentRequestDTO = {
-      requesterId: 'current-user-id', // Get from auth service
-      departmentId: this.request.departmentId,
-      documentType: this.request.documentType,
-      description: this.request.description,
-      priority: this.request.priority
-    };
-
+    this.creatingRequest = true;
+    
     setTimeout(() => {
-      const newRequest: DocumentRequestDTO = {
-        id: Math.max(...this.documentRequests.map(r => r.id)) + 1,
-        requesterId: createDto.requesterId,
-        requesterName: 'Utilisateur Actuel',
-        departmentId: createDto.departmentId,
-        departmentName: this.departments.find(d => d.id === createDto.departmentId)?.name || '',
-        documentType: createDto.documentType,
-        description: createDto.description,
-        priority: createDto.priority,
-        status: 'En Attente',
-        responseDocumentId: null,
-        responseDocumentName: null,
-        requestedAt: new Date().toISOString(),
-        respondedAt: null,
-        processedById: null,
-        processedByName: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: null,
-        isActive: true
+      const newRequest: Request = {
+        id: (this.requests.length + 1).toString(),
+        requesterName: 'Utilisateur Courant',
+        requesterEmail: 'user@company.com',
+        departmentName: this.getDepartmentName(this.getSelectedValue(this.newRequest.departmentId)),
+        departmentId: this.getSelectedValue(this.newRequest.departmentId)!,
+        documentType: this.getDisplayValue(this.newRequest.documentType)!,
+        priority: this.getSelectedValue(this.newRequest.priority)!,
+        status: 'Pending',
+        description: this.newRequest.description!,
+        requestedAt: new Date(),
+        createdAt: new Date()
       };
 
-      this.documentRequests.unshift(newRequest);
-      this.totalRecords++;
-      this.totalPendingRequests++;
-
+      this.requests.unshift(newRequest);
+      this.applyFilters();
+      this.updateStats();
+      
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
         detail: 'Demande créée avec succès'
       });
-      this.hideDialog();
+      
+      this.createDialog = false;
+      this.creatingRequest = false;
     }, 1500);
   }
 
-  private updateRequest() {
-    const updateDto: UpdateDocumentRequestDTO = {
-      documentType: this.request.documentType,
-      description: this.request.description,
-      priority: this.request.priority,
-      status: this.request.status,
-      responseDocumentId: this.request.responseDocumentId,
-      processedById: this.request.processedById
-    };
+  respondToRequest(request: Request) {
+    this.selectedRequest = request;
+    this.responseDialog = true;
+    this.resetResponseForm();
+  }
 
-    setTimeout(() => {
-      const index = this.documentRequests.findIndex(r => r.id === this.request.id);
-      if (index !== -1) {
-        this.documentRequests[index] = { 
-          ...this.documentRequests[index], 
-          ...updateDto,
-          documentType: updateDto.documentType ?? '',
-          description: updateDto.description ?? '',
-          priority: updateDto.priority ?? '',
-          status: updateDto.status ?? '',
-          updatedAt: new Date().toISOString()
-        };
+  editRequest(request: Request) {
+    // Implementation for editing request
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Modification',
+      detail: 'Fonction de modification en cours de développement'
+    });
+  }
+
+  deleteRequest(request: Request) {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer cette demande ?',
+      header: 'Confirmer la suppression',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.requests = this.requests.filter(r => r.id !== request.id);
+        this.applyFilters();
+        this.updateStats();
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Supprimé',
+          detail: 'Demande supprimée avec succès'
+        });
       }
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Demande modifiée avec succès'
-      });
-      this.hideDialog();
-    }, 1500);
+    });
   }
 
-  confirmProcess() {
-    if (!this.processAction) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Veuillez sélectionner une action'
-      });
+  sendResponse() {
+    if (!this.isResponseValid()) {
       return;
     }
 
-    this.processing = true;
-
+    this.sendingResponse = true;
+    
     setTimeout(() => {
       if (this.selectedRequest) {
-        const index = this.documentRequests.findIndex(r => r.id === this.selectedRequest!.id);
-        if (index !== -1) {
-          this.documentRequests[index] = {
-            ...this.documentRequests[index],
-            status: this.processAction,
-            respondedAt: new Date().toISOString(),
-            processedById: 'current-admin-id',
-            processedByName: 'Admin Actuel',
-            responseDocumentId: this.responseDocument ? 999 : null,
-            responseDocumentName: this.responseDocument?.name || null,
-            updatedAt: new Date().toISOString()
-          };
+        this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
+        this.selectedRequest.respondedAt = new Date();
+        this.selectedRequest.processedByName = 'Admin Courant';
+        
+        if (this.selectedFile) {
+          this.selectedRequest.responseDocumentName = this.selectedFile.name;
         }
-
-        // Update statistics
-        this.updateStatistics();
       }
-
+      
+      this.applyFilters();
+      this.updateStats();
+      
       this.messageService.add({
         severity: 'success',
-        summary: 'Succès',
-        detail: 'Demande traitée avec succès'
+        summary: 'Réponse envoyée',
+        detail: 'La réponse a été envoyée avec succès'
       });
-
-      this.processing = false;
-      this.processDialog = false;
+      
+      this.responseDialog = false;
+      this.sendingResponse = false;
     }, 1500);
   }
 
-  private updateStatistics() {
-    this.totalPendingRequests = this.documentRequests.filter(r => r.status === 'En Attente').length;
-    this.totalProcessedRequests = this.documentRequests.filter(r => r.status === 'Approuvé').length;
-    this.totalRejectedRequests = this.documentRequests.filter(r => r.status === 'Rejeté').length;
+  // Utility methods
+  getInitials(name: string): string {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
   }
 
-  hideDialog() {
-    this.requestDialog = false;
-    this.submitted = false;
-    this.saving = false;
-    this.request = this.getEmptyRequest();
+  getStatusSeverity(status: string): string {
+    const severityMap: { [key: string]: string } = {
+      'Pending': 'warning',
+      'Approved': 'success',
+      'Rejected': 'danger',
+      'In Progress': 'info'
+    };
+    return severityMap[status] || 'secondary';
   }
 
-  onResponseDocumentSelect(event: any) {
-    this.responseDocument = event.files[0];
+  getStatusIcon(status: string): string {
+    const iconMap: { [key: string]: string } = {
+      'Pending': 'pi-clock',
+      'Approved': 'pi-check',
+      'Rejected': 'pi-times',
+      'In Progress': 'pi-spinner'
+    };
+    return iconMap[status] || 'pi-info';
   }
 
-  downloadResponseDocument(request: DocumentRequestDTO) {
+  getPrioritySeverity(priority: string): string {
+    const severityMap: { [key: string]: string } = {
+      'urgent': 'danger',
+      'haute': 'warning',
+      'normale': 'info',
+      'basse': 'secondary'
+    };
+    return severityMap[priority] || 'secondary';
+  }
+
+  getPriorityIcon(priority: string): string {
+    const iconMap: { [key: string]: string } = {
+      'urgent': 'pi-exclamation-triangle',
+      'haute': 'pi-flag',
+      'normale': 'pi-minus',
+      'basse': 'pi-arrow-down'
+    };
+    return iconMap[priority] || 'pi-flag';
+  }
+
+  getDocumentTypeIcon(type: string): string {
+    return 'pi pi-file-text';
+  }
+
+  getDocumentTypeColor(type: string): string {
+    return '#3B82F6';
+  }
+
+  getDepartmentName(departmentId: string): string {
+    const dept = this.departments.find(d => d.id === departmentId);
+    return dept?.name || '';
+  }
+
+  // Helper methods for AutoComplete values
+  getDisplayValue(value: any): string {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value.label) return value.label;
+    if (typeof value === 'object' && value.name) return value.name;
+    return value.toString();
+  }
+
+  getSelectedValue(value: any): string {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value.value) return value.value;
+    if (typeof value === 'object' && value.id) return value.id;
+    return value.toString();
+  }
+
+  validateForm(): string[] {
+    const errors: string[] = [];
+    
+    if (!this.newRequest.documentType) {
+      errors.push('Le type de document est requis');
+    }
+    if (!this.newRequest.priority) {
+      errors.push('La priorité est requise');
+    }
+    if (!this.newRequest.departmentId) {
+      errors.push('Le département est requis');
+    }
+    if (!this.newRequest.description?.trim()) {
+      errors.push('La description est requise');
+    }
+    
+    return errors;
+  }
+
+  isFormValid(): boolean {
+    return this.validateForm().length === 0;
+  }
+
+  isResponseValid(): boolean {
+    return !!(this.responseForm.status && this.responseForm.message?.trim());
+  }
+
+  resetForm() {
+    this.newRequest = {};
+    this.validationErrors = [];
+  }
+
+  resetResponseForm() {
+    this.responseForm = {
+      status: '',
+      message: '',
+      notes: ''
+    };
+    this.selectedFile = null;
+  }
+
+  cancelCreate() {
+    this.createDialog = false;
+    this.resetForm();
+  }
+
+  cancelResponse() {
+    this.responseDialog = false;
+    this.resetResponseForm();
+  }
+
+  // File handling
+  onFileSelect(event: any) {
+    this.selectedFile = event.files[0];
+  }
+
+  removeSelectedFile() {
+    this.selectedFile = null;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  // Quick actions
+  quickApprove() {
+    this.responseForm.status = 'Approved';
+    this.responseForm.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
+  }
+
+  quickReject() {
+    this.responseForm.status = 'Rejected';
+    this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
+  }
+
+  requestMoreInfo() {
+    this.responseForm.status = 'More Info Required';
+    this.responseForm.message = 'Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.';
+  }
+
+  saveDraft() {
     this.messageService.add({
       severity: 'info',
-      summary: 'Téléchargement',
-      detail: `Téléchargement de "${request.responseDocumentName}" en cours...`
+      summary: 'Brouillon sauvegardé',
+      detail: 'Votre réponse a été sauvegardée en brouillon'
+    });
+  }
+
+  // Additional methods
+  refreshRequests() {
+    this.loadRequests();
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Actualisé',
+      detail: 'Liste des demandes actualisée'
     });
   }
 
@@ -564,182 +611,15 @@ globalFilterValue: any;
     });
   }
 
-  // Utility methods
-  getEmptyRequest(): any {
-    return {
-      requesterId: '',
-      requesterName: '',
-      departmentId: null,
-      documentType: '',
-      description: '',
-      priority: 'Normale',
-      status: 'En Attente'
-    };
+  downloadResponseDocument(request: Request) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement',
+      detail: `Téléchargement de ${request.responseDocumentName}`
+    });
   }
 
-  isRequestValid(): boolean {
-    return !!(
-      this.request.departmentId &&
-      this.request.documentType?.trim() &&
-      this.request.description?.trim() &&
-      this.request.priority
-    );
+  getResponseStatusSeverity(status: string): string {
+    return this.getStatusSeverity(status);
   }
-
-  getInitials(name: string): string {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  }
-
-  getDocumentTypeIcon(type: string): string {
-    const iconMap: { [key: string]: string } = {
-      'Certificat de Travail': 'pi pi-file-pdf text-red-500',
-      'Attestation de Salaire': 'pi pi-file-word text-blue-500',
-      'Contrat de Travail': 'pi pi-file text-gray-600',
-      'Relevé de Notes': 'pi pi-file-excel text-green-500',
-      'Certificat Médical': 'pi pi-heart text-pink-500',
-      'Justificatif de Domicile': 'pi pi-home text-purple-500',
-      'Pièce d\'Identité': 'pi pi-id-card text-orange-500'
-    };
-    return iconMap[type] || 'pi pi-file text-gray-500';
-  }
-
-  getPrioritySeverity(priority: string): string {
-    switch (priority) {
-      case 'Urgente':
-        return 'danger';
-      case 'Élevée':
-        return 'warning';
-      case 'Normale':
-        return 'info';
-      case 'Faible':
-        return 'secondary';
-      default:
-        return 'info';
-    }
-  }
-
-  getStatusSeverity(status: string): string {
-    switch (status) {
-      case 'Approuvé':
-        return 'success';
-      case 'Rejeté':
-        return 'danger';
-      case 'En Cours':
-        return 'warning';
-      case 'En Attente':
-        return 'info';
-      default:
-        return 'info';
-    }
-  }
-
-
-
-  selectedStatus: any = null;
-  selectedPriority: any = null;
-  selectedDepartment: any = null;
-  selectedRequestPriority: any = null;
-  selectedRequestStatus: any = null;
-
-  // Filtered options for autocomplete
-  filteredStatusOptions: any[] = [];
-  filteredPriorityOptions: any[] = [];
-  filteredDepartments: any[] = [];
-  filteredDocumentTypes: string[] = [];
-  filteredRequestPriorityOptions: any[] = [];
-  filteredRequestStatusOptions: any[] = [];
-
-  // ...existing methods...
-
-  // AutoComplete search methods
-  searchStatus(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredStatusOptions = this.statusOptions.filter(option => 
-      option.label.toLowerCase().includes(query)
-    );
-  }
-
-  searchPriority(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredPriorityOptions = this.priorityOptions.filter(option => 
-      option.label.toLowerCase().includes(query)
-    );
-  }
-
-  searchDepartment(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredDepartments = this.departments.filter(dept => 
-      dept.name.toLowerCase().includes(query)
-    );
-  }
-
-  searchDocumentType(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredDocumentTypes = this.documentTypes.filter(type => 
-      type.toLowerCase().includes(query)
-    );
-  }
-
-  searchRequestPriority(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredRequestPriorityOptions = this.priorityOptions.filter(option => 
-      option.label.toLowerCase().includes(query)
-    );
-  }
-
-  searchRequestStatus(event: any) {
-    const query = event.query.toLowerCase();
-    this.filteredRequestStatusOptions = this.statusOptions.filter(option => 
-      option.label.toLowerCase().includes(query)
-    );
-  }
-
-  // Selection event handlers
-  onStatusSelect(event: any) {
-    this.filter.status = event.value;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
-  }
-
-  onStatusClear() {
-    this.selectedStatus = null;
-    this.filter.status = null;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
-  }
-
-  onPrioritySelect(event: any) {
-    this.filter.priority = event.value;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
-  }
-
-  onPriorityClear() {
-    this.selectedPriority = null;
-    this.filter.priority = null;
-    this.filter.pageNumber = 1;
-    this.loadDocumentRequests();
-  }
-
-  onDepartmentSelect(event: any) {
-    this.request.departmentId = event.id;
-  }
-
-  onDocumentTypeSelect(event: any) {
-    this.request.documentType = event;
-  }
-
-  onRequestPrioritySelect(event: any) {
-    this.request.priority = event.value;
-  }
-
-  onRequestStatusSelect(event: any) {
-    this.request.status = event.value;
-  }
-
 }

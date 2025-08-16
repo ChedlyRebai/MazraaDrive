@@ -31,5 +31,6 @@ export class LoginComponent {
       password: this.password,
       rememberMe: this.rememberMe
     });
+     window.location.href = '/home';
   }
 }
