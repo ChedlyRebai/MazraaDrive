@@ -19,16 +19,17 @@ import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 
 // Models
-import { 
-  DepartmentDto, 
-  DepartmentCreateDTO, 
-  DepartmentUpdateDTO, 
-  DepartmentFilterDto, 
-  DepartmentPagedResult 
+import {
+  DepartmentDto,
+  DepartmentCreateDTO,
+  DepartmentUpdateDTO,
+  DepartmentFilterDto,
+  DepartmentPagedResult,
 } from '../../shared/models/department';
 import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { Textarea, TextareaModule } from 'primeng/textarea';
 import { ThemeSwitcher } from '../themeswitcher';
+import { DepartmentRealtimeService } from '../../core/services/Hub/DepartmentRealtimeService';
 
 interface UserCountRange {
   label: string;
@@ -56,19 +57,18 @@ interface UserCountRange {
     IconFieldModule,
     InputIconModule,
     TooltipModule,
-    ThemeSwitcher
+    ThemeSwitcher,
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './department-mangement.html',
-  styleUrls: ['./department-mangement.css']
+  styleUrls: ['./department-mangement.css'],
 })
 export class DepartmentMangement implements OnInit {
-
   departments: DepartmentDto[] = [];
   selectedDepartments: DepartmentDto[] = [];
   selectedDepartment: DepartmentDto | null = null;
   department: any = this.getEmptyDepartment();
-  
+
   departmentDialog = false;
   departmentDetailsDialog = false;
   submitted = false;
@@ -87,7 +87,7 @@ export class DepartmentMangement implements OnInit {
     maxUserCount: null,
     search: null,
     sortBy: null,
-    sortDirection: null
+    sortDirection: null,
   };
 
   // Statistics
@@ -105,28 +105,48 @@ export class DepartmentMangement implements OnInit {
     { label: '1-10 utilisateurs', minCount: 1, maxCount: 10 },
     { label: '11-25 utilisateurs', minCount: 11, maxCount: 25 },
     { label: '26-50 utilisateurs', minCount: 26, maxCount: 50 },
-    { label: '50+ utilisateurs', minCount: 51, maxCount: null }
+    { label: '50+ utilisateurs', minCount: 51, maxCount: null },
   ];
 
   private baseUrl = 'http://localhost:5108/api';
 
   constructor(
+    private realtime: DepartmentRealtimeService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private http: HttpClient
   ) {}
 
   ngOnInit() {
+    //this.load(); // existing
+    this.realtime.connect();
+    this.realtime.created$.subscribe((d) => {
+      console.log('Department created:', d);
+      //this.data.unshift(d);
+    });
+    this.realtime.updated$.subscribe((d) => {
+      // const i = this.data.findIndex((x) => x.id === d.id);
+      // if (i > -1) this.data[i] = d;
+      console.log('Department updated:', d);
+    });
+    this.realtime.deleted$.subscribe((id) => {
+      console.log('Department deleted:', id);
+      // this.data = this.data.filter((x) => x.id !== id);
+    });
     this.loadDepartments();
   }
-
+  ngOnDestroy() {
+    this.realtime.disconnect();
+  }
   get dialogTitle(): string {
-    return this.selectedDepartment ? 'Modifier le département' : 'Nouveau département';
+    return this.selectedDepartment
+      ? 'Modifier le département'
+      : 'Nouveau département';
   }
 
   loadDepartments() {
     this.loading = true;
-    
+
     // Mock data matching DepartmentDto interface
     setTimeout(() => {
       const mockResponse: DepartmentPagedResult = {
@@ -134,63 +154,69 @@ export class DepartmentMangement implements OnInit {
           {
             id: 1,
             name: 'Ressources Humaines',
-            description: 'Gestion du personnel, recrutement, formation et développement des ressources humaines',
+            description:
+              'Gestion du personnel, recrutement, formation et développement des ressources humaines',
             createdAt: '2024-01-15T08:30:00',
             updatedAt: '2024-12-01T10:15:00',
             userCount: 15,
             folderCount: 25,
-            documentRequestCount: 45
+            documentRequestCount: 45,
           },
           {
             id: 2,
             name: 'Finance',
-            description: 'Gestion financière, comptabilité, budgets et contrôle de gestion',
+            description:
+              'Gestion financière, comptabilité, budgets et contrôle de gestion',
             createdAt: '2024-01-20T09:00:00',
             updatedAt: '2024-11-28T14:30:00',
             userCount: 12,
             folderCount: 30,
-            documentRequestCount: 38
+            documentRequestCount: 38,
           },
           {
             id: 3,
-            name: 'Technologies de l\'Information',
-            description: 'Développement logiciel, infrastructure IT, support technique et cybersécurité',
+            name: "Technologies de l'Information",
+            description:
+              'Développement logiciel, infrastructure IT, support technique et cybersécurité',
             createdAt: '2024-02-01T10:00:00',
             updatedAt: '2024-12-05T16:45:00',
             userCount: 20,
             folderCount: 40,
-            documentRequestCount: 25
+            documentRequestCount: 25,
           },
           {
             id: 4,
             name: 'Marketing et Communication',
-            description: 'Marketing digital, communication interne et externe, relations publiques',
+            description:
+              'Marketing digital, communication interne et externe, relations publiques',
             createdAt: '2024-02-10T11:15:00',
             updatedAt: '2024-11-30T09:20:00',
             userCount: 8,
             folderCount: 15,
-            documentRequestCount: 20
+            documentRequestCount: 20,
           },
           {
             id: 5,
             name: 'Opérations',
-            description: 'Gestion des opérations, production, logistique et chaîne d\'approvisionnement',
+            description:
+              "Gestion des opérations, production, logistique et chaîne d'approvisionnement",
             createdAt: '2024-01-25T13:45:00',
             updatedAt: '2024-12-03T11:10:00',
             userCount: 25,
             folderCount: 35,
-            documentRequestCount: 55
+            documentRequestCount: 55,
           },
           {
             id: 6,
             name: 'Administration Générale',
-            description: 'Support administratif, gestion des installations et services généraux',
+            description:
+              'Support administratif, gestion des installations et services généraux',
             createdAt: '2024-03-01T08:00:00',
             updatedAt: '2024-12-02T15:30:00',
             userCount: 10,
             folderCount: 20,
-            documentRequestCount: 30
-          }
+            documentRequestCount: 30,
+          },
         ],
         pageNumber: 1,
         pageSize: 10,
@@ -202,14 +228,16 @@ export class DepartmentMangement implements OnInit {
         totalUsers: 90,
         search: null,
         sortBy: null,
-        sortDirection: null
+        sortDirection: null,
       };
 
       this.departments = mockResponse.data;
       this.totalRecords = mockResponse.totalRecords;
       this.totalDepartments = mockResponse.totalDepartments;
       this.totalUsers = mockResponse.totalUsers;
-      this.avgUsersPerDepartment = Math.round(this.totalUsers / this.totalDepartments);
+      this.avgUsersPerDepartment = Math.round(
+        this.totalUsers / this.totalDepartments
+      );
       this.loading = false;
     }, 1000);
 
@@ -252,7 +280,7 @@ export class DepartmentMangement implements OnInit {
   // AutoComplete methods
   searchUserCountRange(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredUserCountRanges = this.userCountRanges.filter(range => 
+    this.filteredUserCountRanges = this.userCountRanges.filter((range) =>
       range.label.toLowerCase().includes(query)
     );
   }
@@ -304,7 +332,7 @@ export class DepartmentMangement implements OnInit {
       description: department.description,
       userCount: department.userCount,
       folderCount: department.folderCount,
-      documentRequestCount: department.documentRequestCount
+      documentRequestCount: department.documentRequestCount,
     };
     this.departmentDialog = true;
   }
@@ -321,55 +349,69 @@ export class DepartmentMangement implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.performDeleteDepartment(department.id);
-      }
+      },
     });
   }
 
   deleteSelectedDepartments() {
-    const totalUsers = this.selectedDepartments.reduce((sum, dept) => sum + dept.userCount, 0);
+    const totalUsers = this.selectedDepartments.reduce(
+      (sum, dept) => sum + dept.userCount,
+      0
+    );
     this.confirmationService.confirm({
       message: `Êtes-vous sûr de vouloir supprimer ${this.selectedDepartments.length} département(s)? Cette action affectera ${totalUsers} utilisateur(s).`,
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.performBulkDelete();
-      }
+      },
     });
   }
 
   private performDeleteDepartment(departmentId: number) {
     setTimeout(() => {
-      const deletedDept = this.departments.find(d => d.id === departmentId);
-      this.departments = this.departments.filter(d => d.id !== departmentId);
+      const deletedDept = this.departments.find((d) => d.id === departmentId);
+      this.departments = this.departments.filter((d) => d.id !== departmentId);
       this.totalRecords--;
       this.totalDepartments--;
       if (deletedDept) {
         this.totalUsers -= deletedDept.userCount;
-        this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+        this.avgUsersPerDepartment =
+          this.totalDepartments > 0
+            ? Math.round(this.totalUsers / this.totalDepartments)
+            : 0;
       }
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Département supprimé avec succès'
+        detail: 'Département supprimé avec succès',
       });
     }, 500);
   }
 
   private performBulkDelete() {
-    const departmentIds = this.selectedDepartments.map(d => d.id);
-    const deletedUsersCount = this.selectedDepartments.reduce((sum, dept) => sum + dept.userCount, 0);
-    
+    const departmentIds = this.selectedDepartments.map((d) => d.id);
+    const deletedUsersCount = this.selectedDepartments.reduce(
+      (sum, dept) => sum + dept.userCount,
+      0
+    );
+
     setTimeout(() => {
-      this.departments = this.departments.filter(d => !departmentIds.includes(d.id));
+      this.departments = this.departments.filter(
+        (d) => !departmentIds.includes(d.id)
+      );
       this.selectedDepartments = [];
       this.totalRecords -= departmentIds.length;
       this.totalDepartments -= departmentIds.length;
       this.totalUsers -= deletedUsersCount;
-      this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+      this.avgUsersPerDepartment =
+        this.totalDepartments > 0
+          ? Math.round(this.totalUsers / this.totalDepartments)
+          : 0;
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Départements supprimés avec succès'
+        detail: 'Départements supprimés avec succès',
       });
     }, 500);
   }
@@ -381,7 +423,7 @@ export class DepartmentMangement implements OnInit {
       this.messageService.add({
         severity: 'warn',
         summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis'
+        detail: 'Veuillez remplir tous les champs requis',
       });
       return;
     }
@@ -398,30 +440,33 @@ export class DepartmentMangement implements OnInit {
   private createDepartment() {
     const createDto: DepartmentCreateDTO = {
       name: this.department.name,
-      description: this.department.description
+      description: this.department.description,
     };
 
     setTimeout(() => {
       const newDepartment: DepartmentDto = {
-        id: Math.max(...this.departments.map(d => d.id)) + 1,
+        id: Math.max(...this.departments.map((d) => d.id)) + 1,
         name: createDto.name,
         description: createDto.description,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         userCount: 0,
         folderCount: 0,
-        documentRequestCount: 0
+        documentRequestCount: 0,
       };
 
       this.departments.unshift(newDepartment);
       this.totalRecords++;
       this.totalDepartments++;
-      this.avgUsersPerDepartment = this.totalDepartments > 0 ? Math.round(this.totalUsers / this.totalDepartments) : 0;
+      this.avgUsersPerDepartment =
+        this.totalDepartments > 0
+          ? Math.round(this.totalUsers / this.totalDepartments)
+          : 0;
 
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Département créé avec succès'
+        detail: 'Département créé avec succès',
       });
       this.hideDialog();
     }, 1500);
@@ -433,24 +478,26 @@ export class DepartmentMangement implements OnInit {
     const updateDto: DepartmentUpdateDTO = {
       id: this.selectedDepartment.id,
       name: this.department.name,
-      description: this.department.description
+      description: this.department.description,
     };
 
     setTimeout(() => {
-      const index = this.departments.findIndex(d => d.id === this.selectedDepartment!.id);
+      const index = this.departments.findIndex(
+        (d) => d.id === this.selectedDepartment!.id
+      );
       if (index !== -1) {
         this.departments[index] = {
           ...this.departments[index],
           name: updateDto.name,
           description: updateDto.description,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         };
       }
 
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Département modifié avec succès'
+        detail: 'Département modifié avec succès',
       });
       this.hideDialog();
     }, 1500);
@@ -468,7 +515,7 @@ export class DepartmentMangement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Export',
-      detail: 'Export des départements en cours...'
+      detail: 'Export des départements en cours...',
     });
   }
 
@@ -479,12 +526,14 @@ export class DepartmentMangement implements OnInit {
       description: '',
       userCount: 0,
       folderCount: 0,
-      documentRequestCount: 0
+      documentRequestCount: 0,
     };
   }
 
   isDepartmentValid(): boolean {
-    return !!(this.department.name?.trim() && this.department.description?.trim());
+    return !!(
+      this.department.name?.trim() && this.department.description?.trim()
+    );
   }
 
   getRatio(numerator: number, denominator: number): string {

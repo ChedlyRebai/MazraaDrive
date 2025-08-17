@@ -75,22 +75,27 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddResponseCompression();
+builder.Services.AddSignalR();
+builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
+    p.WithOrigins("http://localhost:4200","https://your-vercel-domain.vercel.app")
+     .AllowAnyHeader().AllowAnyMethod()
+     .AllowCredentials()));
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
-app.Use(async (context, next) =>
-{
-    // Log request details
-    Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
+// app.Use(async (context, next) =>
+// {
+//     // Log request details
+//     Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
 
-    var ipAddress = context?.Connection?.RemoteIpAddress?.ToString();
-    var userAgent = context?.Request?.Headers["User-Agent"].ToString();
-    Console.WriteLine($"Request IP: {ipAddress}");
-    Console.WriteLine($"Request User-Agent: {userAgent}");
-    await next();
+//     var ipAddress = context?.Connection?.RemoteIpAddress?.ToString();
+//     var userAgent = context?.Request?.Headers["User-Agent"].ToString();
+//     Console.WriteLine($"Request IP: {ipAddress}");
+//     Console.WriteLine($"Request User-Agent: {userAgent}");
+//     await next();
 
-    // Log response details
-    Console.WriteLine($"Response: {context.Response.StatusCode}");
-});
+//     // Log response details
+//     Console.WriteLine($"Response: {context.Response.StatusCode}");
+// });
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -106,7 +111,7 @@ if (!Directory.Exists(uploadsPath))
     Directory.CreateDirectory(uploadsPath);
 }
 
-
+app.UseCors("AllowAll");
 // After app.Build(), add:
 app.UseCors("AllowAll");
 //app.UseCors("CORSPolicy");
@@ -125,9 +130,10 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //     options.UseMySql(
 //         connectionString, ServerVersion.AutoDetect(connectionString)
 //     ));
- app.UseResponseCompression();
- app.UseResponseCaching();
+//  app.UseResponseCompression();
+//  app.UseResponseCaching();
 app.MapControllers();
+app.MapHub<Api.Hubs.DepartmentHub>("/hubs/departments");
 app.Run();
 
 

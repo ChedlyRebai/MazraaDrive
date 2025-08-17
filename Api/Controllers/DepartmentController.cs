@@ -1,11 +1,12 @@
 using Api.Helper;
+using Api.Hubs;
 using AutoMapper;
 using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.SignalR;
 namespace Api.Controllers
 {
     [ApiController]
@@ -13,9 +14,11 @@ namespace Api.Controllers
     public class DepartmentController : BaseController
     {
         public readonly IAuditLogRepository _auditLogger;
-        public DepartmentController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
+        public readonly IHubContext<DepartmentHub> _hub;
+        public DepartmentController(IUnitOfWork unitOfWork, IHubContext<DepartmentHub> hub,IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
         {
             _auditLogger = auditLogger;
+            _hub = hub;
         }
 
         [HttpGet("test")]
@@ -123,6 +126,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var departmentDto = _mapper.Map<DepartmentDto>(createdDepartment);
+                await _hub.Clients.All.SendAsync("DepartmentCreated", departmentDto);
                 await _auditLogger.LogAsync("CreateDepartment", "Created new department", "10", "Department");
                 return CreatedAtAction(nameof(GetDepartment), new { id = departmentDto.Id },
                     new { success = true, data = departmentDto });
@@ -159,6 +163,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var departmentDto = _mapper.Map<DepartmentDto>(existingDepartment);
+                await _hub.Clients.All.SendAsync("DepartmentUpdated", departmentDto);
                 await _auditLogger.LogAsync("UpdateDepartment", "Updated department details", "10", "Department");
                 return Ok(departmentDto);
             }
@@ -184,6 +189,7 @@ namespace Api.Controllers
                 await _unitOfWork.DepartmentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
                 await _auditLogger.LogAsync("DeleteDepartment", "Deleted department", "10", "Department");
+                await _hub.Clients.All.SendAsync("DepartmentDeleted", id);
                 return Ok(new ResponseAPI(200, "Department deleted successfully"));
             }
             catch (Exception ex)

@@ -13,13 +13,15 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class DocumentController : BaseController
     {
+        public readonly IAuditLogRepository _auditLogger;
         private readonly IWebHostEnvironment _environment;
         private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
         private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
 
-        public DocumentController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment) 
+        public DocumentController( IAuditLogRepository auditLogger,IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment) 
             : base(unitOfWork, mapper)
         {
+            _auditLogger = auditLogger;
             _environment = environment;
         }
 
@@ -37,7 +39,7 @@ namespace Api.Controllers
             {
                 var pagedDocuments = await _unitOfWork.DocumentRepository.GetPagedAsync(filter);
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
-
+                Console.WriteLine($"Total Records: {pagedDocuments.TotalRecords}, Page Size: {pagedDocuments.PageSize}, Page Number: {pagedDocuments.PageNumber}");
                 var result = new DocumentPagedResult
                 {
                     Data = documentDtos,
@@ -53,8 +55,12 @@ namespace Api.Controllers
                     TotalDocuments = pagedDocuments.TotalRecords,
                     TotalUsers = 100
                 };
+                Console.WriteLine("result:****************************************");
+                
                 // Log the retrieval of documents
                 await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
+                //await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
+                Console.WriteLine(result.Data);
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
