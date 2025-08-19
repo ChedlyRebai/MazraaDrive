@@ -176,11 +176,11 @@
         </p-iconField>
       </div>
     </div>
-
+    <ng-container *ngIf="userService.users$ | async as users">
     <!-- Users Table -->
     <p-table
       #dt
-      [value]="users"
+      [value]="users.data"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
@@ -294,7 +294,7 @@
         </tr>
       </ng-template>
     </p-table>
-
+</ng-container>
     <!-- User Dialog -->
     <p-dialog
       [(visible)]="userDialog"

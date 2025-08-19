@@ -13,4 +13,15 @@ export class UserService {
    baseUrl=environment.apiUrl+"/User"
    private users = new BehaviorSubject<UserPagedResult>({} as UserPagedResult);
    users$ = this.users.asObservable();
+   getUsers() {
+       return this.http.get<UserPagedResult>(`${this.baseUrl}`).subscribe(
+         (result) => {
+           console.log('Fetched users:', result);
+           this.users.next(result);
+         },
+         (error) => {
+           console.error('Error fetching users:', error);
+         }
+       );
+     }
 }

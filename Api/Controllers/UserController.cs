@@ -59,7 +59,7 @@ namespace Api.Controllers
 
                 };
                 //await _auditLogger.LogAsync("GetUsers", "Retrieved paged list of users", "10", "User");
-                return Ok(new { success = true, data = result });
+                return Ok(result );
             }
             catch (Exception ex)
             {

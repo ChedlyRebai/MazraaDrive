@@ -1,3 +1,4 @@
+import { UserService } from './../../core/services/user-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedModule } from "../../shared/shared.module";
@@ -38,7 +39,7 @@ interface UserFilter {
   selector: 'app-user-mangement',
   templateUrl: './user-mangement.html',
   providers: [MessageService, ConfirmationService],
-  imports: [SharedModule, Avatar,FormsModule ,Checkbox, Password, AutoComplete, FloatLabelModule, ThemeSwitcher]
+  imports: [SharedModule, Avatar,FormsModule ,CommonModule,Checkbox, Password, AutoComplete, FloatLabelModule, ThemeSwitcher]
 })
 export class UserMangement implements OnInit {
 
@@ -91,12 +92,14 @@ export class UserMangement implements OnInit {
   profilePictureFile: File | null = null;
 
   constructor(
+    public userService: UserService,
     private message: MessageService,
     private confirm: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.loadUsers();
+    this.userService.getUsers();
   }
 
   // Autocomplete complete methods (filters)
