@@ -56,12 +56,12 @@ namespace Api.Controllers
                     TotalUsers = 100
                 };
                 Console.WriteLine("result:****************************************");
-                
+
                 // Log the retrieval of documents
                 //await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 ////await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 Console.WriteLine(result.Data);
-                return Ok(new { success = true, data = result });
+                return Ok(result);
             }
             catch (Exception ex)
             {

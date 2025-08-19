@@ -9,8 +9,6 @@
         Organisez et gérez vos documents en toute simplicité
       </p>
     </div>
-   
-   
   </div>
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
     <div
@@ -101,178 +99,185 @@
     </ng-template>
   </p-toolbar>
 
-  <p-table
-    #dt
-    [value]="documents"
-    [rows]="10"
-    [paginator]="true"
-    [globalFilterFields]="['name', 'category', 'type', 'uploadedBy', 'status']"
-    [tableStyle]="{ 'min-width': '75rem' }"
-    [(selection)]="selectedDocuments"
-    [rowHover]="true"
-    dataKey="id"
-    currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} documents"
-    [showCurrentPageReport]="true"
-    [loading]="loading"
-    [rowsPerPageOptions]="[10, 25, 50]"
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex items-center justify-between">
-        <h5 class="m-0"></h5>
-        <div class="flex gap-2">
-          <p-iconField iconPosition="left">
-            <p-inputIcon class="pi pi-search" />
-            <input pInputText type="text" placeholder="Rechercher..." />
-          </p-iconField>
-          <p-button
-            icon="pi pi-refresh"
-            [outlined]="true"
-            (click)="loadDocuments()"
-            [loading]="loading"
-          />
-        </div>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 3rem">
-          <p-tableHeaderCheckbox />
-        </th>
-        <th pSortableColumn="name" style="min-width: 16rem">
-          <div class="flex items-center gap-2">
-            Nom du Document
-            <p-sortIcon field="name" />
+  <ng-container *ngIf="(DocumentService.documentRequests$ | async) as documents">
+    <p-table
+      #dt
+      [value]="documents.data"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="[
+        'name',
+        'category',
+        'type',
+        'uploadedBy',
+        'status'
+      ]"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [(selection)]="selectedDocuments"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} documents"
+      [showCurrentPageReport]="true"
+      [loading]="loading"
+      [rowsPerPageOptions]="[10, 25, 50]"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between">
+          <h5 class="m-0"></h5>
+          <div class="flex gap-2">
+            <p-iconField iconPosition="left">
+              <p-inputIcon class="pi pi-search" />
+              <input pInputText type="text" placeholder="Rechercher..." />
+            </p-iconField>
+            <p-button
+              icon="pi pi-refresh"
+              [outlined]="true"
+              (click)="loadDocuments()"
+              [loading]="loading"
+            />
           </div>
-        </th>
-        <!-- <th pSortableColumn="category" style="min-width: 12rem">
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox />
+          </th>
+          <th pSortableColumn="name" style="min-width: 16rem">
+            <div class="flex items-center gap-2">
+              Nom du Document
+              <p-sortIcon field="name" />
+            </div>
+          </th>
+          <!-- <th pSortableColumn="category" style="min-width: 12rem">
           <div class="flex items-center gap-2">
             Catégorie
             <p-sortIcon field="category" />
           </div>
         </th> -->
-        <th pSortableColumn="type" style="min-width: 10rem">
-          <div class="flex items-center gap-2">
-            Type
-            <p-sortIcon field="type" />
-          </div>
-        </th>
-        <th pSortableColumn="size" style="min-width: 8rem">
-          <div class="flex items-center gap-2">
-            Taille
-            <p-sortIcon field="size" />
-          </div>
-        </th>
-        <th pSortableColumn="uploadedBy" style="min-width: 12rem">
-          <div class="flex items-center gap-2">
-            Téléchargé par
-            <p-sortIcon field="uploadedBy" />
-          </div>
-        </th>
-        <th pSortableColumn="uploadedAt" style="min-width: 12rem">
-          <div class="flex items-center gap-2">
-            Date de téléchargement
-            <p-sortIcon field="uploadedAt" />
-          </div>
-        </th>
-        <th pSortableColumn="status" style="min-width: 10rem">
-          <div class="flex items-center gap-2">
-            Statut
-            <p-sortIcon field="status" />
-          </div>
-        </th>
-        <th style="min-width: 12rem">Actions</th>
-      </tr>
-    </ng-template>
+          <th pSortableColumn="type" style="min-width: 10rem">
+            <div class="flex items-center gap-2">
+              Type
+              <p-sortIcon field="type" />
+            </div>
+          </th>
+          <th pSortableColumn="size" style="min-width: 8rem">
+            <div class="flex items-center gap-2">
+              Taille
+              <p-sortIcon field="size" />
+            </div>
+          </th>
+          <th pSortableColumn="uploadedBy" style="min-width: 12rem">
+            <div class="flex items-center gap-2">
+              Téléchargé par
+              <p-sortIcon field="uploadedBy" />
+            </div>
+          </th>
+          <th pSortableColumn="uploadedAt" style="min-width: 12rem">
+            <div class="flex items-center gap-2">
+              Date de téléchargement
+              <p-sortIcon field="uploadedAt" />
+            </div>
+          </th>
+          <th pSortableColumn="status" style="min-width: 10rem">
+            <div class="flex items-center gap-2">
+              Statut
+              <p-sortIcon field="status" />
+            </div>
+          </th>
+          <th style="min-width: 12rem">Actions</th>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="body" let-document>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="document" />
-        </td>
-        <td>
-          <div class="flex items-center gap-2">
-            <i
-              [class]="getFileIcon(document.type)"
-              style="font-size: 1.5rem"
-            ></i>
-            <span class="font-medium">{{ document.name }}</span>
-          </div>
-        </td>
-        <!-- <td>
+      <ng-template pTemplate="body" let-document>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="document" />
+          </td>
+          <td>
+            <div class="flex items-center gap-2">
+              <i
+                [class]="getFileIcon(document.type)"
+                style="font-size: 1.5rem"
+              ></i>
+              <span class="font-medium">{{ document.name }}</span>
+            </div>
+          </td>
+          <!-- <td>
           <p-tag [value]="document.category" severity="info" />
         </td> -->
-        <td>{{ document.type }}</td>
-        <td>{{ formatFileSize(document.size) }}</td>
-        <td>
-          <div class="flex items-center gap-2">
-            <p-avatar
-              [label]="getInitials(document.uploadedBy)"
-              shape="circle"
+          <td>{{ document.type }}</td>
+          <td>{{ formatFileSize(document.size) }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <p-avatar
+                [label]="getInitials(document.uploadedBy)"
+                shape="circle"
+              />
+              <span>{{ document.uploadedBy }}</span>
+            </div>
+          </td>
+          <td>{{ document.uploadedAt | date : "dd/MM/yyyy HH:mm" }}</td>
+          <td>
+            <p-tag
+              [value]="document.status"
+              [severity]="getStatusSeverity(document.status)"
             />
-            <span>{{ document.uploadedBy }}</span>
-          </div>
-        </td>
-        <td>{{ document.uploadedAt | date : "dd/MM/yyyy HH:mm" }}</td>
-        <td>
-          <p-tag
-            [value]="document.status"
-            [severity]="getStatusSeverity(document.status)"
-          />
-        </td>
-        <td>
-          <div class="flex gap-2">
-            <p-button
-              icon="pi pi-eye"
-              severity="info"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="viewDocument(document)"
-              pTooltip="Voir"
-            />
-            <p-button
-              icon="pi pi-download"
-              severity="success"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="downloadDocument(document)"
-              pTooltip="Télécharger"
-            />
-            <p-button
-              icon="pi pi-pencil"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="editDocument(document)"
-              pTooltip="Modifier"
-            />
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              [rounded]="true"
-              [outlined]="true"
-              (click)="deleteDocument(document)"
-              pTooltip="Supprimer"
-            />
-          </div>
-        </td>
-      </tr>
-    </ng-template>
+          </td>
+          <td>
+            <div class="flex gap-2">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="viewDocument(document)"
+                pTooltip="Voir"
+              />
+              <p-button
+                icon="pi pi-download"
+                severity="success"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="downloadDocument(document)"
+                pTooltip="Télécharger"
+              />
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="editDocument(document)"
+                pTooltip="Modifier"
+              />
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="deleteDocument(document)"
+                pTooltip="Supprimer"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="9" class="text-center py-4">
-          <div class="flex flex-col items-center gap-2">
-            <i
-              class="pi pi-file"
-              style="font-size: 2rem; color: var(--text-color-secondary)"
-            ></i>
-            <span>Aucun document trouvé.</span>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center py-4">
+            <div class="flex flex-col items-center gap-2">
+              <i
+                class="pi pi-file"
+                style="font-size: 2rem; color: var(--text-color-secondary)"
+              ></i>
+              <span>Aucun document trouvé.</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
   <!-- Document Dialog -->
   <p-dialog
     [(visible)]="documentDialog"
@@ -371,10 +376,6 @@
               placeholder="Description du document..."
             ></textarea>
           </div>
-
-      
-
-         
 
           <!-- Version -->
           <div class="col-span-12 md:col-span-6" *ngIf="document.id">
