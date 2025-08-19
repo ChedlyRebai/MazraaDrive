@@ -198,7 +198,7 @@
           <td>
             <div class="flex items-center gap-2">
               <i
-                [class]="getFileIcon(document.type)"
+                [class]="getFileIcon(document.fileType)"
                 style="font-size: 1.5rem"
               ></i>
               <span class="font-medium">{{ document.name }}</span>
@@ -207,19 +207,23 @@
           <!-- <td>
           <p-tag [value]="document.category" severity="info" />
         </td> -->
-          <td>{{ document.type }}</td>
-          <td>{{ formatFileSize(document.size) }}</td>
+          <td>{{ document.fileType }}</td>
+          <td>{{ formatFileSize(document.fileSize) }}</td>
           <td>
             <div class="flex items-center gap-2">
               <p-avatar
-                [label]="getInitials(document.uploadedBy)"
+                [label]="getInitials(document.uploadedByName)"
                 shape="circle"
               />
-              <span>{{ document.uploadedBy }}</span>
+              <span>{{ document.uploadedByName }}</span>
             </div>
           </td>
-          <td>{{ document.uploadedAt | date : "dd/MM/yyyy HH:mm" }}</td>
-          <td>
+          <td><div class="font-medium">
+                {{ document.createdAt | date : "dd/MM/yyyy" }}
+              </div>
+              <div class="text-sm text-surface-600">
+                {{ document.createdAt | date : "HH:mm" }}
+              </div><td>
             <p-tag
               [value]="document.status"
               [severity]="getStatusSeverity(document.status)"

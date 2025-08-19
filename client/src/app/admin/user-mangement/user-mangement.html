@@ -2,7 +2,7 @@
 <theme-switcher />
 
 <div class="mb-8">
-    <div class="flex items-center justify-between mb-4">
+  <div class="flex items-center justify-between mb-4">
     <div class="">
       <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
         Gestion des utilisateurs 📋
@@ -11,13 +11,10 @@
         Gérez et suivez tous les utilisateurs
       </p>
     </div>
-    
   </div>
 
   <div class="mb-4 grid gap-4 grid-cols-12">
-    
     <div class="col-span-12 md:col-span-3">
-      
       <div
         class="rounded-lg p-4 bg-gray-500 text-white flex items-center justify-between"
       >
@@ -30,7 +27,7 @@
         <i class="pi pi-users text-3xl opacity-70"></i>
       </div>
     </div>
-    
+
     <div class="col-span-12 md:col-span-3">
       <div
         class="rounded-lg p-4 bg-green-500 text-white flex items-center justify-between"
@@ -88,7 +85,6 @@
       </ng-template>
       <ng-template #end>
         <div class="flex flex-wrap gap-2">
-          
           <p-button
             label="Exporter"
             icon="pi pi-download"
@@ -177,124 +173,131 @@
       </div>
     </div>
     <ng-container *ngIf="userService.users$ | async as users">
-    <!-- Users Table -->
-    <p-table
-      #dt
-      [value]="users.data"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[10, 25, 50]"
-      [loading]="loading"
-      [rowHover]="true"
-      dataKey="id"
-      currentPageReportTemplate="Affichage {first} - {last} sur {totalRecords}"
-      [showCurrentPageReport]="true"
-      responsiveLayout="scroll"
-      styleClass="p-datatable-sm"
-      [globalFilterFields]="[
-        'fullName',
-        'email',
-        'userName',
-        'department',
-        'role'
-      ]"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox />
-          </th>
-          <th pSortableColumn="fullName">
-            Nom Complet
-            <p-sortIcon field="fullName" />
-          </th>
-          <th pSortableColumn="email">
-            Email
-            <p-sortIcon field="email" />
-          </th>
-          <th pSortableColumn="userName">
-            Nom d'utilisateur
-            <p-sortIcon field="userName" />
-          </th>
-          <th pSortableColumn="department">
-            Département
-            <p-sortIcon field="department" />
-          </th>
-          <th pSortableColumn="role">
-            Rôle
-            <p-sortIcon field="role" />
-          </th>
-          <th pSortableColumn="isActive">
-            Statut
-            <p-sortIcon field="isActive" />
-          </th>
-          <th pSortableColumn="createdAt">
-            Créé le
-            <p-sortIcon field="createdAt" />
-          </th>
-          <th style="width: 4rem"></th>
-        </tr>
-      </ng-template>
+      <!-- Users Table -->
+      <p-table
+        #dt
+        [value]="users.data"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="loading"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Affichage {first} - {last} sur {totalRecords}"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm"
+        [globalFilterFields]="[
+          'fullName',
+          'email',
+          'userName',
+          'department',
+          'role'
+        ]"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox />
+            </th>
+            <th pSortableColumn="fullName">
+              Nom Complet
+              <p-sortIcon field="fullName" />
+            </th>
+            <th pSortableColumn="email">
+              Email
+              <p-sortIcon field="email" />
+            </th>
+            <th pSortableColumn="userName">
+              Nom d'utilisateur
+              <p-sortIcon field="userName" />
+            </th>
+            <th pSortableColumn="department">
+              Département
+              <p-sortIcon field="department" />
+            </th>
+            <th pSortableColumn="role">
+              Rôle
+              <p-sortIcon field="role" />
+            </th>
+            <th pSortableColumn="isActive">
+              Statut
+              <p-sortIcon field="isActive" />
+            </th>
+            <th pSortableColumn="createdAt">
+              Créé le
+              <p-sortIcon field="createdAt" />
+            </th>
+            <th style="width: 4rem"></th>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="body" let-user>
-        <tr>
-          <td><p-tableCheckbox [value]="user" /></td>
-          <td>
-            <div class="flex items-center gap-2">
-              <p-avatar
-                [image]="user.profilePicture"
-                [label]="getInitials(user.fullName)"
-                shape="circle"
-                size="normal"
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td><p-tableCheckbox [value]="user" /></td>
+            <td>
+              <div class="flex items-center gap-2">
+                <p-avatar
+                  [image]="user.profilePicture"
+                  [label]="getInitials(user.fullName)"
+                  shape="circle"
+                  size="normal"
+                />
+                <span class="font-medium">{{ user.fullName }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="flex items-center gap-2">
+                <i class="pi pi-envelope text-color-secondary"></i
+                >{{ user.email }}
+              </span>
+            </td>
+            <td>{{ user.userName }}</td>
+            <td><p-tag [value]="user.departmentName" severity="info" /></td>
+            <td>
+              <p-tag
+                [value]="user.roleName"
+                [severity]="getRoleSeverity(user.roleName)"
               />
-              <span class="font-medium">{{ user.fullName }}</span>
-            </div>
-          </td>
-          <td>
-            <span class="flex items-center gap-2">
-              <i class="pi pi-envelope text-color-secondary"></i
-              >{{ user.email }}
-            </span>
-          </td>
-          <td>{{ user.userName }}</td>
-          <td><p-tag [value]="user.department" severity="info" /></td>
-          <td>
-            <p-tag
-              [value]="user.role"
-              [severity]="getRoleSeverity(user.role)"
-            />
-          </td>
-          <td>
-            <p-tag
-              [value]="user.isActive ? 'Actif' : 'Inactif'"
-              [severity]="user.isActive ? 'success' : 'danger'"
-            />
-          </td>
-          <td>{{ user.createdAt }}</td>
-          <td class="text-center"></td>
-        </tr>
-      </ng-template>
+            </td>
+            <td>
+              <p-tag
+                [value]="user.isActive ? 'Actif' : 'Inactif'"
+                [severity]="user.isActive ? 'success' : 'danger'"
+              />
+            </td>
+            <td>
+              <div class="font-medium">
+                {{ user.createdAt | date : "dd/MM/yyyy" }}
+              </div>
+              <div class="text-sm text-surface-600">
+                {{ user.createdAt | date : "HH:mm" }}
+              </div>
+            </td>
+            <td class="text-center"></td>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="9">
-            <div
-              class="flex flex-col items-center gap-2 py-4 text-color-secondary"
-            >
-              <i class="pi pi-users text-3xl"></i>
-              <span>Aucun utilisateur trouvé.</span>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9">
+              <div
+                class="flex flex-col items-center gap-2 py-4 text-color-secondary"
+              >
+                <i class="pi pi-users text-3xl"></i>
+                <span>Aucun utilisateur trouvé.</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="loadingbody">
-        <tr *ngFor="let s of [1, 2, 3, 4, 5]">
-          <td colspan="9"></td>
-        </tr>
-      </ng-template>
-    </p-table>
-</ng-container>
+        <ng-template pTemplate="loadingbody">
+          <tr *ngFor="let s of [1, 2, 3, 4, 5]">
+            <td colspan="9"></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
     <!-- User Dialog -->
     <p-dialog
       [(visible)]="userDialog"
