@@ -1,3 +1,4 @@
+import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -113,6 +114,7 @@ export class DocumentMangement implements OnInit {
   private baseUrl = 'http://localhost:5108/api';
 
   constructor(
+    public DocumentService: DocumentService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private http: HttpClient
@@ -120,6 +122,7 @@ export class DocumentMangement implements OnInit {
 
   ngOnInit() {
     this.loadDocuments();
+    this.DocumentService.getDocument();
   }
 
   get dialogTitle(): string {
