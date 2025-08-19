@@ -21,9 +21,10 @@ export class DocumentRequsetService {
 
   getDocumentRequests() {
     return this.http
-      .get<DocumentRequestPagedResult>(`${this.baseUrl}/document-requests`)
+      .get<DocumentRequestPagedResult>(`${this.baseUrl}`)
       .subscribe(
         (result) => {
+          console.log('Document requests fetched:', result);
           this.documentRequest.next(result);
         },
         (error) => {
@@ -34,7 +35,7 @@ export class DocumentRequsetService {
 
   getDocumentRequestById(id: number) {
     return this.http
-      .get<DocumentRequestDTO>(`${this.baseUrl}/document-requests/${id}`)
+      .get<DocumentRequestDTO>(`${this.baseUrl}/${id}`)
       .subscribe(
         (result) => {
           console.log('Document request fetched:', result);
@@ -48,7 +49,7 @@ export class DocumentRequsetService {
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
     return this.http
       .post<DocumentRequestDTO>(
-        `${this.baseUrl}/document-requests`,
+        `${this.baseUrl}`,
         documentRequest
       )
       .subscribe(
@@ -64,7 +65,7 @@ export class DocumentRequsetService {
   updateDocumentRequest(documentRequest: DocumentRequestDTO) {
     return this.http
       .put<DocumentRequestDTO>(
-        `${this.baseUrl}/document-requests/${documentRequest.id}`,
+        `${this.baseUrl}/${documentRequest.id}`,
         documentRequest
       )
       .subscribe(
@@ -79,7 +80,7 @@ export class DocumentRequsetService {
 
   deleteDocumentRequest(id: number) {
     return this.http
-      .delete(`${this.baseUrl}/document-requests/${id}`)
+      .delete(`${this.baseUrl}/${id}`)
       .subscribe(
         () => {
           console.log('Document request deleted');

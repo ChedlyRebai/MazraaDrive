@@ -1,3 +1,4 @@
+import { DocumentRequsetService } from './../../core/services/document-requset-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from '../themeswitcher';
+import { HttpClient } from '@angular/common/http';
 
 
 interface Request {
@@ -159,12 +161,15 @@ export class DocReqManagement implements OnInit {
   ];
 
   constructor(
+    public http: HttpClient,
+    public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
     this.loadRequests();
+    this.documentRequsetService.getDocumentRequests();
   }
 
   loadRequests() {
