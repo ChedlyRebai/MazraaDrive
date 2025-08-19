@@ -84,10 +84,12 @@
     </div>
   </div>
 
-  <p-table
-    #dt
-    [value]="departments"
-    [rows]="10"
+
+  <ng-container *ngIf="(departmentService.departments$| async) as departments">
+    <p-table
+      #dt
+      [value]="departments.data"
+      [rows]="10"
     [paginator]="true"
     [lazy]="true"
     [totalRecords]="totalRecords"
@@ -277,7 +279,7 @@
       </tr>
     </ng-template>
   </p-table>
-
+  </ng-container>
   <!-- Department Dialog -->
   <p-dialog
     [(visible)]="departmentDialog"

@@ -30,6 +30,7 @@ import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { Textarea, TextareaModule } from 'primeng/textarea';
 import { ThemeSwitcher } from '../themeswitcher';
 import { DepartmentRealtimeService } from '../../core/services/Hub/DepartmentRealtimeService';
+import { DepartmentService } from '../../core/services/department-service';
 
 interface UserCountRange {
   label: string;
@@ -111,6 +112,7 @@ export class DepartmentMangement implements OnInit {
   private baseUrl = 'http://localhost:5108/api';
 
   constructor(
+    public departmentService: DepartmentService,
     private realtime: DepartmentRealtimeService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -134,6 +136,7 @@ export class DepartmentMangement implements OnInit {
       // this.data = this.data.filter((x) => x.id !== id);
     });
     this.loadDepartments();
+    this.departmentService.getDepartments();
   }
   ngOnDestroy() {
     this.realtime.disconnect();

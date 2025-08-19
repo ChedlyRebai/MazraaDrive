@@ -1,3 +1,4 @@
+
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, LazyLoadEvent } from 'primeng/api';
@@ -8,8 +9,9 @@ import { Button } from "primeng/button";
 import { SharedModule } from "../../shared/shared.module";
 import { AutoComplete } from "primeng/autocomplete";
 import { ThemeSwitcher } from "../themeswitcher";
+import { RoleService } from '../../core/services/role-service';
 
-
+import { CommonModule } from '@angular/common';
 export interface RoleDto {
   id: number;
   name: string;
@@ -42,11 +44,12 @@ export interface RolePagedResult extends PagedResult<RoleDto> {
   selector: 'app-role-mangement',
   templateUrl: './role-mangement.html',
   providers: [MessageService, ConfirmationService],
-  imports: [Checkbox, Dialog, FormsModule,Button, SharedModule, AutoComplete, ThemeSwitcher]
+  imports: [Checkbox, CommonModule,Dialog, FormsModule,Button, SharedModule, AutoComplete, ThemeSwitcher]
 })
 export class RoleMangementComponent implements OnInit {
 
   constructor(
+    public roleService: RoleService,
     private message: MessageService,
     private confirm: ConfirmationService
   ) {}
@@ -91,6 +94,7 @@ export class RoleMangementComponent implements OnInit {
   statusSelection: any = null;
 
   ngOnInit(): void {
+    this.roleService.getRoles();
     this.loadRoles();
   }
 

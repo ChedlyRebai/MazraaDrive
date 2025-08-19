@@ -40,8 +40,8 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetAccessRights", "Retrieved paged list of access rights", "10", "AccessRight");
-                return Ok(new { success = true, data = result });
+               // //await _auditLogger.LogAsync("GetAccessRights", "Retrieved paged list of access rights", "10", "AccessRight");
+                return Ok(result );
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
+                //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetDocumentAccessRights", "Retrieved document access rights", "10", "AccessRight");
+                //await _auditLogger.LogAsync("GetDocumentAccessRights", "Retrieved document access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -139,7 +139,7 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetFolderAccessRights", "Retrieved folder access rights", "10", "AccessRight");
+                //await _auditLogger.LogAsync("GetFolderAccessRights", "Retrieved folder access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -158,7 +158,7 @@ namespace Api.Controllers
                     return NotFound(new ResponseAPI(404, "Access right not found"));
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(accessRight);
-                await _auditLogger.LogAsync("GetAccessRight", "Retrieved access right details", "10", "AccessRight");
+                //await _auditLogger.LogAsync("GetAccessRight", "Retrieved access right details", "10", "AccessRight");
                 return Ok(accessRightDto);
             }
             catch (Exception ex)
@@ -198,7 +198,7 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.BulkCreateAsync(accessRights);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("CreateBulkAccessRights", "Created bulk access rights", "10", "AccessRight");
+                //await _auditLogger.LogAsync("CreateBulkAccessRights", "Created bulk access rights", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, $"Created {accessRights.Count} access rights successfully"));
             }
             catch (Exception ex)
@@ -224,7 +224,7 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(existingAccessRight);
-                await _auditLogger.LogAsync("UpdateAccessRight", "Updated access right", "10", "AccessRight");
+                //await _auditLogger.LogAsync("UpdateAccessRight", "Updated access right", "10", "AccessRight");
                 return Ok(accessRightDto);
             }
             catch (Exception ex)
@@ -245,7 +245,7 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("DeleteAccessRight", "Deleted access right", "10", "AccessRight");
+                //await _auditLogger.LogAsync("DeleteAccessRight", "Deleted access right", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, "Access right deleted successfully"));
             }
             catch (Exception ex)
@@ -260,7 +260,7 @@ namespace Api.Controllers
             try
             {
                 var hasPermission = await _unitOfWork.PermissionsRepository.HasPermissionAsync(userId, documentId, folderId, permission);
-                await _auditLogger.LogAsync("CheckUserPermissions", "Checked user permissions", "10", "AccessRight");
+                //await _auditLogger.LogAsync("CheckUserPermissions", "Checked user permissions", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, hasPermission ? "User has permission" : "User does not have permission"));
             }
             catch (Exception ex)
@@ -277,7 +277,7 @@ namespace Api.Controllers
                 await _unitOfWork.PermissionsRepository.RemoveUserAccessAsync(userId, documentId, folderId);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("RemoveUserAccess", "Removed user access", "10", "AccessRight");
+                //await _auditLogger.LogAsync("RemoveUserAccess", "Removed user access", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, "User access removed successfully"));
             }
             catch (Exception ex)

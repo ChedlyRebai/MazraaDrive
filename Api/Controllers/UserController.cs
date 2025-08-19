@@ -58,7 +58,7 @@ namespace Api.Controllers
 
 
                 };
-                await _auditLogger.LogAsync("GetUsers", "Retrieved paged list of users", "10", "User");
+                //await _auditLogger.LogAsync("GetUsers", "Retrieved paged list of users", "10", "User");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace Api.Controllers
 
                 var userDto = _mapper.Map<UserDto>(user);
 
-                await _auditLogger.LogAsync("GetUser", "Retrieved user details", "10", "User");
+                //await _auditLogger.LogAsync("GetUser", "Retrieved user details", "10", "User");
                 return Ok(userDto);
             }
             catch (Exception ex)
@@ -109,7 +109,7 @@ namespace Api.Controllers
 
                 var userDto = _mapper.Map<UserDto>(user);
 
-                await _auditLogger.LogAsync("GetCurrentUserProfile", "Retrieved current user profile", "10", "User");
+                //await _auditLogger.LogAsync("GetCurrentUserProfile", "Retrieved current user profile", "10", "User");
                 return Ok(new { success = true, data = userDto });
             }
             catch (Exception ex)
@@ -153,7 +153,7 @@ namespace Api.Controllers
 
                 var userDto = _mapper.Map<UserDto>(user);
 
-                await _auditLogger.LogAsync("CreateUser", "Created new user", "10", "User");
+                //await _auditLogger.LogAsync("CreateUser", "Created new user", "10", "User");
                 return CreatedAtAction(nameof(GetUser), new { id = userDto.Id },
                     new { success = true, data = userDto });
             }
@@ -191,7 +191,7 @@ namespace Api.Controllers
                 var userDto = _mapper.Map<UserDto>(existingUser);
 
 
-                await _auditLogger.LogAsync("UpdateUser", "Updated user details", "10", "User");
+                //await _auditLogger.LogAsync("UpdateUser", "Updated user details", "10", "User");
                 return Ok(userDto);
             }
             catch (Exception ex)
@@ -213,7 +213,7 @@ namespace Api.Controllers
                 await _unitOfWork.UserRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("DeleteUser", "Deleted user", "10", "User");
+                //await _auditLogger.LogAsync("DeleteUser", "Deleted user", "10", "User");
                 return Ok(new { success = true, message = "User deleted successfully" });
             }
             catch (Exception ex)
@@ -231,7 +231,7 @@ namespace Api.Controllers
                 await _unitOfWork.UserRepository.DeactivateUserAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("DeactivateUser", "Deactivated user", "10", "User");
+                //await _auditLogger.LogAsync("DeactivateUser", "Deactivated user", "10", "User");
                 return Ok(new { success = true, message = "User deactivated successfully" });
             }
             catch (Exception ex)
@@ -249,7 +249,7 @@ namespace Api.Controllers
                 await _unitOfWork.UserRepository.ActivateUserAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("ActivateUser", "Activated user", "10", "User");
+                //await _auditLogger.LogAsync("ActivateUser", "Activated user", "10", "User");
                 return Ok(new { success = true, message = "User activated successfully" });
             }
             catch (Exception ex)
@@ -280,7 +280,7 @@ namespace Api.Controllers
                     return BadRequest(new { success = false, message = "Failed to change password", errors = result.Errors });
                 }
 
-                await _auditLogger.LogAsync("ChangePassword", "Changed user password", "10", "User");
+                //await _auditLogger.LogAsync("ChangePassword", "Changed user password", "10", "User");
                 return Ok(new { success = true, message = "Password changed successfully" });
             }
             catch (Exception ex)
@@ -298,7 +298,7 @@ namespace Api.Controllers
                 var users = await _unitOfWork.UserRepository.GetByDepartmentAsync(departmentId);
                 var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
 
-                await _auditLogger.LogAsync("GetUsersByDepartment", "Retrieved users by department", "10", "User");
+                //await _auditLogger.LogAsync("GetUsersByDepartment", "Retrieved users by department", "10", "User");
                 return Ok(new { success = true, data = userDtos });
             }
             catch (Exception ex)
@@ -319,7 +319,7 @@ namespace Api.Controllers
                 var users = await _unitOfWork.UserRepository.SearchUsersAsync(searchTerm);
                 var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
 
-                await _auditLogger.LogAsync("SearchUsers", "Searched users", "10", "User");
+                //await _auditLogger.LogAsync("SearchUsers", "Searched users", "10", "User");
                 return Ok(new { success = true, data = userDtos });
             }
             catch (Exception ex)
@@ -338,7 +338,7 @@ namespace Api.Controllers
                 var activeUsers = await _unitOfWork.UserRepository.GetActiveUserCountAsync();
                 var inactiveUsers = totalUsers - activeUsers;
 
-                await _auditLogger.LogAsync("GetUserStats", "Retrieved user statistics", "10", "User");
+                //await _auditLogger.LogAsync("GetUserStats", "Retrieved user statistics", "10", "User");
                 return Ok(new
                 {
                     success = true,

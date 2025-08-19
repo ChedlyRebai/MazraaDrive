@@ -18,27 +18,24 @@ namespace API.Controllers;
 public class AccessRequestsController : BaseController
 {
 
-    private readonly IAccessRequestRepository _unitOfWork;
-    private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
     
-    private readonly IAuditLogRepository _auditLogger;
-    public AccessRequestsController(IUnitOfWork unitOfWork, IAccessRightService accessRightService, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
+    private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
+
+    public AccessRequestsController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null) : base(unitOfWork, mapper, auditLogger)
     {
-        _auditLogger = auditLogger;
-        _accessRightService = accessRightService;
     }
-   
+
     [HttpGet]
     public async Task<IActionResult> GetPaged([FromQuery] PaginationParams p)
     {
-        var result = await _unitOfWork.GetPagedAsync(p);
+        var result = await _unitOfWork.AccessRequestRepository.GetPagedAsync(p);
         return Ok(result);
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
-        var entity = await _unitOfWork.GetByIdAsync(id);
+        var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         return entity == null ? NotFound() : Ok(entity);
     }
 
@@ -49,7 +46,7 @@ public class AccessRequestsController : BaseController
         var userId = "10";
         if (!dto.RequestRead && !dto.RequestWrite && !dto.RequestDelete)
             return BadRequest("At least one permission must be requested.");
-        if (await _unitOfWork.ExistsPendingAsync(dto.DocumentId, userId))
+        if (await _unitOfWork.AccessRequestRepository.ExistsPendingAsync(dto.DocumentId, userId))
             return Conflict("A pending request already exists for this document.");
 
         var entity = new AccessRequest
@@ -62,7 +59,7 @@ public class AccessRequestsController : BaseController
             RequestDelete = dto.RequestDelete,
             Status = "Pending"
         };
-        await _unitOfWork.AddAsync(entity);
+        await _unitOfWork.AccessRequestRepository.AddAsync(entity);
         await _unitOfWork.SaveChangesAsync();
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
     }
@@ -71,7 +68,7 @@ public class AccessRequestsController : BaseController
     // [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Decide(int id, [FromBody] AccessRequestDecisionDto dto)
     {
-        var entity = await _unitOfWork.GetByIdAsync(id);
+        var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
         if (entity.Status != "Pending") return BadRequest("Already decided.");
 
@@ -93,7 +90,7 @@ public class AccessRequestsController : BaseController
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] AccessRequestCreateDto dto)
     {
-        var entity = await _unitOfWork.GetByIdAsync(id);
+        var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
 
         entity.DocumentId = dto.DocumentId;
@@ -101,10 +98,7 @@ public class AccessRequestsController : BaseController
         entity.RequestWrite = dto.RequestWrite;
         entity.RequestDelete = dto.RequestDelete;
         entity.Message = dto.Message;
-
-        
-        
-        await _unitOfWork.UpdateAsync(entity);
+        await _unitOfWork.AccessRequestRepository.UpdateAsync(entity);
         await _unitOfWork.SaveChangesAsync();
         return Ok(entity);
     }

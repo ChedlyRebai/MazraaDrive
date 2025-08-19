@@ -61,9 +61,9 @@ namespace Api.Controllers
                    
                 };
                 // Log the action
-                await _auditLogger.LogAsync("GetDepartments", "Retrieved paged list of departments", "10","Department");
+                //await _auditLogger.LogAsync("GetDepartments", "Retrieved paged list of departments", "10","Department");
 
-                return Ok(new { success = true, data = result });
+                return Ok(result );
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Department not found" });
 
                 var departmentDto = _mapper.Map<DepartmentDto>(department);
-                await _auditLogger.LogAsync("GetDepartment", "Retrieved department details", "10", "Department");
+                //await _auditLogger.LogAsync("GetDepartment", "Retrieved department details", "10", "Department");
                 return Ok(departmentDto);
             }
             catch (Exception ex)
@@ -127,7 +127,7 @@ namespace Api.Controllers
 
                 var departmentDto = _mapper.Map<DepartmentDto>(createdDepartment);
                 await _hub.Clients.All.SendAsync("DepartmentCreated", departmentDto);
-                await _auditLogger.LogAsync("CreateDepartment", "Created new department", "10", "Department");
+                //await _auditLogger.LogAsync("CreateDepartment", "Created new department", "10", "Department");
                 return CreatedAtAction(nameof(GetDepartment), new { id = departmentDto.Id },
                     new { success = true, data = departmentDto });
             }
@@ -164,7 +164,7 @@ namespace Api.Controllers
 
                 var departmentDto = _mapper.Map<DepartmentDto>(existingDepartment);
                 await _hub.Clients.All.SendAsync("DepartmentUpdated", departmentDto);
-                await _auditLogger.LogAsync("UpdateDepartment", "Updated department details", "10", "Department");
+                //await _auditLogger.LogAsync("UpdateDepartment", "Updated department details", "10", "Department");
                 return Ok(departmentDto);
             }
             catch (Exception ex)
@@ -188,7 +188,7 @@ namespace Api.Controllers
 
                 await _unitOfWork.DepartmentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-                await _auditLogger.LogAsync("DeleteDepartment", "Deleted department", "10", "Department");
+                //await _auditLogger.LogAsync("DeleteDepartment", "Deleted department", "10", "Department");
                 await _hub.Clients.All.SendAsync("DepartmentDeleted", id);
                 return Ok(new ResponseAPI(200, "Department deleted successfully"));
             }
@@ -216,7 +216,7 @@ namespace Api.Controllers
                     u.IsActive
                 }).ToList();
 
-                await _auditLogger.LogAsync("GetDepartmentUsers", "Retrieved users for department", "10", "Department");
+                //await _auditLogger.LogAsync("GetDepartmentUsers", "Retrieved users for department", "10", "Department");
                 return Ok(users);
                 
             }
@@ -242,7 +242,7 @@ namespace Api.Controllers
                     DocumentRequestCount = department.DocumentRequests?.Count ?? 0,
                     ActiveUsers = department.Users?.Count(u => u.IsActive) ?? 0
                 };
-                await _auditLogger.LogAsync("GetDepartmentStats", "Retrieved department statistics", "10", "Department");
+                //await _auditLogger.LogAsync("GetDepartmentStats", "Retrieved department statistics", "10", "Department");
                 return Ok(stats);
             }
             catch (Exception ex)

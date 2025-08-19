@@ -58,8 +58,8 @@ namespace Api.Controllers
                 Console.WriteLine("result:****************************************");
                 
                 // Log the retrieval of documents
-                await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 //await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
+                ////await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 Console.WriteLine(result.Data);
                 return Ok(new { success = true, data = result });
             }
@@ -79,7 +79,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Document not found" });
 
                 var documentDto = _mapper.Map<DocumentDto>(document);
-                await _auditLogger.LogAsync("GetDocument", "Retrieved document details", "10", "Document");
+                //await _auditLogger.LogAsync("GetDocument", "Retrieved document details", "10", "Document");
                 return Ok(new { success = true, data = documentDto });
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace Api.Controllers
                     pagedDocuments.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetDocumentsByFolder", "Retrieved document by folder", "10", "Document");
+                //await _auditLogger.LogAsync("GetDocumentsByFolder", "Retrieved document by folder", "10", "Document");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace Api.Controllers
                     pagedDocuments.SortDirection
                 );
 
-                await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
+                //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
@@ -222,7 +222,7 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetValidatedDocumentsAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                await _auditLogger.LogAsync("GetValidatedDocuments", "Retrieved validated documents", "10", "Document");
+                //await _auditLogger.LogAsync("GetValidatedDocuments", "Retrieved validated documents", "10", "Document");
                 return Ok(documentDtos);
             }
             catch (Exception ex)
@@ -238,7 +238,7 @@ namespace Api.Controllers
             {
                 var documents = await _unitOfWork.DocumentRepository.GetPendingValidationAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                await _auditLogger.LogAsync("GetPendingValidation", "Retrieved documents pending validation", "10", "Document");
+                //await _auditLogger.LogAsync("GetPendingValidation", "Retrieved documents pending validation", "10", "Document");
                 return Ok(documentDtos);
             }
             catch (Exception ex)
@@ -314,7 +314,7 @@ namespace Api.Controllers
 
                 var documentDto = _mapper.Map<DocumentDto>(createdDocument);
                 // Log the document upload
-                await _auditLogger.LogAsync("UploadDocument", "Uploaded new document", "10", "Document");
+                //await _auditLogger.LogAsync("UploadDocument", "Uploaded new document", "10", "Document");
                 return CreatedAtAction(nameof(GetDocument), new { id = documentDto.Id },
                     new { success = true, data = documentDto });
             }
@@ -350,7 +350,7 @@ namespace Api.Controllers
 
                 var documentDto = _mapper.Map<DocumentDto>(existingDocument);
 
-                await _auditLogger.LogAsync("UpdateDocument", "Updated document details", "10", "Document");
+                //await _auditLogger.LogAsync("UpdateDocument", "Updated document details", "10", "Document");
                 return Ok(documentDto);
             }
             catch (Exception ex)
@@ -369,7 +369,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Document not found" });
 
                 await _unitOfWork.SaveChangesAsync();
-                await _auditLogger.LogAsync("ValidateDocument", "Validated document", "10", "Document");
+                //await _auditLogger.LogAsync("ValidateDocument", "Validated document", "10", "Document");
                 return Ok(new { success = true, message = $"Document {(isValid ? "validated" : "rejected")} successfully" });
             }
             catch (Exception ex)
@@ -396,7 +396,7 @@ namespace Api.Controllers
                 await _unitOfWork.DocumentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
 
-                await _auditLogger.LogAsync("DeleteDocument", "Deleted document", "10", "Document");
+                //await _auditLogger.LogAsync("DeleteDocument", "Deleted document", "10", "Document");
                 return Ok(new ResponseAPI(200, "Document deleted successfully"));
             }
             catch (Exception ex)
@@ -427,7 +427,7 @@ namespace Api.Controllers
                 var contentType = GetContentType(document.FileType);
                 var fileName = $"{document.Name}.{document.FileType}";
 
-                await _auditLogger.LogAsync("DownloadDocument", "Downloaded document", "10", "Document");
+                //await _auditLogger.LogAsync("DownloadDocument", "Downloaded document", "10", "Document");
                 return File(memory, contentType, fileName);
             }
             catch (Exception ex)
@@ -454,7 +454,7 @@ namespace Api.Controllers
                     TotalFileSize = totalSize,
                     TotalFileSizeFormatted = FormatFileSize(totalSize)
                 };
-                await _auditLogger.LogAsync("GetDocumentStats", "Retrieved document statistics", "10", "Document");
+                //await _auditLogger.LogAsync("GetDocumentStats", "Retrieved document statistics", "10", "Document");
                 return Ok(stats);
             }
             catch (Exception ex)

@@ -1,3 +1,4 @@
+import { AccessRightService } from './../../core/services/access-right-service';
 import { SharedModule } from './../../shared/shared.module';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,6 +27,7 @@ import {
   CreateAccessRightDto,
   UpdateAccessRightDto,
 } from '../../shared/models/access-right';
+import { AccessRequsetService } from '../../core/services/access-requset-service';
 
 @Component({
   selector: 'app-access-rights',
@@ -154,11 +156,13 @@ export class Pemission implements OnInit {
 
   constructor(
     // private svc: AccessRightsService,
+    public accessRightService: AccessRightService,
     private toast: MessageService,
     private confirm: ConfirmationService
   ) {}
 
   ngOnInit(): void {
+    this.accessRightService.getAccessRights()
     this.load();
   }
 

@@ -1,3 +1,5 @@
+import { PagedResult } from "./pageresult";
+
 export interface AccessRequestDto {
        id: number;
        documentId: number;
@@ -13,6 +15,11 @@ export interface AccessRequestDto {
        decisionAt: string | null;
        decidedById: string | null;
        decidedByName: string | null;
+}
+
+
+export interface AccessRequestPagedResult extends PagedResult<AccessRequestDto> {
+       
 }
 
 export interface AccessRequestCreateDto {

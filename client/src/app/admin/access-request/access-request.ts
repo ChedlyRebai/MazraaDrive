@@ -18,7 +18,11 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ThemeSwitcher } from '../themeswitcher';
-import { AccessRequestCreateDto, AccessRequestDto } from '../../shared/models/access-req';
+import {
+  AccessRequestCreateDto,
+  AccessRequestDto,
+} from '../../shared/models/access-req';
+import { AccessRequsetService } from '../../core/services/access-requset-service';
 
 interface DocumentLookup {
   id: number;
@@ -42,13 +46,12 @@ interface DocumentLookup {
     AvatarModule,
     IconFieldModule,
     InputIconModule,
-    ThemeSwitcher
+    ThemeSwitcher,
   ],
   templateUrl: './access-request.html',
   styleUrls: ['./access-request.css'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService],
 })
-
 export class AccessRequest implements OnInit {
   // Data
   requests: AccessRequestDto[] = [];
@@ -88,7 +91,7 @@ export class AccessRequest implements OnInit {
     requestRead: true,
     requestWrite: false,
     requestDelete: false,
-    message: null
+    message: null,
   };
 
   documentSuggestions: DocumentLookup[] = [];
@@ -97,13 +100,16 @@ export class AccessRequest implements OnInit {
   creatingRequest = false;
 
   constructor(
-   // private svc: AccessRequestService,
+    // private svc: AccessRequestService,
+    public accessRequestService: AccessRequsetService,
     private toast: MessageService,
     private confirm: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.load();
+
+    this.accessRequestService.getAccessRequests();
   }
 
   load() {
@@ -122,11 +128,10 @@ export class AccessRequest implements OnInit {
         requestDelete: true,
         status: 'Pending',
         createdAt: '2002-01-01',
-        decisionAt: '2002-01-01' ,
+        decisionAt: '2002-01-01',
         decidedById: 'null',
-        decidedByName: 'KARIM '
-      }
-        ,
+        decidedByName: 'KARIM ',
+      },
       {
         id: 2,
         documentId: 0,
@@ -139,10 +144,10 @@ export class AccessRequest implements OnInit {
         requestDelete: true,
         status: 'Pending',
         createdAt: '2002-01-01',
-        decisionAt: '2002-01-01' ,
+        decisionAt: '2002-01-01',
         decidedById: 'null',
-        decidedByName: 'KARIM '
-      }
+        decidedByName: 'KARIM ',
+      },
     ];
     // this.svc
     //   .getPaged({
@@ -167,9 +172,15 @@ export class AccessRequest implements OnInit {
 
   computeStats() {
     this.totalRequests = this.totalRecords;
-    this.pendingRequests = this.requests.filter(r => r.status === 'Pending').length;
-    this.approvedRequests = this.requests.filter(r => r.status === 'Approved').length;
-    this.rejectedRequests = this.requests.filter(r => r.status === 'Rejected').length;
+    this.pendingRequests = this.requests.filter(
+      (r) => r.status === 'Pending'
+    ).length;
+    this.approvedRequests = this.requests.filter(
+      (r) => r.status === 'Approved'
+    ).length;
+    this.rejectedRequests = this.requests.filter(
+      (r) => r.status === 'Rejected'
+    ).length;
   }
 
   onPage(event: any) {
@@ -196,8 +207,12 @@ export class AccessRequest implements OnInit {
   }
 
   isAccessFormValid(): boolean {
-    return !!this.newRequest.document &&
-      (this.newRequest.requestRead || this.newRequest.requestWrite || this.newRequest.requestDelete);
+    return (
+      !!this.newRequest.document &&
+      (this.newRequest.requestRead ||
+        this.newRequest.requestWrite ||
+        this.newRequest.requestDelete)
+    );
   }
 
   showCreateDialog() {
@@ -212,7 +227,7 @@ export class AccessRequest implements OnInit {
       requestRead: true,
       requestWrite: false,
       requestDelete: false,
-      message: null
+      message: null,
     };
   }
 
@@ -223,8 +238,15 @@ export class AccessRequest implements OnInit {
   createAccessRequest() {
     this.validationErrors = [];
     if (!this.isAccessFormValid()) {
-      if (!this.newRequest.document) this.validationErrors.push('Document requis.');
-      if (!(this.newRequest.requestRead || this.newRequest.requestWrite || this.newRequest.requestDelete)) {
+      if (!this.newRequest.document)
+        this.validationErrors.push('Document requis.');
+      if (
+        !(
+          this.newRequest.requestRead ||
+          this.newRequest.requestWrite ||
+          this.newRequest.requestDelete
+        )
+      ) {
         this.validationErrors.push('Sélectionner au moins une permission.');
       }
       return;
@@ -234,7 +256,7 @@ export class AccessRequest implements OnInit {
       requestRead: this.newRequest.requestRead,
       requestWrite: this.newRequest.requestWrite,
       requestDelete: this.newRequest.requestDelete,
-      message: this.newRequest.message || ''
+      message: this.newRequest.message || '',
     };
     this.creatingRequest = true;
     // this.svc.create(dto).subscribe({
@@ -266,7 +288,7 @@ export class AccessRequest implements OnInit {
         //     this.load();
         //   }
         // });
-      }
+      },
     });
   }
 
@@ -280,7 +302,7 @@ export class AccessRequest implements OnInit {
         //     this.load();
         //   }
         // });
-      }
+      },
     });
   }
 
@@ -309,9 +331,9 @@ export class AccessRequest implements OnInit {
   getInitials(name: string) {
     return (name || '')
       .split(' ')
-      .filter(p => p)
+      .filter((p) => p)
       .slice(0, 2)
-      .map(p => p[0]?.toUpperCase())
+      .map((p) => p[0]?.toUpperCase())
       .join('');
   }
 
