@@ -49,7 +49,7 @@ namespace Api.Controllers
                     TotalDocuments = 100
                 };
                 //await _auditLogger.LogAsync("GetFolders", "Retrieved paged list of folders", "10", "Folder");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -67,12 +67,12 @@ namespace Api.Controllers
                 var result = new FolderPagedResult
                 {
                     Data = folderDtos,
-                    
+
                     PageNumber = pagedFolders.PageNumber,
                     PageSize = pagedFolders.PageSize,
                     TotalRecords = pagedFolders.TotalRecords,
                     TotalPages = pagedFolders.TotalPages,
-                    
+
                     HasPreviousPage = pagedFolders.HasPreviousPage,
                     HasNextPage = pagedFolders.HasNextPage,
                     Search = pagedFolders.Search,
@@ -83,7 +83,7 @@ namespace Api.Controllers
                     TotalDocuments = pagedFolders.Data.Sum(f => f.Documents.Count)
                 };
                 //await _auditLogger.LogAsync("GetFolderById", "Retrieved folder by ID", "10", "Folder");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@ namespace Api.Controllers
 
                 var folderDto = _mapper.Map<FolderDTO>(folder);
                 Console.WriteLine($"SubfolderDTO:**********");
-                
+
                 if (folderDto?.SubFolders != null)
                 {
                     foreach (var item in folderDto?.SubFolders)
@@ -110,9 +110,9 @@ namespace Api.Controllers
                         Console.WriteLine($"SubfolderDTO: {item.Name}");
                     }
                 }
-                
+
                 //await _auditLogger.LogAsync("GetFolder", "Retrieved folder details", "10", "Folder");
-                return Ok(folderDto );
+                return Ok(folderDto);
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace Api.Controllers
 
         [HttpGet("department/{departmentId}")]
         public async Task<ActionResult<PagedResult<FolderDTO>>> GetFoldersByDepartment(
-            int departmentId, 
+            int departmentId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -140,7 +140,7 @@ namespace Api.Controllers
                 );
 
                 //await _auditLogger.LogAsync("GetFoldersByDepartment", "Retrieved folders by department", "10", "Folder");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace Api.Controllers
 
         [HttpGet("parent/{parentFolderId?}")]
         public async Task<ActionResult<PagedResult<FolderDTO>>> GetFoldersByParent(
-            int? parentFolderId, 
+            int? parentFolderId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -168,7 +168,7 @@ namespace Api.Controllers
                 );
 
                 //await _auditLogger.LogAsync("GetFoldersByParent", "Retrieved folders by parent", "10", "Folder");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -178,7 +178,7 @@ namespace Api.Controllers
 
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<PagedResult<FolderDTO>>> GetFoldersByUser(
-            string userId, 
+            string userId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -203,7 +203,7 @@ namespace Api.Controllers
                 );
 
                 //await _auditLogger.LogAsync("GetFoldersByUser", "Retrieved folders by user", "10", "Folder");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -241,7 +241,7 @@ namespace Api.Controllers
 
                 var folder = _mapper.Map<Folder>(createDto);
                 folder.CreatedById = "10";
-                folder.DepartmentId= 10;
+                folder.DepartmentId = 10;
 
                 await _unitOfWork.FolderRepository.AddAsync(folder);
                 await _unitOfWork.SaveChangesAsync();

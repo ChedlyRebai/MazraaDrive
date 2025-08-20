@@ -55,5 +55,8 @@ export class DocumentService {
       );
   }
 
-  
+
+  getFolderDocuments(folderId: number) {
+    return this.http.get<DocumentPagedResult>(`${this.baseUrl}/Folder/${folderId}/Documents`)}
+
 }

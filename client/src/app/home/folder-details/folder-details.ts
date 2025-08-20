@@ -29,6 +29,9 @@ import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
+import { UserDto } from '../../shared/models/user';
+import { FolderService } from '../../core/services/folder-service';
+import { DocumentService } from '../../core/services/document-service';
 
 @Component({
   selector: 'app-folder-details',
@@ -103,8 +106,22 @@ export class FolderDetails implements OnInit {
         createdAt: '',
         updatedAt: null,
         subFolderCount: 0,
+        subFolders: [
+          {
+            id: 2,
+            name: 'Subfolder 1',
 
-        subFolders: [],
+            createdById: 'user2',
+
+            isActive: true,
+            parentFolderId: 1,
+
+
+
+            createdAt: '',
+            createdBy: {} as UserDto
+          }
+        ],
         documents: [],
         documentCount: 0,
         parentFolder: {} as FolderDTO,
@@ -121,7 +138,8 @@ export class FolderDetails implements OnInit {
   baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,
-
+    private folderService:FolderService,
+    private documentService:DocumentService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
 
