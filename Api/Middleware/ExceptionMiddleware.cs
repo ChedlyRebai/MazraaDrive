@@ -47,6 +47,8 @@ public class ExceptionMiddleware
         }
     }
 
+
+
     private bool IsRequestAllowed(HttpContext context)
     {
         var ip = context.Connection.RemoteIpAddress;
@@ -62,7 +64,7 @@ public class ExceptionMiddleware
 
         if (dateNow - timesTamp < _rateLimitWindow)
         {
-            if (count > 6)
+            if (count > 20)
             {
                 return false;
             }
@@ -73,7 +75,7 @@ public class ExceptionMiddleware
         {
             _cache.Set(cachKey, (dateNow, 1), _rateLimitWindow);
         }
-        return true; 
+        return true;
     }
 
     private void applySecurite(HttpContext context){

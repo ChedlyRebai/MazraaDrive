@@ -17,7 +17,11 @@ export class AccessRequsetService {
   private accessRequest=new BehaviorSubject<AccessRequestPagedResult>({} as AccessRequestPagedResult);
   accessRequest$ = this.accessRequest.asObservable();
 
-  getAccessRequests(PageNumber?:number, PageSize?:number,Search?:number,SortBy?:string,sortDirection?:string) {
+  getAccessRequests(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
     let params = new HttpParams();
 
     if(PageSize){
@@ -36,16 +40,11 @@ export class AccessRequsetService {
       params = params.append('SortBy', SortBy);
     }
 
-    if(sortDirection){
-      params = params.append('sortDirection', sortDirection);
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
     }
 
-    return this.http.get<AccessRequestPagedResult>(this.baseUrl, { params }).subscribe({
-      next:(accesReq:AccessRequestPagedResult)=>{
-        this.accessRequest.next(accesReq as AccessRequestPagedResult);
-        console.log(accesReq.data);
-      }
-    })
+    return this.http.get<AccessRequestPagedResult>(this.baseUrl, { params })
   }
 
 

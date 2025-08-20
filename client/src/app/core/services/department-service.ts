@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DepartmentDto } from './Hub/DepartmentRealtimeService';
 import { BehaviorSubject } from 'rxjs';
@@ -15,31 +15,47 @@ export class DepartmentService {
     {} as DepartmentPagedResult
   );
   departments$ = this.departments.asObservable();
-  getDepartments() {
+  getDepartments(
+    PageSize?: number,
+    Search?: string,
+    PageNNumber?: number,
+    SortBy?: string,
+    SortDirection?: string
+  ) {
+    let params = new HttpParams();
+
+    if (PageSize) {
+      console.log('PageSize in service:', PageSize);
+      params = params.set('PageSize', PageSize.toString());
+    }
+    
+    if (Search) {
+      params = params.set('Search', Search);
+    }
+    if (PageNNumber) {
+      console.log('PageNNumber in service:', PageNNumber);
+      params = params.set('PageNumber', PageNNumber.toString());
+    }
+    if (SortBy) {
+      params = params.set('SortBy', SortBy);
+    }
+    if (SortDirection) {
+      params = params.set('SortDirection', SortDirection);
+    }
+
     return this.http
-      .get<DepartmentPagedResult>(`${this.baseUrl}`)
-      .subscribe(
-        (result) => {
-          console.log('Departments fetched:', result);
-          this.departments.next(result);
-        },
-        (error) => {
-          console.error('Error fetching departments:', error);
-        }
-      );
+      .get<DepartmentPagedResult>(`${this.baseUrl}`, { params })
   }
 
   getDepartmentById(id: number) {
-    return this.http
-      .get<DepartmentDto>(`${this.baseUrl}/${id}`)
-      .subscribe(
-        (result) => {
-          console.log('Department fetched:', result);
-        },
-        (error) => {
-          console.error('Error fetching department:', error);
-        }
-      );
+    return this.http.get<DepartmentDto>(`${this.baseUrl}/${id}`).subscribe(
+      (result) => {
+        console.log('Department fetched:', result);
+      },
+      (error) => {
+        console.error('Error fetching department:', error);
+      }
+    );
   }
 
   createDepartment(department: DepartmentDto) {
@@ -57,10 +73,7 @@ export class DepartmentService {
 
   updateDepartment(department: DepartmentDto) {
     return this.http
-      .put<DepartmentDto>(
-        `${this.baseUrl}/${department.id}`,
-        department
-      )
+      .put<DepartmentDto>(`${this.baseUrl}/${department.id}`, department)
       .subscribe(
         (result) => {
           console.log('Department updated:', result);

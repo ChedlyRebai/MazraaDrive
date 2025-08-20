@@ -103,23 +103,19 @@
     <p-table
       #dt
       [value]="documents.data"
-      [rows]="10"
+      [rows]="PageSize"
       [paginator]="true"
-      [globalFilterFields]="[
-        'name',
-        'category',
-        'type',
-        'uploadedBy',
-        'status'
-      ]"
+      [lazy]="true"
+      [totalRecords]="documents.totalRecords"
+      (onLazyLoad)="onPageChange($event)"
+      [globalFilterFields]="['name', 'description']"
       [tableStyle]="{ 'min-width': '75rem' }"
-      [(selection)]="selectedDocuments"
       [rowHover]="true"
       dataKey="id"
-      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} documents"
-      [showCurrentPageReport]="true"
-      [loading]="loading"
-      [rowsPerPageOptions]="[10, 25, 50]"
+          currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+          [showCurrentPageReport]="true"
+          [loading]="loading"
+          [rowsPerPageOptions]="[1,2, 5, 10, 25, 50]"
     >
       <ng-template pTemplate="caption">
         <div class="flex items-center justify-between">

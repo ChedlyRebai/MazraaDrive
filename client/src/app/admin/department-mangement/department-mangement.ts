@@ -1,3 +1,4 @@
+import { DepartmentService } from './../../core/services/department-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +31,6 @@ import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { Textarea, TextareaModule } from 'primeng/textarea';
 import { ThemeSwitcher } from '../themeswitcher';
 import { DepartmentRealtimeService } from '../../core/services/Hub/DepartmentRealtimeService';
-import { DepartmentService } from '../../core/services/department-service';
 
 interface UserCountRange {
   label: string;
@@ -118,7 +118,9 @@ export class DepartmentMangement implements OnInit {
     private confirmationService: ConfirmationService,
     private http: HttpClient
   ) {}
-
+  // private departments = new BehaviorSubject<DepartmentPagedResult>(
+  //     {} as DepartmentPagedResult
+  //   );
   ngOnInit() {
     //this.load(); // existing
     this.realtime.connect();
@@ -136,7 +138,8 @@ export class DepartmentMangement implements OnInit {
       // this.data = this.data.filter((x) => x.id !== id);
     });
     this.loadDepartments();
-    this.departmentService.getDepartments();
+    this.getAllDep();
+    // this.departmentService.getDepartments();
   }
   ngOnDestroy() {
     this.realtime.disconnect();
@@ -148,102 +151,99 @@ export class DepartmentMangement implements OnInit {
   }
 
   loadDepartments() {
-    this.loading = true;
-
-    // Mock data matching DepartmentDto interface
-    setTimeout(() => {
-      const mockResponse: DepartmentPagedResult = {
-        data: [
-          {
-            id: 1,
-            name: 'Ressources Humaines',
-            description:
-              'Gestion du personnel, recrutement, formation et développement des ressources humaines',
-            createdAt: '2024-01-15T08:30:00',
-            updatedAt: '2024-12-01T10:15:00',
-            userCount: 15,
-            folderCount: 25,
-            documentRequestCount: 45,
-          },
-          {
-            id: 2,
-            name: 'Finance',
-            description:
-              'Gestion financière, comptabilité, budgets et contrôle de gestion',
-            createdAt: '2024-01-20T09:00:00',
-            updatedAt: '2024-11-28T14:30:00',
-            userCount: 12,
-            folderCount: 30,
-            documentRequestCount: 38,
-          },
-          {
-            id: 3,
-            name: "Technologies de l'Information",
-            description:
-              'Développement logiciel, infrastructure IT, support technique et cybersécurité',
-            createdAt: '2024-02-01T10:00:00',
-            updatedAt: '2024-12-05T16:45:00',
-            userCount: 20,
-            folderCount: 40,
-            documentRequestCount: 25,
-          },
-          {
-            id: 4,
-            name: 'Marketing et Communication',
-            description:
-              'Marketing digital, communication interne et externe, relations publiques',
-            createdAt: '2024-02-10T11:15:00',
-            updatedAt: '2024-11-30T09:20:00',
-            userCount: 8,
-            folderCount: 15,
-            documentRequestCount: 20,
-          },
-          {
-            id: 5,
-            name: 'Opérations',
-            description:
-              "Gestion des opérations, production, logistique et chaîne d'approvisionnement",
-            createdAt: '2024-01-25T13:45:00',
-            updatedAt: '2024-12-03T11:10:00',
-            userCount: 25,
-            folderCount: 35,
-            documentRequestCount: 55,
-          },
-          {
-            id: 6,
-            name: 'Administration Générale',
-            description:
-              'Support administratif, gestion des installations et services généraux',
-            createdAt: '2024-03-01T08:00:00',
-            updatedAt: '2024-12-02T15:30:00',
-            userCount: 10,
-            folderCount: 20,
-            documentRequestCount: 30,
-          },
-        ],
-        pageNumber: 1,
-        pageSize: 10,
-        totalRecords: 6,
-        totalPages: 1,
-        hasPreviousPage: false,
-        hasNextPage: false,
-        totalDepartments: 6,
-        totalUsers: 90,
-        search: null,
-        sortBy: null,
-        sortDirection: null,
-      };
-
-      this.departments = mockResponse.data;
-      this.totalRecords = mockResponse.totalRecords;
-      this.totalDepartments = mockResponse.totalDepartments;
-      this.totalUsers = mockResponse.totalUsers;
-      this.avgUsersPerDepartment = Math.round(
-        this.totalUsers / this.totalDepartments
-      );
-      this.loading = false;
-    }, 1000);
-
+    // this.loading = true;
+    // // Mock data matching DepartmentDto interface
+    // setTimeout(() => {
+    //   const mockResponse: DepartmentPagedResult = {
+    //     data: [
+    //       {
+    //         id: 1,
+    //         name: 'Ressources Humaines',
+    //         description:
+    //           'Gestion du personnel, recrutement, formation et développement des ressources humaines',
+    //         createdAt: '2024-01-15T08:30:00',
+    //         updatedAt: '2024-12-01T10:15:00',
+    //         userCount: 15,
+    //         folderCount: 25,
+    //         documentRequestCount: 45,
+    //       },
+    //       {
+    //         id: 2,
+    //         name: 'Finance',
+    //         description:
+    //           'Gestion financière, comptabilité, budgets et contrôle de gestion',
+    //         createdAt: '2024-01-20T09:00:00',
+    //         updatedAt: '2024-11-28T14:30:00',
+    //         userCount: 12,
+    //         folderCount: 30,
+    //         documentRequestCount: 38,
+    //       },
+    //       {
+    //         id: 3,
+    //         name: "Technologies de l'Information",
+    //         description:
+    //           'Développement logiciel, infrastructure IT, support technique et cybersécurité',
+    //         createdAt: '2024-02-01T10:00:00',
+    //         updatedAt: '2024-12-05T16:45:00',
+    //         userCount: 20,
+    //         folderCount: 40,
+    //         documentRequestCount: 25,
+    //       },
+    //       {
+    //         id: 4,
+    //         name: 'Marketing et Communication',
+    //         description:
+    //           'Marketing digital, communication interne et externe, relations publiques',
+    //         createdAt: '2024-02-10T11:15:00',
+    //         updatedAt: '2024-11-30T09:20:00',
+    //         userCount: 8,
+    //         folderCount: 15,
+    //         documentRequestCount: 20,
+    //       },
+    //       {
+    //         id: 5,
+    //         name: 'Opérations',
+    //         description:
+    //           "Gestion des opérations, production, logistique et chaîne d'approvisionnement",
+    //         createdAt: '2024-01-25T13:45:00',
+    //         updatedAt: '2024-12-03T11:10:00',
+    //         userCount: 25,
+    //         folderCount: 35,
+    //         documentRequestCount: 55,
+    //       },
+    //       {
+    //         id: 6,
+    //         name: 'Administration Générale',
+    //         description:
+    //           'Support administratif, gestion des installations et services généraux',
+    //         createdAt: '2024-03-01T08:00:00',
+    //         updatedAt: '2024-12-02T15:30:00',
+    //         userCount: 10,
+    //         folderCount: 20,
+    //         documentRequestCount: 30,
+    //       },
+    //     ],
+    //     pageNumber: 1,
+    //     pageSize: 10,
+    //     totalRecords: 6,
+    //     totalPages: 1,
+    //     hasPreviousPage: false,
+    //     hasNextPage: false,
+    //     totalDepartments: 6,
+    //     totalUsers: 90,
+    //     search: null,
+    //     sortBy: null,
+    //     sortDirection: null,
+    //   };
+    //   this.departments = mockResponse.data;
+    //   this.totalRecords = mockResponse.totalRecords;
+    //   this.totalDepartments = mockResponse.totalDepartments;
+    //   this.totalUsers = mockResponse.totalUsers;
+    //   this.avgUsersPerDepartment = Math.round(
+    //     this.totalUsers / this.totalDepartments
+    //   );
+    //   this.loading = false;
+    // }, 1000);
     // Real API call would be:
     /*
     this.http.get<DepartmentPagedResult>(`${this.baseUrl}/Department`, { params: this.filter as any }).subscribe({
@@ -268,25 +268,55 @@ export class DepartmentMangement implements OnInit {
     */
   }
 
-  first = 0;
+  // first = 5;
 
-  rows = 10;
-  next() {
-    this.first = this.first + this.rows;
+  // rows = 5;
+  // next() {
+  //   this.first = this.first + this.rows;
+  //   console.log('next function called',this.first);
+  // }
+
+  // prev() {
+  //   this.first = this.first - this.rows;
+  //   console.log('prev function called',this.first);
+  // }
+
+   PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAllDep() {
+    this.departmentService
+      .getDepartments(
+        this.PageSize,
+        this.Search,
+        this.PageNumber,
+        this.SortBy,
+        this.SortDirection
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.PageNumber = response.pageNumber;
+          this.PageSize = response.pageSize;
+          this.departments = response.data;
+          this.totalRecords = response.totalRecords;
+          this.totalDepartments = response.totalDepartments;
+          this.totalUsers = response.totalUsers;
+          this.avgUsersPerDepartment = Math.round(
+            this.totalUsers / this.totalDepartments
+          );
+        },
+      });
   }
 
-  prev() {
-    this.first = this.first - this.rows;
-  }
-  
+ 
+
   onPageChange(event: any) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.filter.pageNumber = event.page + 1;
-    console.log('Page  num changed to: ', event.page);
-    this.filter.pageSize = event.rows;
-    console.log('page size per page changed to: ', this.filter.pageSize);
-    this.loadDepartments();
+   // this.first = event.first;
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+    this.getAllDep();
   }
 
   onGlobalFilter(event: any) {

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserPagedResult } from '../../shared/models/user';
 import { BehaviorSubject } from 'rxjs';
@@ -13,8 +13,33 @@ export class UserService {
    baseUrl=environment.apiUrl+"/User"
    private users = new BehaviorSubject<UserPagedResult>({} as UserPagedResult);
    users$ = this.users.asObservable();
-   getUsers() {
-       return this.http.get<UserPagedResult>(`${this.baseUrl}`).subscribe(
+   getUsers(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+    }
+
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+    }
+
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
+       return this.http.get<UserPagedResult>(`${this.baseUrl}`,{params}).subscribe(
          (result) => {
            console.log('Fetched users:', result);
            this.users.next(result);

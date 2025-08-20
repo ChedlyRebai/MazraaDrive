@@ -189,6 +189,40 @@ export class AccessRequest implements OnInit {
     this.load();
   }
 
+  PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAllAccessReq() {
+     this.accessRequestService
+       .getAccessRequests(
+         this.PageSize,
+         this.Search,
+         this.PageNumber,
+         this.SortBy,
+         this.SortDirection
+       )
+       .subscribe({
+         next: (response: any) => {
+           this.PageNumber = response.pageNumber;
+           this.PageSize = response.pageSize;
+           this.requests = response.data;
+           this.totalRecords = response.totalRecords;
+           
+           
+         },
+       });
+  }
+
+ 
+
+  onPageChange(event: any) {
+   // this.first = event.first;
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+    this.getAllAccessReq();
+  }
   refreshRequests() {
     this.pageNumber = 1;
     this.load();

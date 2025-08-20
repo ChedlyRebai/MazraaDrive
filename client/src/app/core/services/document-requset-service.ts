@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
@@ -19,10 +19,34 @@ export class DocumentRequsetService {
   );
   documentRequests$ = this.documentRequest.asObservable();
 
-  getDocumentRequests() {
+  getDocumentRequests(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+    }
+
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+    }
+
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
     return this.http
-      .get<DocumentRequestPagedResult>(`${this.baseUrl}`)
-      .subscribe(
+      .get<DocumentRequestPagedResult>(`${this.baseUrl}`,{params}).subscribe(
         (result) => {
           console.log('Document requests fetched:', result);
           this.documentRequest.next(result);
@@ -31,6 +55,7 @@ export class DocumentRequsetService {
           console.error('Error fetching document requests:', error);
         }
       );
+
   }
 
   getDocumentRequestById(id: number) {

@@ -80,18 +80,25 @@
 
   <div class="card">
 
-<ng-container *ngIf="(accessRequestService.accessRequest$| async) as basket">
+
     <p-table
-      [value]="basket.data"
+      [value]="requests"
       [paginator]="true"
-      [rows]="pageSize"
-      [totalRecords]="totalRecords"
+      [rows]="PageSize"
+      
+      [paginator]="true"
       [lazy]="true"
-      (onPage)="onPage($event)"
-      [loading]="loading"
+      [totalRecords]="totalRecords"
+      (onLazyLoad)="onPageChange($event)"
+      [globalFilterFields]="['name', 'description']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+     
+      [rowHover]="true"
       dataKey="id"
-      responsiveLayout="scroll"
-      styleClass="p-datatable-sm"
+      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+      [showCurrentPageReport]="true"
+      [loading]="loading"
+      [rowsPerPageOptions]="[1,2,5,10, 25, 50]"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -150,7 +157,7 @@
         </tr>
       </ng-template>
     </p-table>
-    </ng-container>
+   
   </div>
 </div>
 

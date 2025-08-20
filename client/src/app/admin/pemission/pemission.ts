@@ -233,6 +233,44 @@ export class Pemission implements OnInit {
     // });
   }
 
+  PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAllPermissions() {
+    this.accessRightService
+      .getAccessRights(
+        this.PageSize,
+        this.Search,
+        this.PageNumber,
+        this.SortBy,
+        this.SortDirection
+      )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       this.PageNumber = response.pageNumber;
+    //       this.PageSize = response.pageSize;
+    //       this.departments = response.data;
+    //       this.totalRecords = response.totalRecords;
+    //       this.totalDepartments = response.totalDepartments;
+    //       this.totalUsers = response.totalUsers;
+    //       this.avgUsersPerDepartment = Math.round(
+    //         this.totalUsers / this.totalDepartments
+    //       );
+    //     },
+    //   });
+  }
+
+ 
+
+  onPageChange(event: any) {
+   // this.first = event.first;
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+    this.getAllPermissions();
+  }
+
   applyUserFilter() {
     this.filter.userId = this.acUser?.id || null;
     this.filter.userName = this.acUser?.display || null;

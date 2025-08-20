@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { DocumentFilterDto, DocumentPagedResult } from '../../shared/models/document';
 
@@ -16,9 +16,34 @@ export class DocumentService {
   );
   documentRequests$ = this.documentRequest.asObservable();
 
-  getDocument() {
+  getDocument(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+    }
+
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+    }
+
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
     return this.http
-      .get<DocumentPagedResult>(`${this.baseUrl}`)
+      .get<DocumentPagedResult>(`${this.baseUrl}`,{params})
       .subscribe(
         (result) => {
           console.log('Document  fetched:', result);

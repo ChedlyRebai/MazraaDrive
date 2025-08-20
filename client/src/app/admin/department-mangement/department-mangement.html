@@ -80,11 +80,11 @@
     </div>
   </div>
 
-  <ng-container *ngIf="departmentService.departments$ | async as departments">
+  <ng-container *ngIf="departmentService.departments$ | async as department">
     <p-table
       #dt
-      [value]="departments.data"
-      [rows]="10"
+      [value]="departments"
+      [rows]="PageSize"
       [paginator]="true"
       [lazy]="true"
       [totalRecords]="totalRecords"

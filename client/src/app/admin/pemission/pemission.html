@@ -171,9 +171,10 @@
       <p-table
         [value]="accessRights.data"
         [paginator]="true"
-        [rows]="filter.pageSize"
-        [totalRecords]="totalRecords"
+        [rows]="PageSize"
+        [totalRecords]="accessRights.totalRecords"
         [lazy]="true"
+        (onLazyLoad)="onPageChange($event)"
         (onPage)="onPage($event)"
         [loading]="loading"
         dataKey="id"
@@ -181,6 +182,10 @@
         styleClass="p-datatable-sm"
         [(selection)]="selection"
         selectionMode="multiple"
+        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+        [showCurrentPageReport]="true"
+        [loading]="loading"
+        [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
       >
         <ng-template pTemplate="header">
           <tr>

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RoleDto, RolePagedResult } from '../../admin/role-mangement/role-mangement';
 import { BehaviorSubject } from 'rxjs';
@@ -14,8 +14,33 @@ export class RoleService {
    private roles = new BehaviorSubject<RolePagedResult>({} as RolePagedResult);
    roles$ = this.roles.asObservable();
 
-  getRoles() {
-    return this.http.get<RolePagedResult>(`${this.baseUrl}`).subscribe(
+  getRoles(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+    }
+
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+    }
+
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+    
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
+    return this.http.get<RolePagedResult>(`${this.baseUrl}`,{params}).subscribe(
       (result) => {
         console.log('Fetched roles:', result);
         this.roles.next(result);
