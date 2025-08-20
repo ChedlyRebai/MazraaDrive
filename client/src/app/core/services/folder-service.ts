@@ -46,6 +46,7 @@ export class FolderService {
     return this.http.get<FolderPagedResult>(`${this.baseUrl}`, { params }).subscribe(
       (result) => {
         this.folders.next(result);
+        console.log(result);
       },
       (error) => {
         console.error('Error fetching folders:', error);

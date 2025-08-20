@@ -163,6 +163,7 @@ export class Accueil implements OnInit {
     this.initializeBreadcrumb();
     this.loadFolders();
     this.loadStatistics();
+    this.getAllFolders();
   }
 
   initializeBreadcrumb() {
@@ -172,7 +173,7 @@ export class Accueil implements OnInit {
   }
 
   loadFolders() {
-    this.loading = true;
+    
     
     // // Mock data - replace with actual API call
     // setTimeout(() => {
