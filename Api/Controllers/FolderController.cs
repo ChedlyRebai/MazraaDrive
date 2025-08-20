@@ -64,7 +64,6 @@ namespace Api.Controllers
             {
                 var pagedFolders = await _unitOfWork.FolderRepository.GetByFolderID(filter, id);
                 var folderDtos = _mapper.Map<IEnumerable<FolderDTO>>(pagedFolders.Data);
-
                 var result = new FolderPagedResult
                 {
                     Data = folderDtos,
@@ -111,7 +110,7 @@ namespace Api.Controllers
                         Console.WriteLine($"SubfolderDTO: {item.Name}");
                     }
                 }
-
+                
                 //await _auditLogger.LogAsync("GetFolder", "Retrieved folder details", "10", "Folder");
                 return Ok(folderDto );
             }

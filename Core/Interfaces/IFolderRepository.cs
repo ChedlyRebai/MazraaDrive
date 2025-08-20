@@ -8,6 +8,7 @@ public interface IFolderRepository : IGenericRepository<Folder>
 {
     Task<PagedResult<Folder>> GetPagedAsync(FolderFilterDto filter);
     Task<PagedResult<Folder>> GetByFolderID(FolderFilterDto filter, int folderId);
+    Task<PagedResult<Folder>> GetSubFoldersAsync(FolderFilterDto filter, int parentFolderId);
     Task<PagedResult<Folder>> GetByDepartmentPagedAsync(int departmentId, PaginationParams pagination);
     Task<PagedResult<Folder>> GetHomeFolders(FolderFilterDto filter,int departmentId);
     Task<PagedResult<Folder>> GetByParentPagedAsync(int? parentFolderId, PaginationParams pagination);

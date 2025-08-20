@@ -18,7 +18,7 @@ namespace Api.Controllers
         private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
         private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
 
-        public DocumentController( IAuditLogRepository auditLogger,IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment) 
+        public DocumentController(IAuditLogRepository auditLogger, IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment)
             : base(unitOfWork, mapper)
         {
             _auditLogger = auditLogger;
@@ -90,7 +90,7 @@ namespace Api.Controllers
 
         [HttpGet("folder/{folderId}")]
         public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByFolder(
-            int folderId, 
+            int folderId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -118,7 +118,7 @@ namespace Api.Controllers
 
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByUser(
-            string userId, 
+            string userId,
             [FromQuery] PaginationParams pagination)
         {
             try
@@ -151,7 +151,7 @@ namespace Api.Controllers
             }
         }
 
-        
+
         /*[HttpGet]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocuments()
         {
@@ -167,53 +167,53 @@ namespace Api.Controllers
             }
         }*/
 
-       /* [HttpGet("{id}")]
-        public async Task<ActionResult<DocumentDto>> GetDocument(int id)
-        {
-            try
-            {
-                var document = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
-                if (document == null)
-                    return NotFound(new { success = false, message = "Document not found" });
+        /* [HttpGet("{id}")]
+         public async Task<ActionResult<DocumentDto>> GetDocument(int id)
+         {
+             try
+             {
+                 var document = await _unitOfWork.DocumentRepository.GetByIdAsync(id);
+                 if (document == null)
+                     return NotFound(new { success = false, message = "Document not found" });
 
-                var documentDto = _mapper.Map<DocumentDto>(document);
-                return Ok(documentDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(500, ex.Message));
-            }
-        }*/
+                 var documentDto = _mapper.Map<DocumentDto>(document);
+                 return Ok(documentDto);
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest(new ResponseAPI(500, ex.Message));
+             }
+         }*/
 
-     /*   [HttpGet("folder/{folderId}")]
-        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByFolder(int folderId)
-        {
-            try
-            {
-                var documents = await _unitOfWork.DocumentRepository.GetByFolderAsync(folderId);
-                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(documentDtos);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(500, ex.Message));
-            }
-        }*/
+        /*   [HttpGet("folder/{folderId}")]
+           public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByFolder(int folderId)
+           {
+               try
+               {
+                   var documents = await _unitOfWork.DocumentRepository.GetByFolderAsync(folderId);
+                   var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                   return Ok(documentDtos);
+               }
+               catch (Exception ex)
+               {
+                   return BadRequest(new ResponseAPI(500, ex.Message));
+               }
+           }*/
 
-       /* [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByUser(string userId)
-        {
-            try
-            {
-                var documents = await _unitOfWork.DocumentRepository.GetByUserAsync(userId);
-                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
-                return Ok(documentDtos);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseAPI(500, ex.Message));
-            }
-        }*/
+        /* [HttpGet("user/{userId}")]
+         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsByUser(string userId)
+         {
+             try
+             {
+                 var documents = await _unitOfWork.DocumentRepository.GetByUserAsync(userId);
+                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
+                 return Ok(documentDtos);
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest(new ResponseAPI(500, ex.Message));
+             }
+         }*/
 
         [HttpGet("validated")]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetValidatedDocuments()
@@ -296,17 +296,17 @@ namespace Api.Controllers
                 var document = new Document
                 {
                     Name = Path.GetFileNameWithoutExtension(uploadDto.File.FileName),
-                    
-                   // Description = uploadDto.Description,
+
+                    // Description = uploadDto.Description,
                     FileType = fileExtension.TrimStart('.'),
                     FileSize = uploadDto.File.Length,
                     StoragePath = fileName,
                     FolderId = uploadDto.FolderId,
-                    DepartmentId= 10,
+                    DepartmentId = 10,
                     UploadedById = "10",
                     Version = 1,
                     IsValidated = false,
-                    
+
                 };
 
                 var createdDocument = await _unitOfWork.DocumentRepository.AddAsync(document);

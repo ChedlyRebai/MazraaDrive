@@ -52,6 +52,41 @@ namespace Infrastructure.Repositories
             );
         }
 
+        public async Task<PagedResult<Folder>> GetSubFoldersAsync(FolderFilterDto filter, int parentFolderId)
+        {
+            var query = _context.Folders
+                .Include(f => f.ParentFolder)
+                .Include(f => f.Department)
+                .Include(f => f.CreatedBy)
+                .Include(f => f.SubFolders)
+                .Where(f => f.ParentFolderId == parentFolderId)
+                .AsQueryable();
+
+            // Apply filters
+            query = ApplyFilters(query, filter);
+
+            // Get total count before pagination
+            var totalRecords = await query.CountAsync();
+
+            // Apply sorting
+            query = ApplySorting(query, filter.SortBy, filter.SortDirection);
+
+            // Apply pagination
+            var folders = await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return folders.ToPagedResult(
+                filter.PageNumber,
+                filter.PageSize,
+                totalRecords,
+                filter.Search,
+                filter.SortBy,
+                filter.SortDirection
+            );
+        }
+
         public async Task<PagedResult<Folder>> GetPagedAsync(FolderFilterDto filter)
         {
             var query = _context.Folders
@@ -540,6 +575,6 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-
+        
     }
 }
