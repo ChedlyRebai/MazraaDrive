@@ -373,7 +373,7 @@ export class Accueil implements OnInit {
     this.folderDialog = true;
   }
 
-  openFolder(folder: Folder) {
+  openFolder(folder: Folder | any) {
     this.messageService.add({
       severity: 'info',
       summary: 'Navigation',
@@ -386,7 +386,7 @@ export class Accueil implements OnInit {
     // this.router.navigate(['/folder', folder.id]);
   }
 
-  editFolder(folder: Folder) {
+  editFolder(folder: Folder | any) {
     this.newFolder = { ...folder };
     this.editMode = true;
     this.submitted = false;
@@ -444,7 +444,7 @@ export class Accueil implements OnInit {
     }, 1500);
   }
 
-  shareFolder(folder: Folder) {
+  shareFolder(folder: Folder | any) {
     this.messageService.add({
       severity: 'info',
       summary: 'Partage',
@@ -478,7 +478,7 @@ export class Accueil implements OnInit {
   }
 
   // Context Menu
-  showContextMenu(event: any, folder: Folder | null) {
+  showContextMenu(event: any, folder: Folder | null| any) {
     event.preventDefault();
 
     if (folder) {
