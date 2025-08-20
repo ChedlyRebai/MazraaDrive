@@ -34,7 +34,33 @@ import { UserDto } from '../../shared/models/user';
 import { FolderService } from '../../core/services/folder-service';
 import { DocumentService } from '../../core/services/document-service';
 import { DocumentPagedResult } from '../../shared/models/document';
+interface FileItem {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  modifiedDate: Date;
+  owner: string;
+  isShared: boolean;
+  path: string;
+}
 
+interface StorageData {
+  name: string;
+  icon: string;
+  color: string;
+  usage: number;
+  filesCount: number;
+  usedSpace: string;
+}
+
+interface FileCategory {
+  name: string;
+  type: string;
+  icon: string;
+  color: string;
+  count: number;
+}
 @Component({
   selector: 'app-folder-details',
   schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
@@ -79,6 +105,8 @@ import { DocumentPagedResult } from '../../shared/models/document';
   styleUrl: './folder-details.css',
   providers: [ConfirmationService, MessageService],
 })
+
+
 export class FolderDetails implements OnInit {
   items: MenuItem[] | undefined;
   subFolders: FolderPagedResult | null = null;  
@@ -325,7 +353,233 @@ export class FolderDetails implements OnInit {
 
 
 
+recentItems: FileItem[] = [
+    {
+      id: '1',
+      name: 'Rapport Mensuel.pdf',
+      type: 'pdf',
+      size: '2.3 MB',
+      modifiedDate: new Date('2024-12-06T10:30:00'),
+      owner: 'Chedly Rebai',
+      isShared: true,
+      path: '/documents'
+    },
+    {
+      id: '2',
+      name: 'Projet Marketing',
+      type: 'folder',
+      size: '15 fichiers',
+      modifiedDate: new Date('2024-12-05T14:22:00'),
+      owner: 'Marie Martin',
+      isShared: false,
+      path: '/documents'
+    },
+    {
+      id: '3',
+      name: 'Présentation Client.pptx',
+      type: 'powerpoint',
+      size: '5.7 MB',
+      modifiedDate: new Date('2024-12-04T09:15:00'),
+      owner: 'Pierre Bernard',
+      isShared: true,
+      path: '/documents/presentations'
+    },
+    {
+      id: '4',
+      name: 'Budget 2024.xlsx',
+      type: 'excel',
+      size: '1.2 MB',
+      modifiedDate: new Date('2024-12-03T16:45:00'),
+      owner: 'Sophie Dubois',
+      isShared: false,
+      path: '/documents/finance'
+    },
+    {
+      id: '5',
+      name: 'Logo_Company.png',
+      type: 'image',
+      size: '345 KB',
+      modifiedDate: new Date('2024-12-02T11:30:00'),
+      owner: 'Lucas Moreau',
+      isShared: true,
+      path: '/documents/assets'
+    }
+  ];
 
+
+   getFileIcon(type: string): string {
+    const iconMap: { [key: string]: string } = {
+      'PDF': 'pi pi-file-pdf',
+      'word': 'pi pi-file-word',
+      'DOCX': 'pi pi-file-word',
+      'excel': 'pi pi-file-excel',
+      'powerpoint': 'pi pi-file',
+      'image': 'pi pi-image',
+      'video': 'pi pi-video',
+      'audio': 'pi pi-volume-up',
+      'folder': 'pi pi-folder',
+      'archive': 'pi pi-file-o'
+    };
+    return iconMap[type] || 'pi pi-file';
+  }
+
+
+   getTagSeverity(type: string): string {
+    const severityMap: { [key: string]: string } = {
+      'PDF': 'danger',
+      'DOCX': 'info',
+      'WORD': 'info',
+      'EXCEL': 'success',
+      'POWERPOINT': 'warning',
+      'IMAGE': 'secondary',
+      'FOLDER': 'info'
+    };
+    return severityMap[type] || 'secondary';
+  }
+
+  getFileTypeColor(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      'pdf': '#EF4444',
+      'PDF': '#EF4444',
+      'word': '#2563EB',
+      'DOCX': '#2563EB',
+      'excel': '#059669',
+      'powerpoint': '#DC2626',
+      'image': '#7C3AED',
+      'video': '#059669',
+      'audio': '#F59E0B',
+      'folder': '#3B82F6',
+      'archive': '#6B7280'
+    };
+    return colorMap[type] || '#6B7280';
+  }
+  // Chart data
+  storageChartData: any;
+  storageChartOptions: any;
+
+  // Dialog states
+  showUploadDialog = false;
+  uploadedFiles: any[] = [];
+
+  // Context menu
+  contextMenuItems: any[] = [];
+
+ 
+
+  initializeCharts() {
+    this.storageChartData = {
+      labels: ['Documents', 'Images', 'Vidéos', 'Autres', 'Libre'],
+      datasets: [{
+        data: [45, 25, 15, 10, 5],
+        backgroundColor: [
+          '#3B82F6',
+          '#10B981',
+          '#F59E0B',
+          '#8B5CF6',
+          '#E5E7EB'
+        ],
+        borderWidth: 0
+      }]
+    };
+
+    this.storageChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 15
+          }
+        }
+      }
+    };
+  }
+
+  setupContextMenu() {
+    this.contextMenuItems = [
+      {
+        label: 'Ouvrir',
+        icon: 'pi pi-eye',
+        
+      },
+      {
+        label: 'Télécharger',
+        icon: 'pi pi-download',
+      
+      },
+      {
+        label: 'Partager',
+        icon: 'pi pi-share-alt',
+        
+      },
+      {
+        separator: true
+      },
+      {
+        label: 'Renommer',
+        icon: 'pi pi-pencil',
+        
+      },
+      {
+        label: 'Supprimer',
+        icon: 'pi pi-trash',
+       
+      }
+    ];
+  }
+  
+
+  // File operations
+  openItem(item: FileItem) {
+    if (item.type === 'folder') {
+      // Navigate to folder
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Navigation',
+        detail: `Ouverture du dossier: ${item.name}`
+      });
+    } else {
+      // Open file
+      this.previewItem(item);
+    }
+  }
+
+  previewItem(item: FileItem) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Aperçu',
+      detail: `Aperçu du fichier: ${item.name}`
+    });
+  }
+
+  downloadItem(item: FileItem) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Téléchargement',
+      detail: `Téléchargement de: ${item.name}`
+    });
+  }
+
+  shareItem(item: FileItem) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Partage',
+      detail: `Partage de: ${item.name}`
+    });
+  }
+
+  // Context menu actions
+  showContextMenu(event: any, item: FileItem) {
+    event.preventDefault();
+    
+  }
+
+  showItemMenu(event: any, item: FileItem) {
+    // Show dropdown menu for item
+    event.stopPropagation();}
+  
 
 
 

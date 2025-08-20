@@ -63,8 +63,9 @@
 
     <p-tabs value="files">
       <p-tablist>
-        <p-tab ngDefaultControl  value="files">Files</p-tab>
+        <p-tab ngDefaultControl value="files">Files</p-tab>
         <p-tab value="Folders">Folders</p-tab>
+        <p-tab value="f">f</p-tab>
       </p-tablist>
       <p-tabpanels>
         <p-tabpanel ngDefaultControl value="files">
@@ -75,7 +76,7 @@
                 <div
                   class="text-surface-900 dark:text-surface-0 text-xl font-semibold"
                 >
-                  Folders
+                  Files
                 </div>
                 <div>
                   <p-button
@@ -94,41 +95,60 @@
               </div>
               <div class="grid grid-cols-12 gap-4">
                 <div
-                  *ngFor="let folder of subFolders?.data"
-                  class="col-span-12 md:col-span-6 xl:col-span-3"
+                  *ngFor="let item of subDocuments?.data"
+                  class="col-span-12 md:col-span-6 xl:col-span-3 file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
                 >
-                  <div
-                    class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-                  >
-                    <div class="p-4">
-                      <div class="flex flex-col items-start">
-                        <div class="flex items-center w-full justify-between">
-                          <div class="bg-blue-100 p-3 rounded-lg">
-                            <i class="pi pi-folder text-3xl text-blue-500"></i>
-                          </div>
-                          <p class="text-gray-500">{{ folder.description }}</p>
-                        </div>
-                        <div class="my-2">
-                          <h6 class="font-bold text-gray-800">
-                            {{ folder.name }}
-                          </h6>
-                          <div
-                            class="flex flex-col justify-between text-gray-600"
-                          >
-                            <div>
-                              <h3 class="font-semibold my-1">
-                                {{ folder.createdAt | date : "short" }}
-                              </h3>
-                            </div>
-                            <div>
-                              <h4 class="my-1">
-                                By: {{ folder.createdByName }}
-                              </h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div
+                      class="p-3 rounded-lg"
+                      [style.background-color]="
+                        getFileTypeColor(item.fileType) + '20'
+                      "
+                    >
+                      <i
+                        [class]="getFileIcon(item.fileType)"
+                        class="text-2xl"
+                        [style.color]="getFileTypeColor(item.fileType)"
+                      ></i>
                     </div>
+                    <div class="flex items-center gap-1">
+                      <span
+                        class="text-xs text-surface-500 dark:text-surface-400"
+                      >
+                        {{ item.fileSize  }}
+                      </span>
+                      <p-button
+                        icon="pi pi-ellipsis-v"
+                        [text]="true"
+                        size="small"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <h4
+                      class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate"
+                    >
+                      {{ item.name }}
+                    </h4>
+                    <div class="text-sm text-surface-600 dark:text-surface-300">
+                      <p class="mb-1">
+                        {{ item.createdAt | date : "dd/MM/yyyy HH:mm" }}
+                      </p>
+                      <p class="text-xs">Par: {{ item.uploadedByName }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between">
+                    <p-tag
+                      [value]="item.fileType"
+                      [severity]="getTagSeverity(item.fileType)"
+                      size="small"
+                    />
+                    <!-- <div class="flex items-center gap-1" *ngIf="item.isShared">
+                  <i class="pi pi-users text-xs text-blue-500"></i>
+                  <span class="text-xs text-surface-600">Partagé</span>
+                </div> -->
                   </div>
                 </div>
                 <!-- <div *ngIf="folders?.length === 0" class="col-span-12 text-center text-gray-500 py-8">
@@ -145,48 +165,125 @@
               <div
                 class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4"
               >
-                Files
+                Folders
               </div>
               <div class="grid grid-cols-12 gap-4">
                 <div
                   *ngFor="let file of subFolders?.data"
-                  class="col-span-12 md:col-span-6 xl:col-span-3"
+                  class="col-span-12 md:col-span-6 xl:col-span-3 file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200 ng-star-inserted"
                 >
-                  <div
-                    class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-                  >
-                    <div class="p-4">
-                      <div class="flex flex-col items-start">
-                        <div class="flex items-center w-full justify-between">
-                          <div class="bg-green-100 p-3 rounded-lg">
-                            <i class="pi pi-file text-3xl text-green-500"></i>
-                          </div>
-                          <p class="text-gray-500">{{ file.description }}</p>
-                        </div>
-                        <div class="my-2">
-                          <h6 class="font-bold text-gray-800">
-                            {{ file.name }}
-                          </h6>
-                          <div
-                            class="flex flex-col justify-between text-gray-600"
-                          >
-                            <div>
-                              <h3 class="font-semibold my-1">
-                                {{ file.createdAt | date : "short" }}
-                              </h3>
-                            </div>
-                            <div>
-                              <h4 class="my-1">By: {{ file.createdByName }}</h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div
+                      class="p-3 rounded-lg"
+                      style="background-color: rgba(59, 130, 246, 0.125)"
+                    >
+                      <i
+                        class="text-2xl pi pi-folder"
+                        style="color: rgb(59, 130, 246)"
+                      ></i>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span
+                        class="text-xs text-surface-500 dark:text-surface-400"
+                      >
+                        15 fichiers
+                      </span>
+                      <p-button
+                        icon="pi pi-ellipsis-v"
+                        [text]="true"
+                        size="small"
+                      />
                     </div>
                   </div>
+                  <div class="mb-3">
+                    <h4
+                      class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate"
+                    >
+                      {{ file.name }}
+                    </h4>
+                    <div class="text-sm text-surface-600 dark:text-surface-300">
+                      <p class="mb-1">{{ file.createdAt | date : "short" }}</p>
+                      <p class="text-xs">Par: {{ file.createdByName }}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <p-tag
+                      size="small"
+                      class="p-component p-tag p-tag-info"
+                      pc646=""
+                      ><!--container--><!--ng-container--><!--container--><!--container--><span
+                        class="p-tag-label"
+                        >folder</span
+                      ></p-tag
+                    ><!--container-->
+                  </div>
                 </div>
+
                 <!-- <div *ngIf="folders.length === 0" class="col-span-12 text-center text-gray-500 py-8">
                         Aucun fichier trouvé.
                     </div> -->
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="f">
+          <div class="grid grid-cols-12 gap-4">
+            <div
+              *ngFor="let item of recentItems"
+              class="col-span-12 md:col-span-6 xl:col-span-3 file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
+              (click)="openItem(item)"
+              (contextmenu)="showContextMenu($event, item)"
+            >
+              <div class="flex items-start justify-between mb-3">
+                <div
+                  class="p-3 rounded-lg"
+                  [style.background-color]="getFileTypeColor(item.type) + '20'"
+                >
+                  <i
+                    [class]="getFileIcon(item.type)"
+                    class="text-2xl"
+                    [style.color]="getFileTypeColor(item.type)"
+                  ></i>
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="text-xs text-surface-500 dark:text-surface-400">
+                    {{ item.size }}
+                  </span>
+                  <p-button
+                    icon="pi pi-ellipsis-v"
+                    [text]="true"
+                    size="small"
+                    (click)="
+                      showItemMenu($event, item); $event.stopPropagation()
+                    "
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <h4
+                  class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate"
+                >
+                  {{ item.name }}
+                </h4>
+                <div class="text-sm text-surface-600 dark:text-surface-300">
+                  <p class="mb-1">
+                    {{ item.modifiedDate | date : "dd/MM/yyyy HH:mm" }}
+                  </p>
+                  <p class="text-xs">Par: {{ item.owner }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <p-tag
+                  [value]="item.type"
+                  [severity]="getTagSeverity(item.type)"
+                  size="small"
+                />
+                <div class="flex items-center gap-1" *ngIf="item.isShared">
+                  <i class="pi pi-users text-xs text-blue-500"></i>
+                  <span class="text-xs text-surface-600">Partagé</span>
+                </div>
               </div>
             </div>
           </div>

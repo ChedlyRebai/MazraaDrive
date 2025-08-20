@@ -461,7 +461,7 @@ export class Documents implements OnInit {
 
   getFileTypeColor(type: string): string {
     const colorMap: { [key: string]: string } = {
-      'pdf': '#EF4444',
+      'PDF': '#EF4444',
       'word': '#2563EB',
       'excel': '#059669',
       'powerpoint': '#DC2626',
@@ -476,7 +476,7 @@ export class Documents implements OnInit {
 
   getTagSeverity(type: string): string {
     const severityMap: { [key: string]: string } = {
-      'pdf': 'danger',
+      'PDF': 'danger',
       'word': 'info',
       'excel': 'success',
       'powerpoint': 'warning',
