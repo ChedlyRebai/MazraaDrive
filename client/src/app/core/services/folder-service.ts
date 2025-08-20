@@ -6,14 +6,16 @@ import { FolderPagedResult } from '../../shared/models/folder';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FolderService {
-  baseUrl=environment.apiUrl+"/Folder"
-   constructor(private http: HttpClient) { }
+  baseUrl = environment.apiUrl + '/Folder';
+  constructor(private http: HttpClient) {}
 
-       private folders = new BehaviorSubject<FolderPagedResult>({} as FolderPagedResult);
-          folders$ = this.folders.asObservable();
+  private folders = new BehaviorSubject<FolderPagedResult>(
+    {} as FolderPagedResult
+  );
+  folders$ = this.folders.asObservable();
 
   getFolders() {
     return this.http.get<FolderPagedResult>(`${this.baseUrl}`).subscribe(
@@ -58,5 +60,4 @@ export class FolderService {
       }
     );
   }
-
 }
