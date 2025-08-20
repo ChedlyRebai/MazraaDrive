@@ -179,7 +179,7 @@
         [value]="users.data"
         [paginator]="true"
         [rows]="10"
-        [rowsPerPageOptions]="[1,10, 25, 50]"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
         [loading]="loading"
         (onLazyLoad)="onPageChange($event)"
         [rowHover]="true"
@@ -196,16 +196,15 @@
           'role'
         ]"
         [lazy]="true"
-      (onLazyLoad)="onPageChange($event)"
-      [totalRecords]="users.totalRecords"
-      [globalFilterFields]="['name', 'description']"
-      
-      [rowHover]="true"
-      dataKey="id"
-      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
-      [showCurrentPageReport]="true"
-      [loading]="loading"
-      [rowsPerPageOptions]="[1,10, 25, 50]"
+        (onLazyLoad)="onPageChange($event)"
+        [totalRecords]="users.totalRecords"
+        [globalFilterFields]="['name', 'description']"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
+        [showCurrentPageReport]="true"
+        [loading]="loading"
+        [rowsPerPageOptions]="[1, 10, 25, 50]"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -220,7 +219,7 @@
               Email
               <p-sortIcon field="email" />
             </th>
-            
+
             <th pSortableColumn="department">
               Département
               <p-sortIcon field="department" />
@@ -261,7 +260,7 @@
                 >{{ user.email }}
               </span>
             </td>
-            
+
             <td><p-tag [value]="user.departmentName" severity="info" /></td>
             <td>
               <p-tag
