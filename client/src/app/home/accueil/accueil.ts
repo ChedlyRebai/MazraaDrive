@@ -1,3 +1,4 @@
+import { FolderService } from './../../core/services/folder-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -152,6 +153,7 @@ export class Accueil implements OnInit {
   ];
 
   constructor(
+    public folderService:FolderService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router
@@ -172,63 +174,100 @@ export class Accueil implements OnInit {
   loadFolders() {
     this.loading = true;
     
-    // Mock data - replace with actual API call
-    setTimeout(() => {
-      this.folders = [
-        {
-          id: '1',
-          name: 'Documents Administratifs',
-          description: 'Tous les documents administratifs de l\'entreprise',
-          createdAt: new Date('2024-12-01T09:30:00'),
-          createdByName: 'Admin User',
-          createdById: '1',
-          fileCount: 25,
-          size: '15.2 MB',
-          visibility: 'shared',
-          category: 'documents'
-        },
-        {
-          id: '2',
-          name: 'Projets 2024',
-          description: 'Dossiers des projets en cours pour l\'année 2024',
-          createdAt: new Date('2024-11-15T14:20:00'),
-          createdByName: 'Chedly Rebai',
-          createdById: '2',
-          fileCount: 42,
-          size: '32.8 MB',
-          visibility: 'private',
-          category: 'documents'
-        },
-        {
-          id: '3',
-          name: 'Images Marketing',
-          description: 'Photos et visuels pour les campagnes marketing',
-          createdAt: new Date('2024-11-20T16:45:00'),
-          createdByName: 'Marie Martin',
-          createdById: '3',
-          fileCount: 18,
-          size: '125.4 MB',
-          visibility: 'shared',
-          category: 'images'
-        },
-        {
-          id: '4',
-          name: 'Formations Vidéo',
-          description: 'Contenus vidéo pour la formation du personnel',
-          createdAt: new Date('2024-10-30T11:15:00'),
-          createdByName: 'Sophie Admin',
-          createdById: '4',
-          fileCount: 8,
-          size: '2.1 GB',
-          visibility: 'shared',
-          category: 'videos'
-        }
-      ];
+    // // Mock data - replace with actual API call
+    // setTimeout(() => {
+    //   this.folders = [
+    //     {
+    //       id: '1',
+    //       name: 'Documents Administratifs',
+    //       description: 'Tous les documents administratifs de l\'entreprise',
+    //       createdAt: new Date('2024-12-01T09:30:00'),
+    //       createdByName: 'Admin User',
+    //       createdById: '1',
+    //       fileCount: 25,
+    //       size: '15.2 MB',
+    //       visibility: 'shared',
+    //       category: 'documents'
+    //     },
+    //     {
+    //       id: '2',
+    //       name: 'Projets 2024',
+    //       description: 'Dossiers des projets en cours pour l\'année 2024',
+    //       createdAt: new Date('2024-11-15T14:20:00'),
+    //       createdByName: 'Chedly Rebai',
+    //       createdById: '2',
+    //       fileCount: 42,
+    //       size: '32.8 MB',
+    //       visibility: 'private',
+    //       category: 'documents'
+    //     },
+    //     {
+    //       id: '3',
+    //       name: 'Images Marketing',
+    //       description: 'Photos et visuels pour les campagnes marketing',
+    //       createdAt: new Date('2024-11-20T16:45:00'),
+    //       createdByName: 'Marie Martin',
+    //       createdById: '3',
+    //       fileCount: 18,
+    //       size: '125.4 MB',
+    //       visibility: 'shared',
+    //       category: 'images'
+    //     },
+    //     {
+    //       id: '4',
+    //       name: 'Formations Vidéo',
+    //       description: 'Contenus vidéo pour la formation du personnel',
+    //       createdAt: new Date('2024-10-30T11:15:00'),
+    //       createdByName: 'Sophie Admin',
+    //       createdById: '4',
+    //       fileCount: 8,
+    //       size: '2.1 GB',
+    //       visibility: 'shared',
+    //       category: 'videos'
+    //     }
+    //   ];
       
-      this.filteredFolders = [...this.folders];
-      this.updateStatistics();
-      this.loading = false;
-    }, 1000);
+    //   this.filteredFolders = [...this.folders];
+    //   this.updateStatistics();
+    //   this.loading = false;
+    // }, 1000);
+  }
+
+   PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAllFolders() {
+    this.folderService
+       .getFolders(
+         this.PageSize,
+         this.Search,
+         this.PageNumber,
+         this.SortBy,
+         this.SortDirection
+       )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       this.PageNumber = response.pageNumber;
+    //       this.PageSize = response.pageSize;
+    //       this.departments = response.data;
+    //       this.totalRecords = response.totalRecords;
+    //       this.totalDepartments = response.totalDepartments;
+    //       this.totalUsers = response.totalUsers;
+    //       this.avgUsersPerDepartment = Math.round(
+    //         this.totalUsers / this.totalDepartments
+    //       );
+    //     },
+    //   });
+  }
+
+
+  onPageChange(event: any) {
+   // this.first = event.first;
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+    this.getAllFolders();
   }
 
   loadStatistics() {
