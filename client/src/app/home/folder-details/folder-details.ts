@@ -5,6 +5,7 @@ import { Breadcrumb } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TabsModule } from 'primeng/tabs';
 import { MenuModule } from 'primeng/menu';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
@@ -36,8 +37,9 @@ import { DocumentPagedResult } from '../../shared/models/document';
 
 @Component({
   selector: 'app-folder-details',
-  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
   imports: [
+    TabsModule  ,
     Breadcrumb,
     CommonModule,
     // PrimeNG Modules
@@ -80,7 +82,7 @@ import { DocumentPagedResult } from '../../shared/models/document';
 export class FolderDetails implements OnInit {
   items: MenuItem[] | undefined;
   subFolders: FolderPagedResult | null = null;  
-  documents: DocumentPagedResult | null = null;
+  subDocuments: DocumentPagedResult | null = null;
   folders: FolderPagedResult = {} as FolderPagedResult;
   home: MenuItem | undefined;
   id = "";
@@ -137,6 +139,7 @@ export class FolderDetails implements OnInit {
     console.log('Current folder ID:', this.id);
     this.loadFolders();
     this.getDocuments();
+    this.getSubFolders();
   }
 
   baseUrl = environment.apiUrl;
@@ -174,11 +177,23 @@ export class FolderDetails implements OnInit {
   getDocuments(){
     this.documentService.getFolderDocuments(parseInt(this.id)).subscribe({
       next: (response: DocumentPagedResult) => {
-        this.documents = response;
+        this.subDocuments = response;
         console.log('Documents fetched successfully:', response);
       },
       error: (error) => {
         console.error('Error fetching documents:', error);
+      }
+    });
+  }
+
+  getSubFolders(){
+    this.folderService.getSubFolders(parseInt(this.id)).subscribe({
+      next: (response: FolderPagedResult) => {
+        this.subFolders = response;
+        console.log('Subfolders fetched successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error fetching subfolders:', error);
       }
     });
   }

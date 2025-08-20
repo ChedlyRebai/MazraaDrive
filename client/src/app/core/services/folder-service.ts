@@ -86,4 +86,9 @@ export class FolderService {
       }
     );
   }
+
+  getSubFolders(folderId: number) {
+    return this.http.get<FolderPagedResult>(`${this.baseUrl}/id/${folderId}`)
+  }
+
 }
