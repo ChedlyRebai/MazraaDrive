@@ -208,10 +208,7 @@
               Email
               <p-sortIcon field="email" />
             </th>
-            <th pSortableColumn="userName">
-              Nom d'utilisateur
-              <p-sortIcon field="userName" />
-            </th>
+            
             <th pSortableColumn="department">
               Département
               <p-sortIcon field="department" />
@@ -239,11 +236,11 @@
               <div class="flex items-center gap-2">
                 <p-avatar
                   [image]="user.profilePicture"
-                  [label]="getInitials(user.fullName)"
+                  [label]="getInitials(user.userName)"
                   shape="circle"
                   size="normal"
                 />
-                <span class="font-medium">{{ user.fullName }}</span>
+                <span class="font-medium">{{ user.userName }}</span>
               </div>
             </td>
             <td>
@@ -252,7 +249,7 @@
                 >{{ user.email }}
               </span>
             </td>
-            <td>{{ user.userName }}</td>
+            
             <td><p-tag [value]="user.departmentName" severity="info" /></td>
             <td>
               <p-tag

@@ -268,9 +268,24 @@ export class DepartmentMangement implements OnInit {
     */
   }
 
+  first = 0;
+
+  rows = 10;
+  next() {
+    this.first = this.first + this.rows;
+  }
+
+  prev() {
+    this.first = this.first - this.rows;
+  }
+  
   onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
     this.filter.pageNumber = event.page + 1;
+    console.log('Page  num changed to: ', event.page);
     this.filter.pageSize = event.rows;
+    console.log('page size per page changed to: ', this.filter.pageSize);
     this.loadDepartments();
   }
 
