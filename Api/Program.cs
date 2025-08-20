@@ -130,8 +130,8 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //     options.UseMySql(
 //         connectionString, ServerVersion.AutoDetect(connectionString)
 //     ));
-//  app.UseResponseCompression();
-//  app.UseResponseCaching();
+app.UseResponseCompression();
+app.UseResponseCaching();
 app.MapControllers();
 app.MapHub<Api.Hubs.DepartmentHub>("/hubs/departments");
 app.Run();

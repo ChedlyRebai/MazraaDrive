@@ -7,11 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-
-    public class AccountController : BaseController
+    [ApiController]
+[Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
-        public AccountController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public AccountController(IUnitOfWork unitOfWork, IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)

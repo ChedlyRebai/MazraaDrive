@@ -2,16 +2,17 @@ using System;
 using Core.Interfaces;
 using Core.Services;
 using Infrastructure.Data;
-using Infrastructure.Repositories;
-using Infrastructure.Repositories.Service;
+
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.FileProviders;
-using Infrastructure.Services; // Add this for ApiVersioning
+using Infrastructure.Services;
+using Infrastructure.Repositories; // Add this for ApiVersioning
 namespace Infrastructure;
 
 public static class InfrastructureRegistration
@@ -61,7 +62,7 @@ public static class InfrastructureRegistration
         services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-        services.AddScoped<IGenerateToken, GenrateToken>();
+        services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
         services.AddScoped<IAccessRightService, AccessRightService>();

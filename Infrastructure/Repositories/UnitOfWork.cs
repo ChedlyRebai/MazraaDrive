@@ -41,6 +41,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IUserRepository UserRepository { get; }
 
+
+    private readonly IGenerateToken token;
     public IDepartmentRepository DepartmentRepository { get; }
 
     public IPermissionsRepository PermissionsRepository { get; }
@@ -63,6 +65,8 @@ public class UnitOfWork : IUnitOfWork
         IUserRepository userRepository,
         IDocRequestRepository docRequestRepository,
         IAuditLogRepository auditLogRepository
+,
+        IGenerateToken token
         //IConnectionMultiplexer redis, 
         // UserManager<AppUser> userManager,
         // SignInManager<AppUser> signInManager,
@@ -94,6 +98,7 @@ public class UnitOfWork : IUnitOfWork
         //_emailService = emailService;
         // _token = token;
         AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
+        this.token = token;
         // Initialize Auth with proper null checks
         // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
     }
