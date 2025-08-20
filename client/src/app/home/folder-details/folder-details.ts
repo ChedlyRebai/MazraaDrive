@@ -32,6 +32,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { UserDto } from '../../shared/models/user';
 import { FolderService } from '../../core/services/folder-service';
 import { DocumentService } from '../../core/services/document-service';
+import { DocumentPagedResult } from '../../shared/models/document';
 
 @Component({
   selector: 'app-folder-details',
@@ -78,6 +79,8 @@ import { DocumentService } from '../../core/services/document-service';
 })
 export class FolderDetails implements OnInit {
   items: MenuItem[] | undefined;
+  subFolders: FolderPagedResult | null = null;  
+  documents: DocumentPagedResult | null = null;
   folders: FolderPagedResult = {} as FolderPagedResult;
   home: MenuItem | undefined;
   id = "";
@@ -133,6 +136,7 @@ export class FolderDetails implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id') || '';
     console.log('Current folder ID:', this.id);
     this.loadFolders();
+    this.getDocuments();
   }
 
   baseUrl = environment.apiUrl;
@@ -166,6 +170,18 @@ export class FolderDetails implements OnInit {
   submitted: boolean = false;
   statuses: any[] = [];
 
+
+  getDocuments(){
+    this.documentService.getFolderDocuments(parseInt(this.id)).subscribe({
+      next: (response: DocumentPagedResult) => {
+        this.documents = response;
+        console.log('Documents fetched successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error fetching documents:', error);
+      }
+    });
+  }
 
 
   openNew() {

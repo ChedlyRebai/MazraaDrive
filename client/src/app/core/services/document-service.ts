@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import { DocumentFilterDto, DocumentPagedResult } from '../../shared/models/document';
+import {
+  DocumentFilterDto,
+  DocumentPagedResult,
+} from '../../shared/models/document';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DocumentService {
-    baseUrl = environment.apiUrl + '/Document';
+  baseUrl = environment.apiUrl + '/Document';
   constructor(private http: HttpClient) {}
 
   private documentRequest = new BehaviorSubject<DocumentPagedResult>(
@@ -16,34 +19,36 @@ export class DocumentService {
   );
   documentRequests$ = this.documentRequest.asObservable();
 
-  getDocument(PageSize?: number,
+  getDocument(
+    PageSize?: number,
     Search?: string,
     PageNumber?: number,
     SortBy?: string,
-    SortDirection?: string) {
+    SortDirection?: string
+  ) {
     let params = new HttpParams();
 
-    if(PageSize){
+    if (PageSize) {
       params = params.append('PageSize', PageSize.toString());
     }
 
-    if(PageNumber){
+    if (PageNumber) {
       params = params.append('PageNumber', PageNumber.toString());
     }
 
-    if(Search){
+    if (Search) {
       params = params.append('Search', Search.toString());
     }
 
-    if(SortBy){
+    if (SortBy) {
       params = params.append('SortBy', SortBy);
     }
 
-    if(SortDirection){
+    if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
     return this.http
-      .get<DocumentPagedResult>(`${this.baseUrl}`,{params})
+      .get<DocumentPagedResult>(`${this.baseUrl}`, { params })
       .subscribe(
         (result) => {
           console.log('Document  fetched:', result);
@@ -55,8 +60,9 @@ export class DocumentService {
       );
   }
 
-
   getFolderDocuments(folderId: number) {
-    return this.http.get<DocumentPagedResult>(`${this.baseUrl}/Folder/${folderId}/Documents`)}
-
+    return this.http.get<DocumentPagedResult>(
+      `${this.baseUrl}/folder/${folderId}`
+    );
+  }
 }
