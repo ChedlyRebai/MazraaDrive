@@ -789,7 +789,8 @@ globalFilterValue: any;
   }
 
   onDocumentTypeSelect(event: any) {
-    this.request.documentType = event;
+    console.log(event);
+    this.request.documentType = event.value;
   }
 
   onRequestPrioritySelect(event: any) {

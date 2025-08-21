@@ -78,14 +78,7 @@
               (onClick)="deleteSelectedRequests()"
               [disabled]="!selectedRequests || !selectedRequests.length"
             />
-            <p-button
-              [outlined]="true"
-              severity="success"
-              label="Demander"
-              icon="pi pi-plus"
-              [outlined]="true"
-              (onClick)="createNewRequest()"
-            />
+            
           </ng-template>
 
           <ng-template #end>
@@ -328,6 +321,15 @@
               (onClick)="deleteSelectedRequests()"
               [disabled]="!selectedRequests || !selectedRequests.length"
             />
+              <p-button
+               class="ml-2"
+              severity="success"
+              label="Demander"
+              icon="pi pi-plus"
+              
+              (onClick)="createNewRequest()"
+            />
+            
           </ng-template>
 
           <ng-template #end>
@@ -592,6 +594,7 @@
               [value]="request.requesterName || 'Utilisateur Actuel'"
               readonly
               fluid
+              disabled="true"
             />
           </div>
 
