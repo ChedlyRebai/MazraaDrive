@@ -78,7 +78,6 @@
               (onClick)="deleteSelectedRequests()"
               [disabled]="!selectedRequests || !selectedRequests.length"
             />
-            
           </ng-template>
 
           <ng-template #end>
@@ -321,15 +320,14 @@
               (onClick)="deleteSelectedRequests()"
               [disabled]="!selectedRequests || !selectedRequests.length"
             />
-              <p-button
-               class="ml-2"
+            <p-button
+              
               severity="success"
               label="Demander"
               icon="pi pi-plus"
               
               (onClick)="createNewRequest()"
             />
-            
           </ng-template>
 
           <ng-template #end>
@@ -750,6 +748,12 @@
         [text]="true"
         (click)="hideDialog()"
       />
+       <p-button
+        label="Sauvegarder"
+        icon="pi pi-check"
+        (click)="saveRequest()"
+        [loading]="saving"
+      />
     </ng-template>
   </p-dialog>
 
@@ -921,6 +925,8 @@
         [text]="true"
         (click)="processDialog = false"
       />
+
+     
       <p-button
         label="Confirmer"
         icon="pi pi-check"

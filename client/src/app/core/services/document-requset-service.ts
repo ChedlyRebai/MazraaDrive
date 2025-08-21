@@ -28,10 +28,12 @@ export class DocumentRequsetService {
 
     if(PageSize){
       params = params.append('PageSize', PageSize.toString());
+      console.log('PageSize:', PageSize);
     }
 
     if(PageNumber){
       params = params.append('PageNumber', PageNumber.toString());
+      console.log('PageNumber:', PageNumber);
     }
 
     if(Search){
@@ -72,21 +74,30 @@ export class DocumentRequsetService {
   }
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
+    
+       // Replace with actual requester ID from authenticated user
+    documentRequest.departmentId = 10;
+    // documentRequest.documentType = "Certificat de Travail";
+    // documentRequest.description = "string";
+    // documentRequest.priority = "Normal";
+
     return this.http
       .post<DocumentRequestDTO>(
-        `${this.baseUrl}`,
+        `http://localhost:5108/api/DocumentRequest`,
         documentRequest
       )
-      .subscribe(
-        (result) => {
-          console.log('Document request created:', result);
-        },
-        (error) => {
-          console.error('Error creating document request:', error);
-        }
-      );
+
   }
 
+//   "priority": "string"
+// }
+    // return this.http
+    //   .post<DocumentRequestDTO>(
+    //     `http://localhost:5108/api/DocumentRequest`,
+    //     documentRequest
+    //   )
+      
+  
   updateDocumentRequest(documentRequest: DocumentRequestDTO) {
     return this.http
       .put<DocumentRequestDTO>(

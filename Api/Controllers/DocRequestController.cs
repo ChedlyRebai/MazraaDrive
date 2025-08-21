@@ -12,7 +12,7 @@ namespace Api.Controllers;
 public class DocumentRequestController : BaseController
 {
     public DocumentRequestController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper, auditLogger)
-    {
+    {   
     }
 
     [HttpGet]
@@ -74,11 +74,18 @@ public class DocumentRequestController : BaseController
     {
         try
         {
+            Console.WriteLine("Creating document request with data: " + createDto);
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
-
+            
             var request = _mapper.Map<DocumentRequest>(createDto);
             request.RequestedAt = DateTime.UtcNow;
+            request.RequesterId = "10"; // Replace with actual requester ID from authenticated user
+            request.DepartmentId = 10;
+            request.CreatedAt = DateTime.UtcNow;
+            request.DocumentType = createDto.DocumentType ?? string.Empty;
+            request.Priority = createDto.Priority ?? string.Empty;
+            request.Description = createDto.Description ?? string.Empty;
             request.Status = "Pending";
 
             await _unitOfWork.DocRequestRepository.AddAsync(request);
@@ -91,7 +98,7 @@ public class DocumentRequestController : BaseController
             var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
 
             //await _auditLogger.LogAsync("CreateDocumentRequest", "Created new document request", "10", "DocumentRequest");
-            return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, new { success = true, data = requestDto });
+            return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id },requestDto );
         }
         catch (Exception ex)
         {

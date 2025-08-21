@@ -25,10 +25,21 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Textarea } from 'primeng/textarea';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
-import { CreateDocumentRequestDTO, DocumentRequestDTO, DocumentRequestFilterDTO, DocumentRequestPagedResult, UpdateDocumentRequestDTO } from '../../shared/models/docrequest';
+import {
+  CreateDocumentRequestDTO,
+  DocumentRequestDTO,
+  DocumentRequestFilterDTO,
+  DocumentRequestPagedResult,
+  UpdateDocumentRequestDTO,
+} from '../../shared/models/docrequest';
 import { DocumentRequsetService } from '../../core/services/document-requset-service';
-import { Tabs, TabsModule } from "primeng/tabs";
-import { TabList, Tab, TabPanels, TabPanel } from "../../../../node_modules/primeng/tabs/index";
+import { Tabs, TabsModule } from 'primeng/tabs';
+import {
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+} from '../../../../node_modules/primeng/tabs/index';
 
 interface Department {
   id: number;
@@ -58,30 +69,30 @@ interface Department {
     InputIconModule,
     TooltipModule,
     ThemeSwitcher,
-    TabsModule
-],
+    TabsModule,
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './demandes.html',
-  styleUrls: ['./demandes.css']
+  styleUrls: ['./demandes.css'],
 })
 export class Demandes implements OnInit {
-validationErrors: any;
-cancelCreate() {
-throw new Error('Method not implemented.');
-}
-isFormValid() {
-throw new Error('Method not implemented.');
-}
-creatingRequest: unknown;
-resetForm() {
-throw new Error('Method not implemented.');
-}
+  validationErrors: any;
+  cancelCreate() {
+    throw new Error('Method not implemented.');
+  }
+  isFormValid() {
+    throw new Error('Method not implemented.');
+  }
+  creatingRequest: unknown;
+  resetForm() {
+    throw new Error('Method not implemented.');
+  }
 
   documentRequests: DocumentRequestDTO[] = [];
   selectedRequests: DocumentRequestDTO[] = [];
   selectedRequest: DocumentRequestDTO | null = null;
   request: any = this.getEmptyRequest();
-  
+
   requestDialog = false;
   requestDetailsDialog = false;
   processDialog = false;
@@ -110,10 +121,8 @@ throw new Error('Method not implemented.');
     processedById: null,
     search: null,
     sortBy: null,
-    sortDirection: null
+    sortDirection: null,
   };
-
-  
 
   // Statistics
   totalPendingRequests = 0;
@@ -127,7 +136,7 @@ throw new Error('Method not implemented.');
     { id: 3, name: 'IT' },
     { id: 4, name: 'Marketing' },
     { id: 5, name: 'Opérations' },
-    { id: 6, name: 'Administration' }
+    { id: 6, name: 'Administration' },
   ];
 
   documentTypes = [
@@ -137,36 +146,34 @@ throw new Error('Method not implemented.');
     'Relevé de Notes',
     'Certificat Médical',
     'Justificatif de Domicile',
-    'Pièce d\'Identité',
-    'Autre'
+    "Pièce d'Identité",
+    'Autre',
   ];
-  newRequest: any = {};
+  newRequest?: DocumentRequestDTO;
   showCreateDialog() {
-  
+    this.requestDialog = true;
   }
 
-  showDetailsDialog(request: Request) {
-   
-  }
+  showDetailsDialog(request: Request) {}
 
   // CRUD operations
-  
+
   priorityOptions = [
     { label: 'Faible', value: 'Faible' },
     { label: 'Normale', value: 'Normale' },
     { label: 'Élevée', value: 'Élevée' },
-    { label: 'Urgente', value: 'Urgente' }
+    { label: 'Urgente', value: 'Urgente' },
   ];
 
   statusOptions = [
     { label: 'En Attente', value: 'En Attente' },
     { label: 'En Cours', value: 'En Cours' },
     { label: 'Approuvé', value: 'Approuvé' },
-    { label: 'Rejeté', value: 'Rejeté' }
+    { label: 'Rejeté', value: 'Rejeté' },
   ];
 
   private baseUrl = 'http://localhost:5108/api';
-globalFilterValue: any;
+  globalFilterValue: any;
 
   constructor(
     public documentRequsetService: DocumentRequsetService,
@@ -178,6 +185,7 @@ globalFilterValue: any;
   ngOnInit() {
     this.loadDocumentRequests();
     this.getAlldocReq();
+    this.documentRequsetService.getDocumentRequests();
   }
   PageSize?: number = 5;
   Search?: string = '';
@@ -185,27 +193,26 @@ globalFilterValue: any;
   SortBy?: string = '';
   SortDirection?: string = '';
   getAlldocReq() {
-     this.documentRequsetService
-       .getDocumentRequests(
-         this.PageSize,
-         this.Search,
-         this.PageNumber,
-         this.SortBy,
-         this.SortDirection
-       )
-      //  .subscribe({
-      //    next: (response: any) => {
-      //      this.PageNumber = response.pageNumber;
-      //      this.PageSize = response.pageSize;
-      //      this.departments = response.data;
-      //      this.totalRecords = response.totalRecords;
-      //      this.totalDepartments = response.totalDepartments;
-      //      this.totalUsers = response.totalUsers;
-      //      this.avgUsersPerDepartment = Math.round(
-      //        this.totalUsers / this.totalDepartments
-      //      );
-      //    },
-      //  });
+    this.documentRequsetService.getDocumentRequests(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
+    //  .subscribe({
+    //    next: (response: any) => {
+    //      this.PageNumber = response.pageNumber;
+    //      this.PageSize = response.pageSize;
+    //      this.departments = response.data;
+    //      this.totalRecords = response.totalRecords;
+    //      this.totalDepartments = response.totalDepartments;
+    //      this.totalUsers = response.totalUsers;
+    //      this.avgUsersPerDepartment = Math.round(
+    //        this.totalUsers / this.totalDepartments
+    //      );
+    //    },
+    //  });
   }
 
   get dialogTitle(): string {
@@ -214,7 +221,7 @@ globalFilterValue: any;
 
   loadDocumentRequests() {
     this.loading = true;
-    
+
     // Mock data for demonstration
     setTimeout(() => {
       const mockResponse: DocumentRequestPagedResult = {
@@ -226,7 +233,8 @@ globalFilterValue: any;
             departmentId: 1,
             departmentName: 'Ressources Humaines',
             documentType: 'Certificat de Travail',
-            description: 'Demande de certificat de travail pour candidature externe',
+            description:
+              'Demande de certificat de travail pour candidature externe',
             priority: 'Normale',
             status: 'En Attente',
             responseDocumentId: null,
@@ -237,7 +245,7 @@ globalFilterValue: any;
             processedByName: null,
             createdAt: '2024-12-06T09:30:00',
             updatedAt: null,
-            isActive: true
+            isActive: true,
           },
           {
             id: 2,
@@ -257,7 +265,7 @@ globalFilterValue: any;
             processedByName: 'Admin RH',
             createdAt: '2024-12-05T14:15:00',
             updatedAt: '2024-12-05T16:30:00',
-            isActive: true
+            isActive: true,
           },
           {
             id: 3,
@@ -277,7 +285,7 @@ globalFilterValue: any;
             processedByName: 'Admin RH',
             createdAt: '2024-12-04T11:00:00',
             updatedAt: '2024-12-06T08:00:00',
-            isActive: true
+            isActive: true,
           },
           {
             id: 4,
@@ -297,8 +305,8 @@ globalFilterValue: any;
             processedByName: 'Admin Finance',
             createdAt: '2024-12-03T16:45:00',
             updatedAt: '2024-12-04T09:15:00',
-            isActive: true
-          }
+            isActive: true,
+          },
         ],
         pageNumber: 1,
         pageSize: 10,
@@ -311,7 +319,7 @@ globalFilterValue: any;
         totalRejectedRequests: 1,
         search: null,
         sortBy: null,
-        sortDirection: null
+        sortDirection: null,
       };
 
       this.documentRequests = mockResponse.data;
@@ -349,6 +357,11 @@ globalFilterValue: any;
   onPageChange(event: any) {
     this.filter.pageNumber = event.page + 1;
     this.filter.pageSize = event.rows;
+
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+
+    this.getAlldocReq();
     this.loadDocumentRequests();
   }
 
@@ -401,7 +414,7 @@ globalFilterValue: any;
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.performDeleteRequest(request.id);
-      }
+      },
     });
   }
 
@@ -412,32 +425,36 @@ globalFilterValue: any;
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.performBulkDelete();
-      }
+      },
     });
   }
 
   private performDeleteRequest(requestId: number) {
     setTimeout(() => {
-      this.documentRequests = this.documentRequests.filter(r => r.id !== requestId);
+      this.documentRequests = this.documentRequests.filter(
+        (r) => r.id !== requestId
+      );
       this.totalRecords--;
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demande supprimée avec succès'
+        detail: 'Demande supprimée avec succès',
       });
     }, 500);
   }
 
   private performBulkDelete() {
-    const requestIds = this.selectedRequests.map(r => r.id);
+    const requestIds = this.selectedRequests.map((r) => r.id);
     setTimeout(() => {
-      this.documentRequests = this.documentRequests.filter(r => !requestIds.includes(r.id));
+      this.documentRequests = this.documentRequests.filter(
+        (r) => !requestIds.includes(r.id)
+      );
       this.selectedRequests = [];
       this.totalRecords -= requestIds.length;
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demandes supprimées avec succès'
+        detail: 'Demandes supprimées avec succès',
       });
     }, 500);
   }
@@ -445,17 +462,34 @@ globalFilterValue: any;
   saveRequest() {
     this.submitted = true;
 
+    console.log(this.request);
     if (!this.isRequestValid()) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis'
+        detail: 'Veuillez remplir tous les champs requis',
       });
       return;
     }
 
+    this.documentRequsetService.createDocumentRequest(this.request).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Demande créée avec succès',
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Une erreur est survenue lors de la création de la demande',
+        });
+      },
+    });
     this.saving = true;
-
+    console.log(this.request);
     if (this.request.id) {
       this.updateRequest();
     } else {
@@ -463,22 +497,24 @@ globalFilterValue: any;
     }
   }
 
-   createRequest() {
+  createRequest() {
     const createDto: CreateDocumentRequestDTO = {
       requesterId: 'current-user-id', // Get from auth service
       departmentId: this.request.departmentId,
       documentType: this.request.documentType,
       description: this.request.description,
-      priority: this.request.priority
+      priority: this.request.priority,
     };
 
     setTimeout(() => {
       const newRequest: DocumentRequestDTO = {
-        id: Math.max(...this.documentRequests.map(r => r.id)) + 1,
+        id: Math.max(...this.documentRequests.map((r) => r.id)) + 1,
         requesterId: createDto.requesterId,
         requesterName: 'Utilisateur Actuel',
         departmentId: createDto.departmentId,
-        departmentName: this.departments.find(d => d.id === createDto.departmentId)?.name || '',
+        departmentName:
+          this.departments.find((d) => d.id === createDto.departmentId)?.name ||
+          '',
         documentType: createDto.documentType,
         description: createDto.description,
         priority: createDto.priority,
@@ -491,7 +527,7 @@ globalFilterValue: any;
         processedByName: null,
         createdAt: new Date().toISOString(),
         updatedAt: null,
-        isActive: true
+        isActive: true,
       };
 
       this.documentRequests.unshift(newRequest);
@@ -501,17 +537,14 @@ globalFilterValue: any;
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demande créée avec succès'
+        detail: 'Demande créée avec succès',
       });
       this.hideDialog();
     }, 1500);
-
-
   }
 
-
-  createNewRequest(){
-    this.requestDialog=true
+  createNewRequest() {
+    this.requestDialog = true;
   }
   private updateRequest() {
     const updateDto: UpdateDocumentRequestDTO = {
@@ -520,27 +553,29 @@ globalFilterValue: any;
       priority: this.request.priority,
       status: this.request.status,
       responseDocumentId: this.request.responseDocumentId,
-      processedById: this.request.processedById
+      processedById: this.request.processedById,
     };
 
     setTimeout(() => {
-      const index = this.documentRequests.findIndex(r => r.id === this.request.id);
+      const index = this.documentRequests.findIndex(
+        (r) => r.id === this.request.id
+      );
       if (index !== -1) {
-        this.documentRequests[index] = { 
-          ...this.documentRequests[index], 
+        this.documentRequests[index] = {
+          ...this.documentRequests[index],
           ...updateDto,
           documentType: updateDto.documentType ?? '',
           description: updateDto.description ?? '',
           priority: updateDto.priority ?? '',
           status: updateDto.status ?? '',
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         };
       }
 
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demande modifiée avec succès'
+        detail: 'Demande modifiée avec succès',
       });
       this.hideDialog();
     }, 1500);
@@ -551,7 +586,7 @@ globalFilterValue: any;
       this.messageService.add({
         severity: 'warn',
         summary: 'Validation',
-        detail: 'Veuillez sélectionner une action'
+        detail: 'Veuillez sélectionner une action',
       });
       return;
     }
@@ -560,7 +595,9 @@ globalFilterValue: any;
 
     setTimeout(() => {
       if (this.selectedRequest) {
-        const index = this.documentRequests.findIndex(r => r.id === this.selectedRequest!.id);
+        const index = this.documentRequests.findIndex(
+          (r) => r.id === this.selectedRequest!.id
+        );
         if (index !== -1) {
           this.documentRequests[index] = {
             ...this.documentRequests[index],
@@ -570,7 +607,7 @@ globalFilterValue: any;
             processedByName: 'Admin Actuel',
             responseDocumentId: this.responseDocument ? 999 : null,
             responseDocumentName: this.responseDocument?.name || null,
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           };
         }
 
@@ -581,7 +618,7 @@ globalFilterValue: any;
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demande traitée avec succès'
+        detail: 'Demande traitée avec succès',
       });
 
       this.processing = false;
@@ -590,9 +627,15 @@ globalFilterValue: any;
   }
 
   private updateStatistics() {
-    this.totalPendingRequests = this.documentRequests.filter(r => r.status === 'En Attente').length;
-    this.totalProcessedRequests = this.documentRequests.filter(r => r.status === 'Approuvé').length;
-    this.totalRejectedRequests = this.documentRequests.filter(r => r.status === 'Rejeté').length;
+    this.totalPendingRequests = this.documentRequests.filter(
+      (r) => r.status === 'En Attente'
+    ).length;
+    this.totalProcessedRequests = this.documentRequests.filter(
+      (r) => r.status === 'Approuvé'
+    ).length;
+    this.totalRejectedRequests = this.documentRequests.filter(
+      (r) => r.status === 'Rejeté'
+    ).length;
   }
 
   hideDialog() {
@@ -610,7 +653,7 @@ globalFilterValue: any;
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement',
-      detail: `Téléchargement de "${request.responseDocumentName}" en cours...`
+      detail: `Téléchargement de "${request.responseDocumentName}" en cours...`,
     });
   }
 
@@ -618,7 +661,7 @@ globalFilterValue: any;
     this.messageService.add({
       severity: 'info',
       summary: 'Export',
-      detail: 'Export des demandes en cours...'
+      detail: 'Export des demandes en cours...',
     });
   }
 
@@ -631,13 +674,12 @@ globalFilterValue: any;
       documentType: '',
       description: '',
       priority: 'Normale',
-      status: 'En Attente'
+      status: 'En Attente',
     };
   }
 
   isRequestValid(): boolean {
     return !!(
-      
       this.request.documentType?.trim() &&
       this.request.description?.trim() &&
       this.request.priority
@@ -647,7 +689,7 @@ globalFilterValue: any;
   getInitials(name: string): string {
     return name
       .split(' ')
-      .map(word => word.charAt(0))
+      .map((word) => word.charAt(0))
       .join('')
       .toUpperCase()
       .slice(0, 2);
@@ -661,7 +703,7 @@ globalFilterValue: any;
       'Relevé de Notes': 'pi pi-file-excel text-green-500',
       'Certificat Médical': 'pi pi-heart text-pink-500',
       'Justificatif de Domicile': 'pi pi-home text-purple-500',
-      'Pièce d\'Identité': 'pi pi-id-card text-orange-500'
+      "Pièce d'Identité": 'pi pi-id-card text-orange-500',
     };
     return iconMap[type] || 'pi pi-file text-gray-500';
   }
@@ -696,8 +738,6 @@ globalFilterValue: any;
     }
   }
 
-
-
   selectedStatus: any = null;
   selectedPriority: any = null;
   selectedDepartment: any = null;
@@ -717,42 +757,42 @@ globalFilterValue: any;
   // AutoComplete search methods
   searchStatus(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredStatusOptions = this.statusOptions.filter(option => 
+    this.filteredStatusOptions = this.statusOptions.filter((option) =>
       option.label.toLowerCase().includes(query)
     );
   }
 
   searchPriority(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredPriorityOptions = this.priorityOptions.filter(option => 
+    this.filteredPriorityOptions = this.priorityOptions.filter((option) =>
       option.label.toLowerCase().includes(query)
     );
   }
 
   searchDepartment(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredDepartments = this.departments.filter(dept => 
+    this.filteredDepartments = this.departments.filter((dept) =>
       dept.name.toLowerCase().includes(query)
     );
   }
 
   searchDocumentType(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredDocumentTypes = this.documentTypes.filter(type => 
+    this.filteredDocumentTypes = this.documentTypes.filter((type) =>
       type.toLowerCase().includes(query)
     );
   }
 
   searchRequestPriority(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredRequestPriorityOptions = this.priorityOptions.filter(option => 
-      option.label.toLowerCase().includes(query)
+    this.filteredRequestPriorityOptions = this.priorityOptions.filter(
+      (option) => option.label.toLowerCase().includes(query)
     );
   }
 
   searchRequestStatus(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredRequestStatusOptions = this.statusOptions.filter(option => 
+    this.filteredRequestStatusOptions = this.statusOptions.filter((option) =>
       option.label.toLowerCase().includes(query)
     );
   }
@@ -794,14 +834,11 @@ globalFilterValue: any;
   }
 
   onRequestPrioritySelect(event: any) {
-    this.request.priority = event.value;
+    console.log(event.value.value);
+    this.request.priority = event.value.value;
   }
 
   onRequestStatusSelect(event: any) {
     this.request.status = event.value;
   }
-
-
-
-  
 }
