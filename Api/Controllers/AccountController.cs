@@ -37,6 +37,12 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
+
+            if(loginDTO == null || string.IsNullOrEmpty(loginDTO.Email) || string.IsNullOrEmpty(loginDTO.Password))
+            {
+                return BadRequest(new ResponseAPI(400, "Email and Password are required"));
+            }
+            
             var result = await _unitOfWork.Auth.LoginAsync(loginDTO);
             if (result.StartsWith("please"))
             {
