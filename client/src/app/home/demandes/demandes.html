@@ -64,202 +64,211 @@
     <p-tablist>
       <p-tab value="rec">Recevoir</p-tab>
       <p-tab value="env">Envoyer</p-tab>
-      
     </p-tablist>
     <p-tabpanels>
-      <p-tabpanel value="rec">  <p-toolbar class="mb-6">
-    <ng-template #start>
-      <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedRequests()"
-        [disabled]="!selectedRequests || !selectedRequests.length"
-      />
-    </ng-template>
-
-    <ng-template #end>
-      <p-button
-        label="Exporter"
-        icon="pi pi-download"
-        severity="secondary"
-        (onClick)="exportRequests()"
-      />
-    </ng-template>
-  </p-toolbar>
-
-  <ng-container
-    *ngIf="documentRequsetService.documentRequests$ | async as documentrequest"
-  >
-    <p-table
-      #dt
-      [value]="documentrequest.data"
-      [loading]="loading"
-      [rows]="PageSize"
-      [paginator]="true"
-      [lazy]="true"
-      [totalRecords]="documentrequest.totalRecords"
-      (onLazyLoad)="onPageChange($event)"
-      [globalFilterFields]="['name', 'description']"
-      [tableStyle]="{ 'min-width': '75rem' }"
-      [rowHover]="true"
-      dataKey="id"
-      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
-      [showCurrentPageReport]="true"
-      [loading]="loading"
-      [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
-    >
-      <ng-template pTemplate="caption">
-        <div class="flex items-center justify-between">
-          <h5 class="m-0">Gestion des Demandes de Documents</h5>
-          <div class="flex gap-2">
-            <p-iconField iconPosition="left">
-              <p-inputIcon class="pi pi-search" />
-              <input
-                pInputText
-                type="text"
-                [(ngModel)]="globalFilterValue"
-                (ngModelChange)="onGlobalFilter($event)"
-                placeholder="Rechercher..."
-              />
-            </p-iconField>
-            <div class="flex justify-center">
-              <p-autocomplete
-                [(ngModel)]="selectedStatus"
-                [dropdown]="true"
-                [suggestions]="filteredStatusOptions"
-                (completeMethod)="searchStatus($event)"
-                placeholder="Tous les statuts"
-                field="label"
-                (onSelect)="onStatusSelect($event)"
-                (onClear)="onStatusClear()"
-                [style]="{ minWidth: '150px' }"
-              />
-            </div>
-            <div class="flex justify-center">
-              <p-autocomplete
-                [(ngModel)]="selectedPriority"
-                [dropdown]="true"
-                [suggestions]="filteredPriorityOptions"
-                (completeMethod)="searchPriority($event)"
-                placeholder="Toutes les priorités"
-                field="label"
-                (onSelect)="onPrioritySelect($event)"
-                (onClear)="onPriorityClear()"
-                [style]="{ minWidth: '150px' }"
-              />
-            </div>
+      <p-tabpanel value="rec">
+        <p-toolbar class="mb-6">
+          <ng-template #start>
+            <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
             <p-button
-              icon="pi pi-refresh"
+              severity="danger"
+              label="Supprimer"
+              icon="pi pi-trash"
               [outlined]="true"
-              (click)="loadDocumentRequests()"
-              [loading]="loading"
+              (onClick)="deleteSelectedRequests()"
+              [disabled]="!selectedRequests || !selectedRequests.length"
             />
-          </div>
-        </div>
-      </ng-template>
+            <p-button
+              [outlined]="true"
+              severity="success"
+              label="Demander"
+              icon="pi pi-plus"
+              [outlined]="true"
+              (onClick)="createNewRequest()"
+            />
+          </ng-template>
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox />
-          </th>
-         
-          <th pSortableColumn="requesterName" style="min-width: 14rem">
-                    <div class="flex items-center gap-2">
-                        Demandeur
-                        <p-sortIcon field="requesterName" />
-                    </div>
+          <ng-template #end>
+            <p-button
+              label="Exporter"
+              icon="pi pi-download"
+              severity="secondary"
+              (onClick)="exportRequests()"
+            />
+          </ng-template>
+        </p-toolbar>
+
+        <ng-container
+          *ngIf="
+            documentRequsetService.documentRequests$ | async as documentrequest
+          "
+        >
+          <p-table
+            #dt
+            [value]="documentrequest.data"
+            [loading]="loading"
+            [rows]="PageSize"
+            [paginator]="true"
+            [lazy]="true"
+            [totalRecords]="documentrequest.totalRecords"
+            (onLazyLoad)="onPageChange($event)"
+            [globalFilterFields]="['name', 'description']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+            [showCurrentPageReport]="true"
+            [loading]="loading"
+            [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="flex items-center justify-between">
+                <h5 class="m-0">Gestion des Demandes de Documents</h5>
+                <div class="flex gap-2">
+                  <p-iconField iconPosition="left">
+                    <p-inputIcon class="pi pi-search" />
+                    <input
+                      pInputText
+                      type="text"
+                      [(ngModel)]="globalFilterValue"
+                      (ngModelChange)="onGlobalFilter($event)"
+                      placeholder="Rechercher..."
+                    />
+                  </p-iconField>
+                  <div class="flex justify-center">
+                    <p-autocomplete
+                      [(ngModel)]="selectedStatus"
+                      [dropdown]="true"
+                      [suggestions]="filteredStatusOptions"
+                      (completeMethod)="searchStatus($event)"
+                      placeholder="Tous les statuts"
+                      field="label"
+                      (onSelect)="onStatusSelect($event)"
+                      (onClear)="onStatusClear()"
+                      [style]="{ minWidth: '150px' }"
+                    />
+                  </div>
+                  <div class="flex justify-center">
+                    <p-autocomplete
+                      [(ngModel)]="selectedPriority"
+                      [dropdown]="true"
+                      [suggestions]="filteredPriorityOptions"
+                      (completeMethod)="searchPriority($event)"
+                      placeholder="Toutes les priorités"
+                      field="label"
+                      (onSelect)="onPrioritySelect($event)"
+                      (onClear)="onPriorityClear()"
+                      [style]="{ minWidth: '150px' }"
+                    />
+                  </div>
+                  <p-button
+                    icon="pi pi-refresh"
+                    [outlined]="true"
+                    (click)="loadDocumentRequests()"
+                    [loading]="loading"
+                  />
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox />
                 </th>
-          <th pSortableColumn="departmentName" style="min-width: 12rem">
-            <div class="flex items-center gap-2">
-              Département
-              <p-sortIcon field="departmentName" />
-            </div>
-          </th>
-          <th pSortableColumn="documentType" style="min-width: 14rem">
-            <div class="flex items-center gap-2">
-              Type de Document
-              <p-sortIcon field="documentType" />
-            </div>
-          </th>
-          <th pSortableColumn="priority" style="min-width: 10rem">
-            <div class="flex items-center gap-2">
-              Priorité
-              <p-sortIcon field="priority" />
-            </div>
-          </th>
-          <th pSortableColumn="status" style="min-width: 10rem">
-            <div class="flex items-center gap-2">
-              Statut
-              <p-sortIcon field="status" />
-            </div>
-          </th>
-          <th pSortableColumn="requestedAt" style="min-width: 12rem">
-            <div class="flex items-center gap-2">
-              Date de Demande
-              <p-sortIcon field="requestedAt" />
-            </div>
-          </th>
-          <th style="min-width: 12rem">Actions</th>
-        </tr>
-      </ng-template>
 
-      <ng-template pTemplate="body" let-request>
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="request" />
-          </td>
-          
-          <td>
-                    <div class="flex items-center gap-2">
-                        <p-avatar 
-                            [label]="getInitials(request.requesterName)"
-                            shape="circle"
-                           
-                        />
-                        <span class="font-medium">{{ request.requesterName }}</span>
-                    </div>
+                <th pSortableColumn="requesterName" style="min-width: 14rem">
+                  <div class="flex items-center gap-2">
+                    Demandeur
+                    <p-sortIcon field="requesterName" />
+                  </div>
+                </th>
+                <th pSortableColumn="departmentName" style="min-width: 12rem">
+                  <div class="flex items-center gap-2">
+                    Département
+                    <p-sortIcon field="departmentName" />
+                  </div>
+                </th>
+                <th pSortableColumn="documentType" style="min-width: 14rem">
+                  <div class="flex items-center gap-2">
+                    Type de Document
+                    <p-sortIcon field="documentType" />
+                  </div>
+                </th>
+                <th pSortableColumn="priority" style="min-width: 10rem">
+                  <div class="flex items-center gap-2">
+                    Priorité
+                    <p-sortIcon field="priority" />
+                  </div>
+                </th>
+                <th pSortableColumn="status" style="min-width: 10rem">
+                  <div class="flex items-center gap-2">
+                    Statut
+                    <p-sortIcon field="status" />
+                  </div>
+                </th>
+                <th pSortableColumn="requestedAt" style="min-width: 12rem">
+                  <div class="flex items-center gap-2">
+                    Date de Demande
+                    <p-sortIcon field="requestedAt" />
+                  </div>
+                </th>
+                <th style="min-width: 12rem">Actions</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-request>
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="request" />
                 </td>
-          <td>
-            <p-tag [value]="request.departmentName" severity="info" />
-          </td>
-          <td>
-            <div class="flex items-center gap-2">
-              <i
-                [class]="getDocumentTypeIcon(request.documentType)"
-                style="font-size: 1.2rem"
-              ></i>
-              <span>{{ request.documentType }}</span>
-            </div>
-          </td>
-          <td>
-            <p-tag
-              [value]="request.priority"
-              [severity]="getPrioritySeverity(request.priority)"
-            />
-          </td>
-          <td>
-            <p-tag
-              [value]="request.status"
-              [severity]="getStatusSeverity(request.status)"
-            />
-          </td>
-          <td>{{ request.requestedAt | date : "dd/MM/yyyy HH:mm" }}</td>
-          <td>
-            <div class="flex gap-2">
-              <p-button
-                icon="pi pi-eye"
-                severity="info"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="viewRequest(request)"
-                pTooltip="Voir les détails"
-              />
 
-              <!-- <p-button 
+                <td>
+                  <div class="flex items-center gap-2">
+                    <p-avatar
+                      [label]="getInitials(request.requesterName)"
+                      shape="circle"
+                    />
+                    <span class="font-medium">{{ request.requesterName }}</span>
+                  </div>
+                </td>
+                <td>
+                  <p-tag [value]="request.departmentName" severity="info" />
+                </td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <i
+                      [class]="getDocumentTypeIcon(request.documentType)"
+                      style="font-size: 1.2rem"
+                    ></i>
+                    <span>{{ request.documentType }}</span>
+                  </div>
+                </td>
+                <td>
+                  <p-tag
+                    [value]="request.priority"
+                    [severity]="getPrioritySeverity(request.priority)"
+                  />
+                </td>
+                <td>
+                  <p-tag
+                    [value]="request.status"
+                    [severity]="getStatusSeverity(request.status)"
+                  />
+                </td>
+                <td>{{ request.requestedAt | date : "dd/MM/yyyy HH:mm" }}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <p-button
+                      icon="pi pi-eye"
+                      severity="info"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="viewRequest(request)"
+                      pTooltip="Voir les détails"
+                    />
+
+                    <!-- <p-button 
                             icon="pi pi-check" 
                             severity="success"
                             [rounded]="true" 
@@ -268,195 +277,202 @@
                             pTooltip="Traiter"
                             *ngIf="request.status === 'En Attente'"
                         /> -->
-              <p-button
-                icon="pi pi-pencil"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="editRequest(request)"
-                pTooltip="Modifier"
-              />
-              <p-button
-                icon="pi pi-trash"
-                severity="danger"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="deleteRequest(request)"
-                pTooltip="Supprimer"
-              />
-            </div>
-          </td>
-        </tr>
-      </ng-template>
+                    <p-button
+                      icon="pi pi-pencil"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="editRequest(request)"
+                      pTooltip="Modifier"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="deleteRequest(request)"
+                      pTooltip="Supprimer"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="9" class="text-center py-4">
-            <div class="flex flex-col items-center gap-2">
-              <i
-                class="pi pi-file-o"
-                style="font-size: 2rem; color: var(--text-color-secondary)"
-              ></i>
-              <span>Aucune demande trouvée.</span>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ng-container></p-tabpanel>
-      <p-tabpanel value="env"> <p-toolbar class="mb-6">
-    <ng-template #start>
-      <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedRequests()"
-        [disabled]="!selectedRequests || !selectedRequests.length"
-      />
-    </ng-template>
-
-    <ng-template #end>
-      <p-button
-        label="Exporter"
-        icon="pi pi-download"
-        severity="secondary"
-        (onClick)="exportRequests()"
-      />
-    </ng-template>
-  </p-toolbar>
-
-  <ng-container
-    *ngIf="documentRequsetService.documentRequests$ | async as documentrequest"
-  >
-    <p-table
-      #dt
-      [value]="documentrequest.data"
-      [loading]="loading"
-      [rows]="PageSize"
-      [paginator]="true"
-      [lazy]="true"
-      [totalRecords]="documentrequest.totalRecords"
-      (onLazyLoad)="onPageChange($event)"
-      [globalFilterFields]="['name', 'description']"
-      [tableStyle]="{ 'min-width': '75rem' }"
-      [rowHover]="true"
-      dataKey="id"
-      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
-      [showCurrentPageReport]="true"
-      [loading]="loading"
-      [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
-    >
-      <ng-template pTemplate="caption">
-        <div class="flex items-center justify-between">
-          <h5 class="m-0">Gestion des Demandes de Documents</h5>
-          <div class="flex gap-2">
-            <p-iconField iconPosition="left">
-              <p-inputIcon class="pi pi-search" />
-              <input
-                pInputText
-                type="text"
-                [(ngModel)]="globalFilterValue"
-                (ngModelChange)="onGlobalFilter($event)"
-                placeholder="Rechercher..."
-              />
-            </p-iconField>
-            <div class="flex justify-center">
-              <p-autocomplete
-                [(ngModel)]="selectedStatus"
-                [dropdown]="true"
-                [suggestions]="filteredStatusOptions"
-                (completeMethod)="searchStatus($event)"
-                placeholder="Tous les statuts"
-                field="label"
-                (onSelect)="onStatusSelect($event)"
-                (onClear)="onStatusClear()"
-                [style]="{ minWidth: '150px' }"
-              />
-            </div>
-            <div class="flex justify-center">
-              <p-autocomplete
-                [(ngModel)]="selectedPriority"
-                [dropdown]="true"
-                [suggestions]="filteredPriorityOptions"
-                (completeMethod)="searchPriority($event)"
-                placeholder="Toutes les priorités"
-                field="label"
-                (onSelect)="onPrioritySelect($event)"
-                (onClear)="onPriorityClear()"
-                [style]="{ minWidth: '150px' }"
-              />
-            </div>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="9" class="text-center py-4">
+                  <div class="flex flex-col items-center gap-2">
+                    <i
+                      class="pi pi-file-o"
+                      style="
+                        font-size: 2rem;
+                        color: var(--text-color-secondary);
+                      "
+                    ></i>
+                    <span>Aucune demande trouvée.</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-container></p-tabpanel
+      >
+      <p-tabpanel value="env">
+        <p-toolbar class="mb-6">
+          <ng-template #start>
+            <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
             <p-button
-              icon="pi pi-refresh"
+              severity="danger"
+              label="Supprimer"
+              icon="pi pi-trash"
               [outlined]="true"
-              (click)="loadDocumentRequests()"
-              [loading]="loading"
+              (onClick)="deleteSelectedRequests()"
+              [disabled]="!selectedRequests || !selectedRequests.length"
             />
-          </div>
-        </div>
-      </ng-template>
+          </ng-template>
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox />
-          </th>
-          <!-- <th pSortableColumn="id" style="min-width: 8rem">
+          <ng-template #end>
+            <p-button
+              label="Exporter"
+              icon="pi pi-download"
+              severity="secondary"
+              (onClick)="exportRequests()"
+            />
+          </ng-template>
+        </p-toolbar>
+
+        <ng-container
+          *ngIf="
+            documentRequsetService.documentRequests$ | async as documentrequest
+          "
+        >
+          <p-table
+            #dt
+            [value]="documentrequest.data"
+            [loading]="loading"
+            [rows]="PageSize"
+            [paginator]="true"
+            [lazy]="true"
+            [totalRecords]="documentrequest.totalRecords"
+            (onLazyLoad)="onPageChange($event)"
+            [globalFilterFields]="['name', 'description']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+            [showCurrentPageReport]="true"
+            [loading]="loading"
+            [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="flex items-center justify-between">
+                <h5 class="m-0">Gestion des Demandes de Documents</h5>
+                <div class="flex gap-2">
+                  <p-iconField iconPosition="left">
+                    <p-inputIcon class="pi pi-search" />
+                    <input
+                      pInputText
+                      type="text"
+                      [(ngModel)]="globalFilterValue"
+                      (ngModelChange)="onGlobalFilter($event)"
+                      placeholder="Rechercher..."
+                    />
+                  </p-iconField>
+                  <div class="flex justify-center">
+                    <p-autocomplete
+                      [(ngModel)]="selectedStatus"
+                      [dropdown]="true"
+                      [suggestions]="filteredStatusOptions"
+                      (completeMethod)="searchStatus($event)"
+                      placeholder="Tous les statuts"
+                      field="label"
+                      (onSelect)="onStatusSelect($event)"
+                      (onClear)="onStatusClear()"
+                      [style]="{ minWidth: '150px' }"
+                    />
+                  </div>
+                  <div class="flex justify-center">
+                    <p-autocomplete
+                      [(ngModel)]="selectedPriority"
+                      [dropdown]="true"
+                      [suggestions]="filteredPriorityOptions"
+                      (completeMethod)="searchPriority($event)"
+                      placeholder="Toutes les priorités"
+                      field="label"
+                      (onSelect)="onPrioritySelect($event)"
+                      (onClear)="onPriorityClear()"
+                      [style]="{ minWidth: '150px' }"
+                    />
+                  </div>
+                  <p-button
+                    icon="pi pi-refresh"
+                    [outlined]="true"
+                    (click)="loadDocumentRequests()"
+                    [loading]="loading"
+                  />
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox />
+                </th>
+                <!-- <th pSortableColumn="id" style="min-width: 8rem">
             <div class="flex items-center gap-2">
               ID
               <p-sortIcon field="id" />
             </div>
           </th> -->
-          <!-- <th pSortableColumn="requesterName" style="min-width: 14rem">
+                <!-- <th pSortableColumn="requesterName" style="min-width: 14rem">
                     <div class="flex items-center gap-2">
                         Demandeur
                         <p-sortIcon field="requesterName" />
                     </div>
                 </th> -->
-          <th pSortableColumn="departmentName" style="min-width: 12rem">
-            <div class="flex items-center gap-2">
-              Département
-              <p-sortIcon field="departmentName" />
-            </div>
-          </th>
-          <th pSortableColumn="documentType" style="min-width: 14rem">
-            <div class="flex items-center gap-2">
-              Type de Document
-              <p-sortIcon field="documentType" />
-            </div>
-          </th>
-          <th pSortableColumn="priority" style="min-width: 10rem">
-            <div class="flex items-center gap-2">
-              Priorité
-              <p-sortIcon field="priority" />
-            </div>
-          </th>
-          <th pSortableColumn="status" style="min-width: 10rem">
-            <div class="flex items-center gap-2">
-              Statut
-              <p-sortIcon field="status" />
-            </div>
-          </th>
-          <th pSortableColumn="requestedAt" style="min-width: 12rem">
-            <div class="flex items-center gap-2">
-              Date de Demande
-              <p-sortIcon field="requestedAt" />
-            </div>
-          </th>
-          <th style="min-width: 12rem">Actions</th>
-        </tr>
-      </ng-template>
+                <th pSortableColumn="departmentName" style="min-width: 12rem">
+                  <div class="flex items-center gap-2">
+                    Département
+                    <p-sortIcon field="departmentName" />
+                  </div>
+                </th>
+                <th pSortableColumn="documentType" style="min-width: 14rem">
+                  <div class="flex items-center gap-2">
+                    Type de Document
+                    <p-sortIcon field="documentType" />
+                  </div>
+                </th>
+                <th pSortableColumn="priority" style="min-width: 10rem">
+                  <div class="flex items-center gap-2">
+                    Priorité
+                    <p-sortIcon field="priority" />
+                  </div>
+                </th>
+                <th pSortableColumn="status" style="min-width: 10rem">
+                  <div class="flex items-center gap-2">
+                    Statut
+                    <p-sortIcon field="status" />
+                  </div>
+                </th>
+                <th pSortableColumn="requestedAt" style="min-width: 12rem">
+                  <div class="flex items-center gap-2">
+                    Date de Demande
+                    <p-sortIcon field="requestedAt" />
+                  </div>
+                </th>
+                <th style="min-width: 12rem">Actions</th>
+              </tr>
+            </ng-template>
 
-      <ng-template pTemplate="body" let-request>
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="request" />
-          </td>
-          <!-- <td>
+            <ng-template pTemplate="body" let-request>
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="request" />
+                </td>
+                <!-- <td>
             <span class="font-mono text-sm">{{ request.id }}</span>
           </td> -->
-          <!-- <td>
+                <!-- <td>
                     <div class="flex items-center gap-2">
                         <p-avatar 
                             [label]="getInitials(request.requesterName)"
@@ -466,43 +482,43 @@
                         <span class="font-medium">{{ request.requesterName }}</span>
                     </div>
                 </td> -->
-          <td>
-            <p-tag [value]="request.departmentName" severity="info" />
-          </td>
-          <td>
-            <div class="flex items-center gap-2">
-              <i
-                [class]="getDocumentTypeIcon(request.documentType)"
-                style="font-size: 1.2rem"
-              ></i>
-              <span>{{ request.documentType }}</span>
-            </div>
-          </td>
-          <td>
-            <p-tag
-              [value]="request.priority"
-              [severity]="getPrioritySeverity(request.priority)"
-            />
-          </td>
-          <td>
-            <p-tag
-              [value]="request.status"
-              [severity]="getStatusSeverity(request.status)"
-            />
-          </td>
-          <td>{{ request.requestedAt | date : "dd/MM/yyyy HH:mm" }}</td>
-          <td>
-            <div class="flex gap-2">
-              <p-button
-                icon="pi pi-eye"
-                severity="info"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="viewRequest(request)"
-                pTooltip="Voir les détails"
-              />
+                <td>
+                  <p-tag [value]="request.departmentName" severity="info" />
+                </td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <i
+                      [class]="getDocumentTypeIcon(request.documentType)"
+                      style="font-size: 1.2rem"
+                    ></i>
+                    <span>{{ request.documentType }}</span>
+                  </div>
+                </td>
+                <td>
+                  <p-tag
+                    [value]="request.priority"
+                    [severity]="getPrioritySeverity(request.priority)"
+                  />
+                </td>
+                <td>
+                  <p-tag
+                    [value]="request.status"
+                    [severity]="getStatusSeverity(request.status)"
+                  />
+                </td>
+                <td>{{ request.requestedAt | date : "dd/MM/yyyy HH:mm" }}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <p-button
+                      icon="pi pi-eye"
+                      severity="info"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="viewRequest(request)"
+                      pTooltip="Voir les détails"
+                    />
 
-              <!-- <p-button 
+                    <!-- <p-button 
                             icon="pi pi-check" 
                             severity="success"
                             [rounded]="true" 
@@ -511,44 +527,47 @@
                             pTooltip="Traiter"
                             *ngIf="request.status === 'En Attente'"
                         /> -->
-              <p-button
-                icon="pi pi-pencil"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="editRequest(request)"
-                pTooltip="Modifier"
-              />
-              <p-button
-                icon="pi pi-trash"
-                severity="danger"
-                [rounded]="true"
-                [outlined]="true"
-                (click)="deleteRequest(request)"
-                pTooltip="Supprimer"
-              />
-            </div>
-          </td>
-        </tr>
-      </ng-template>
+                    <!-- <p-button
+                      icon="pi pi-pencil"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="editRequest(request)"
+                      pTooltip="Modifier"
+                    /> -->
+                    <p-button
+                      icon="pi pi-trash"
+                      severity="danger"
+                      [rounded]="true"
+                      [outlined]="true"
+                      (click)="deleteRequest(request)"
+                      pTooltip="Supprimer"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="9" class="text-center py-4">
-            <div class="flex flex-col items-center gap-2">
-              <i
-                class="pi pi-file-o"
-                style="font-size: 2rem; color: var(--text-color-secondary)"
-              ></i>
-              <span>Aucune demande trouvée.</span>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ng-container> </p-tabpanel>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="9" class="text-center py-4">
+                  <div class="flex flex-col items-center gap-2">
+                    <i
+                      class="pi pi-file-o"
+                      style="
+                        font-size: 2rem;
+                        color: var(--text-color-secondary);
+                      "
+                    ></i>
+                    <span>Aucune demande trouvée.</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-container>
+      </p-tabpanel>
     </p-tabpanels>
   </p-tabs>
- 
 
   <!-- Document Request Dialog -->
   <p-dialog
@@ -727,12 +746,6 @@
         icon="pi pi-times"
         [text]="true"
         (click)="hideDialog()"
-      />
-      <p-button
-        label="Sauvegarder"
-        icon="pi pi-check"
-        (click)="saveRequest()"
-        [loading]="saving"
       />
     </ng-template>
   </p-dialog>

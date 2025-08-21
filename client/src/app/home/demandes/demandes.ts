@@ -509,6 +509,10 @@ globalFilterValue: any;
 
   }
 
+
+  createNewRequest(){
+    this.requestDialog=true
+  }
   private updateRequest() {
     const updateDto: UpdateDocumentRequestDTO = {
       documentType: this.request.documentType,
@@ -633,7 +637,7 @@ globalFilterValue: any;
 
   isRequestValid(): boolean {
     return !!(
-      this.request.departmentId &&
+      
       this.request.documentType?.trim() &&
       this.request.description?.trim() &&
       this.request.priority
