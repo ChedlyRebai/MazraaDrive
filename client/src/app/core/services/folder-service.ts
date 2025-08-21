@@ -91,4 +91,10 @@ export class FolderService {
     return this.http.get<FolderPagedResult>(`${this.baseUrl}/id/${folderId}`)
   }
 
+  getMyFolders(){
+    return this.http.get<FolderPagedResult>(
+      `${this.baseUrl}/my-folders`
+    );
+  }
+
 }

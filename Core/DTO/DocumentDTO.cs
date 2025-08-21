@@ -41,7 +41,7 @@ namespace Core.DTOs
         [Required(ErrorMessage = "Folder ID is required")]
         public int FolderId { get; set; }
 
-        [Required(ErrorMessage = "File is required")]
+        // [Required(ErrorMessage = "File is required")]
         public IFormFile File { get; set; } = null!;
     }
 
@@ -62,8 +62,14 @@ namespace Core.DTOs
     {
         [Required(ErrorMessage = "File is required")]
         public IFormFile File { get; set; } = null!;
+
+        [Required(ErrorMessage = "Document name is required")]
+        public string Name { get; set; } = string.Empty;
+
         
-        [Required(ErrorMessage = "Folder ID is required")]
+      
+
+        // [Required(ErrorMessage = "Folder ID is required")]
         public int FolderId { get; set; }
         public int DepartmentId { get; set; }
 

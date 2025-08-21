@@ -16,6 +16,8 @@ public class Document : BaseEntity<int>
 
     public long FileSize { get; set; }
 
+    public string Description { get; set; } = string.Empty;
+
     [Required]
     [MaxLength(500)]
     public string StoragePath { get; set; }

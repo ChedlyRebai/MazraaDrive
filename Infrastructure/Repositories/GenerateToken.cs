@@ -23,6 +23,9 @@ public class GenerateToken : IGenerateToken
         {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim("RoleId", user.RoleId.ToString()),
+            new Claim("DepartmentId", user.DepartmentId.ToString())
 
         };
 

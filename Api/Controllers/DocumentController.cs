@@ -252,8 +252,8 @@ namespace Api.Controllers
         {
             try
             {
-                if (uploadDto?.File == null)
-                    return BadRequest(new { success = false, message = "File is required" });
+                // if (uploadDto?.File == null)
+                //     return BadRequest(new { success = false, message = "File is required" });
 
                 if (!ModelState.IsValid)
                     return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
@@ -295,9 +295,10 @@ namespace Api.Controllers
                 // Create document entity
                 var document = new Document
                 {
-                    Name = Path.GetFileNameWithoutExtension(uploadDto.File.FileName),
+                    Name = uploadDto.Name,
 
-                    // Description = uploadDto.Description,
+                    //Description = uploadDto.Description,
+
                     FileType = fileExtension.TrimStart('.'),
                     FileSize = uploadDto.File.Length,
                     StoragePath = fileName,

@@ -71,7 +71,7 @@
         <p-tabpanel ngDefaultControl value="files">
           <!-- Folders & Files List -->
           <div class="col-span-12">
-            <div class="card">
+            <div class="">
               <div class="flex items-center justify-between mb-4">
                 <div
                   class="text-surface-900 dark:text-surface-0 text-xl font-semibold"
@@ -83,7 +83,7 @@
                     label="New"
                     icon="pi pi-plus"
                     class="mr-2"
-                    (onClick)="openNew()"
+                    (onClick)="openNewDocument()"
                   />
                   <p-button
                     label="Refresh"
@@ -115,7 +115,7 @@
                       <span
                         class="text-xs text-surface-500 dark:text-surface-400"
                       >
-                        {{ item.fileSize  }}
+                        {{ formatFileSize(item.fileSize || 0) }}
                       </span>
                       <p-button
                         icon="pi pi-ellipsis-v"
@@ -161,11 +161,27 @@
         <p-tabpanel value="Folders">
           <!-- Files List -->
           <div class="col-span-12 mt-6">
-            <div class="card">
-              <div
-                class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4"
-              >
-                Folders
+            <div class="">
+              <div class="flex items-center justify-between mb-4">
+                <div
+                  class="text-surface-900 dark:text-surface-0 text-xl font-semibold"
+                >
+                  Folders
+                </div>
+                <div>
+                  <p-button
+                    label="New"
+                    icon="pi pi-plus"
+                    class="mr-2"
+                    (onClick)="openNewFolder()"
+                  />
+                  <p-button
+                    label="Refresh"
+                    icon="pi pi-refresh"
+                    severity="secondary"
+                    [outlined]="true"
+                  />
+                </div>
               </div>
               <div class="grid grid-cols-12 gap-4">
                 <div
@@ -333,9 +349,144 @@
       </div>
     </ng-template>
     <ng-template #footer>
-      <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        text
+        (click)="hideFolderDialog()"
+      />
       <p-button label="Save" icon="pi pi-check" (click)="saveFolder()" />
     </ng-template>
   </p-dialog>
   <p-confirmDialog [style]="{ width: '450px' }" />
 </div>
+
+<p-dialog
+  [(visible)]="documentDialog"
+  [style]="{ width: '50rem' }"
+  [header]="dialogTitle"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <div class="flex flex-col gap-6">
+      <!-- File Upload Area -->
+      <div
+        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+        *ngIf="!document.id"
+      >
+        <p-fileUpload
+          #fileUpload
+          mode="basic"
+          accept=".pdf,.doc,.docx,.txt,.jpg,.png,.zip"
+          [maxFileSize]="10000000"
+          chooseLabel="Choisir un fichier"
+          [auto]="false"
+          (onSelect)="onFileSelect($event)"
+          class="mb-3"
+        />
+        <p class="text-sm text-gray-500 m-0">
+          Formats acceptés: PDF, DOC, DOCX, TXT, JPG, PNG, ZIP (Max: 10MB)
+        </p>
+      </div>
+
+      <!-- Selected File Info -->
+      <div
+        *ngIf="selectedFile || document.id"
+        class="bg-gray-50 p-4 rounded border"
+      >
+        <div class="flex items-center gap-3">
+          <i
+            [class]="getFileIcon(selectedFile?.type || document.file.type)"
+            style="font-size: 2rem"
+          ></i>
+          <div class="flex-1">
+            <h6 class="m-0">{{ selectedFile?.name || document.file.name }}</h6>
+            <p class="text-sm text-gray-500 m-0">
+              {{ formatFileSize(selectedFile?.size || document.file.size) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Information Form -->
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Document Name -->
+        <div class="col-span-12 md:col-span-6">
+          <label for="name" class="block font-bold mb-3"
+            >Nom du Document *</label
+          >
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="document.name"
+            required
+            fluid
+          />
+          <small class="text-red-500" *ngIf="submitted && !document.name"
+            >Le nom est requis.</small
+          >
+        </div>
+
+        <!-- Category -->
+        <!-- <div class="col-span-12 md:col-span-6">
+            <label for="category" class="block font-bold mb-3"
+              >Catégorie *</label
+            >
+
+            <p-autocomplete
+              [(ngModel)]="document.category"
+              [dropdown]="true"
+              [suggestions]="categories"
+            />
+            <small class="text-red-500" *ngIf="submitted && !document.category"
+              >La catégorie est requise.</small
+            >
+          </div> -->
+
+        <!-- Description -->
+        <div class="col-span-12">
+          <label for="description" class="block font-bold mb-3"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            pInputTextarea
+            [(ngModel)]="document.description"
+            rows="3"
+            fluid
+            placeholder="Description du document..."
+          ></textarea>
+        </div>
+
+        <!-- Version -->
+        <div class="col-span-12 md:col-span-6" *ngIf="document.id">
+          <label for="version" class="block font-bold mb-3">Version</label>
+          <input
+            type="text"
+            pInputText
+            id="version"
+            [(ngModel)]="document.version"
+            fluid
+            placeholder="1.0"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Annuler"
+      icon="pi pi-times"
+      [text]="true"
+      (click)="hideDocumentDialog()"
+    />
+    <p-button
+      label="Sauvegarder"
+      icon="pi pi-check"
+      (click)="saveDocument()"
+      [loading]="saving"
+    />
+  </ng-template>
+</p-dialog>

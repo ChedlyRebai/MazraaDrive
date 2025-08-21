@@ -18,7 +18,26 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from "../../admin/themeswitcher";
+import { TabsModule } from 'primeng/tabs';
 
+
+interface Document {
+  id?: number;
+  name: string;
+  category: string;
+  type: string;
+  size: number;
+  description?: string;
+  tags?: string[];
+  status: string;
+  accessLevel: string;
+  uploadedBy: string;
+  uploadedAt: Date;
+  expirationDate?: Date;
+  version?: string;
+  filePath?: string;
+  isActive: boolean;
+}
 interface FileItem {
   id: string;
   name: string;
@@ -66,7 +85,10 @@ interface FileCategory {
     ContextMenuModule,
     SelectButtonModule,
     TooltipModule,
-    ThemeSwitcher
+    ThemeSwitcher,
+    TabsModule
+
+
 ],
   providers: [MessageService],
   templateUrl: './documents.html',
@@ -84,6 +106,18 @@ export class Documents implements OnInit {
   totalStorage = 50;
   usedStoragePercentage = 25;
 
+
+  documents: Document[] = [];
+  selectedDocuments: Document[] = [];
+  selectedDocument: Document | null = null;
+  document: Document = this.getEmptyDocument();
+  
+  documentDialog = false;
+  previewDialog = false;
+  submitted = false;
+  loading = false;
+  saving = false;
+
   // View settings
   viewMode = 'grid';
   viewOptions = [
@@ -98,6 +132,28 @@ export class Documents implements OnInit {
   ];
   homeItem = { icon: 'pi pi-home', routerLink: '/' };
 
+
+  selectedFile: File | null = null;
+
+  categories = [
+    'Rapports',
+    'Contrats',
+    'Factures',
+    'Certificats',
+    'Politiques',
+    'Procédures',
+    'Formulaires',
+    'Images',
+    'Autres'
+  ];
+
+  statuses = [
+    'Actif',
+    'Archivé',
+    'Brouillon',
+    'En révision',
+    'Expiré'
+  ];
   // Storage data
   storageData: StorageData[] = [
     {
@@ -489,4 +545,142 @@ export class Documents implements OnInit {
   getInitials(name: string): string {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   }
+
+   downloadDocument(document: Document) {
+    // Simulate download
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement',
+      detail: `Téléchargement de "${document.name}" en cours...`
+    });
+    
+    // In real implementation, you would call your API to get the file
+    // this.http.get(`${this.baseUrl}/Document/${document.id}/download`, { responseType: 'blob' })
+  }
+
+  saveDocument() {
+    this.submitted = true;
+
+    if (!this.isDocumentValid()) {
+      return;
+    }
+
+    this.saving = true;
+
+    // Simulate API call with file upload
+    setTimeout(() => {
+      if (this.document.id) {
+        // Update existing document
+        const index = this.documents.findIndex(d => d.id === this.document.id);
+        if (index !== -1) {
+          this.documents[index] = { ...this.document };
+        }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Document modifié avec succès'
+        });
+      } else {
+        // Create new document
+        this.document.id = Math.max(...this.documents.map(d => d.id || 0)) + 1;
+        this.document.uploadedAt = new Date();
+        this.document.uploadedBy = 'Utilisateur Actuel'; // Get from auth service
+        this.document.isActive = true;
+        
+        if (this.selectedFile) {
+          this.document.type = this.getFileExtension(this.selectedFile.name);
+          this.document.size = this.selectedFile.size;
+        }
+        
+        this.documents.push({ ...this.document });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Document créé avec succès'
+        });
+      }
+
+      this.saving = false;
+      this.documentDialog = false;
+      this.document = this.getEmptyDocument();
+      this.selectedFile = null;
+    }, 2000);
+  }
+
+  hideDialog() {
+    this.documentDialog = false;
+    this.submitted = false;
+    this.document = this.getEmptyDocument();
+    this.selectedFile = null;
+  }
+
+  onFileSelect(event: any) {
+    this.selectedFile = event.files[0];
+    if (this.selectedFile && !this.document.name) {
+      this.document.name = this.selectedFile.name;
+    }
+  }
+
+  onImportDocuments(event: any) {
+    const files = event.files;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Import',
+      detail: `${files.length} fichier(s) importé(s)`
+    });
+  }
+
+  exportDocuments() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Export',
+      detail: 'Export des documents en cours...'
+    });
+  }
+
+  // Utility methods
+  getEmptyDocument(): Document {
+    return {
+      name: '',
+      category: '',
+      type: '',
+      size: 0,
+      description: '',
+      tags: [],
+      status: 'Actif',
+      accessLevel: 'Public',
+      uploadedBy: '',
+      uploadedAt: new Date(),
+      isActive: true
+    };
+  }
+
+   isDocumentValid(): boolean {
+    return !!(
+      this.document.name?.trim() &&
+      this.document.category &&
+      (this.document.id || this.selectedFile)
+    );
+  }
+
+  
+
+  getFileExtension(filename: string): string {
+    return filename.split('.').pop()?.toUpperCase() || '';
+  }
+
+   get dialogTitle(): string {
+    return this.document.id ? 'Modifier le document' : 'Nouveau document';
+  }
+
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+
 }

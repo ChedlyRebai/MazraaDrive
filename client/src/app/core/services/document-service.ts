@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import {
+  DocumentDto,
   DocumentFilterDto,
   DocumentPagedResult,
 } from '../../shared/models/document';
@@ -63,6 +64,17 @@ export class DocumentService {
   getFolderDocuments(folderId: number) {
     return this.http.get<DocumentPagedResult>(
       `${this.baseUrl}/folder/${folderId}`
+    );
+  }
+
+
+  uploadDocument(uploadDocument:FormData){
+    return this.http.post(`${this.baseUrl}/upload`, uploadDocument);
+  }
+
+  getMydocuments(){
+    return this.http.get<DocumentPagedResult>(
+      `${this.baseUrl}/my-documents`
     );
   }
 }

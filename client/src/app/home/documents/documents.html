@@ -1,37 +1,41 @@
 <theme-switcher />
 
 <div class="layout-content-wrappe">
-  <div class=" mx-auto py-6">
+  <div class="mx-auto py-6">
     <!-- Welcome Header -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-4">
         <div>
-          <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
-            Bienvenue, {{ currentUser!.name || 'Utilisateur' }} 👋
+          <h1
+            class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2"
+          >
+            Bienvenue, {{ currentUser!.name || "Utilisateur" }} 👋
           </h1>
           <p class="text-surface-600 dark:text-surface-300">
             Gérez vos documents et collaborez efficacement avec votre équipe
           </p>
         </div>
         <div class="flex gap-3">
-          <p-button 
-            label="Nouveau dossier" 
-            icon="pi pi-folder-plus" 
+          <p-button
+            label="Nouveau dossier"
+            icon="pi pi-folder-plus"
             severity="secondary"
             [outlined]="true"
             (click)="createNewFolder()"
           />
-          <p-button 
-            label="Télécharger" 
-            icon="pi pi-upload" 
+          <p-button
+            label="Télécharger"
+            icon="pi pi-upload"
             (click)="uploadFiles()"
           />
         </div>
       </div>
-      
+
       <!-- Quick Stats -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white">
+        <div
+          class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-blue-100 text-sm">Total Fichiers</p>
@@ -40,7 +44,9 @@
             <i class="pi pi-file text-3xl text-blue-200"></i>
           </div>
         </div>
-        <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white">
+        <div
+          class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-green-100 text-sm">Dossiers</p>
@@ -49,7 +55,9 @@
             <i class="pi pi-folder text-3xl text-green-200"></i>
           </div>
         </div>
-        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white">
+        <div
+          class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-orange-100 text-sm">Partagés</p>
@@ -58,7 +66,9 @@
             <i class="pi pi-share-alt text-3xl text-orange-200"></i>
           </div>
         </div>
-        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white">
+        <div
+          class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-purple-100 text-sm">Stockage</p>
@@ -77,6 +87,7 @@
 
     <div class="grid grid-cols-12 gap-6">
       <!-- Storage Overview -->
+
       <div class="col-span-12 lg:col-span-8">
         <!-- <div class="card mb-6">
           <div class="flex items-center justify-between mb-4">
@@ -121,93 +132,222 @@
           </div>
         </div> -->
 
-       
         <div class="card">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-semibold text-surface-900 dark:text-surface-0">
-              Mes Documents et Fichiers Récents
-            </h3>
-            <div class="flex items-center gap-2">
-              <p-selectButton 
-                [(ngModel)]="viewMode" 
-                [options]="viewOptions" 
-                optionLabel="label" 
-                optionValue="value"
-                size="small"
-              />
-              <p-button 
-                icon="pi pi-refresh" 
-                [rounded]="true" 
-                [outlined]="true"
-                size="small"
-                (click)="refreshFiles()"
-              />
-            </div>
-          </div>
+          <p-tabs value="files">
+            <p-tablist>
+              <p-tab value="files">Files</p-tab>
+              <p-tab value="Folders">Folders</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+              <p-tabpanel value="files">
+                <div class="flex items-center justify-between mb-6">
+                  <h3
+                    class="text-xl font-semibold text-surface-900 dark:text-surface-0"
+                  >
+                    Mes Documents et Fichiers Récents
+                  </h3>
+                  <div class="flex items-center gap-2">
+                    <p-selectButton
+                      [(ngModel)]="viewMode"
+                      [options]="viewOptions"
+                      optionLabel="label"
+                      optionValue="value"
+                      size="small"
+                    />
+                    <p-button
+                      icon="pi pi-refresh"
+                      [rounded]="true"
+                      [outlined]="true"
+                      size="small"
+                      (click)="refreshFiles()"
+                    />
+                  </div>
+                </div>
 
-          <!-- Grid View -->
-          <div *ngIf="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            <div 
-              *ngFor="let item of recentItems" 
-              class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
-              (click)="openItem(item)"
-              (contextmenu)="showContextMenu($event, item)"
-            >
-              <div class="flex items-start justify-between mb-3">
-                <div 
-                  class="p-3 rounded-lg"
-                  [style.background-color]="getFileTypeColor(item.type) + '20'"
+                <!-- Grid View -->
+                <div
+                  *ngIf="viewMode === 'grid'"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
                 >
-                  <i 
-                    [class]="getFileIcon(item.type)" 
-                    class="text-2xl"
-                    [style.color]="getFileTypeColor(item.type)"
-                  ></i>
-                </div>
-                <div class="flex items-center gap-1">
-                  <span class="text-xs text-surface-500 dark:text-surface-400">
-                    {{ item.size }}
-                  </span>
-                  <p-button 
-                    icon="pi pi-ellipsis-v" 
-                    [text]="true"
-                    size="small"
-                    (click)="showItemMenu($event, item); $event.stopPropagation()"
-                  />
-                </div>
-              </div>
-              
-              <div class="mb-3">
-                <h4 class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate">
-                  {{ item.name }}
-                </h4>
-                <div class="text-sm text-surface-600 dark:text-surface-300">
-                  <p class="mb-1">{{ item.modifiedDate | date:'dd/MM/yyyy HH:mm' }}</p>
-                  <p class="text-xs">Par: {{ item.owner }}</p>
-                </div>
-              </div>
+                  <div
+                    *ngFor="let item of recentItems"
+                    class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
+                    (click)="openItem(item)"
+                    (contextmenu)="showContextMenu($event, item)"
+                  >
+                    <div class="flex items-start justify-between mb-3">
+                      <div
+                        class="p-3 rounded-lg"
+                        [style.background-color]="
+                          getFileTypeColor(item.type) + '20'
+                        "
+                      >
+                        <i
+                          [class]="getFileIcon(item.type)"
+                          class="text-2xl"
+                          [style.color]="getFileTypeColor(item.type)"
+                        ></i>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span
+                          class="text-xs text-surface-500 dark:text-surface-400"
+                        >
+                          {{ item.size }}
+                        </span>
+                        <p-button
+                          icon="pi pi-ellipsis-v"
+                          [text]="true"
+                          size="small"
+                          (click)="
+                            showItemMenu($event, item); $event.stopPropagation()
+                          "
+                        />
+                      </div>
+                    </div>
 
-              <div class="flex items-center justify-between">
-                <p-tag 
-                  [value]="item.type" 
-                  [severity]="getTagSeverity(item.type)"
-                  size="small"
-                />
-                <div class="flex items-center gap-1" *ngIf="item.isShared">
-                  <i class="pi pi-users text-xs text-blue-500"></i>
-                  <span class="text-xs text-surface-600">Partagé</span>
+                    <div class="mb-3">
+                      <h4
+                        class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate"
+                      >
+                        {{ item.name }}
+                      </h4>
+                      <div
+                        class="text-sm text-surface-600 dark:text-surface-300"
+                      >
+                        <p class="mb-1">
+                          {{ item.modifiedDate | date : "dd/MM/yyyy HH:mm" }}
+                        </p>
+                        <p class="text-xs">Par: {{ item.owner }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                      <p-tag
+                        [value]="item.type"
+                        [severity]="getTagSeverity(item.type)"
+                        size="small"
+                      />
+                      <div
+                        class="flex items-center gap-1"
+                        *ngIf="item.isShared"
+                      >
+                        <i class="pi pi-users text-xs text-blue-500"></i>
+                        <span class="text-xs text-surface-600">Partagé</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
+                
+              </p-tabpanel>
+              <p-tabpanel value="Folders">
+                <div class="flex items-center justify-between mb-6">
+                  <h3
+                    class="text-xl font-semibold text-surface-900 dark:text-surface-0"
+                  >
+                    Mes Documents et Fichiers Récents
+                  </h3>
+                  <div class="flex items-center gap-2">
+                    <p-selectButton
+                      [(ngModel)]="viewMode"
+                      [options]="viewOptions"
+                      optionLabel="label"
+                      optionValue="value"
+                      size="small"
+                    />
+                    <p-button
+                      icon="pi pi-refresh"
+                      [rounded]="true"
+                      [outlined]="true"
+                      size="small"
+                      (click)="refreshFiles()"
+                    />
+                  </div>
+                </div>
+
+                <!-- Grid View -->
+                <div
+                  *ngIf="viewMode === 'grid'"
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                >
+                  <div
+                    *ngFor="let item of recentItems"
+                    class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
+                    (click)="openItem(item)"
+                    (contextmenu)="showContextMenu($event, item)"
+                  >
+                    <div class="flex items-start justify-between mb-3">
+                      <div
+                        class="p-3 rounded-lg"
+                        [style.background-color]="
+                          getFileTypeColor(item.type) + '20'
+                        "
+                      >
+                        <i
+                          [class]="getFileIcon(item.type)"
+                          class="text-2xl"
+                          [style.color]="getFileTypeColor(item.type)"
+                        ></i>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span
+                          class="text-xs text-surface-500 dark:text-surface-400"
+                        >
+                          {{ item.size }}
+                        </span>
+                        <p-button
+                          icon="pi pi-ellipsis-v"
+                          [text]="true"
+                          size="small"
+                          (click)="
+                            showItemMenu($event, item); $event.stopPropagation()
+                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <h4
+                        class="font-medium text-surface-900 dark:text-surface-0 mb-1 truncate"
+                      >
+                        {{ item.name }}
+                      </h4>
+                      <div
+                        class="text-sm text-surface-600 dark:text-surface-300"
+                      >
+                        <p class="mb-1">
+                          {{ item.modifiedDate | date : "dd/MM/yyyy HH:mm" }}
+                        </p>
+                        <p class="text-xs">Par: {{ item.owner }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                      <p-tag
+                        [value]="item.type"
+                        [severity]="getTagSeverity(item.type)"
+                        size="small"
+                      />
+                      <div
+                        class="flex items-center gap-1"
+                        *ngIf="item.isShared"
+                      >
+                        <i class="pi pi-users text-xs text-blue-500"></i>
+                        <span class="text-xs text-surface-600">Partagé</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-tabpanel>
+            </p-tabpanels>
+          </p-tabs>
 
           <!-- List View -->
           <div *ngIf="viewMode === 'list'">
-            <p-table 
-              [value]="recentItems" 
-              [paginator]="true" 
+            <p-table
+              [value]="recentItems"
+              [paginator]="true"
               [rows]="10"
-              [sortField]="'modifiedDate'" 
+              [sortField]="'modifiedDate'"
               [sortOrder]="-1"
               responsiveLayout="scroll"
             >
@@ -242,28 +382,33 @@
               </ng-template>
 
               <ng-template pTemplate="body" let-item>
-                <tr class="cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-700" (click)="openItem(item)">
+                <tr
+                  class="cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-700"
+                  (click)="openItem(item)"
+                >
                   <td>
                     <div class="flex items-center gap-3">
-                      <i 
-                        [class]="getFileIcon(item.type)" 
+                      <i
+                        [class]="getFileIcon(item.type)"
                         [style.color]="getFileTypeColor(item.type)"
                       ></i>
                       <div>
                         <div class="font-medium">{{ item.name }}</div>
-                        <div class="text-sm text-surface-600" *ngIf="item.isShared">
+                        <div
+                          class="text-sm text-surface-600"
+                          *ngIf="item.isShared"
+                        >
                           <i class="pi pi-users text-xs mr-1"></i>Partagé
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td>{{ item.modifiedDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.modifiedDate | date : "dd/MM/yyyy HH:mm" }}</td>
                   <td>{{ item.size }}</td>
                   <td>
                     <div class="flex items-center gap-2">
-                      <p-avatar 
-                        [label]="getInitials(item.owner)" 
-                       
+                      <p-avatar
+                        [label]="getInitials(item.owner)"
                         shape="circle"
                       />
                       {{ item.owner }}
@@ -271,25 +416,25 @@
                   </td>
                   <td>
                     <div class="flex items-center gap-1">
-                      <p-button 
-                        icon="pi pi-eye" 
+                      <p-button
+                        icon="pi pi-eye"
                         severity="info"
-                        [text]="true" 
+                        [text]="true"
                         size="small"
                         pTooltip="Aperçu"
                         (click)="previewItem(item); $event.stopPropagation()"
                       />
-                      <p-button 
-                        icon="pi pi-download" 
+                      <p-button
+                        icon="pi pi-download"
                         severity="success"
-                        [text]="true" 
+                        [text]="true"
                         size="small"
                         pTooltip="Télécharger"
                         (click)="downloadItem(item); $event.stopPropagation()"
                       />
-                      <p-button 
-                        icon="pi pi-share-alt" 
-                        [text]="true" 
+                      <p-button
+                        icon="pi pi-share-alt"
+                        [text]="true"
                         size="small"
                         pTooltip="Partager"
                         (click)="shareItem(item); $event.stopPropagation()"
@@ -303,13 +448,17 @@
                 <tr>
                   <td colspan="5" class="text-center py-8">
                     <div class="flex flex-col items-center gap-3">
-                      <i class="pi pi-folder-open text-4xl text-surface-400"></i>
+                      <i
+                        class="pi pi-folder-open text-4xl text-surface-400"
+                      ></i>
                       <div>
                         <h3 class="font-medium mb-2">Aucun fichier trouvé</h3>
-                        <p class="text-surface-600 text-sm">Commencez par télécharger vos premiers documents</p>
+                        <p class="text-surface-600 text-sm">
+                          Commencez par télécharger vos premiers documents
+                        </p>
                       </div>
-                      <p-button 
-                        label="Télécharger un fichier" 
+                      <p-button
+                        label="Télécharger un fichier"
                         icon="pi pi-upload"
                         (click)="uploadFiles()"
                       />
@@ -326,20 +475,24 @@
       <div class="col-span-12 lg:col-span-4">
         <!-- Storage Chart -->
         <div class="card mb-6">
-          <h3 class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0">
+          <h3
+            class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0"
+          >
             Utilisation du stockage
           </h3>
           <div class="flex justify-center mb-4">
-            <p-chart 
-              type="doughnut" 
-              [data]="storageChartData" 
+            <p-chart
+              type="doughnut"
+              [data]="storageChartData"
               [options]="storageChartOptions"
               width="200"
               height="200"
             />
           </div>
           <div class="text-center">
-            <p class="text-2xl font-bold text-surface-900 dark:text-surface-0 mb-1">
+            <p
+              class="text-2xl font-bold text-surface-900 dark:text-surface-0 mb-1"
+            >
               {{ usedStoragePercentage }}%
             </p>
             <p class="text-sm text-surface-600 dark:text-surface-300">
@@ -350,18 +503,24 @@
 
         <!-- File Categories -->
         <div class="card mb-6">
-          <h3 class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0">
+          <h3
+            class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0"
+          >
             Catégories
           </h3>
           <div class="space-y-3">
-            <div 
+            <div
               *ngFor="let category of fileCategories"
               class="flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors"
               [style.background-color]="category.color + '10'"
               (click)="filterByCategory(category.type)"
             >
               <div class="flex items-center gap-3">
-                <i [class]="category.icon" [style.color]="category.color" class="text-xl"></i>
+                <i
+                  [class]="category.icon"
+                  [style.color]="category.color"
+                  class="text-xl"
+                ></i>
                 <span class="font-medium">{{ category.name }}</span>
               </div>
               <span class="font-bold text-lg">{{ category.count }}</span>
@@ -371,34 +530,36 @@
 
         <!-- Quick Actions -->
         <div class="card">
-          <h3 class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0">
+          <h3
+            class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0"
+          >
             Actions rapides
           </h3>
           <div class="space-y-3">
-            <p-button 
-              label="Nouveau dossier" 
+            <p-button
+              label="Nouveau dossier"
               icon="pi pi-folder-plus"
               severity="secondary"
               [outlined]="true"
               fluid
               (click)="createNewFolder()"
             />
-            <p-button 
-              label="Télécharger des fichiers" 
+            <p-button
+              label="Télécharger des fichiers"
               icon="pi pi-upload"
               fluid
               (click)="uploadFiles()"
             />
-            <p-button 
-              label="Partager un lien" 
+            <p-button
+              label="Partager un lien"
               icon="pi pi-share-alt"
               severity="info"
               [outlined]="true"
               fluid
               (click)="createShareLink()"
             />
-            <p-button 
-              label="Voir la corbeille" 
+            <p-button
+              label="Voir la corbeille"
               icon="pi pi-trash"
               severity="secondary"
               [text]="true"
@@ -412,30 +573,162 @@
   </div>
 </div>
 
+<p-dialog
+  [(visible)]="documentDialog"
+  [style]="{ width: '50rem' }"
+  [header]="dialogTitle"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <div class="flex flex-col gap-6">
+      <!-- File Upload Area -->
+      <div
+        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+        *ngIf="!document.id"
+      >
+        <p-fileUpload
+          #fileUpload
+          mode="basic"
+          accept=".pdf,.doc,.docx,.txt,.jpg,.png,.zip"
+          [maxFileSize]="10000000"
+          chooseLabel="Choisir un fichier"
+          [auto]="false"
+          (onSelect)="onFileSelect($event)"
+          class="mb-3"
+        />
+        <p class="text-sm text-gray-500 m-0">
+          Formats acceptés: PDF, DOC, DOCX, TXT, JPG, PNG, ZIP (Max: 10MB)
+        </p>
+      </div>
+
+      <!-- Selected File Info -->
+      <div
+        *ngIf="selectedFile || document.id"
+        class="bg-gray-50 p-4 rounded border"
+      >
+        <div class="flex items-center gap-3">
+          <i
+            [class]="getFileIcon(selectedFile?.type || document.type)"
+            style="font-size: 2rem"
+          ></i>
+          <div class="flex-1">
+            <h6 class="m-0">{{ selectedFile?.name || document.name }}</h6>
+            <p class="text-sm text-gray-500 m-0">
+              {{ formatFileSize(selectedFile?.size || document.size) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Information Form -->
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Document Name -->
+        <div class="col-span-12 md:col-span-6">
+          <label for="name" class="block font-bold mb-3"
+            >Nom du Document *</label
+          >
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="document.name"
+            required
+            fluid
+          />
+          <small class="text-red-500" *ngIf="submitted && !document.name"
+            >Le nom est requis.</small
+          >
+        </div>
+
+        <!-- Category -->
+        <!-- <div class="col-span-12 md:col-span-6">
+            <label for="category" class="block font-bold mb-3"
+              >Catégorie *</label
+            >
+
+            <p-autocomplete
+              [(ngModel)]="document.category"
+              [dropdown]="true"
+              [suggestions]="categories"
+            />
+            <small class="text-red-500" *ngIf="submitted && !document.category"
+              >La catégorie est requise.</small
+            >
+          </div> -->
+
+        <!-- Description -->
+        <div class="col-span-12">
+          <label for="description" class="block font-bold mb-3"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            pInputTextarea
+            [(ngModel)]="document.description"
+            rows="3"
+            fluid
+            placeholder="Description du document..."
+          ></textarea>
+        </div>
+
+        <!-- Version -->
+        <div class="col-span-12 md:col-span-6" *ngIf="document.id">
+          <label for="version" class="block font-bold mb-3">Version</label>
+          <input
+            type="text"
+            pInputText
+            id="version"
+            [(ngModel)]="document.version"
+            fluid
+            placeholder="1.0"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Annuler"
+      icon="pi pi-times"
+      [text]="true"
+      (click)="hideDialog()"
+    />
+    <p-button
+      label="Sauvegarder"
+      icon="pi pi-check"
+      (click)="saveDocument()"
+      [loading]="saving"
+    />
+  </ng-template>
+</p-dialog>
+
 <!-- Context Menu -->
 <p-contextMenu #contextMenu [model]="contextMenuItems" />
 
 <!-- File Upload Dialog -->
-<p-dialog 
-  header="Télécharger des fichiers" 
-  [(visible)]="showUploadDialog" 
+<p-dialog
+  header="Télécharger des fichiers"
+  [(visible)]="showUploadDialog"
   [modal]="true"
   [style]="{ width: '500px' }"
 >
   <ng-template pTemplate="content">
-    <p-fileUpload 
-      mode="advanced" 
+    <p-fileUpload
+      mode="advanced"
       name="files"
-      url="./upload.php" 
+      url="./upload.php"
       [multiple]="true"
-      accept="*/*" 
+      accept="*/*"
       maxFileSize="100000000"
       (onUpload)="onUpload($event)"
       (onError)="onUploadError($event)"
     >
       <ng-template pTemplate="content">
         <ul *ngIf="uploadedFiles.length">
-          <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+          <li *ngFor="let file of uploadedFiles">
+            {{ file.name }} - {{ file.size }} bytes
+          </li>
         </ul>
       </ng-template>
     </p-fileUpload>

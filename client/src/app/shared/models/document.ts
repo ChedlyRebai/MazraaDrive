@@ -20,6 +20,8 @@ export interface DocumentDto {
        createdAt: string;
        updatedAt: string | null;
        requestCount: number;
+       file: File;
+       
 }
 
 export interface CreateDocumentDto {
@@ -39,7 +41,7 @@ export interface UpdateDocumentDto {
 }
 
 export interface DocumentUploadDto {
-    //    file: FormFile;
+       file: File;
        folderId: number;
        description: string;
 }
