@@ -87,7 +87,7 @@ var app = builder.Build();
 //     // Log request details
 //     Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
 
-//     var ipAddress = context?.Connection?.RemoteIpAddress?.ToString();
+//     var ipAddress = context?.Connection?.Re  moteIpAddress?.ToString();
 //     var userAgent = context?.Request?.Headers["User-Agent"].ToString();
 //     Console.WriteLine($"Request IP: {ipAddress}");
 //     Console.WriteLine($"Request User-Agent: {userAgent}");

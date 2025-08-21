@@ -8,10 +8,9 @@ import { LoginDTO } from '../../shared/models/login';
 })
 export class AuthService {
   baseUrl = environment.apiUrl + '/Account';
-
   constructor(private http: HttpClient) {}
-
   login(login: LoginDTO) {
-    return this.http.post(`${this.baseUrl}/login`, login);
+    return this.http.post(`${this.baseUrl}/login`, login , { withCredentials: true });
   }
+  
 }

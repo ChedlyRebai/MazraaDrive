@@ -5,32 +5,43 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../core/services/auth-service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ButtonModule, 
-    InputTextModule, 
-    PasswordModule, 
-    CheckboxModule, 
+    ButtonModule,
+    InputTextModule,
+    PasswordModule,
+    CheckboxModule,
     CardModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-
+  constructor(private authService: AuthService) {}
   onSubmit() {
-    console.log('Login submitted:', {
-      email: this.email,
-      password: this.password,
-      rememberMe: this.rememberMe
-    });
-     window.location.href = '/home';
+    this.authService
+      .login({ Email: this.email, Password: this.password })
+      .subscribe(
+        (res: any) => {
+          // To access cookies from response headers
+          const cookies =
+          res.headers?.get('set-cookie') || res.headers?.get('Set-Cookie');
+          console.log('Cookies:', cookies);
+          console.log('Login successful:');
+          console.log(res);
+          // window.location.href = '/home';
+        },
+        (error) => {
+          console.error('Login failed:', error);
+        }
+      );
   }
 }
