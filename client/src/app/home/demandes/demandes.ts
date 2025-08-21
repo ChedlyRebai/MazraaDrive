@@ -26,6 +26,9 @@ import { Textarea } from 'primeng/textarea';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { CreateDocumentRequestDTO, DocumentRequestDTO, DocumentRequestFilterDTO, DocumentRequestPagedResult, UpdateDocumentRequestDTO } from '../../shared/models/docrequest';
+import { DocumentRequsetService } from '../../core/services/document-requset-service';
+import { Tabs, TabsModule } from "primeng/tabs";
+import { TabList, Tab, TabPanels, TabPanel } from "../../../../node_modules/primeng/tabs/index";
 
 interface Department {
   id: number;
@@ -54,8 +57,9 @@ interface Department {
     IconFieldModule,
     InputIconModule,
     TooltipModule,
-    ThemeSwitcher
-  ],
+    ThemeSwitcher,
+    TabsModule
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './demandes.html',
   styleUrls: ['./demandes.css']
@@ -165,6 +169,7 @@ throw new Error('Method not implemented.');
 globalFilterValue: any;
 
   constructor(
+    public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private http: HttpClient
@@ -172,6 +177,35 @@ globalFilterValue: any;
 
   ngOnInit() {
     this.loadDocumentRequests();
+    this.getAlldocReq();
+  }
+  PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAlldocReq() {
+     this.documentRequsetService
+       .getDocumentRequests(
+         this.PageSize,
+         this.Search,
+         this.PageNumber,
+         this.SortBy,
+         this.SortDirection
+       )
+      //  .subscribe({
+      //    next: (response: any) => {
+      //      this.PageNumber = response.pageNumber;
+      //      this.PageSize = response.pageSize;
+      //      this.departments = response.data;
+      //      this.totalRecords = response.totalRecords;
+      //      this.totalDepartments = response.totalDepartments;
+      //      this.totalUsers = response.totalUsers;
+      //      this.avgUsersPerDepartment = Math.round(
+      //        this.totalUsers / this.totalDepartments
+      //      );
+      //    },
+      //  });
   }
 
   get dialogTitle(): string {
