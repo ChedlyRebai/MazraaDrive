@@ -86,6 +86,8 @@ namespace Api.Controllers
             }
         }
 
+        
+
         [HttpGet("document/{documentId}")]
         // [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PagedResult<AccessRightDto>>> GetDocumentAccessRights(

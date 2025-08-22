@@ -5,10 +5,12 @@ using Core.Entities;
 public interface IAccessRequestRepository
 {
     Task<PagedResult<AccessRequestDto>> GetPagedAsync(PaginationParams @params);
+    Task<PagedResult<AccessRequestDto>> GetMyRequestsAsync(PaginationParams paginationParams);
     Task<AccessRequestDto?> GetByIdAsync(int id);
     Task<AccessRequestDto> AddAsync(AccessRequest entity);
     Task SaveChangesAsync();
     Task<bool> ExistsPendingAsync(int documentId, string requesterId);
+    
 
     Task DeleteAsync(AccessRequest entity);
 

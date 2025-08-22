@@ -78,8 +78,8 @@ export class AccessRequsetService {
     if(SortDirection){
       params = params.append('SortDirection', SortDirection);
     }
-
-    return this.http.get<AccessRequestPagedResult>(this.baseUrl + '/MyRequests', { params })
+    params.append('userId', "10");
+    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests?userId=10', { params },)
   }
 
 }

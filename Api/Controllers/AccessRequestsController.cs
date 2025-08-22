@@ -32,6 +32,45 @@ public class AccessRequestsController : BaseController
         return Ok(result);
     }
 
+    [HttpGet("my-requests")]
+      public async Task<ActionResult<PagedResult<AccessRequestDto>>> GetUserAccessRights(
+            string userId,
+            [FromQuery] PaginationParams pagination)
+        {
+            try
+            {
+            // Authorization: Users can only view their own access rights unless they're Admin/Manager
+            // var currentUserId = "10";
+            // if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
+            // {
+            //     return Forbid();
+            // }
+
+            // var pagedAccessRights = await _unitOfWork.PermissionsRepository
+            //     .GetUserAccessRightsPagedAsync(userId, pagination);
+
+            // var accessRightDtos = _mapper.Map<IEnumerable<AccessRequestDto>>(pagedAccessRights.Data);
+
+            // var result = accessRightDtos.ToPagedResult(
+            //     pagedAccessRights.PageNumber,
+            //     pagedAccessRights.PageSize,
+            //     pagedAccessRights.TotalRecords,
+            //     pagedAccessRights.Search,
+            //     pagedAccessRights.SortBy,
+            //     pagedAccessRights.SortDirection
+            // );
+                var result = await _unitOfWork.AccessRequestRepository.GetMyRequestsAsync(pagination);
+                return Ok(result);
+
+                //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
+            return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {

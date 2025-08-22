@@ -59,6 +59,45 @@ public class AccessRequestRepository : IAccessRequestRepository
             r.RequesterId == requesterId &&
             r.Status == "Pending");
 
+    public async Task<PagedResult<AccessRequestDto>> GetMyRequestsAsync(PaginationParams paginationParams)
+    {
+        var currentUserId = "10";
+        var q = _ctx.AccessRequests
+            .Where(a => a.RequesterId == currentUserId)
+            .AsQueryable();
+
+        var total = await q.CountAsync();
+        var items = await q
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .Select(x => new AccessRequestDto
+            {
+                Id = x.Id,
+                DocumentId = x.DocumentId,
+                DocumentName = x.Document.Name,
+                RequesterId = x.RequesterId,
+                RequesterName = x.Requester.UserName,
+                RequestRead = x.RequestRead,
+                RequestWrite = x.RequestWrite,
+                RequestDelete = x.RequestDelete,
+                Status = x.Status,
+                CreatedAt = x.CreatedAt,
+                DecisionAt = x.DecisionAt,
+                DecidedById = x.DecidedById,
+                DecidedByName = x.DecidedBy != null ? x.DecidedBy.UserName : null
+            })
+            .ToListAsync();
+
+
+        return new PagedResult<AccessRequestDto>
+        {
+            Data = items,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize,
+            TotalRecords = total
+        };
+    }
+
     public async Task<PagedResult<AccessRequestDto>> GetPagedAsync(PaginationParams p)
     {
         var q = _ctx.AccessRequests
