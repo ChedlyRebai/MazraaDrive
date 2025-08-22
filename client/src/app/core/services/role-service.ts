@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { RoleDto, RolePagedResult } from '../../admin/role-mangement/role-mangement';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { CreateRoleDto } from '../../shared/models/role';
 
 @Injectable({
   providedIn: 'root'
@@ -74,14 +75,7 @@ export class RoleService {
     );
   }
 
-  createRole(role: RoleDto) {
-    return this.http.post<RoleDto>(`${this.baseUrl}`, role).subscribe(
-      (result) => {
-        console.log('Role created:', result);
-      },
-      (error) => {
-        console.error('Error creating role:', error);
-      }
-    );
+  createRole(role: CreateRoleDto) {
+    return this.http.post<RoleDto>(`${this.baseUrl}`, role)
   }
 }

@@ -154,10 +154,9 @@ export class Demandes implements OnInit {
     this.requestDialog = true;
   }
 
-  showDetailsDialog(request: Request) {}
+  showDetailsDialog(request: Request) {
 
-  // CRUD operations
-
+  }
   priorityOptions = [
     { label: 'Faible', value: 'Faible' },
     { label: 'Normale', value: 'Normale' },
@@ -221,7 +220,6 @@ export class Demandes implements OnInit {
 
   loadDocumentRequests() {
     this.loading = true;
-
     // Mock data for demonstration
     setTimeout(() => {
       const mockResponse: DocumentRequestPagedResult = {

@@ -124,6 +124,20 @@ export class RoleMangementComponent implements OnInit {
     //   });
   }
 
+  createRole(){
+    console.log(this.roleForm)
+    this.roleService.createRole(this.roleForm).subscribe({
+      next: (response) => {
+        this.message.add({ severity: 'success', summary: 'Succès', detail: 'Rôle créé avec succès' });
+        this.loadRoles();
+        this.roleDialog = false;
+      },
+      error: (error) => {
+        this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors de la création du rôle' });
+      }
+    });
+  }
+
  
 
   onPageChange(event: any) {
