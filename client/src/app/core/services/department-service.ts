@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DepartmentDto } from './Hub/DepartmentRealtimeService';
 import { BehaviorSubject } from 'rxjs';
-import { DepartmentPagedResult } from '../../shared/models/department';
+import { DepartmentCreateDTO, DepartmentPagedResult } from '../../shared/models/department';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -58,17 +58,10 @@ export class DepartmentService {
     );
   }
 
-  createDepartment(department: DepartmentDto) {
+  createDepartment(department: DepartmentCreateDTO) {
     return this.http
       .post<DepartmentDto>(`${this.baseUrl}`, department)
-      .subscribe(
-        (result) => {
-          console.log('Department created:', result);
-        },
-        (error) => {
-          console.error('Error creating department:', error);
-        }
-      );
+      
   }
 
   updateDepartment(department: DepartmentDto) {

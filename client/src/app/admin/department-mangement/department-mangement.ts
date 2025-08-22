@@ -466,7 +466,23 @@ export class DepartmentMangement implements OnInit {
 
   saveDepartment() {
     this.submitted = true;
-
+    console.log('Saving department:', this.department);
+    this.departmentService.createDepartment(this.department).subscribe({
+      next:(result)=>{
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Département créé avec succès',
+        })
+      },
+      error:(error)=>{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la création du département',
+        });
+      }
+    })
     if (!this.isDepartmentValid()) {
       this.messageService.add({
         severity: 'warn',
