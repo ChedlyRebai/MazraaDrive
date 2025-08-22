@@ -72,16 +72,26 @@
 
   <div class="card">
     <p-table
-      [value]="requests"
+      [value]="myAccessRequest.data"
       [paginator]="true"
       [rows]="pageSize"
-      [totalRecords]="totalRecords"
+      [totalRecords]="myAccessRequest.totalRecords"
       [lazy]="true"
+      on
       (onPage)="onPage($event)"
       [loading]="loading"
       dataKey="id"
       responsiveLayout="scroll"
       styleClass="p-datatable-sm"
+       (onLazyLoad)="onPageChange($event)"
+            [globalFilterFields]="['name', 'description']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+            [showCurrentPageReport]="true"
+            [loading]="loading"
+            [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -170,15 +180,15 @@
     <div>
       <label class="block text-sm font-medium mb-1">Document *</label>
       <p-autoComplete
-        [(ngModel)]="newRequest.document"
+        [(ngModel)]="newRequest.documentName"
         [suggestions]="documentSuggestions"
         (completeMethod)="searchDocuments($event)"
+        (onSelect)="selectDocument($event)"
         [showClear]="true"
-        
         placeholder="Rechercher un document"
-        class="w-auto "
+        class="w-auto"
       >
-        <ng-template let-doc pTemplate="item">
+        <ng-template let-doc onclick="console.log(doc)" pTemplate="item">
           <div class="flex flex-col">
             <span class="font-medium">{{ doc.name }}</span>
             <small class="text-gray-500"

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { AccessRequestDto, AccessRequestPagedResult } from '../../shared/models/access-req';
+import { AccessRequestCreateDto, AccessRequestDto, AccessRequestPagedResult } from '../../shared/models/access-req';
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +47,39 @@ export class AccessRequsetService {
     return this.http.get<AccessRequestPagedResult>(this.baseUrl, { params })
   }
 
+
+  createAccessRequest(dto: AccessRequestCreateDto) {
+    return this.http.post(this.baseUrl, dto);
+  }
+
+  getAccessMyRequests(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+    }
+
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+    }
+
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
+
+    return this.http.get<AccessRequestPagedResult>(this.baseUrl + '/MyRequests', { params })
+  }
 
 }

@@ -16,8 +16,9 @@ import { AvatarModule } from 'primeng/avatar';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { AccessRequestCreateDto, AccessRequestDto } from '../../shared/models/access-req';
+import { AccessRequestCreateDto, AccessRequestDto, AccessRequestPagedResult } from '../../shared/models/access-req';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
+import { AccessRequsetService } from '../../core/services/access-requset-service';
 
 
 interface DocumentLookup {
@@ -78,12 +79,16 @@ export class Access implements OnInit {
 
   // Create form
   newRequest: {
+    documentId: number | null;
     document: DocumentLookup | null;
+       documentName: string | null;
     requestRead: boolean;
     requestWrite: boolean;
     requestDelete: boolean;
     message: string | null;
   } = {
+    documentName: null,
+    documentId: null,
     document: null,
     requestRead: true,
     requestWrite: false,
@@ -98,6 +103,7 @@ export class Access implements OnInit {
 
   constructor(
     private documentService: DocumentService,
+    private accessRequestService:AccessRequsetService,
    // private svc: AccessRequestService,
     private toast: MessageService,
     private confirm: ConfirmationService
@@ -105,8 +111,18 @@ export class Access implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.getAllAccessRequests();
   }
 
+   onPageChange(event: any) {
+  
+    this.PageNumber = event.first / event.rows + 1;
+    this.PageSize = event.rows;
+
+    this.getAllAccessRequests();
+  }
+
+  myAccessRequest:AccessRequestPagedResult = {} as AccessRequestPagedResult;
   load() {
     this.loading = true;
 
@@ -166,6 +182,43 @@ export class Access implements OnInit {
     //   });
   }
 
+
+  PageSize?: number = 5;
+  Search?: string = '';
+  PageNumber?: number = 1;
+  SortBy?: string = '';
+  SortDirection?: string = '';
+  getAllAccessRequests() {
+    this.accessRequestService.getAccessMyRequests(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    ).subscribe({
+      next: (response: AccessRequestPagedResult) => {
+        this.myAccessRequest = response;
+      },error: (err) => {
+        console.error('Error fetching access requests:', err);
+      }
+    }
+  
+  )
+    //  .subscribe({
+    //    next: (response: any) => {
+    //      this.PageNumber = response.pageNumber;
+    //      this.PageSize = response.pageSize;
+    //      this.departments = response.data;
+    //      this.totalRecords = response.totalRecords;
+    //      this.totalDepartments = response.totalDepartments;
+    //      this.totalUsers = response.totalUsers;
+    //      this.avgUsersPerDepartment = Math.round(
+    //        this.totalUsers / this.totalDepartments
+    //      );
+    //    },
+    //  });
+  }
+
   computeStats() {
     this.totalRequests = this.totalRecords;
     this.pendingRequests = this.requests.filter(r => r.status === 'Pending').length;
@@ -197,7 +250,7 @@ export class Access implements OnInit {
   }
 
   isAccessFormValid(): boolean {
-    return !!this.newRequest.document &&
+    return !!this.newRequest.documentId &&
       (this.newRequest.requestRead || this.newRequest.requestWrite || this.newRequest.requestDelete);
   }
 
@@ -209,6 +262,8 @@ export class Access implements OnInit {
   resetForm() {
     this.validationErrors = [];
     this.newRequest = {
+      documentName: null,
+      documentId: null,
       document: null,
       requestRead: true,
       requestWrite: false,
@@ -225,19 +280,31 @@ export class Access implements OnInit {
     
     this.validationErrors = [];
     if (!this.isAccessFormValid()) {
-      if (!this.newRequest.document) this.validationErrors.push('Document requis.');
+      if (!this.newRequest.documentId) this.validationErrors.push('Document requis.');
       if (!(this.newRequest.requestRead || this.newRequest.requestWrite || this.newRequest.requestDelete)) {
         this.validationErrors.push('Sélectionner au moins une permission.');
       }
       return;
     }
     const dto: AccessRequestCreateDto = {
-      documentId: this.newRequest.document!.id,
+      documentId: this.newRequest.documentId!,
       requestRead: this.newRequest.requestRead,
       requestWrite: this.newRequest.requestWrite,
       requestDelete: this.newRequest.requestDelete,
       message: this.newRequest.message || ''
     };
+
+    this.accessRequestService.createAccessRequest(dto).subscribe({
+      next:(res)=>{
+        this.toast.add({ severity: 'success', summary: 'Demande créée' });
+        this.creatingRequest = false;
+        this.createDialog = false;
+        this.load();
+      },error: (err)=>{
+        this.creatingRequest = false;
+        this.toast.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée' });
+      }
+    })
     console.log('Creating access request:', dto);
     this.creatingRequest = true;
     // this.svc.create(dto).subscribe({
@@ -287,11 +354,22 @@ export class Access implements OnInit {
     });
   }
 
+  chooseDoc?:string;
+
+  selectDocument(d:any){
+    this.newRequest.documentId = d.value.id;
+    this.newRequest.documentName = d.value.name;
+    this.chooseDoc = d.value.name;
+    console.log('Selected document:', this.newRequest);
+    console.log(d.value.id, d.value.name);
+  }
   searchDocuments(event: any) {
+    console.log('documents.newreq:', this.newRequest.document);
     const q = event.query?.trim();
     this.documentService.search(q).subscribe({
       next: (res:any) => {
         console.log(res);
+        
         this.documentSuggestions = res;
       },
       error: () => {
