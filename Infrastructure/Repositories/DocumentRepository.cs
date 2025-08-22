@@ -17,6 +17,30 @@ namespace Infrastructure.Repositories
         }
 
 
+        public async Task<DocumentSearchDTO[]> getDocumentByName(string name)
+        {
+            try
+            {
+                var documents = await _context.Documents.Where(d => d.Name.Contains(name))
+                .Select(d => new DocumentSearchDTO
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    FolderId = d.FolderId.ToString(),
+                    UploadedByName = d.UploadedBy.UserName,
+                    UploadedById = d.UploadedById,
+                    
+                }).ToArrayAsync();
+
+                return documents;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         public async Task<PagedResult<Document>> GetPagedAsync(DocumentFilterDto filter)
         {

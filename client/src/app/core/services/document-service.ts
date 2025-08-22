@@ -72,6 +72,12 @@ export class DocumentService {
     return this.http.post(`${this.baseUrl}/upload`, uploadDocument);
   }
 
+  search(q:string){
+    return this.http.get<string[]>(
+      `${this.baseUrl}/search/${q}`,
+    );
+  }
+
   getMydocuments(){
     return this.http.get<DocumentPagedResult>(
       `${this.baseUrl}/my-documents`

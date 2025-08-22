@@ -1,3 +1,4 @@
+import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -90,12 +91,13 @@ export class Access implements OnInit {
     message: null
   };
 
-  documentSuggestions: DocumentLookup[] = [];
+  documentSuggestions: any[] = [];
 
   validationErrors: string[] = [];
   creatingRequest = false;
 
   constructor(
+    private documentService: DocumentService,
    // private svc: AccessRequestService,
     private toast: MessageService,
     private confirm: ConfirmationService
@@ -220,6 +222,7 @@ export class Access implements OnInit {
   }
 
   createAccessRequest() {
+    
     this.validationErrors = [];
     if (!this.isAccessFormValid()) {
       if (!this.newRequest.document) this.validationErrors.push('Document requis.');
@@ -235,6 +238,7 @@ export class Access implements OnInit {
       requestDelete: this.newRequest.requestDelete,
       message: this.newRequest.message || ''
     };
+    console.log('Creating access request:', dto);
     this.creatingRequest = true;
     // this.svc.create(dto).subscribe({
     //   next: _ => {
@@ -285,6 +289,15 @@ export class Access implements OnInit {
 
   searchDocuments(event: any) {
     const q = event.query?.trim();
+    this.documentService.search(q).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        this.documentSuggestions = res;
+      },
+      error: () => {
+        this.documentSuggestions = [];
+      }
+    });
     if (!q) {
       this.documentSuggestions = [];
       return;

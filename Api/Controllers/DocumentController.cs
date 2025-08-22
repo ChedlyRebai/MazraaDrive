@@ -32,6 +32,20 @@ namespace Api.Controllers
         }
 
 
+        [HttpGet("search/{name}")]
+        public async Task<ActionResult<DocumentDto[]>> SearchDocuments(string name)
+        {
+            try
+            {
+                var documents = await _unitOfWork.DocumentRepository.getDocumentByName(name);
+                return Ok(documents);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<DocumentPagedResult>> GetDocuments([FromQuery] DocumentFilterDto filter)
         {

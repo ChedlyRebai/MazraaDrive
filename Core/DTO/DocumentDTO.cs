@@ -24,7 +24,7 @@ namespace Core.DTOs
         public DateTime? UpdatedAt { get; set; }
         public int RequestCount { get; set; }
     }
-   
+
     public class CreateDocumentDto
     {
         [Required(ErrorMessage = "Document name is required")]
@@ -49,10 +49,10 @@ namespace Core.DTOs
     {
         [StringLength(255, ErrorMessage = "Document name cannot exceed 255 characters")]
         public string? Name { get; set; }
-        
+
         [StringLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]
         public string? Description { get; set; }
-        
+
         public int? FolderId { get; set; }
         public bool? IsValidated { get; set; }
         public bool? IsActive { get; set; }
@@ -66,8 +66,8 @@ namespace Core.DTOs
         [Required(ErrorMessage = "Document name is required")]
         public string Name { get; set; } = string.Empty;
 
-        
-      
+
+
 
         // [Required(ErrorMessage = "Folder ID is required")]
         public int FolderId { get; set; }
@@ -99,14 +99,29 @@ namespace Core.DTOs
         public string? UploadedByName { get; set; }
         public bool? IsValidated { get; set; }
         public bool? IsActive { get; set; }
- 
+
         public string[]? FileTypes { get; set; } // Filter by multiple file types
     }
 
     public class DocumentPagedResult : PagedResult<DocumentDto>
-{
-    public int TotalDocuments { get; set; }
-    public int TotalUsers { get; set; }
-}
+    {
+        public int TotalDocuments { get; set; }
+        public int TotalUsers { get; set; }
+    }
+
+    public class DocumentSearchDTO
+
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? FileType { get; set; }
+        public string? FolderId { get; set; }
+        public string? FolderName { get; set; }
+        public string? UploadedById { get; set; }
+        public string? UploadedByName { get; set; }
+        public bool? IsValidated { get; set; }
+        public bool? IsActive { get; set; }
+       
+    }
 
 }
