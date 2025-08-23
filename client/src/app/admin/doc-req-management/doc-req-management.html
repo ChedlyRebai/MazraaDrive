@@ -165,7 +165,7 @@
           currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
           [showCurrentPageReport]="true"
           [loading]="loading"
-          [rowsPerPageOptions]="[1,2, 5, 10, 25, 50]"
+          [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
         >
           <ng-template pTemplate="header">
             <tr>
@@ -833,19 +833,17 @@
               <i class="pi pi-comment mr-2"></i>
               Message de la Réponse *
             </label>
-            <p-inputTextarea
-          id="responseMessage"
-          [(ngModel)]="requestResponse.status"
-          rows="5"
-          placeholder="Ajouter un message (facultatif)"
-          class="w-full"
-        />
+
+            <textarea
+              id="responseMessage"
+              class="border-1 border-black border-solid  w-full p-2"
+              rows="5"
+              cols="30"
+              pTextarea
+              [(ngModel)]="requestResponse.status"
+            ></textarea>
           </div>
         </div>
-
-
-
-        
       </div>
 
       <!-- Right Column - Document Upload & Quick Actions -->

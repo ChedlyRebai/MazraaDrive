@@ -141,12 +141,10 @@ app.Run();
 // public class GlobalAuditMiddleware
 // {
 //     private readonly RequestDelegate _next;
-
 //     public GlobalAuditMiddleware(RequestDelegate next)
 //     {
 //         _next = next;
 //     }
-
 //     public async Task InvokeAsync(HttpContext context, IAuditLogger auditLogger)
 //     {
 //         // Continue request
