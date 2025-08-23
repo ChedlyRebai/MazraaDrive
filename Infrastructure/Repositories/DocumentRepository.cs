@@ -242,7 +242,7 @@ namespace Infrastructure.Repositories
             return await _context.Documents
                 .Include(d => d.Folder)
                 .Include(d => d.UploadedBy)
-                .Where(d => d.IsValidated)
+                .Where(d => d.IsValidated == true)
                 .OrderByDescending(d => d.CreatedAt)
                 .ToListAsync();
         }
@@ -252,7 +252,7 @@ namespace Infrastructure.Repositories
             return await _context.Documents
                 .Include(d => d.Folder)
                 .Include(d => d.UploadedBy)
-                .Where(d => !d.IsValidated)
+                .Where(d => !d.IsValidated == true)
                 .OrderByDescending(d => d.CreatedAt)
                 .ToListAsync();
         }

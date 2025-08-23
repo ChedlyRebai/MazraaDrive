@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   DocumentRequestDTO,
   DocumentRequestPagedResult,
+  UpdateDocumentRequestDTO,
 } from '../../shared/models/docrequest';
 import { environment } from '../../../environments/environment';
 
@@ -98,10 +99,10 @@ export class DocumentRequsetService {
     //   )
       
   
-  updateDocumentRequest(documentRequest: DocumentRequestDTO) {
+  updateDocumentRequest(documentRequest: DocumentRequestDTO, id: number) {
     return this.http
-      .put<DocumentRequestDTO>(
-        `${this.baseUrl}/${documentRequest.id}`,
+      .put<UpdateDocumentRequestDTO>(
+        `${this.baseUrl}/${id}`,
         documentRequest
       )
   }

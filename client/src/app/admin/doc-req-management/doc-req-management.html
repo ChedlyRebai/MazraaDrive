@@ -840,7 +840,7 @@
               rows="5"
               cols="30"
               pTextarea
-              [(ngModel)]="requestResponse.status"
+              [(ngModel)]="requestResponse.responseMessage"
             ></textarea>
           </div>
         </div>
@@ -952,8 +952,9 @@
           severity="success"
           (click)="sendResponse()"
           [loading]="sendingResponse"
-          [disabled]="!isResponseValid()"
+          
         />
+        <!-- [disabled]="!isResponseValid()" -->
       </div>
     </div>
   </div>

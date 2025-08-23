@@ -1,3 +1,4 @@
+import { DocumentService } from './../../core/services/document-service';
 import { DocumentRequsetService } from './../../core/services/document-requset-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -21,7 +22,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from '../themeswitcher';
 import { HttpClient } from '@angular/common/http';
 import { DocumentRequestDTO } from '../../shared/models/docrequest';
-
 
 interface Request {
   id: string;
@@ -59,19 +59,19 @@ interface Request {
     IconFieldModule,
     InputIconModule,
     TooltipModule,
-   
-    ThemeSwitcher
-],
+
+    ThemeSwitcher,
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './doc-req-management.html',
-  styleUrls: ['./doc-req-management.css']
+  styleUrls: ['./doc-req-management.css'],
 })
 export class DocReqManagement implements OnInit {
   // Data
   requests: Request[] = [];
   filteredRequests: Request[] = [];
-  selectedRequest: Request | null = null;
-  
+  selectedRequest: DocumentRequestDTO = {} as DocumentRequestDTO;
+
   // Stats
   totalRequests = 0;
   pendingRequests = 0;
@@ -91,13 +91,13 @@ export class DocReqManagement implements OnInit {
   statusFilter: any = '';
   priorityFilter: any = '';
 
-  requestResponse: DocumentRequestDTO  = {} as DocumentRequestDTO;
+  requestResponse: DocumentRequestDTO = {} as DocumentRequestDTO;
   // Forms
   newRequest: Partial<Request> = {};
   responseForm = {
     status: '',
     message: '',
-    notes: ''
+    notes: '',
   };
 
   // File upload
@@ -123,14 +123,14 @@ export class DocReqManagement implements OnInit {
     { label: 'Bulletin de paie', value: 'bulletin_paie' },
     { label: 'Contrat de travail', value: 'contrat_travail' },
     { label: 'Formation professionnelle', value: 'formation' },
-    { label: 'Autres', value: 'autres' }
+    { label: 'Autres', value: 'autres' },
   ];
 
   priorityOptions = [
     { label: 'Urgent', value: 'urgent' },
     { label: 'Haute', value: 'haute' },
     { label: 'Normale', value: 'normale' },
-    { label: 'Basse', value: 'basse' }
+    { label: 'Basse', value: 'basse' },
   ];
 
   departments = [
@@ -138,33 +138,33 @@ export class DocReqManagement implements OnInit {
     { id: '2', name: 'Informatique' },
     { id: '3', name: 'Finance' },
     { id: '4', name: 'Marketing' },
-    { id: '5', name: 'Opérations' }
+    { id: '5', name: 'Opérations' },
   ];
 
   statusFilterOptions = [
     { label: 'En attente', value: 'Pending' },
     { label: 'Approuvé', value: 'Approved' },
     { label: 'Rejeté', value: 'Rejected' },
-    { label: 'En cours', value: 'In Progress' }
+    { label: 'En cours', value: 'In Progress' },
   ];
 
   priorityFilterOptions = [
     { label: 'Urgent', value: 'urgent' },
     { label: 'Haute', value: 'haute' },
     { label: 'Normale', value: 'normale' },
-    { label: 'Basse', value: 'basse' }
+    { label: 'Basse', value: 'basse' },
   ];
 
   responseStatuses = [
     { label: 'Approuvé', value: 'Approved' },
     { label: 'Rejeté', value: 'Rejected' },
     { label: 'En cours', value: 'In Progress' },
-    { label: 'Information nécessaire', value: 'More Info Required' }
+    { label: 'Information nécessaire', value: 'More Info Required' },
   ];
 
   constructor(
-    
     public http: HttpClient,
+    public documentService: DocumentService,
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -177,7 +177,7 @@ export class DocReqManagement implements OnInit {
 
   loadRequests() {
     this.loading = true;
-    
+
     // Mock data
     setTimeout(() => {
       this.requests = [
@@ -190,9 +190,10 @@ export class DocReqManagement implements OnInit {
           documentType: 'Certificat de travail',
           priority: 'haute',
           status: 'Pending',
-          description: 'J\'ai besoin d\'un certificat de travail pour ma demande de prêt bancaire.',
+          description:
+            "J'ai besoin d'un certificat de travail pour ma demande de prêt bancaire.",
           requestedAt: new Date('2024-12-06T10:30:00'),
-          createdAt: new Date('2024-12-06T10:30:00')
+          createdAt: new Date('2024-12-06T10:30:00'),
         },
         {
           id: '2',
@@ -207,10 +208,10 @@ export class DocReqManagement implements OnInit {
           requestedAt: new Date('2024-12-05T14:22:00'),
           createdAt: new Date('2024-12-05T14:22:00'),
           respondedAt: new Date('2024-12-05T16:30:00'),
-          processedByName: 'Sophie Admin'
-        }
+          processedByName: 'Sophie Admin',
+        },
       ];
-      
+
       this.filteredRequests = [...this.requests];
       this.updateStats();
       this.loading = false;
@@ -223,33 +224,30 @@ export class DocReqManagement implements OnInit {
   SortBy?: string = '';
   SortDirection?: string = '';
   getAlldocReq() {
-     this.documentRequsetService
-       .getDocumentRequests(
-         this.PageSize,
-         this.Search,
-         this.PageNumber,
-         this.SortBy,
-         this.SortDirection
-       )
-      //  .subscribe({
-      //    next: (response: any) => {
-      //      this.PageNumber = response.pageNumber;
-      //      this.PageSize = response.pageSize;
-      //      this.departments = response.data;
-      //      this.totalRecords = response.totalRecords;
-      //      this.totalDepartments = response.totalDepartments;
-      //      this.totalUsers = response.totalUsers;
-      //      this.avgUsersPerDepartment = Math.round(
-      //        this.totalUsers / this.totalDepartments
-      //      );
-      //    },
-      //  });
+    this.documentRequsetService.getDocumentRequests(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
+    //  .subscribe({
+    //    next: (response: any) => {
+    //      this.PageNumber = response.pageNumber;
+    //      this.PageSize = response.pageSize;
+    //      this.departments = response.data;
+    //      this.totalRecords = response.totalRecords;
+    //      this.totalDepartments = response.totalDepartments;
+    //      this.totalUsers = response.totalUsers;
+    //      this.avgUsersPerDepartment = Math.round(
+    //        this.totalUsers / this.totalDepartments
+    //      );
+    //    },
+    //  });
   }
 
- 
-
   onPageChange(event: any) {
-   // this.first = event.first;
+    // this.first = event.first;
     this.PageNumber = event.first / event.rows + 1;
     this.PageSize = event.rows;
     this.getAlldocReq();
@@ -257,50 +255,56 @@ export class DocReqManagement implements OnInit {
 
   updateStats() {
     this.totalRequests = this.requests.length;
-    this.pendingRequests = this.requests.filter(r => r.status === 'Pending').length;
-    this.approvedRequests = this.requests.filter(r => r.status === 'Approved').length;
-    this.rejectedRequests = this.requests.filter(r => r.status === 'Rejected').length;
+    this.pendingRequests = this.requests.filter(
+      (r) => r.status === 'Pending'
+    ).length;
+    this.approvedRequests = this.requests.filter(
+      (r) => r.status === 'Approved'
+    ).length;
+    this.rejectedRequests = this.requests.filter(
+      (r) => r.status === 'Rejected'
+    ).length;
   }
 
   // AutoComplete search methods
   searchStatusFilter(event: any) {
     const query = event.query.toLowerCase();
-    this.statusFilterSuggestions = this.statusFilterOptions.filter(option =>
+    this.statusFilterSuggestions = this.statusFilterOptions.filter((option) =>
       option.label.toLowerCase().includes(query)
     );
   }
 
   searchPriorityFilter(event: any) {
     const query = event.query.toLowerCase();
-    this.priorityFilterSuggestions = this.priorityFilterOptions.filter(option =>
-      option.label.toLowerCase().includes(query)
+    this.priorityFilterSuggestions = this.priorityFilterOptions.filter(
+      (option) => option.label.toLowerCase().includes(query)
     );
   }
 
   searchDocumentType(event: any) {
     const query = event.query.toLowerCase();
-    this.documentTypeSuggestions = this.documentTypes.filter(type =>
+    this.documentTypeSuggestions = this.documentTypes.filter((type) =>
       type.label.toLowerCase().includes(query)
     );
   }
 
   searchPriority(event: any) {
     const query = event.query.toLowerCase();
-    this.prioritySuggestions = this.priorityOptions.filter(priority =>
+    this.prioritySuggestions = this.priorityOptions.filter((priority) =>
       priority.label.toLowerCase().includes(query)
     );
   }
 
   searchDepartment(event: any) {
     const query = event.query.toLowerCase();
-    this.departmentSuggestions = this.departments.filter(dept =>
+    this.departmentSuggestions = this.departments.filter((dept) =>
       dept.name.toLowerCase().includes(query)
     );
   }
 
   searchResponseStatus(event: any) {
     const query = event.query.toLowerCase();
-    this.responseStatusSuggestions = this.responseStatuses.filter(status =>
+    this.responseStatusSuggestions = this.responseStatuses.filter((status) =>
       status.label.toLowerCase().includes(query)
     );
   }
@@ -329,18 +333,26 @@ export class DocReqManagement implements OnInit {
   }
 
   applyFilters() {
-    this.filteredRequests = this.requests.filter(request => {
-      const matchesSearch = !this.searchTerm || 
-        request.requesterName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.documentType.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.description.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+    this.filteredRequests = this.requests.filter((request) => {
+      const matchesSearch =
+        !this.searchTerm ||
+        request.requesterName
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        request.documentType
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        request.description
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase());
+
       const statusValue = this.getSelectedValue(this.statusFilter);
       const priorityValue = this.getSelectedValue(this.priorityFilter);
-      
+
       const matchesStatus = !statusValue || request.status === statusValue;
-      const matchesPriority = !priorityValue || request.priority === priorityValue;
-      
+      const matchesPriority =
+        !priorityValue || request.priority === priorityValue;
+
       return matchesSearch && matchesStatus && matchesPriority;
     });
   }
@@ -362,7 +374,7 @@ export class DocReqManagement implements OnInit {
     this.resetForm();
   }
 
-  showDetailsDialog(request: Request) {
+  showDetailsDialog(request: DocumentRequestDTO) {
     this.selectedRequest = request;
     this.detailsDialog = true;
   }
@@ -375,146 +387,180 @@ export class DocReqManagement implements OnInit {
     }
 
     this.creatingRequest = true;
-    
+
     setTimeout(() => {
       const newRequest: Request = {
         id: (this.requests.length + 1).toString(),
         requesterName: 'Utilisateur Courant',
         requesterEmail: 'user@company.com',
-        departmentName: this.getDepartmentName(this.getSelectedValue(this.newRequest.departmentId)),
+        departmentName: this.getDepartmentName(
+          this.getSelectedValue(this.newRequest.departmentId)
+        ),
         departmentId: this.getSelectedValue(this.newRequest.departmentId)!,
         documentType: this.getDisplayValue(this.newRequest.documentType)!,
         priority: this.getSelectedValue(this.newRequest.priority)!,
         status: 'Pending',
         description: this.newRequest.description!,
         requestedAt: new Date(),
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       this.requests.unshift(newRequest);
       this.applyFilters();
       this.updateStats();
-      
+
       this.messageService.add({
         severity: 'success',
         summary: 'Succès',
-        detail: 'Demande créée avec succès'
+        detail: 'Demande créée avec succès',
       });
-      
+
       this.createDialog = false;
       this.creatingRequest = false;
     }, 1500);
   }
 
-  respondToRequest(request: Request) {
+  respondToRequest(request: DocumentRequestDTO) {
     this.selectedRequest = request;
     this.responseDialog = true;
     this.resetResponseForm();
   }
 
-  editRequest(request: Request) {
+  editRequest(request: DocumentRequestDTO) {
     // Implementation for editing request
     this.messageService.add({
       severity: 'info',
       summary: 'Modification',
-      detail: 'Fonction de modification en cours de développement'
+      detail: 'Fonction de modification en cours de développement',
     });
   }
 
-  deleteRequest(request: Request) {
+  deleteRequest(request: DocumentRequestDTO) {
     this.confirmationService.confirm({
       message: 'Êtes-vous sûr de vouloir supprimer cette demande ?',
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.requests = this.requests.filter(r => r.id !== request.id);
-        this.applyFilters();
-        this.updateStats();
-        
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Supprimé',
-          detail: 'Demande supprimée avec succès'
-        });
-      }
+      // accept: () => {
+      //   this.requests = this.requests.filter(r => r.id !== request.id);
+      //   this.applyFilters();
+      //   this.updateStats();
+
+      //   this.messageService.add({
+      //     severity: 'success',
+      //     summary: 'Supprimé',
+      //     detail: 'Demande supprimée avec succès'
+      //   });
+      // }
     });
   }
 
   sendResponse() {
-    if (!this.isResponseValid()) {
-      return;
-    }
-    
+    // if (!this.isResponseValid()) {
+    //   return;
+    // }
+
     this.sendingResponse = true;
     console.log('Sending response:', this.responseForm);
     console.log('request response:', this.requestResponse);
     console.log('selected request:', this.selectedRequest);
-    setTimeout(() => {
-      if (this.selectedRequest) {
-        this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
-        this.selectedRequest.respondedAt = new Date();
-        this.selectedRequest.processedByName = 'Admin Courant';
-        
-        if (this.selectedFile) {
-          this.selectedRequest.responseDocumentName = this.selectedFile.name;
-        }
-      }
-      
-      this.applyFilters();
-      this.updateStats();
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Réponse envoyée',
-        detail: 'La réponse a été envoyée avec succès'
+    console.log('selected file:', this.selectedFile);
+    const formData = new FormData();
+    formData.append('File', this.selectedFile ? this.selectedFile : '');
+    formData.append('Name', this.selectedFile ? this.selectedFile.name : '');
+    formData.append('FolderId', '10');
+
+    // Example folderId
+    this.documentService.uploadDocument(formData).subscribe({
+      next: (response) => {
+        console.log('File uploaded successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error uploading file:', error);
+      },
+    });
+
+    console.log();
+    this.documentRequsetService
+      .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+      .subscribe({
+        next: (response) => {
+          console.log('Document request updated successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error updating document request:', error);
+        },
       });
-      
-      this.responseDialog = false;
-      this.sendingResponse = false;
-    }, 1500);
+
+    // setTimeout(() => {
+    //   if (this.selectedRequest) {
+    //     this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
+    //     this.selectedRequest.respondedAt = new Date();
+    //     this.selectedRequest.processedByName = 'Admin Courant';
+
+    //     if (this.selectedFile) {
+    //       this.selectedRequest.responseDocumentName = this.selectedFile.name;
+    //     }
+    //   }
+
+    //   this.applyFilters();
+    //   this.updateStats();
+
+    //   this.messageService.add({
+    //     severity: 'success',
+    //     summary: 'Réponse envoyée',
+    //     detail: 'La réponse a été envoyée avec succès'
+    //   });
+
+    //   this.responseDialog = false;
+    //   this.sendingResponse = false;
+    // }, 1500);
   }
 
   // Utility methods
   getInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase();
   }
 
   getStatusSeverity(status: string): string {
     const severityMap: { [key: string]: string } = {
-      'Pending': 'warning',
-      'Approved': 'success',
-      'Rejected': 'danger',
-      'In Progress': 'info'
+      Pending: 'warning',
+      Approved: 'success',
+      Rejected: 'danger',
+      'In Progress': 'info',
     };
     return severityMap[status] || 'secondary';
   }
 
   getStatusIcon(status: string): string {
     const iconMap: { [key: string]: string } = {
-      'Pending': 'pi-clock',
-      'Approved': 'pi-check',
-      'Rejected': 'pi-times',
-      'In Progress': 'pi-spinner'
+      Pending: 'pi-clock',
+      Approved: 'pi-check',
+      Rejected: 'pi-times',
+      'In Progress': 'pi-spinner',
     };
     return iconMap[status] || 'pi-info';
   }
 
   getPrioritySeverity(priority: string): string {
     const severityMap: { [key: string]: string } = {
-      'urgent': 'danger',
-      'haute': 'warning',
-      'normale': 'info',
-      'basse': 'secondary'
+      urgent: 'danger',
+      haute: 'warning',
+      normale: 'info',
+      basse: 'secondary',
     };
     return severityMap[priority] || 'secondary';
   }
 
   getPriorityIcon(priority: string): string {
     const iconMap: { [key: string]: string } = {
-      'urgent': 'pi-exclamation-triangle',
-      'haute': 'pi-flag',
-      'normale': 'pi-minus',
-      'basse': 'pi-arrow-down'
+      urgent: 'pi-exclamation-triangle',
+      haute: 'pi-flag',
+      normale: 'pi-minus',
+      basse: 'pi-arrow-down',
     };
     return iconMap[priority] || 'pi-flag';
   }
@@ -528,7 +574,7 @@ export class DocReqManagement implements OnInit {
   }
 
   getDepartmentName(departmentId: string): string {
-    const dept = this.departments.find(d => d.id === departmentId);
+    const dept = this.departments.find((d) => d.id === departmentId);
     return dept?.name || '';
   }
 
@@ -551,7 +597,7 @@ export class DocReqManagement implements OnInit {
 
   validateForm(): string[] {
     const errors: string[] = [];
-    
+
     if (!this.newRequest.documentType) {
       errors.push('Le type de document est requis');
     }
@@ -564,7 +610,7 @@ export class DocReqManagement implements OnInit {
     if (!this.newRequest.description?.trim()) {
       errors.push('La description est requise');
     }
-    
+
     return errors;
   }
 
@@ -573,7 +619,7 @@ export class DocReqManagement implements OnInit {
   }
 
   isResponseValid(): boolean {
-    return !!(this.responseForm.status && this.responseForm.message?.trim());
+    return !!this.responseForm.status;
   }
 
   resetForm() {
@@ -585,7 +631,7 @@ export class DocReqManagement implements OnInit {
     this.responseForm = {
       status: '',
       message: '',
-      notes: ''
+      notes: '',
     };
     this.selectedFile = null;
   }
@@ -620,12 +666,12 @@ export class DocReqManagement implements OnInit {
   // Quick actions
   quickApprove() {
     this.requestResponse.status = 'Approved';
-   // this.requestResponse.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
+    // this.requestResponse.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
   }
 
   quickReject() {
     this.responseForm.status = 'Rejected';
-   // this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
+    // this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
   }
 
   requestMoreInfo() {
@@ -637,7 +683,7 @@ export class DocReqManagement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Brouillon sauvegardé',
-      detail: 'Votre réponse a été sauvegardée en brouillon'
+      detail: 'Votre réponse a été sauvegardée en brouillon',
     });
   }
 
@@ -647,7 +693,7 @@ export class DocReqManagement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Actualisé',
-      detail: 'Liste des demandes actualisée'
+      detail: 'Liste des demandes actualisée',
     });
   }
 
@@ -655,15 +701,15 @@ export class DocReqManagement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Export',
-      detail: 'Export des demandes en cours...'
+      detail: 'Export des demandes en cours...',
     });
   }
 
-  downloadResponseDocument(request: Request) {
+  downloadResponseDocument(request: DocumentRequestDTO) {
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement',
-      detail: `Téléchargement de ${request.responseDocumentName}`
+      detail: `Téléchargement de ${request.responseDocumentName}`,
     });
   }
 

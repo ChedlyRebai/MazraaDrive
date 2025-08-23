@@ -33,6 +33,8 @@ public class DocumentRequest : BaseEntity<int>
 
     public DateTime? RespondedAt { get; set; }
 
+    public string? ResponseMessage { get; set; }
+
     [ForeignKey("ProcessedBy")]
     public string? ProcessedById { get; set; }
 // For document requests

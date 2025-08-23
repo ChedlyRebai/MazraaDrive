@@ -334,7 +334,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("FileSize")
@@ -345,10 +344,10 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int>("FolderId")
+                    b.Property<int?>("FolderId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsValidated")
+                    b.Property<bool?>("IsValidated")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
@@ -368,7 +367,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
+                    b.Property<int?>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -432,6 +431,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int?>("ResponseDocumentId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ResponseMessage")
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -871,9 +873,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Folder", "Folder")
                         .WithMany("Documents")
-                        .HasForeignKey("FolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FolderId");
 
                     b.HasOne("Core.Entities.AppUser", "UploadedBy")
                         .WithMany("UploadedDocuments")

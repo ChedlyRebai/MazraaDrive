@@ -1,7 +1,6 @@
 namespace Core.DTO;
 
-public class DocumentRequestDTO
-{
+public class DocumentRequestDTO{
     public int Id { get; set; }
     public string RequesterId { get; set; }
     public string RequesterName { get; set; } = string.Empty;
@@ -17,6 +16,7 @@ public class DocumentRequestDTO
     public DateTime? RespondedAt { get; set; }
     public string? ProcessedById { get; set; }
     public string? ProcessedByName { get; set; }
+    public string? ResponseMessage { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; }
@@ -25,6 +25,8 @@ public class DocumentRequestDTO
 public class CreateDocumentRequestDTO
 {
     public string RequesterId { get; set; }
+    public string? ProcessedById { get; set; }
+     public string? ResponseMessage { get; set; }
     public int DepartmentId { get; set; }
     public string DocumentType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -36,6 +38,8 @@ public class UpdateDocumentRequestDTO
     public string? DocumentType { get; set; }
     public string? Description { get; set; }
     public string? Priority { get; set; }
+
+    public string? ResponseMessage { get; set; }
     public string? Status { get; set; }
     public int? ResponseDocumentId { get; set; }
     public string? ProcessedById { get; set; }
