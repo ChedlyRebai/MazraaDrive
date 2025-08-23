@@ -17,6 +17,7 @@ public class AppUser : IdentityUser
 
     public bool IsActive { get; set; } = true;
 
+    public long? Cin { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
