@@ -1,0 +1,1 @@
+import{Gb as i,Hb as s,dc as a,fb as o}from"./chunk-XZ5S6H3X.js";var n=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-ai-logs"]],decls:2,vars:0,template:function(e,m){e&1&&(i(0,"p"),a(1,"ai-logs works!"),s())},encapsulation:2})};export{n as AiLogs};
