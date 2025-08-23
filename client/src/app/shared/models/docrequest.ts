@@ -12,7 +12,7 @@ export interface DocumentRequestDTO {
        priority: string;
        status: string;
        responseDocumentId: number | null;
-       responseMessage: string | null;
+       responseMessage?: string | null;
        responseDocumentName: string | null;
        requestedAt: string;
        respondedAt: string | null;
@@ -34,7 +34,7 @@ export interface CreateDocumentRequestDTO {
 export interface UpdateDocumentRequestDTO {
        documentType: string | null;
        description: string | null;
-       responseMessage: string | null;
+       responseMessage?: string | null;
        priority: string | null;
        status: string | null;
        responseDocumentId: number | null;

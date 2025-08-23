@@ -31,6 +31,7 @@
     "@primeuix/themes": "^1.2.1",
     "@tailwindcss/postcss": "^4.1.11",
     "chart.js": "^4.5.0",
+    "mammoth": "^1.10.0",
     "ng2-pdf-viewer": "^10.4.0",
     "ngx-doc-viewer": "^15.0.1",
     "primeng": "^20.0.0-rc.1",

@@ -27,6 +27,8 @@ import { ThemeSwitcher } from '../themeswitcher';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { DatePickerModule } from 'primeng/datepicker';
+import { DocumentDto } from '../../shared/models/document';
+import { NgxDocViewerModule } from "ngx-doc-viewer";
 
 interface Document {
   id?: number;
@@ -62,7 +64,6 @@ interface Document {
     AutoCompleteModule,
     DatePickerModule,
     RadioButtonModule,
-    
     FileUploadModule,
     ConfirmDialogModule,
     TagModule,
@@ -70,19 +71,21 @@ interface Document {
     IconFieldModule,
     InputIconModule,
     TooltipModule,
-    ThemeSwitcher
-  ],
+    ThemeSwitcher,
+    NgxDocViewerModule,
+    
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './document-mangement.html',
   styleUrls: ['./document-mangement.css']
 })
 export class DocumentMangement implements OnInit {
 
-  documents: Document[] = [];
-  selectedDocuments: Document[] = [];
-  selectedDocument: Document | null = null;
-  document: Document = this.getEmptyDocument();
-  
+  documents: DocumentDto[] = [];
+  selectedDocuments: DocumentDto[] = [];
+  selectedDocument: DocumentDto | null = null;
+  document: DocumentDto = this.getEmptyDocument();
+
   documentDialog = false;
   previewDialog = false;
   submitted = false;
@@ -133,72 +136,72 @@ export class DocumentMangement implements OnInit {
     this.loading = true;
     
     // Mock data for demonstration
-    setTimeout(() => {
-      this.documents = [
-        {
-          id: 1,
-          name: 'Rapport Mensuel Janvier 2024.pdf',
-          category: 'Rapports',
-          type: 'PDF',
-          size: 2457600, // 2.4 MB
-          description: 'Rapport mensuel des activités de janvier',
-          tags: ['rapport', 'janvier', '2024'],
-          status: 'Actif',
-          accessLevel: 'Public',
-          uploadedBy: 'Chedly Rebai',
-          uploadedAt: new Date('2024-02-01'),
-          version: '1.0',
-          isActive: true
-        },
-        {
-          id: 2,
-          name: 'Contrat Employé - Marie Martin.docx',
-          category: 'Contrats',
-          type: 'DOCX',
-          size: 524288, // 512 KB
-          description: 'Contrat de travail pour Marie Martin',
-          tags: ['contrat', 'emploi', 'marie-martin'],
-          status: 'Actif',
-          accessLevel: 'Confidential',
-          uploadedBy: 'Admin RH',
-          uploadedAt: new Date('2024-01-15'),
-          version: '2.1',
-          isActive: true
-        },
-        {
-          id: 3,
-          name: 'Politique de Sécurité IT.pdf',
-          category: 'Politiques',
-          type: 'PDF',
-          size: 1048576, // 1 MB
-          description: 'Document de politique de sécurité informatique',
-          tags: ['politique', 'sécurité', 'IT'],
-          status: 'En révision',
-          accessLevel: 'Restricted',
-          uploadedBy: 'Chef IT',
-          uploadedAt: new Date('2024-01-20'),
-          expirationDate: new Date('2024-12-31'),
-          version: '3.0',
-          isActive: true
-        },
-        {
-          id: 4,
-          name: 'Facture Fournisseur ABC-001.pdf',
-          category: 'Factures',
-          type: 'PDF',
-          size: 204800, // 200 KB
-          description: 'Facture du fournisseur ABC pour commande 001',
-          tags: ['facture', 'ABC', 'commande-001'],
-          status: 'Archivé',
-          accessLevel: 'Private',
-          uploadedBy: 'Comptable',
-          uploadedAt: new Date('2023-12-15'),
-          version: '1.0',
-          isActive: true
-        }
-      ];
-      this.loading = false;
-    }, 1000);
+    // setTimeout(() => {
+    //   this.documents = [
+    //     {
+    //       id: 1,
+    //       name: 'Rapport Mensuel Janvier 2024.pdf',
+    //       category: 'Rapports',
+    //       type: 'PDF',
+    //       size: 2457600, // 2.4 MB
+    //       description: 'Rapport mensuel des activités de janvier',
+    //       tags: ['rapport', 'janvier', '2024'],
+    //       status: 'Actif',
+    //       accessLevel: 'Public',
+    //       uploadedBy: 'Chedly Rebai',
+    //       uploadedAt: new Date('2024-02-01'),
+    //       version: '1.0',
+    //       isActive: true
+    //     },
+    //     {
+    //       id: 2,
+    //       name: 'Contrat Employé - Marie Martin.docx',
+    //       category: 'Contrats',
+    //       type: 'DOCX',
+    //       size: 524288, // 512 KB
+    //       description: 'Contrat de travail pour Marie Martin',
+    //       tags: ['contrat', 'emploi', 'marie-martin'],
+    //       status: 'Actif',
+    //       accessLevel: 'Confidential',
+    //       uploadedBy: 'Admin RH',
+    //       uploadedAt: new Date('2024-01-15'),
+    //       version: '2.1',
+    //       isActive: true
+    //     },
+    //     {
+    //       id: 3,
+    //       name: 'Politique de Sécurité IT.pdf',
+    //       category: 'Politiques',
+    //       type: 'PDF',
+    //       size: 1048576, // 1 MB
+    //       description: 'Document de politique de sécurité informatique',
+    //       tags: ['politique', 'sécurité', 'IT'],
+    //       status: 'En révision',
+    //       accessLevel: 'Restricted',
+    //       uploadedBy: 'Chef IT',
+    //       uploadedAt: new Date('2024-01-20'),
+    //       expirationDate: new Date('2024-12-31'),
+    //       version: '3.0',
+    //       isActive: true
+    //     },
+    //     {
+    //       id: 4,
+    //       name: 'Facture Fournisseur ABC-001.pdf',
+    //       category: 'Factures',
+    //       type: 'PDF',
+    //       size: 204800, // 200 KB
+    //       description: 'Facture du fournisseur ABC pour commande 001',
+    //       tags: ['facture', 'ABC', 'commande-001'],
+    //       status: 'Archivé',
+    //       accessLevel: 'Private',
+    //       uploadedBy: 'Comptable',
+    //       uploadedAt: new Date('2023-12-15'),
+    //       version: '1.0',
+    //       isActive: true
+    //     }
+    //   ];
+    //   this.loading = false;
+    // }, 1000);
   }
 
 
@@ -246,12 +249,12 @@ export class DocumentMangement implements OnInit {
     this.documentDialog = true;
   }
 
-  editDocument(document: Document) {
+  editDocument(document: DocumentDto) {
     this.document = { ...document };
     this.documentDialog = true;
   }
 
-  viewDocument(document: Document) {
+  viewDocument(document: DocumentDto) {
     this.selectedDocument = document;
     this.previewDialog = true;
   }
@@ -289,8 +292,16 @@ export class DocumentMangement implements OnInit {
     });
   }
 
-  downloadDocument(document: Document) {
-    // Simulate download
+  downloadDocument(document: DocumentDto) {
+    //download file from this path http://localhost:5108/api/uploads/${selectedDocument.storagePath}
+    this.http.get(`http://localhost:5108/api/uploads/${document.storagePath}`)
+      .subscribe(blob => {
+        window.open(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
+        console.log(blob);
+      });
+
+   // window.Infinityr(`(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
+      window.history.pushState(null, '', `http://localhost:5108/api/uploads/${document.storagePath}`);
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement',
@@ -326,14 +337,14 @@ export class DocumentMangement implements OnInit {
       } else {
         // Create new document
         this.document.id = Math.max(...this.documents.map(d => d.id || 0)) + 1;
-        this.document.uploadedAt = new Date();
-        this.document.uploadedBy = 'Utilisateur Actuel'; // Get from auth service
+        //this.document.createdAt = new Date();
+        //this.document.up = 'Utilisateur Actuel'; // Get from auth service
         this.document.isActive = true;
         
-        if (this.selectedFile) {
-          this.document.type = this.getFileExtension(this.selectedFile.name);
-          this.document.size = this.selectedFile.size;
-        }
+        // if (this.selectedFile) {
+        //   this.document.fileType = this.getFileExtension(this.selectedFile.name);
+        //   this.document.size = this.selectedFile.size;
+        // }
         
         this.documents.push({ ...this.document });
         this.messageService.add({
@@ -382,26 +393,15 @@ export class DocumentMangement implements OnInit {
   }
 
   // Utility methods
-  getEmptyDocument(): Document {
+  getEmptyDocument(): DocumentDto {
     return {
-      name: '',
-      category: '',
-      type: '',
-      size: 0,
-      description: '',
-      tags: [],
-      status: 'Actif',
-      accessLevel: 'Public',
-      uploadedBy: '',
-      uploadedAt: new Date(),
-      isActive: true
-    };
+    } as DocumentDto;
   }
 
   isDocumentValid(): boolean {
     return !!(
       this.document.name?.trim() &&
-      this.document.category &&
+      
       (this.document.id || this.selectedFile)
     );
   }

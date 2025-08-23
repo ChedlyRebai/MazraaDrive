@@ -819,7 +819,7 @@
             </label>
             <p-autoComplete
               id="responseStatus"
-              [(ngModel)]="requestResponse.status"
+              [(ngModel)]="selectedRequest.status"
               [suggestions]="responseStatusSuggestions"
               (completeMethod)="searchResponseStatus($event)"
               placeholder="Sélectionner un statut"
@@ -828,7 +828,7 @@
               class="w-full"
             />
           </div>
-          <div>
+          <div> 
             <label for="responseStatus" class="block text-sm font-medium mb-2">
               <i class="pi pi-comment mr-2"></i>
               Message de la Réponse *
@@ -840,7 +840,8 @@
               rows="5"
               cols="30"
               pTextarea
-              [(ngModel)]="requestResponse.responseMessage"
+              (change)="onResponseMessageChange()"
+              [(ngModel)]="selectedRequest.responseMessage"
             ></textarea>
           </div>
         </div>

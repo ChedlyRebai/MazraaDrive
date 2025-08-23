@@ -221,113 +221,7 @@ export class Demandes implements OnInit {
   loadDocumentRequests() {
     this.loading = true;
     // Mock data for demonstration
-    setTimeout(() => {
-      const mockResponse: DocumentRequestPagedResult = {
-        data: [
-          {
-            id: 1,
-            requesterId: 'user1',
-            requesterName: 'Chedly Rebai',
-            departmentId: 1,
-            departmentName: 'Ressources Humaines',
-            documentType: 'Certificat de Travail',
-            description:
-              'Demande de certificat de travail pour candidature externe',
-            priority: 'Normale',
-            status: 'En Attente',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-06T09:30:00',
-            respondedAt: null,
-            processedById: null,
-            processedByName: null,
-            createdAt: '2024-12-06T09:30:00',
-            updatedAt: null,
-            isActive: true,
-          },
-          {
-            id: 2,
-            requesterId: 'user2',
-            requesterName: 'Marie Martin',
-            departmentId: 2,
-            departmentName: 'Finance',
-            documentType: 'Attestation de Salaire',
-            description: 'Attestation de salaire pour demande de prêt bancaire',
-            priority: 'Élevée',
-            status: 'Approuvé',
-            responseDocumentId: 101,
-            responseDocumentName: 'attestation_salaire_marie_martin.pdf',
-            requestedAt: '2024-12-05T14:15:00',
-            respondedAt: '2024-12-05T16:30:00',
-            processedById: 'admin1',
-            processedByName: 'Admin RH',
-            createdAt: '2024-12-05T14:15:00',
-            updatedAt: '2024-12-05T16:30:00',
-            isActive: true,
-          },
-          {
-            id: 3,
-            requesterId: 'user3',
-            requesterName: 'Pierre Bernard',
-            departmentId: 3,
-            departmentName: 'IT',
-            documentType: 'Contrat de Travail',
-            description: 'Copie du contrat de travail pour dossier personnel',
-            priority: 'Faible',
-            status: 'En Cours',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-04T11:00:00',
-            respondedAt: null,
-            processedById: 'admin1',
-            processedByName: 'Admin RH',
-            createdAt: '2024-12-04T11:00:00',
-            updatedAt: '2024-12-06T08:00:00',
-            isActive: true,
-          },
-          {
-            id: 4,
-            requesterId: 'user4',
-            requesterName: 'Sophie Dubois',
-            departmentId: 4,
-            departmentName: 'Marketing',
-            documentType: 'Justificatif de Domicile',
-            description: 'Justificatif de domicile pour mise à jour du dossier',
-            priority: 'Urgente',
-            status: 'Rejeté',
-            responseDocumentId: null,
-            responseDocumentName: null,
-            requestedAt: '2024-12-03T16:45:00',
-            respondedAt: '2024-12-04T09:15:00',
-            processedById: 'admin2',
-            processedByName: 'Admin Finance',
-            createdAt: '2024-12-03T16:45:00',
-            updatedAt: '2024-12-04T09:15:00',
-            isActive: true,
-          },
-        ],
-        pageNumber: 1,
-        pageSize: 10,
-        totalRecords: 4,
-        totalPages: 1,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        totalPendingRequests: 1,
-        totalProcessedRequests: 2,
-        totalRejectedRequests: 1,
-        search: null,
-        sortBy: null,
-        sortDirection: null,
-      };
-
-      this.documentRequests = mockResponse.data;
-      this.totalRecords = mockResponse.totalRecords;
-      this.totalPendingRequests = mockResponse.totalPendingRequests;
-      this.totalProcessedRequests = mockResponse.totalProcessedRequests;
-      this.totalRejectedRequests = mockResponse.totalRejectedRequests;
-      this.loading = false;
-    }, 1000);
-
+  
     // Real API call would be:
     /*
     this.http.get<DocumentRequestPagedResult>(`${this.baseUrl}/DocumentRequest`, { params: this.filter as any }).subscribe({
@@ -550,6 +444,7 @@ export class Demandes implements OnInit {
       description: this.request.description,
       priority: this.request.priority,
       status: this.request.status,
+      responseMessage: this.request.responseMessage,
       responseDocumentId: this.request.responseDocumentId,
       processedById: this.request.processedById,
     };

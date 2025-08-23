@@ -90,6 +90,7 @@ public class AccessRequestsController : BaseController
 
         var entity = new AccessRequest
         {
+
             Message = dto.Message,
             DocumentId = dto.DocumentId,
             RequesterId = userId,
@@ -131,7 +132,6 @@ public class AccessRequestsController : BaseController
     {
         var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
-
         entity.DocumentId = dto.DocumentId;
         entity.RequestRead = dto.RequestRead;
         entity.RequestWrite = dto.RequestWrite;

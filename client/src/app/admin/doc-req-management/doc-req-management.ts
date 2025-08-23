@@ -22,6 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from '../themeswitcher';
 import { HttpClient } from '@angular/common/http';
 import { DocumentRequestDTO } from '../../shared/models/docrequest';
+import { DocumentDto } from '../../shared/models/document';
 
 interface Request {
   id: string;
@@ -464,6 +465,8 @@ export class DocReqManagement implements OnInit {
     console.log('request response:', this.requestResponse);
     console.log('selected request:', this.selectedRequest);
     console.log('selected file:', this.selectedFile);
+    console.log('response message:', this.selectedRequest.responseMessage);
+
     const formData = new FormData();
     formData.append('File', this.selectedFile ? this.selectedFile : '');
     formData.append('Name', this.selectedFile ? this.selectedFile.name : '');
@@ -471,15 +474,17 @@ export class DocReqManagement implements OnInit {
 
     // Example folderId
     this.documentService.uploadDocument(formData).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('File uploaded successfully:', response);
+        this.selectedRequest.responseDocumentId = response.id;
       },
       error: (error) => {
         console.error('Error uploading file:', error);
       },
     });
 
-    console.log();
+
+    console.log("id:", this.selectedRequest.id);
     this.documentRequsetService
       .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
       .subscribe({
@@ -515,6 +520,102 @@ export class DocReqManagement implements OnInit {
     //   this.sendingResponse = false;
     // }, 1500);
   }
+
+  onResponseMessageChange(){
+    console.log(this.selectedRequest.responseMessage);
+  }
+  sendRespnse() {
+  if (!this.selectedRequest) {
+    console.error("No request selected!");
+    return;
+  }
+
+  this.sendingResponse = true;
+  console.log('Sending response:', this.responseForm);
+  console.log('Selected request:', this.selectedRequest);
+  console.log('Selected file:', this.selectedFile);
+
+  let upload$;
+
+  if (this.selectedFile) {
+    const formData = new FormData();
+    formData.append('File', this.selectedFile);
+    formData.append('Name', this.selectedFile.name);
+    formData.append('FolderId', '10'); // example folderId
+
+    upload$ = this.documentService.uploadDocument(formData);
+  } 
+
+  if (upload$) {
+    upload$.subscribe({
+      next: (uploadResponse) => {
+        console.log('Upload response:', uploadResponse);
+
+        // Update selectedRequest fields
+        this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
+        // this.selectedRequest.createdAt = new Date();
+        this.selectedRequest.processedByName = 'Admin Courant';
+
+        if (this.selectedFile) {
+          this.selectedRequest.responseDocumentName = this.selectedFile.name;
+        }
+
+        this.documentRequsetService
+          .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+          .subscribe({
+            next: (response) => {
+              console.log('Document request updated successfully:', response);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Réponse envoyée',
+                detail: 'La réponse a été envoyée avec succès',
+              });
+              this.responseDialog = false;
+            },
+            error: (err) => {
+              console.error('Error updating document request:', err);
+            },
+            complete: () => {
+              this.sendingResponse = false;
+              this.applyFilters();
+              this.updateStats();
+            },
+          });
+      },
+      error: (err) => {
+        console.error('Error uploading file:', err);
+        this.sendingResponse = false;
+      },
+    });
+  } else {
+    // No file to upload, just update the request
+    this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
+    this.selectedRequest.processedByName = 'Admin Courant';
+
+    this.documentRequsetService
+      .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+      .subscribe({
+        next: (response) => {
+          console.log('Document request updated successfully:', response);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Réponse envoyée',
+            detail: 'La réponse a été envoyée avec succès',
+          });
+          this.responseDialog = false;
+        },
+        error: (err) => {
+          console.error('Error updating document request:', err);
+        },
+        complete: () => {
+          this.sendingResponse = false;
+          this.applyFilters();
+          this.updateStats();
+        },
+      });
+  }
+}
+
 
   // Utility methods
   getInitials(name: string): string {
