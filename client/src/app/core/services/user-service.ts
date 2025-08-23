@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserPagedResult } from '../../shared/models/user';
+import { CreateUserDto, UserPagedResult } from '../../shared/models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -48,5 +48,9 @@ export class UserService {
            console.error('Error fetching users:', error);
          }
        );
+     }
+
+     createUser(newUser:CreateUserDto){
+       return this.http.post(`${this.baseUrl}`, newUser)
      }
 }

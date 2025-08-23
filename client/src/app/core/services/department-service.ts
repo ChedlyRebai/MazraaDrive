@@ -87,4 +87,16 @@ export class DepartmentService {
       }
     );
   }
+
+  getDepartmentForSealection(id: number) {
+    return this.http.get<DepartmentDto>(`${this.baseUrl}/${id}`).subscribe(
+      (result) => {
+        console.log('Department fetched:', result);
+      },
+      (error) => {
+        console.error('Error fetching department:', error);
+      }
+    );
+  }
+
 }

@@ -11,6 +11,10 @@ import { ThemeSwitcher } from "../themeswitcher";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { CreateUserDto } from '../../shared/models/user';
+import { RoleService } from '../../core/services/role-service';
+import { DepartmentService } from '../../core/services/department-service';
 interface User {
   id: string;
   fullName: string;
@@ -131,6 +135,8 @@ export class UserMangement implements OnInit {
   profilePictureFile: File | null = null;
 
   constructor(
+    public departmentService: DepartmentService,
+    public roleService: RoleService,
     public userService: UserService,
     private message: MessageService,
     private confirm: ConfirmationService
@@ -224,6 +230,16 @@ export class UserMangement implements OnInit {
     this.userDialog = false;
   }
 
+  newUser: CreateUserDto = {} as CreateUserDto;
+// {
+//   "userName": "mohamed",
+//   "cin": 220,
+//   "password": "chedlyREb12.",
+//   "confirmPassword": "chedlyREb12.",
+//   "phoneNumber": "28651633",
+//   "roleId": 10,
+//   "departmentId": 10
+// }
   saveUser() {
     this.submitted = true;
     if (!this.user.fullName || !this.user.userName || !this.user.email ||
@@ -231,13 +247,16 @@ export class UserMangement implements OnInit {
       this.message.add({ severity: 'warn', summary: 'Validation', detail: 'Champs requis manquants.' });
       return;
     }
+    console.log('Saving user:', this.user); 
     this.saving = true;
     const isNew = !this.user.id;
-    setTimeout(() => {
-      if (isNew) {
-        this.users.unshift({
-          id: (Math.random()*100000).toFixed(0),
-          fullName: this.user.fullName!,
+    
+    this.userService.createUser(this.newUser).subscribe({
+      next: (user:any) => {
+        if (isNew) {
+          this.users.unshift({
+            id: (Math.random()*100000).toFixed(0),
+            fullName: this.user.fullName!,
             userName: this.user.userName!,
             email: this.user.email!,
             department: this.user.department!,
@@ -256,7 +275,13 @@ export class UserMangement implements OnInit {
       this.computeStats();
       this.saving = false;
       this.userDialog = false;
-    }, 500);
+      },error: err => {
+        console.error('Error saving user:', err);
+        this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la sauvegarde de l\'utilisateur.' });
+        this.saving = false;}
+    }
+   
+  )
   }
 
   deleteUser(u: User) {
