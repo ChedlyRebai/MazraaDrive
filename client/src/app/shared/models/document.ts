@@ -1,6 +1,6 @@
-// import { FormFile } from "./formFile";
 import { PaginationParams } from "./pageresult";
 import { PagedResult } from "./pageresult";
+
 
 export interface DocumentDto {
        id: number;

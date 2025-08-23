@@ -23,40 +23,40 @@ namespace Infrastructure.Data
         public virtual DbSet<Role> Role { get; set; }
         public DbSet<Folder> Folder { get; set; }
         public virtual DbSet<AppUser> User { get; set; }
-      
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            
-              modelBuilder.Entity<DocumentRequest>(entity =>
-    {
-        // Configure Requester relationship
-        entity.HasOne(dr => dr.Requester)
-            .WithMany(u => u.RequestedDocuments)
-            .HasForeignKey(dr => dr.RequesterId)
-            .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure ProcessedBy relationship
-        entity.HasOne(dr => dr.ProcessedBy)
-            .WithMany(u => u.ProcessedDocuments)
-            .HasForeignKey(dr => dr.ProcessedById)
-            .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<DocumentRequest>(entity =>
+  {
+      // Configure Requester relationship
+      entity.HasOne(dr => dr.Requester)
+          .WithMany(u => u.RequestedDocuments)
+          .HasForeignKey(dr => dr.RequesterId)
+          .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure Department relationship
-        entity.HasOne(dr => dr.Department)
-            .WithMany()
-            .HasForeignKey(dr => dr.DepartmentId)
-            .OnDelete(DeleteBehavior.Restrict);
+      // Configure ProcessedBy relationship
+      entity.HasOne(dr => dr.ProcessedBy)
+          .WithMany(u => u.ProcessedDocuments)
+          .HasForeignKey(dr => dr.ProcessedById)
+          .OnDelete(DeleteBehavior.SetNull);
 
-        // Configure ResponseDocument relationship
-        entity.HasOne(dr => dr.ResponseDocument)
-            .WithMany()
-            .HasForeignKey(dr => dr.ResponseDocumentId)
-            .OnDelete(DeleteBehavior.SetNull);
-    });
+      // Configure Department relationship
+      entity.HasOne(dr => dr.Department)
+          .WithMany()
+          .HasForeignKey(dr => dr.DepartmentId)
+          .OnDelete(DeleteBehavior.Restrict);
+
+      // Configure ResponseDocument relationship
+      entity.HasOne(dr => dr.ResponseDocument)
+          .WithMany()
+          .HasForeignKey(dr => dr.ResponseDocumentId)
+          .OnDelete(DeleteBehavior.SetNull);
+  });
             // AppUser - Address relationship (One-to-One)
             //     modelBuilder.Entity<AppUser>()
             //         .HasOne(u => u.Address)

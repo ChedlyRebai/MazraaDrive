@@ -104,14 +104,6 @@ export class DocumentRequsetService {
         `${this.baseUrl}/${documentRequest.id}`,
         documentRequest
       )
-      .subscribe(
-        (result) => {
-          console.log('Document request updated:', result);
-        },
-        (error) => {
-          console.error('Error updating document request:', error);
-        }
-      );
   }
 
   deleteDocumentRequest(id: number) {

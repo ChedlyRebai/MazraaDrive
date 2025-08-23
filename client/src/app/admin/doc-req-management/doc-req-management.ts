@@ -20,6 +20,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from '../themeswitcher';
 import { HttpClient } from '@angular/common/http';
+import { DocumentRequestDTO } from '../../shared/models/docrequest';
 
 
 interface Request {
@@ -90,6 +91,7 @@ export class DocReqManagement implements OnInit {
   statusFilter: any = '';
   priorityFilter: any = '';
 
+  requestResponse: DocumentRequestDTO  = {} as DocumentRequestDTO;
   // Forms
   newRequest: Partial<Request> = {};
   responseForm = {
@@ -161,6 +163,7 @@ export class DocReqManagement implements OnInit {
   ];
 
   constructor(
+    
     public http: HttpClient,
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
@@ -441,9 +444,11 @@ export class DocReqManagement implements OnInit {
     if (!this.isResponseValid()) {
       return;
     }
-
-    this.sendingResponse = true;
     
+    this.sendingResponse = true;
+    console.log('Sending response:', this.responseForm);
+    console.log('request response:', this.requestResponse);
+    console.log('selected request:', this.selectedRequest);
     setTimeout(() => {
       if (this.selectedRequest) {
         this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
@@ -614,18 +619,18 @@ export class DocReqManagement implements OnInit {
 
   // Quick actions
   quickApprove() {
-    this.responseForm.status = 'Approved';
-    this.responseForm.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
+    this.requestResponse.status = 'Approved';
+   // this.requestResponse.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
   }
 
   quickReject() {
     this.responseForm.status = 'Rejected';
-    this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
+   // this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
   }
 
   requestMoreInfo() {
     this.responseForm.status = 'More Info Required';
-    this.responseForm.message = 'Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.';
+    //this.responseForm.message = 'Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.';
   }
 
   saveDraft() {
