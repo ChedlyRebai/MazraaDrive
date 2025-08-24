@@ -166,5 +166,18 @@ namespace Infrastructure.Repositories
                 _ => query.OrderBy(r => r.Name)
             };
         }
+
+        public Task<Role[]> SearchAsync(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+                return Task.FromResult(Array.Empty<Role>());
+
+            var roles = _context.Role
+                .Where(r => r.Name.Contains(searchTerm) || r.Description.Contains(searchTerm))
+                .OrderBy(r => r.Name)
+                .ToArrayAsync();
+
+            return roles;
+        }
     }
 }

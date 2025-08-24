@@ -1,13 +1,16 @@
+
 using System;
 using Core.DTO;
 using Core.Entities;
 
 namespace Core.Interfaces;
 
-public interface IDepartmentRepository:IGenericRepository<Department>
+public interface IDepartmentRepository : IGenericRepository<Department>
 {
+
+        Task<IEnumerable<DepartmentSearchDTO>> SearchAsync(string searchTerm);
         Task<PagedResult<Department>> GetPageAsync(DepartmentFilterDto filter);
-Task<Department> AddAsync(Department department);
+        Task<Department> AddAsync(Department department);
         Task DeleteAsync(int id);
         Task<IReadOnlyList<Department>> GetAllAsync();
         Task<Department?> GetByIdAsync(int id);

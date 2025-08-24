@@ -50,3 +50,10 @@ public class DepartmentUserCountDTO
     public int DepartmentId { get; set; }
     public int UserCount { get; set; }
 }
+
+
+public class DepartmentSearchDTO
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+}

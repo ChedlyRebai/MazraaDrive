@@ -15,7 +15,7 @@ namespace Api.Controllers
     {
         public readonly IAuditLogRepository _auditLogger;
         public readonly IHubContext<DepartmentHub> _hub;
-        public DepartmentController(IUnitOfWork unitOfWork, IHubContext<DepartmentHub> hub,IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
+        public DepartmentController(IUnitOfWork unitOfWork, IHubContext<DepartmentHub> hub, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper)
         {
             _auditLogger = auditLogger;
             _hub = hub;
@@ -27,7 +27,26 @@ namespace Api.Controllers
             return "Department API is working!";
         }
 
-        
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<DepartmentSearchDTO>>> SearchDepartments([FromBody] string searchTerm)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchTerm))
+                    return BadRequest("Search term cannot be empty");
+    
+                var results = await _unitOfWork.DepartmentRepository.SearchAsync(searchTerm);
+                return Ok(results);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("An error occurred while searching for departments.");
+            }
+        }
+
+
+
         [HttpGet]
         public async Task<ActionResult<DepartmentPagedResult>> GetDepartments([FromQuery] DepartmentFilterDto filter)
         {
@@ -39,7 +58,7 @@ namespace Api.Controllers
                 // Apply user count filtering if specified (post-query filtering)
                 if (filter.MinUserCount.HasValue || filter.MaxUserCount.HasValue)
                 {
-                    departmentDtos = departmentDtos.Where(d => 
+                    departmentDtos = departmentDtos.Where(d =>
                         (!filter.MinUserCount.HasValue || d.UserCount >= filter.MinUserCount) &&
                         (!filter.MaxUserCount.HasValue || d.UserCount <= filter.MaxUserCount)
                     );
@@ -58,12 +77,12 @@ namespace Api.Controllers
                     SortBy = pagedDepartments.SortBy,
                     SortDirection = pagedDepartments.SortDirection,
                     TotalDepartments = departmentDtos.Count(),
-                   
+
                 };
                 // Log the action
                 //await _auditLogger.LogAsync("GetDepartments", "Retrieved paged list of departments", "10","Department");
 
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -86,7 +105,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500 , ex.Message));
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -97,11 +116,11 @@ namespace Api.Controllers
             {
                 var departments = await _unitOfWork.DepartmentRepository.GetWithUserCountAsync();
                 var summaryDtos = _mapper.Map<IEnumerable<DepartmentUserCountDTO>>(departments);
-                return Ok(summaryDtos );
+                return Ok(summaryDtos);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500 , ex.Message));
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
 
@@ -150,7 +169,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Department not found" });
 
                 // Check if name is being changed and if new name already exists
-                if (!string.IsNullOrEmpty(updateDepartmentDto.Name) && 
+                if (!string.IsNullOrEmpty(updateDepartmentDto.Name) &&
                     updateDepartmentDto.Name != existingDepartment.Name)
                 {
                     var departmentWithSameName = await _unitOfWork.DepartmentRepository.GetByNameAsync(updateDepartmentDto.Name);
@@ -218,7 +237,7 @@ namespace Api.Controllers
 
                 //await _auditLogger.LogAsync("GetDepartmentUsers", "Retrieved users for department", "10", "Department");
                 return Ok(users);
-                
+
             }
             catch (Exception ex)
             {
@@ -247,7 +266,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseAPI(500 , ex.Message));
+                return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
     }

@@ -173,5 +173,21 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
             };
         }
 
-    
+    public async Task<IEnumerable<DepartmentSearchDTO>> SearchAsync(string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            return Array.Empty<DepartmentSearchDTO>();
+        }
+
+        var departments = await _context.Departments.Where(d => d.Name.Contains(searchTerm))
+            .Select(d => new DepartmentSearchDTO
+            {
+                Name = d.Name,
+                Description = d.Description
+            })
+            .ToListAsync();
+
+        return departments;
+    }
 }

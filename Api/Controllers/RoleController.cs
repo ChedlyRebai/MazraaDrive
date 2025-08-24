@@ -22,7 +22,7 @@ namespace Api.Controllers
             return "CHEDLY - API is working!";
         }
 
-         [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<RolePagedResult>> GetRoles([FromQuery] RoleFilterDto filter)
         {
             try
@@ -55,7 +55,7 @@ namespace Api.Controllers
                 };
 
                 //await _auditLogger.LogAsync("GetRoles", "Retrieved paged list of roles", "10", "Role");
-                return Ok( result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -174,5 +174,25 @@ namespace Api.Controllers
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
+
+        [HttpGet("seach")]
+        public async Task<IActionResult> SearchRoles([FromQuery] string term)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(term))
+                    return BadRequest(new ResponseAPI(400, "Search term is required"));
+
+                var roles = await _unitOfWork.RoleRepository.SearchAsync(term);
+                var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
+
+                return Ok(roleDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ResponseAPI(500, ex.Message));
+            }
+        }
+        
     }
 }

@@ -32,10 +32,12 @@ export class DepartmentService {
     if (Search) {
       params = params.set('Search', Search);
     }
+
     if (PageNNumber) {
       console.log('PageNNumber in service:', PageNNumber);
       params = params.set('PageNumber', PageNNumber.toString());
     }
+    
     if (SortBy) {
       params = params.set('SortBy', SortBy);
     }
