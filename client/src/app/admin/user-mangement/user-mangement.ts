@@ -135,6 +135,7 @@ export class UserMangement implements OnInit {
   profilePictureFile: File | null = null;
 
   constructor(
+    
     public departmentService: DepartmentService,
     public roleService: RoleService,
     public userService: UserService,
@@ -145,6 +146,16 @@ export class UserMangement implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.userService.getUsers();
+  }
+  initRoleSearch() {
+    this.roleService.getSearchRoles(this.user.role).subscribe(
+      (result) => {
+        this.roleFiltered = result;
+      },
+      (error) => {
+        console.error('Error fetching roles:', error);
+      }
+    );
   }
 
   // Autocomplete complete methods (filters)

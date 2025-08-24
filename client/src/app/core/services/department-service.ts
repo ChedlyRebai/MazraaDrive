@@ -101,4 +101,8 @@ export class DepartmentService {
     );
   }
 
+  getSearchDepartments(searchTerm: string) {
+    return this.http.get<DepartmentDto[]>(`${this.baseUrl}/search/${searchTerm}`)
+  }
+
 }

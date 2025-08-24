@@ -78,4 +78,9 @@ export class RoleService {
   createRole(role: CreateRoleDto) {
     return this.http.post<RoleDto>(`${this.baseUrl}`, role)
   }
+
+
+    getSearchRoles(searchTerm: string) {
+      return this.http.get<RoleDto[]>(`${this.baseUrl}/search/${searchTerm}`)
+    }
 }
