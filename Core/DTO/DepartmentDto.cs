@@ -54,6 +54,7 @@ public class DepartmentUserCountDTO
 
 public class DepartmentSearchDTO
 {
+    public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
 }

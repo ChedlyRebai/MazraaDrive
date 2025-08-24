@@ -175,15 +175,15 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("seach")]
-        public async Task<IActionResult> SearchRoles([FromQuery] string term)
+        [HttpGet("search/{searchTerm}")]
+        public async Task<IActionResult> SearchRoles(string searchTerm)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(term))
+                if (string.IsNullOrWhiteSpace(searchTerm))
                     return BadRequest(new ResponseAPI(400, "Search term is required"));
 
-                var roles = await _unitOfWork.RoleRepository.SearchAsync(term);
+                var roles = await _unitOfWork.RoleRepository.SearchAsync(searchTerm);
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
 
                 return Ok(roleDtos);

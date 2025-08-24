@@ -28,21 +28,21 @@ namespace Api.Controllers
         }
 
 
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<DepartmentSearchDTO>>> SearchDepartments([FromBody] string searchTerm)
+        [HttpGet("search/{searchTerm}")]
+        public async Task<ActionResult<IEnumerable<DepartmentSearchDTO>>> SearchDepartments(string searchTerm)
         {
             try
             {
                 if (string.IsNullOrEmpty(searchTerm))
                     return BadRequest("Search term cannot be empty");
-    
+
                 var results = await _unitOfWork.DepartmentRepository.SearchAsync(searchTerm);
                 return Ok(results);
             }
             catch (System.Exception)
             {
                 return BadRequest("An error occurred while searching for departments.");
-            }
+            }   
         }
 
 
