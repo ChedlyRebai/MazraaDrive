@@ -187,6 +187,7 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
         var departments = await query   
             .Select(d => new DepartmentSearchDTO
             {
+                Id=d.Id,
                 Name = d.Name,
                 Description = d.Description
             })

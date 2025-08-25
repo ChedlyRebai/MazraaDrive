@@ -190,7 +190,7 @@
         styleClass="p-datatable-sm"
         [globalFilterFields]="[
           'fullName',
-          'email',
+          
           'userName',
           'department',
           'role'
@@ -215,10 +215,7 @@
               Nom Complet
               <p-sortIcon field="fullName" />
             </th>
-            <th pSortableColumn="email">
-              Email
-              <p-sortIcon field="email" />
-            </th>
+           
 
             <th pSortableColumn="department">
               Département
@@ -254,12 +251,12 @@
                 <span class="font-medium">{{ user.userName }}</span>
               </div>
             </td>
-            <td>
+            <!-- <td>
               <span class="flex items-center gap-2">
                 <i class="pi pi-envelope text-color-secondary"></i
                 >{{ user.email }}
               </span>
-            </td>
+            </td> -->
 
             <td><p-tag [value]="user.departmentName" severity="info" /></td>
             <td>
@@ -308,47 +305,32 @@
     </ng-container>
     <!-- User Dialog -->
     <p-dialog
+
       [(visible)]="userDialog"
-      [style]="{ width: '48rem'  }"
+      [style]="{ width: '48rem' }"
       [header]="dialogTitle"
       [modal]="true"
-      [draggable]="false"
-      [breakpoints]="{ '960px': '95vw', '640px': '100vw' }"
+      
+      [draggable]="true"
+      class="overflow-y-scroll"
     >
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
-          <div class="flex justify-center">
-            <div class="flex flex-col items-center gap-3">
-              <p-avatar
-                [image]="user.profilePicture"
-                [label]="getInitials(user.fullName || 'NN')"
-                shape="circle"
-                size="xlarge"
-              />
-              <p-fileUpload
-                mode="basic"
-                accept="image/*"
-                [maxFileSize]="1000000"
-                chooseLabel="Changer la photo"
-                [auto]="false"
-                (onSelect)="onProfilePictureSelect($event)"
-              />
-            </div>
-          </div>
+          
 
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
                 <input
                   pInputText
-                  id="fullName"
-                  type="text"
-                  [(ngModel)]="user.fullName"
+                  id="Cin"
+                  type="number"
+                  [(ngModel)]="user.cin"
                   required
                 />
-                <label for="fullName">Nom Complet *</label>
+                <label for="Cin">Cin *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.fullName"
+              <small class="text-red-500" *ngIf="submitted && !user.cin"
                 >Requis.</small
               >
             </div>
@@ -356,17 +338,18 @@
               <p-floatLabel>
                 <input
                   pInputText
-                  id="userName"
+                  id="fullName"
                   type="text"
                   [(ngModel)]="user.userName"
                   required
                 />
-                <label for="userName">Nom d'utilisateur *</label>
+                <label for="fullName">Nom Complet *</label>
               </p-floatLabel>
               <small class="text-red-500" *ngIf="submitted && !user.userName"
                 >Requis.</small
               >
             </div>
+            
 
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
@@ -383,17 +366,17 @@
               <p-floatLabel>
                 <p-autocomplete
                   inputId="department"
-                  [(ngModel)]="user.department"
+                  [(ngModel)]="user.departmentName"
                   [suggestions]="departmentFilteredDialog"
                   (completeMethod)="completeDepartmentDialog($event)"
                   [dropdown]="true"
                   optionLabel="name"
-                  optionValue="id"
+                  optionValue="name"
                   showClear="true"
                   placeholder="Sélectionner un département"
                   [forceSelection]="true"
                   [minLength]="1"
-                  (onSelect)="user.department = $event.value"
+                  (onSelect)="user.departmentId = $event.value.id"
                  
                 >
                   <ng-template let-department pTemplate="item">
@@ -407,7 +390,7 @@
                 </p-autocomplete>
                 <label for="department">Département *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.department">
+              <small class="text-red-500" *ngIf="submitted && !user.departmentId">
                 Requis.
               </small>
             </div>
@@ -416,26 +399,27 @@
                 
                 <p-autocomplete
                   inputId="role"
-                  [(ngModel)]="user.role"
+                  [(ngModel)]="user.roleName"
                   [suggestions]="roleFilteredDialog"
                   (completeMethod)="completeRoleDialog($event)"
+                  (onSelect)="user.roleId = $event.value.id"
                   [dropdown]="true"
                   optionLabel="name"
-                  optionValue="id"
+                  optionValue="name"
                 >
-                 <ng-template let-role pTemplate="item">
+                 <!-- <ng-template let-department pTemplate="item">
                     <div class="flex flex-col">
-                      <span class="font-medium">{{ role.name }}</span>
+                      <span class="font-medium">{{ department.name }}</span>
                       <small class="text-gray-500">{{
-                        role.description
+                        department.description
                       }}</small>
                     </div>
-                  </ng-template>
+                  </ng-template> -->
                 </p-autocomplete>
                 
                 <label for="role">Rôle *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.role"
+              <small class="text-red-500" *ngIf="submitted && !user.roleId"
                 >Requis.</small
               >
             </div>
@@ -450,6 +434,20 @@
                 <label for="password">Mot de passe *</label>
               </p-floatLabel>
               <small class="text-red-500" *ngIf="submitted && !user.password"
+                >Requis.</small
+              >
+            </div>
+            <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
+              <p-floatLabel>
+                <p-password
+                  inputId="confirmPassword"
+                  [(ngModel)]="user.confirmPassword"
+                  [toggleMask]="true"
+                  placeholder="Confirmer Mot de passe"
+                />
+                <label for="confirmPassword">Confirmer le mot de passe *</label>
+              </p-floatLabel>
+              <small class="text-red-500" *ngIf="submitted && !user.confirmPassword"
                 >Requis.</small
               >
             </div>

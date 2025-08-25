@@ -1,10 +1,12 @@
+import { CreateUserDto, UserDto } from './../../shared/models/user';
+import { Password } from 'primeng/password';
 import { UserService } from './../../core/services/user-service';
 import { Component, OnInit, Query, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedModule } from '../../shared/shared.module';
 import { Avatar } from 'primeng/avatar';
 import { Checkbox } from 'primeng/checkbox';
-import { Password } from 'primeng/password';
+
 import { AutoComplete } from 'primeng/autocomplete';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ThemeSwitcher } from '../themeswitcher';
@@ -12,7 +14,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-import { CreateUserDto } from '../../shared/models/user';
 import { RoleService } from '../../core/services/role-service';
 import { DepartmentService } from '../../core/services/department-service';
 interface User {
@@ -66,7 +67,7 @@ export class UserMangement implements OnInit {
   userDetailsDialog = false;
   dialogTitle = 'Nouvel Utilisateur';
 
-  user: EditableUser = {};
+  user: UserDto = {} as UserDto;
   selectedUser: User | null = null;
   submitted = false;
 
@@ -211,8 +212,12 @@ export class UserMangement implements OnInit {
     } else {
       this.roleFilteredDialog = [];
     }
+    console.log(this.user);
   }
   
+  onSelectRole(e:any){
+    console.log(e)
+  }
 completeDepartmentDialog(e: any) {
   const q = (e.query || '').toLowerCase();
   if (q.length > 0) {
@@ -231,6 +236,7 @@ completeDepartmentDialog(e: any) {
   } else {
     this.departmentFilteredDialog = [];
   }
+  console.log(this.user)
 }
 
 
@@ -299,19 +305,19 @@ completeDepartmentDialog(e: any) {
   }
 
   openNew() {
-    this.user = { isActive: true };
-    this.dialogTitle = 'Nouvel Utilisateur';
-    this.submitted = false;
-    this.profilePictureFile = null;
-    this.userDialog = true;
+     this.user = {} as UserDto;
+     this.dialogTitle = 'Nouvel Utilisateur';
+     this.submitted = false;
+     this.profilePictureFile = null;
+     this.userDialog = true;
   }
 
   editUser(u: User) {
-    this.user = { ...u };
-    this.dialogTitle = 'Modifier Utilisateur';
-    this.submitted = false;
-    this.profilePictureFile = null;
-    this.userDialog = true;
+    // this.user = { ...u };
+    // this.dialogTitle = 'Modifier Utilisateur';
+    // this.submitted = false;
+    // this.profilePictureFile = null;
+    // this.userDialog = true;
   }
 
   viewUser(u: User) {
@@ -333,14 +339,18 @@ completeDepartmentDialog(e: any) {
   //   "roleId": 10,
   //   "departmentId": 10
   // }
+
+ 
   saveUser() {
+    console.log(this.user)
     this.submitted = true;
     if (
-      !this.user.fullName ||
+      
       !this.user.userName ||
-      !this.user.email ||
-      !this.user.department ||
-      !this.user.role ||
+      
+      !this.user.departmentId ||
+      !this.user.roleId ||
+      !this.user.password ||
       (!this.user.id && !this.user.password)
     ) {
       this.message.add({
@@ -354,50 +364,52 @@ completeDepartmentDialog(e: any) {
     this.saving = true;
     const isNew = !this.user.id;
 
+//     {
+//   "cin": "124551",
+//   "confirmPassword": "wN*EKv}_9Uih7AP",
+//   "departmentId": 2,
+//   "departmentName": "IT",
+//   "password": "wN*EKv}_9Uih7AP",
+//   "phoneNumber": "1234567",
+//   "roleId": 10,
+//   "roleName": "Finance",
+//   "userName": "hichem"
+// }
+
+    this.newUser = {
+      cin: this.user.cin,
+      confirmPassword: this.user.confirmPassword,
+      departmentId: this.user.departmentId,
+      
+      password: this.user.password,
+      phoneNumber: this.user.phoneNumber,
+      roleId: this.user.roleId,
+      
+      userName: this.user.userName
+    };
     this.userService.createUser(this.newUser).subscribe({
       next: (user: any) => {
-        if (isNew) {
-          this.users.unshift({
-            id: (Math.random() * 100000).toFixed(0),
-            fullName: this.user.fullName!,
-            userName: this.user.userName!,
-            email: this.user.email!,
-            department: this.user.department!,
-            role: this.user.role!,
-            phoneNumber: this.user.phoneNumber,
-            isActive: this.user.isActive ?? true,
-            createdAt: new Date().toISOString(),
-            profilePicture: this.user.profilePicture,
-          });
+
           this.message.add({
-            severity: 'success',
-            summary: 'Créé',
-            detail: 'Utilisateur ajouté.',
-          });
-        } else {
-          const i = this.users.findIndex((x) => x.id === this.user.id);
-          if (i > -1)
-            this.users[i] = { ...this.users[i], ...(this.user as User) };
-          this.message.add({
-            severity: 'success',
-            summary: 'Mis à jour',
-            detail: 'Utilisateur modifié.',
-          });
-        }
-        this.computeStats();
-        this.saving = false;
-        this.userDialog = false;
-      },
-      error: (err) => {
-        console.error('Error saving user:', err);
-        this.message.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: "Échec de la sauvegarde de l'utilisateur.",
-        });
-        this.saving = false;
-      },
-    });
+             severity: 'success',
+             summary: 'Créé',
+             detail: 'Utilisateur ajouté.',
+           });
+         
+         this.computeStats();
+         this.saving = false;
+         this.userDialog = false;
+       },
+       error: (err) => {
+         console.error('Error saving user:', err);
+         this.message.add({
+           severity: 'error',
+           summary: 'Erreur',
+           detail: "Échec de la sauvegarde de l'utilisateur.",
+         });
+         this.saving = false;
+       },
+     });
   }
 
   deleteUser(u: User) {
@@ -462,14 +474,7 @@ completeDepartmentDialog(e: any) {
   }
 
   onProfilePictureSelect(event: any) {
-    const file: File = event.files?.[0];
-    if (file) {
-      this.profilePictureFile = file;
-      const reader = new FileReader();
-      reader.onload = () =>
-        (this.user.profilePicture = reader.result as string);
-      reader.readAsDataURL(file);
-    }
+   
   }
 
   onImportUsers(event: any) {

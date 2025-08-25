@@ -4,124 +4,117 @@
   <!-- Statistics Widgets Section -->
   <div class="col-span-12">
     <div class="grid grid-cols-12 gap-6">
-      <!-- Sales Widget -->
+      <!-- Users Widget -->
       <div class="col-span-12 md:col-span-6 xl:col-span-3">
-        <div class="card h-full">
-          <span class="font-semibold text-lg">Utilisateurs</span>
-          <div class="flex justify-between items-start mt-4">
-            <div class="w-6/12">
-              <span
-                class="text-4xl font-bold text-surface-900 dark:text-surface-0"
-                >{{ totalUsers }}</span
-              >
-              <div class="text-green-500">
-                <span class="font-medium">+{{ userGrowthPercentage }}%</span>
-                <i class="pi pi-arrow-up text-xs ml-2"></i>
-              </div>
-            </div>
-            <div class="w-6/12">
-              <i class="pi pi-users text-4xl text-green-500"></i>
-            </div>
+        <div class="card h-full bg-gradient-to-br from-green-100 to-green-300 shadow-lg rounded-xl p-6">
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-lg text-green-900">Utilisateurs</span>
+            <i class="pi pi-users text-4xl text-green-600"></i>
+          </div>
+          <div class="mt-6 flex items-end justify-between">
+            <span class="text-5xl font-extrabold text-green-900">{{ totalUsers }}</span>
+            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <i class="pi pi-arrow-up"></i> +{{ userGrowthPercentage }}%
+            </span>
           </div>
         </div>
       </div>
-
-      <!-- Revenue Widget -->
+      <!-- Documents Widget -->
       <div class="col-span-12 md:col-span-6 xl:col-span-3">
-        <div class="card h-full">
-          <span class="font-semibold text-lg">Documents</span>
-          <div class="flex justify-between items-start mt-4">
-            <div class="w-6/12">
-              <span
-                class="text-4xl font-bold text-surface-900 dark:text-surface-0"
-                >{{ totalDocuments }}</span
-              >
-              <div class="text-blue-500">
-                <span class="font-medium"
-                  >+{{ documentGrowthPercentage }}%</span
-                >
-                <i class="pi pi-arrow-up text-xs ml-2"></i>
-              </div>
-            </div>
-            <div class="w-6/12">
-              <i class="pi pi-file text-4xl text-blue-500"></i>
-            </div>
+        <div class="card h-full bg-gradient-to-br from-blue-100 to-blue-300 shadow-lg rounded-xl p-6">
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-lg text-blue-900">Documents</span>
+            <i class="pi pi-file text-4xl text-blue-600"></i>
+          </div>
+          <div class="mt-6 flex items-end justify-between">
+            <span class="text-5xl font-extrabold text-blue-900">{{ totalDocuments }}</span>
+            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <i class="pi pi-arrow-up"></i> +{{ documentGrowthPercentage }}%
+            </span>
           </div>
         </div>
       </div>
-
-      <!-- Visitors Widget -->
+      <!-- Folders Widget -->
       <div class="col-span-12 md:col-span-6 xl:col-span-3">
-        <div class="card h-full">
-          <span class="font-semibold text-lg">Dossiers</span>
-          <div class="flex justify-between items-start mt-4">
-            <div class="w-6/12">
-              <span
-                class="text-4xl font-bold text-surface-900 dark:text-surface-0"
-                >{{ totalFolders }}</span
-              >
-              <div class="text-orange-500">
-                <span class="font-medium">+{{ folderGrowthPercentage }}%</span>
-                <i class="pi pi-arrow-up text-xs ml-2"></i>
-              </div>
-            </div>
-            <div class="w-6/12">
-              <i class="pi pi-folder text-4xl text-orange-500"></i>
-            </div>
+        <div class="card h-full bg-gradient-to-br from-orange-100 to-orange-300 shadow-lg rounded-xl p-6">
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-lg text-orange-900">Dossiers</span>
+            <i class="pi pi-folder text-4xl text-orange-600"></i>
+          </div>
+          <div class="mt-6 flex items-end justify-between">
+            <span class="text-5xl font-extrabold text-orange-900">{{ totalFolders }}</span>
+            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <i class="pi pi-arrow-up"></i> +{{ folderGrowthPercentage }}%
+            </span>
           </div>
         </div>
       </div>
-
       <!-- Storage Widget -->
       <div class="col-span-12 md:col-span-6 xl:col-span-3">
-        <div class="card h-full">
-          <span class="font-semibold text-lg">Stockage</span>
-          <div class="flex justify-between items-start mt-4">
-            <div class="w-6/12">
-              <span
-                class="text-4xl font-bold text-surface-900 dark:text-surface-0"
-                >{{ storageUsed }}GB</span
-              >
-              <div class="text-purple-500">
-                <span class="font-medium">{{ storagePercentage }}%</span>
-                <i class="pi pi-database text-xs ml-2"></i>
-              </div>
-            </div>
-            <div class="w-6/12 text-right">
-              <p-knob
-                [(ngModel)]="storagePercentage"
-                [readonly]="true"
-                [size]="60"
-                strokeWidth="8"
-                fill="var(--purple-100)"
-                textColor="var(--purple-500)"
-                valueColor="var(--purple-500)"
-                rangeColor="var(--surface-300)"
-                [showValue]="false"
-              />
-            </div>
+        <div class="card h-full bg-gradient-to-br from-purple-100 to-purple-300 shadow-lg rounded-xl p-6">
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-lg text-purple-900">Stockage</span>
+            <i class="pi pi-database text-4xl text-purple-600"></i>
+          </div>
+          <div class="mt-6 flex items-end justify-between">
+            <span class="text-5xl font-extrabold text-purple-900">{{ storageUsed }}GB</span>
+            <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <i class="pi pi-chart-pie"></i> {{ storagePercentage }}%
+            </span>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <p-knob
+              [(ngModel)]="storagePercentage"
+              [readonly]="true"
+              [size]="60"
+              strokeWidth="8"
+              fill="var(--purple-100)"
+              textColor="var(--purple-500)"
+              valueColor="var(--purple-500)"
+              rangeColor="var(--surface-300)"
+              [showValue]="false"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Charts Section -->
+  <!-- Documents par département (Bar Chart) -->
+  <div class="col-span-12 xl:col-span-6">
+    <div class="card shadow-xl rounded-xl p-6 h-full">
+      <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-6">
+        Documents par département
+      </div>
+      <p-chart
+        type="bar"
+       
+        class="w-full"
+        height="300"
+      />
+    </div>
+  </div>
+
+  <!-- Activité par utilisateur (Horizontal Bar Chart) -->
+  <div class="col-span-12 xl:col-span-6">
+    <div class="card shadow-xl rounded-xl p-6 h-full">
+      <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-6">
+        Activité par utilisateur
+      </div>
+      <p-chart
+        type="bar"
+      
+        class="w-full"
+        height="300"
+      />
+    </div>
+  </div>
+
   <!-- Activity Overview Chart -->
   <div class="col-span-12 xl:col-span-8">
-    <div class="card h-full w-full">
+    <div class="card h-full w-full shadow-xl rounded-xl p-6">
       <div class="flex items-start justify-between mb-6">
-        <span class="text-surface-900 dark:text-surface-0 text-xl font-semibold"
-          >Aperçu de l'activité</span>
-        <!-- <p-dropdown 
-                    [(ngModel)]="selectedPeriod" 
-                    [options]="periodOptions" 
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Sélectionner la période"
-                    (onChange)="onPeriodChange($event)"
-                    class="w-40"
-                /> -->
+        <span class="text-surface-900 dark:text-surface-0 text-xl font-semibold">Aperçu de l'activité</span>
         <p-autoComplete
           [(ngModel)]="selectedPeriod"
           [suggestions]="filteredPeriodOptions"
@@ -134,9 +127,8 @@
           [style]="{ width: '200px' }"
         />
       </div>
-      
       <p-chart
-        class="w-full "
+        class="w-full"
         type="line"
         [data]="activityChartData"
         [options]="activityChartOptions"
@@ -145,16 +137,13 @@
         [style]="{width: '500px'}"
         height="300"
       />
-      
     </div>
   </div>
 
   <!-- Document Types Distribution -->
   <div class="col-span-12 xl:col-span-4">
-    <div class="card h-full">
-      <div
-        class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-6"
-      >
+    <div class="card h-full shadow-xl rounded-xl p-6">
+      <div class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-6">
         Répartition par type
       </div>
       <p-chart
@@ -166,15 +155,93 @@
     </div>
   </div>
 
+  <!-- Documents récents (Table) -->
+  <div class="col-span-12 xl:col-span-6">
+    <div class="card shadow-xl rounded-xl p-6 h-full">
+      <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-6">
+        Documents récents
+      </div>
+      <p-table  [rows]="5" [paginator]="false" class="rounded-xl overflow-hidden">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Département</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-doc>
+          <tr>
+            <td>{{ doc.name }}</td>
+            <td>
+              <p-tag [value]="doc.type"  />
+            </td>
+            <td>{{ doc.department }}</td>
+            <td>{{ doc.date | date : "dd/MM/yyyy" }}</td>
+            <td>
+              <p-button icon="pi pi-eye" size="small"  pTooltip="Voir" />
+              <p-button icon="pi pi-download" size="small"  pTooltip="Télécharger" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center py-4">
+              <span>Aucun document récent.</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Top utilisateurs (Leaderboard) -->
+  <div class="col-span-12 xl:col-span-6">
+    <div class="card shadow-xl rounded-xl p-6 h-full">
+      <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-6">
+        Top utilisateurs
+      </div>
+      <p-table [value]="topUsers" [rows]="5" [paginator]="false" class="rounded-xl overflow-hidden">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Utilisateur</th>
+            <th>Actions</th>
+            <th>Documents</th>
+            <th>Score</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>
+              <div class="flex items-center gap-2">
+                <p-avatar [label]="getInitials(user.name)" shape="circle" />
+                <span class="font-medium">{{ user.name }}</span>
+              </div>
+            </td>
+            <td>{{ user.actions }}</td>
+            <td>{{ user.documents }}</td>
+            <td>
+              <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">{{ user.score }}</span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center py-4">
+              <span>Aucun utilisateur trouvé.</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
   <!-- Recent Activity Table -->
   <div class="col-span-12 lg:col-span-8">
-    <div class="card">
-      <div
-        class="flex flex-col md:flex-row md:items-start md:justify-between mb-6"
-      >
-        <div
-          class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4 md:mb-0"
-        >
+    <div class="card shadow-xl rounded-xl p-6">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
+        <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-4 md:mb-0">
           Activité récente
         </div>
         <div class="flex items-center gap-2">
@@ -199,7 +266,6 @@
           />
         </div>
       </div>
-
       <p-table
         [value]="recentActivities"
         [loading]="loadingActivities"
@@ -209,6 +275,7 @@
         [lazy]="true"
         (onLazyLoad)="loadActivities($event)"
         responsiveLayout="scroll"
+        class="rounded-xl overflow-hidden"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -239,15 +306,11 @@
             <th>Actions</th>
           </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-activity>
           <tr>
             <td>
               <div class="flex items-center gap-2">
-                <p-avatar
-                  [label]="getInitials(activity.userName)"
-                  shape="circle"
-                />
+                <p-avatar [label]="getInitials(activity.userName)" shape="circle" />
                 <span class="font-medium">{{ activity.userName }}</span>
               </div>
             </td>
@@ -255,10 +318,7 @@
               <span>{{ activity.action }}</span>
             </td>
             <td>
-              <p-tag
-                [value]="activity.type"
-                [severity]="getActivitySeverity(activity.type)"
-              />
+              <p-tag [value]="activity.type" [severity]="getActivitySeverity(activity.type)" />
             </td>
             <td>
               {{ activity.timestamp | date : "dd/MM/yyyy HH:mm" }}
@@ -276,15 +336,11 @@
             </td>
           </tr>
         </ng-template>
-
         <ng-template pTemplate="emptymessage">
           <tr>
             <td colspan="5" class="text-center py-4">
               <div class="flex flex-col items-center gap-2">
-                <i
-                  class="pi pi-calendar-times"
-                  style="font-size: 2rem; color: var(--text-color-secondary)"
-                ></i>
+                <i class="pi pi-calendar-times" style="font-size: 2rem; color: var(--text-color-secondary)"></i>
                 <span>Aucune activité trouvée.</span>
               </div>
             </td>
@@ -293,9 +349,6 @@
       </p-table>
     </div>
   </div>
-
-  <!-- System Health & Quick Stats -->
-  
 </div>
 
 <!-- Activity Details Dialog -->
@@ -304,22 +357,17 @@
   [style]="{ width: '500px' }"
   header="Détails de l'activité"
   [modal]="true"
+  styleClass="rounded-xl shadow-xl"
 >
   <ng-template pTemplate="content">
     <div class="space-y-4" *ngIf="selectedActivity">
       <div class="flex items-center gap-3 pb-4 border-b">
-        <p-avatar
-          [label]="getInitials(selectedActivity.userName)"
-          shape="circle"
-        />
+        <p-avatar [label]="getInitials(selectedActivity.userName)" shape="circle" styleClass="bg-gradient-to-br from-blue-200 to-blue-400 text-blue-900" />
         <div>
-          <h4 class="m-0">{{ selectedActivity.userName }}</h4>
-          <p class="text-sm text-gray-600 m-0">
-            {{ selectedActivity.userEmail }}
-          </p>
+          <h4 class="m-0 font-bold text-lg">{{ selectedActivity.userName }}</h4>
+          <p class="text-sm text-gray-600 m-0">{{ selectedActivity.userEmail }}</p>
         </div>
       </div>
-
       <div class="grid grid-cols-12 gap-4">
         <div class="col-span-6">
           <label class="font-semibold">Action:</label>
@@ -327,10 +375,7 @@
         </div>
         <div class="col-span-6">
           <label class="font-semibold">Type:</label>
-          <p-tag
-            [value]="selectedActivity.type"
-            [severity]="getActivitySeverity(selectedActivity.type)"
-          />
+          <p-tag [value]="selectedActivity.type" [severity]="getActivitySeverity(selectedActivity.type)" styleClass="px-2 py-1 rounded-full text-xs" />
         </div>
         <div class="col-span-6">
           <label class="font-semibold">Date:</label>
@@ -347,13 +392,13 @@
       </div>
     </div>
   </ng-template>
-
   <ng-template pTemplate="footer">
     <p-button
       label="Fermer"
       icon="pi pi-times"
       [text]="true"
       (click)="activityDetailsDialog = false"
+      styleClass="rounded-full"
     />
   </ng-template>
 </p-dialog>

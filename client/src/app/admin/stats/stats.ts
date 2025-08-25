@@ -8,7 +8,7 @@ import { ChartModule } from 'primeng/chart';
 import { KnobModule } from 'primeng/knob';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { AutoCompleteModule } from 'primeng/autocomplete'; // Changed from DropdownModule
+import { AutoCompleteModule } from 'primeng/autocomplete'; 
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';

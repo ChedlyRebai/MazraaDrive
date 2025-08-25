@@ -17,6 +17,9 @@ export interface UserDto {
        phoneNumberConfirmed: boolean;
        lockoutEnabled: boolean;
        lockoutEnd: string | null;
+      
+       password: string;
+       confirmPassword: string;
 
        cin: number | null;
        accessFailedCount: number;
@@ -24,7 +27,7 @@ export interface UserDto {
 
 export interface CreateUserDto {
        userName: string;
-       email: string;
+       
        password: string;
        confirmPassword: string;
        phoneNumber: string;
