@@ -169,11 +169,13 @@ namespace Infrastructure.Repositories
 
         public Task<Role[]> SearchAsync(string searchTerm)
         {
-            if (string.IsNullOrEmpty(searchTerm))
-                return Task.FromResult(Array.Empty<Role>());
+            if (string.IsNullOrEmpty(searchTerm.ToLower()))
+                return _context.Role
+                .OrderBy(r => r.Name)
+                .ToArrayAsync();
 
             var roles = _context.Role
-                .Where(r => r.Name.Contains(searchTerm) || r.Description.Contains(searchTerm))
+                .Where(r => r.Name.ToLower().Contains(searchTerm.ToLower()) || r.Description.Contains(searchTerm.ToLower()))
                 .OrderBy(r => r.Name)
                 .ToArrayAsync();
 

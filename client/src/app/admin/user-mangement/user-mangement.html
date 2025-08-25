@@ -367,7 +367,7 @@
                 >Requis.</small
               >
             </div>
-            
+
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
                 <input
@@ -386,30 +386,72 @@
                   [(ngModel)]="user.department"
                   [suggestions]="departmentFilteredDialog"
                   (completeMethod)="completeDepartmentDialog($event)"
-                  [forceSelection]="true"
                   [dropdown]="true"
-                  optionLabel="label"
-                  optionValue="value"
-                  showClear
-                />
+                  optionLabel="name"
+                  optionValue="id"
+                  showClear="true"
+                  placeholder="Sélectionner un département"
+                  [forceSelection]="true"
+                  [minLength]="1"
+                  (onSelect)="user.department = $event.value"
+                 
+                >
+                  <ng-template let-department pTemplate="item">
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ department.name }}</span>
+                      <small class="text-gray-500">{{
+                        department.description
+                      }}</small>
+                    </div>
+                  </ng-template>
+                </p-autocomplete>
                 <label for="department">Département *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.department"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.department">
+                Requis.
+              </small>
             </div>
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
+                <div>
+                  <label class="block text-sm font-medium mb-1"
+                    >Document *</label
+                  >
+                  <p-autocomplete
+                    inputId="role"
+                    [(ngModel)]="user.role"
+                    [suggestions]="roleFilteredDialog"
+                    (completeMethod)="completeRoleDialog($event)"
+                    [dropdown]="true"
+                    optionLabel="name"
+                    optionValue="id"
+                    showClear="true"
+                    placeholder="Sélectionner un rôle"
+                    [forceSelection]="true"
+                    [minLength]="1"
+                  >
+                    <ng-template
+                      let-role
+                      onclick="console.log(role)"
+                      pTemplate="item"
+                    >
+                      <div class="flex flex-col">
+                        <span class="font-medium">{{ role.name }}</span>
+                        <small class="text-gray-500">{{
+                          role.description
+                        }}</small>
+                      </div>
+                    </ng-template>
+                  </p-autocomplete>
+                </div>
                 <p-autocomplete
                   inputId="role"
                   [(ngModel)]="user.role"
                   [suggestions]="roleFilteredDialog"
                   (completeMethod)="completeRoleDialog($event)"
-                  [forceSelection]="true"
                   [dropdown]="true"
-                  optionLabel="label"
-                  optionValue="value"
-                  showClear
+                  optionLabel="name"
+                  optionValue="id"
                 />
                 <label for="role">Rôle *</label>
               </p-floatLabel>

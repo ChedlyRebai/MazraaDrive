@@ -33,6 +33,8 @@ namespace Api.Controllers
         {
             try
             {
+                // if (string.IsNullOrEmpty(searchTerm))
+                //     return BadRequest("Search term cannot be empty");
                 if (string.IsNullOrEmpty(searchTerm))
                     return BadRequest("Search term cannot be empty");
 

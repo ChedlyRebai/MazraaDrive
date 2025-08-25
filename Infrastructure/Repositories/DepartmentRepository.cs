@@ -126,61 +126,65 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
             .OrderBy(d => d.Name)
             .ToListAsync();
     }
-    
+
     private IQueryable<Department> ApplyFilters(IQueryable<Department> query, DepartmentFilterDto filter)
+    {
+        if (!string.IsNullOrEmpty(filter.Name))
+            query = query.Where(d => d.Name.Contains(filter.Name));
+
+        if (filter.CreatedFrom.HasValue)
+            query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
+
+        if (filter.CreatedTo.HasValue)
+            query = query.Where(d => d.CreatedAt <= filter.CreatedTo);
+
+        if (!string.IsNullOrEmpty(filter.Search))
         {
-            if (!string.IsNullOrEmpty(filter.Name))
-                query = query.Where(d => d.Name.Contains(filter.Name));
-
-            if (filter.CreatedFrom.HasValue)
-                query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
-
-            if (filter.CreatedTo.HasValue)
-                query = query.Where(d => d.CreatedAt <= filter.CreatedTo);
-
-            if (!string.IsNullOrEmpty(filter.Search))
-            {
-                query = query.Where(d => 
-                    d.Name.Contains(filter.Search) ||
-                    d.Description.Contains(filter.Search)
-                );
-            }
-
-            // Note: User count filtering will be applied after including users
-            // This is done in the main query method
-
-            return query;
+            query = query.Where(d =>
+                d.Name.Contains(filter.Search) ||
+                d.Description.Contains(filter.Search)
+            );
         }
 
-        private IQueryable<Department> ApplySorting(IQueryable<Department> query, string? sortBy, string? sortDirection)
+        // Note: User count filtering will be applied after including users
+        // This is done in the main query method
+
+        return query;
+    }
+
+    private IQueryable<Department> ApplySorting(IQueryable<Department> query, string? sortBy, string? sortDirection)
+    {
+        if (string.IsNullOrEmpty(sortBy))
+            return query.OrderBy(d => d.Name);
+
+        var isDescending = sortDirection?.ToLower() == "desc";
+
+        return sortBy.ToLower() switch
         {
-            if (string.IsNullOrEmpty(sortBy))
-                return query.OrderBy(d => d.Name);
-
-            var isDescending = sortDirection?.ToLower() == "desc";
-
-            return sortBy.ToLower() switch
-            {
-                "name" => isDescending ? query.OrderByDescending(d => d.Name)
-                                       : query.OrderBy(d => d.Name),
-                "description" => isDescending ? query.OrderByDescending(d => d.Description)
-                                              : query.OrderBy(d => d.Description),
-                "createdat" => isDescending ? query.OrderByDescending(d => d.CreatedAt)
-                                            : query.OrderBy(d => d.CreatedAt),
-                "updatedat" => isDescending ? query.OrderByDescending(d => d.UpdatedAt)
-                                            : query.OrderBy(d => d.UpdatedAt),
-                _ => query.OrderBy(d => d.Name)
-            };
-        }
+            "name" => isDescending ? query.OrderByDescending(d => d.Name)
+                                   : query.OrderBy(d => d.Name),
+            "description" => isDescending ? query.OrderByDescending(d => d.Description)
+                                          : query.OrderBy(d => d.Description),
+            "createdat" => isDescending ? query.OrderByDescending(d => d.CreatedAt)
+                                        : query.OrderBy(d => d.CreatedAt),
+            "updatedat" => isDescending ? query.OrderByDescending(d => d.UpdatedAt)
+                                        : query.OrderBy(d => d.UpdatedAt),
+            _ => query.OrderBy(d => d.Name)
+        };
+    }
 
     public async Task<IEnumerable<DepartmentSearchDTO>> SearchAsync(string searchTerm)
     {
-        if (string.IsNullOrEmpty(searchTerm))
+        IQueryable<Department> query = _context.Departments;
+        string newSearchTerm = searchTerm.ToLower();
+        // If searchTerm is not empty, filter
+        if (!string.IsNullOrEmpty(searchTerm))
         {
-            return Array.Empty<DepartmentSearchDTO>();
+            query = query.Where(d => d.Name.ToLower().Contains(searchTerm.ToLower()));
         }
 
-        var departments = await _context.Departments.Where(d => d.Name.Contains(searchTerm))
+   
+        var departments = await query   
             .Select(d => new DepartmentSearchDTO
             {
                 Name = d.Name,

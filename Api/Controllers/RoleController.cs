@@ -180,8 +180,8 @@ namespace Api.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(searchTerm))
-                    return BadRequest(new ResponseAPI(400, "Search term is required"));
+                // if (string.IsNullOrWhiteSpace(searchTerm))
+                //     return BadRequest(new ResponseAPI(400, "Search term is required"));
 
                 var roles = await _unitOfWork.RoleRepository.SearchAsync(searchTerm);
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);

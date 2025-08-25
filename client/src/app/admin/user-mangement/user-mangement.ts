@@ -1,13 +1,13 @@
 import { UserService } from './../../core/services/user-service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Query, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { SharedModule } from "../../shared/shared.module";
-import { Avatar } from "primeng/avatar";
-import { Checkbox } from "primeng/checkbox";
-import { Password } from "primeng/password";
-import { AutoComplete } from "primeng/autocomplete";
+import { SharedModule } from '../../shared/shared.module';
+import { Avatar } from 'primeng/avatar';
+import { Checkbox } from 'primeng/checkbox';
+import { Password } from 'primeng/password';
+import { AutoComplete } from 'primeng/autocomplete';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { ThemeSwitcher } from "../themeswitcher";
+import { ThemeSwitcher } from '../themeswitcher';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -43,10 +43,19 @@ interface UserFilter {
   selector: 'app-user-mangement',
   templateUrl: './user-mangement.html',
   providers: [MessageService, ConfirmationService],
-  imports: [SharedModule, Avatar,FormsModule ,CommonModule,Checkbox, Password, AutoComplete, FloatLabelModule, ThemeSwitcher]
+  imports: [
+    SharedModule,
+    Avatar,
+    FormsModule,
+    CommonModule,
+    Checkbox,
+    Password,
+    AutoComplete,
+    FloatLabelModule,
+    ThemeSwitcher,
+  ],
 })
 export class UserMangement implements OnInit {
-
   loading = false;
   saving = false;
 
@@ -72,19 +81,17 @@ export class UserMangement implements OnInit {
   roleOptions = [
     { label: 'Administrateur', value: 'Admin' },
     { label: 'Manager', value: 'Manager' },
-    { label: 'Utilisateur', value: 'User' }
+    { label: 'Utilisateur', value: 'User' },
   ];
   departmentOptions = [
     { label: 'Finance', value: 'Finance' },
     { label: 'IT', value: 'IT' },
-    { label: 'RH', value: 'HR' }
+    { label: 'RH', value: 'HR' },
   ];
   statusOptions = [
     { label: 'Actif', value: true },
-    { label: 'Inactif', value: false }
+    { label: 'Inactif', value: false },
   ];
-
-
 
   PageSize?: number = 5;
   Search?: string = '';
@@ -92,14 +99,13 @@ export class UserMangement implements OnInit {
   SortBy?: string = '';
   SortDirection?: string = '';
   getAllUsers() {
-    this.userService
-       .getUsers(
-         this.PageSize,
-         this.Search,
-         this.PageNumber,
-         this.SortBy,
-         this.SortDirection
-       )
+    this.userService.getUsers(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
     //   .subscribe({
     //     next: (response: any) => {
     //       this.PageNumber = response.pageNumber;
@@ -115,16 +121,18 @@ export class UserMangement implements OnInit {
     //   });
   }
 
- 
-
   onPageChange(event: any) {
-   // this.first = event.first;
+    // this.first = event.first;
     this.PageNumber = event.first / event.rows + 1;
     this.PageSize = event.rows;
     this.getAllUsers();
   }
   // Filter autocomplete suggestions
-  roleFiltered: any[] = [];
+  roleFiltered: any[] = [
+    { value: 'Admin' },
+    { value: 'Manager' },
+    { value: 'User' },
+  ];
   departmentFiltered: any[] = [];
   statusFiltered: any[] = [];
 
@@ -135,7 +143,6 @@ export class UserMangement implements OnInit {
   profilePictureFile: File | null = null;
 
   constructor(
-    
     public departmentService: DepartmentService,
     public roleService: RoleService,
     public userService: UserService,
@@ -148,46 +155,100 @@ export class UserMangement implements OnInit {
     this.userService.getUsers();
   }
   initRoleSearch() {
-    this.roleService.getSearchRoles(this.user.role).subscribe(
-      (result) => {
-        this.roleFiltered = result;
-      },
-      (error) => {
-        console.error('Error fetching roles:', error);
-      }
-    );
+    // this.roleService.getSearchRoles(this.user.role).subscribe(
+    //   (result) => {
+    //     this.roleFiltered = result;
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching roles:', error);
+    //   }
+    // );
   }
 
   // Autocomplete complete methods (filters)
   completeRole(e: any) {
     const q = (e.query || '').toLowerCase();
-    this.roleFiltered = this.roleOptions.filter(o => o.label.toLowerCase().includes(q));
+    console.log('completeRole:', q);
   }
   completeDepartment(e: any) {
     const q = (e.query || '').toLowerCase();
-    this.departmentFiltered = this.departmentOptions.filter(o => o.label.toLowerCase().includes(q));
+    if (q.length > 0) {
+      this.roleService.getSearchRoles(q).subscribe(
+        (result) => {
+          console.log('API result:', result); // Shows array of objects
+          this.roleFilteredDialog = result; // Directly assign raw objects
+          // Now roleFilteredDialog contains [{id, name, description}, ...]
+        },
+        (error) => {
+          console.error('Error fetching roles:', error);
+        }
+      );
+    } else {
+      this.roleFilteredDialog = [];
+    }
   }
   completeStatus(e: any) {
     const q = (e.query || '').toLowerCase();
-    this.statusFiltered = this.statusOptions.filter(o => o.label.toLowerCase().includes(q));
+    this.statusFiltered = this.statusOptions.filter((o) =>
+      o.label.toLowerCase().includes(q)
+    );
   }
 
   // Autocomplete complete methods (dialog)
   completeRoleDialog(e: any) {
     const q = (e.query || '').toLowerCase();
-    this.roleFilteredDialog = this.roleOptions.filter(o => o.label.toLowerCase().includes(q));
+    if (q.length > 0) {
+      this.roleService.getSearchRoles(q).subscribe(
+        (result) => {
+          console.log('API result:', result); // Shows array of objects
+          this.roleFilteredDialog = result; // Directly assign raw objects
+          // Now roleFilteredDialog contains [{id, name, description}, ...]
+        },
+        (error) => {
+          console.error('Error fetching roles:', error);
+        }
+      );
+    } else {
+      this.roleFilteredDialog = [];
+    }
   }
-  completeDepartmentDialog(e: any) {
-    const q = (e.query || '').toLowerCase();
-    this.departmentFilteredDialog = this.departmentOptions.filter(o => o.label.toLowerCase().includes(q));
+  
+completeDepartmentDialog(e: any) {
+  const q = (e.query || '').toLowerCase();
+  if (q.length > 0) {
+    this.departmentService.getSearchDepartments(q).subscribe(
+      (result) => {
+        // result should be [{id, name, description}, ...]
+        this.departmentFilteredDialog = result;
+        // Now departmentFilteredDialog contains raw department objects
+        console.log('departmentFilteredDialog:', this.departmentFilteredDialog);
+      },
+      (error) => {
+        console.error('Error fetching departments:', error);
+        this.departmentFilteredDialog = [];
+      }
+    );
+  } else {
+    this.departmentFilteredDialog = [];
   }
+}
+
 
   applyFilters() {
     this.loadUsers();
   }
-  clearRole() { this.filter.role = null; this.loadUsers(); }
-  clearDept() { this.filter.dept = null; this.loadUsers(); }
-  clearStatus() { this.filter.status = null; this.loadUsers(); }
+  clearRole() {
+    this.filter.role = null;
+    this.loadUsers();
+  }
+  clearDept() {
+    this.filter.dept = null;
+    this.loadUsers();
+  }
+  clearStatus() {
+    this.filter.status = null;
+    this.loadUsers();
+  }
 
   onGlobalSearch(ev: any) {
     // hook if server-side global search required
@@ -197,13 +258,34 @@ export class UserMangement implements OnInit {
     this.loading = true;
     setTimeout(() => {
       const mock: User[] = [
-        { id: '1', fullName: 'John Doe', userName: 'jdoe', email: 'jdoe@example.com', department: 'IT', role: 'Admin', isActive: true, createdAt: new Date().toISOString() },
-        { id: '2', fullName: 'Jane Smith', userName: 'jsmith', email: 'jsmith@example.com', department: 'Finance', role: 'User', isActive: false, createdAt: new Date().toISOString() }
+        {
+          id: '1',
+          fullName: 'John Doe',
+          userName: 'jdoe',
+          email: 'jdoe@example.com',
+          department: 'IT',
+          role: 'Admin',
+          isActive: true,
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: '2',
+          fullName: 'Jane Smith',
+          userName: 'jsmith',
+          email: 'jsmith@example.com',
+          department: 'Finance',
+          role: 'User',
+          isActive: false,
+          createdAt: new Date().toISOString(),
+        },
       ];
       let data = [...mock];
-      if (this.filter.role) data = data.filter(u => u.role === this.filter.role);
-      if (this.filter.dept) data = data.filter(u => u.department === this.filter.dept);
-      if (this.filter.status !== null) data = data.filter(u => u.isActive === this.filter.status);
+      if (this.filter.role)
+        data = data.filter((u) => u.role === this.filter.role);
+      if (this.filter.dept)
+        data = data.filter((u) => u.department === this.filter.dept);
+      if (this.filter.status !== null)
+        data = data.filter((u) => u.isActive === this.filter.status);
       this.users = data;
       this.computeStats();
       this.loading = false;
@@ -212,7 +294,7 @@ export class UserMangement implements OnInit {
 
   computeStats() {
     this.totalUsers = this.users.length;
-    this.activeUsers = this.users.filter(u => u.isActive).length;
+    this.activeUsers = this.users.filter((u) => u.isActive).length;
     this.inactiveUsers = this.totalUsers - this.activeUsers;
   }
 
@@ -242,31 +324,41 @@ export class UserMangement implements OnInit {
   }
 
   newUser: CreateUserDto = {} as CreateUserDto;
-// {
-//   "userName": "mohamed",
-//   "cin": 220,
-//   "password": "chedlyREb12.",
-//   "confirmPassword": "chedlyREb12.",
-//   "phoneNumber": "28651633",
-//   "roleId": 10,
-//   "departmentId": 10
-// }
+  // {
+  //   "userName": "mohamed",
+  //   "cin": 220,
+  //   "password": "chedlyREb12.",
+  //   "confirmPassword": "chedlyREb12.",
+  //   "phoneNumber": "28651633",
+  //   "roleId": 10,
+  //   "departmentId": 10
+  // }
   saveUser() {
     this.submitted = true;
-    if (!this.user.fullName || !this.user.userName || !this.user.email ||
-        !this.user.department || !this.user.role || (!this.user.id && !this.user.password)) {
-      this.message.add({ severity: 'warn', summary: 'Validation', detail: 'Champs requis manquants.' });
+    if (
+      !this.user.fullName ||
+      !this.user.userName ||
+      !this.user.email ||
+      !this.user.department ||
+      !this.user.role ||
+      (!this.user.id && !this.user.password)
+    ) {
+      this.message.add({
+        severity: 'warn',
+        summary: 'Validation',
+        detail: 'Champs requis manquants.',
+      });
       return;
     }
-    console.log('Saving user:', this.user); 
+    console.log('Saving user:', this.user);
     this.saving = true;
     const isNew = !this.user.id;
-    
+
     this.userService.createUser(this.newUser).subscribe({
-      next: (user:any) => {
+      next: (user: any) => {
         if (isNew) {
           this.users.unshift({
-            id: (Math.random()*100000).toFixed(0),
+            id: (Math.random() * 100000).toFixed(0),
             fullName: this.user.fullName!,
             userName: this.user.userName!,
             email: this.user.email!,
@@ -275,24 +367,37 @@ export class UserMangement implements OnInit {
             phoneNumber: this.user.phoneNumber,
             isActive: this.user.isActive ?? true,
             createdAt: new Date().toISOString(),
-            profilePicture: this.user.profilePicture
-        });
-        this.message.add({ severity: 'success', summary: 'Créé', detail: 'Utilisateur ajouté.' });
-      } else {
-        const i = this.users.findIndex(x => x.id === this.user.id);
-        if (i > -1) this.users[i] = { ...(this.users[i]), ...(this.user as User) };
-        this.message.add({ severity: 'success', summary: 'Mis à jour', detail: 'Utilisateur modifié.' });
-      }
-      this.computeStats();
-      this.saving = false;
-      this.userDialog = false;
-      },error: err => {
+            profilePicture: this.user.profilePicture,
+          });
+          this.message.add({
+            severity: 'success',
+            summary: 'Créé',
+            detail: 'Utilisateur ajouté.',
+          });
+        } else {
+          const i = this.users.findIndex((x) => x.id === this.user.id);
+          if (i > -1)
+            this.users[i] = { ...this.users[i], ...(this.user as User) };
+          this.message.add({
+            severity: 'success',
+            summary: 'Mis à jour',
+            detail: 'Utilisateur modifié.',
+          });
+        }
+        this.computeStats();
+        this.saving = false;
+        this.userDialog = false;
+      },
+      error: (err) => {
         console.error('Error saving user:', err);
-        this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la sauvegarde de l\'utilisateur.' });
-        this.saving = false;}
-    }
-   
-  )
+        this.message.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Échec de la sauvegarde de l'utilisateur.",
+        });
+        this.saving = false;
+      },
+    });
   }
 
   deleteUser(u: User) {
@@ -301,10 +406,14 @@ export class UserMangement implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter(x => x.id !== u.id);
+        this.users = this.users.filter((x) => x.id !== u.id);
         this.computeStats();
-        this.message.add({ severity: 'success', summary: 'Supprimé', detail: 'Utilisateur supprimé.' });
-      }
+        this.message.add({
+          severity: 'success',
+          summary: 'Supprimé',
+          detail: 'Utilisateur supprimé.',
+        });
+      },
     });
   }
 
@@ -315,26 +424,40 @@ export class UserMangement implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        const ids = new Set(this.selectedUsers.map(u => u.id));
-        this.users = this.users.filter(u => !ids.has(u.id));
+        const ids = new Set(this.selectedUsers.map((u) => u.id));
+        this.users = this.users.filter((u) => !ids.has(u.id));
         this.selectedUsers = [];
         this.computeStats();
-        this.message.add({ severity: 'success', summary: 'Supprimés', detail: 'Utilisateurs supprimés.' });
-      }
+        this.message.add({
+          severity: 'success',
+          summary: 'Supprimés',
+          detail: 'Utilisateurs supprimés.',
+        });
+      },
     });
   }
 
   getInitials(name: string | undefined): string {
     if (!name) return '';
-    return name.split(/\s+/).slice(0,2).map(p => p[0]?.toUpperCase()).join('');
+    return name
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((p) => p[0]?.toUpperCase())
+      .join('');
   }
 
-  getRoleSeverity(role: string): 'success' | 'info' | 'warning' | 'danger' | undefined {
+  getRoleSeverity(
+    role: string
+  ): 'success' | 'info' | 'warning' | 'danger' | undefined {
     switch (role) {
-      case 'Admin': return 'danger';
-      case 'Manager': return 'warning';
-      case 'User': return 'info';
-      default: return undefined;
+      case 'Admin':
+        return 'danger';
+      case 'Manager':
+        return 'warning';
+      case 'User':
+        return 'info';
+      default:
+        return undefined;
     }
   }
 
@@ -343,7 +466,8 @@ export class UserMangement implements OnInit {
     if (file) {
       this.profilePictureFile = file;
       const reader = new FileReader();
-      reader.onload = () => this.user.profilePicture = reader.result as string;
+      reader.onload = () =>
+        (this.user.profilePicture = reader.result as string);
       reader.readAsDataURL(file);
     }
   }
@@ -351,10 +475,18 @@ export class UserMangement implements OnInit {
   onImportUsers(event: any) {
     const file: File = event.files?.[0];
     if (!file) return;
-    this.message.add({ severity: 'info', summary: 'Import', detail: `Fichier ${file.name} en cours...` });
+    this.message.add({
+      severity: 'info',
+      summary: 'Import',
+      detail: `Fichier ${file.name} en cours...`,
+    });
     setTimeout(() => {
       this.lastImportAt = new Date();
-      this.message.add({ severity: 'success', summary: 'Import', detail: 'Import terminé.' });
+      this.message.add({
+        severity: 'success',
+        summary: 'Import',
+        detail: 'Import terminé.',
+      });
       this.loadUsers();
     }, 1000);
   }
