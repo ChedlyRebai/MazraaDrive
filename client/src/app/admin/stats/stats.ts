@@ -48,6 +48,13 @@ interface PeriodOption {
   value: string;
 }
 
+
+interface Document {
+  name: string;
+  type: string;
+  department: string;
+  date: Date;
+}
 @Component({
   selector: 'app-stats',
   standalone: true,
@@ -450,4 +457,100 @@ export class Stats implements OnInit {
         return 'secondary';
     }
   }
+
+ 
+  // Charts Data
+  documentsByDepartmentData = {
+    labels: ['Finance', 'IT', 'RH', 'Direction'],
+    datasets: [
+      {
+        label: 'Documents',
+        backgroundColor: ['#34d399', '#60a5fa', '#fbbf24', '#a78bfa'],
+        data: [80, 120, 60, 80],
+      },
+    ],
+  };
+  documentsByDepartmentOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { display: true } },
+    },
+  };
+
+  activityByUserData = {
+    labels: ['Alice', 'Bob', 'Charlie', 'David'],
+    datasets: [
+      {
+        label: 'Actions',
+        backgroundColor: '#60a5fa',
+        data: [30, 50, 40, 35],
+      },
+    ],
+  };
+  activityByUserOptions = {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { display: true } },
+    },
+  };
+
+ 
+
+  
+  
+
+  // Recent Documents Table
+  recentDocuments: Document[] = [
+    { name: 'Contrat 2025', type: 'PDF', department: 'Finance', date: new Date() },
+    { name: 'Rapport IT', type: 'Word', department: 'IT', date: new Date() },
+    { name: 'Liste RH', type: 'Excel', department: 'RH', date: new Date() },
+    { name: 'Photo événement', type: 'Image', department: 'Direction', date: new Date() },
+    { name: 'Facture', type: 'PDF', department: 'Finance', date: new Date() },
+  ];
+
+  // Top Users Table
+ 
+  // Recent Activities Table
+  
+  
+
+  // Activity Details Dialog
+  
+
+
+  getDocTypeSeverity(type: string): string {
+    switch (type) {
+      case 'PDF':
+        return 'info';
+      case 'Word':
+        return 'success';
+      case 'Excel':
+        return 'warning';
+      case 'Image':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  }
+
+ 
+
+  viewDocument(doc: Document) {
+    // TODO: open document preview dialog
+  }
+
+  downloadDocument(doc: Document) {
+    // TODO: trigger document download
+  }
+
+
 }

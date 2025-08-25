@@ -88,7 +88,8 @@
       </div>
       <p-chart
         type="bar"
-       
+        [data]="documentsByDepartmentData"
+        [options]="documentsByDepartmentOptions"
         class="w-full"
         height="300"
       />
@@ -103,7 +104,8 @@
       </div>
       <p-chart
         type="bar"
-      
+        [data]="activityByUserData"
+        [options]="activityByUserOptions"
         class="w-full"
         height="300"
       />
@@ -161,7 +163,7 @@
       <div class="text-xl font-semibold text-surface-900 dark:text-surface-0 mb-6">
         Documents récents
       </div>
-      <p-table  [rows]="5" [paginator]="false" class="rounded-xl overflow-hidden">
+      <p-table [value]="recentDocuments" [rows]="5" [paginator]="false" class="rounded-xl overflow-hidden">
         <ng-template pTemplate="header">
           <tr>
             <th>Nom</th>
