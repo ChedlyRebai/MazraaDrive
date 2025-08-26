@@ -39,7 +39,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-blue-100 text-sm">Total Fichiers</p>
-              <p class="text-2xl font-bold">{{ totalFiles }}</p>
+              <p class="text-2xl font-bold">{{ stats?.documentCount || 0 }}</p>
             </div>
             <i class="pi pi-file text-3xl text-blue-200"></i>
           </div>
@@ -50,7 +50,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-green-100 text-sm">Dossiers</p>
-              <p class="text-2xl font-bold">{{ totalFolders }}</p>
+              <p class="text-2xl font-bold">{{ stats?.folderCount || 0 }}</p>
             </div>
             <i class="pi pi-folder text-3xl text-green-200"></i>
           </div>
@@ -72,7 +72,7 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-purple-100 text-sm">Stockage</p>
-              <p class="text-2xl font-bold">{{ usedStorage }}GB</p>
+              <p class="text-2xl font-bold">{{ formatFileSize(stats?.totalFileSize || 0) }}GB</p>
             </div>
             <i class="pi pi-database text-3xl text-purple-200"></i>
           </div>

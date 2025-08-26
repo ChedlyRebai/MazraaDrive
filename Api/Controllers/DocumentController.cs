@@ -13,7 +13,7 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class DocumentController : BaseController
     {
-        public readonly IAuditLogRepository _auditLogger;
+        //public readonly IAuditLogRepository _auditLogger;
         private readonly IWebHostEnvironment _environment;
         private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
         private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
@@ -22,7 +22,7 @@ namespace Api.Controllers
             : base(currentUser, unitOfWork, mapper, auditLogger)
         {
             _environment = environment;
-            _auditLogger = auditLogger;
+            // _auditLogger = auditLogger;
         }
 
         [HttpGet("test")]
@@ -262,8 +262,26 @@ namespace Api.Controllers
         }
 
 
+
+
+
         [HttpGet("MyDocumentAndFolderstat")]
-        
+        public async Task<ActionResult<DocFolderStats>> GetMyDocumentAndFolderStats()
+        {
+            try
+            {
+                var userId = _currentUser?.UserId ?? "10";
+                Console.WriteLine("UserId: " + userId);
+                var stats = await _unitOfWork.DocumentRepository.MyDocumentAndFolderStats(userId);
+                Console.WriteLine($"Stats for user {userId}: {stats.DocumentCount} documents, {stats.FolderCount} folders");
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseAPI(500, ex.Message));
+            }
+        }
+
         [HttpPost("upload")]
         public async Task<ActionResult<DocumentDto>> UploadDocument([FromForm] DocumentUploadDto uploadDto)
         {

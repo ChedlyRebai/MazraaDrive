@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import {
+  DocFolderStats,
   DocumentDto,
   DocumentFilterDto,
   DocumentPagedResult,
@@ -81,6 +82,12 @@ export class DocumentService {
   getMydocuments(){
     return this.http.get<DocumentPagedResult>(
       `${this.baseUrl}/my-documents`
+    );
+  }
+
+  getMyStats() {
+    return this.http.get<DocFolderStats>(
+      `${this.baseUrl}/MyDocumentAndFolderstat`
     );
   }
 }

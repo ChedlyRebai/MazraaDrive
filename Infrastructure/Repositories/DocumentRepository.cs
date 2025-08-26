@@ -15,19 +15,14 @@ namespace Infrastructure.Repositories
         private readonly IHttpContextAccessor _httpContextAccessor;
         public DocumentRepository(AppDbContext ctx, IHttpContextAccessor httpContextAccessor) : base(ctx)
         {
+             _context = ctx ?? throw new ArgumentNullException(nameof(ctx));
             _httpContextAccessor = httpContextAccessor;
         }
 
-         private string? CurrentUserId => _httpContextAccessor.HttpContext?.GetUserIdFromCookieToken();
-
-        
-
-
-
-
+        private string? CurrentUserId => _httpContextAccessor.HttpContext?.GetUserIdFromCookieToken();
 
         public async Task<DocumentSearchDTO[]> getDocumentByName(string name)
-        {   
+        {
             var userId = CurrentUserId;
             Console.WriteLine($"Searching documents with name containing: {userId}");
             try
@@ -96,8 +91,8 @@ namespace Infrastructure.Repositories
             if (!string.IsNullOrEmpty(pagination.Search))
             {
                 query = query.Where(d =>
-                    d.Name.Contains(pagination.Search) 
-                   
+                    d.Name.Contains(pagination.Search)
+
                 );
             }
 
@@ -132,7 +127,7 @@ namespace Infrastructure.Repositories
             {
                 query = query.Where(d =>
                     d.Name.Contains(pagination.Search) ||
-                  
+
                     d.Folder.Name.Contains(pagination.Search)
                 );
             }
@@ -305,10 +300,10 @@ namespace Infrastructure.Repositories
             return await _context.Documents
                 .CountAsync(d => d.FolderId == folderId);
         }
-        
 
 
-           private IQueryable<Document> ApplyFilters(IQueryable<Document> query, DocumentFilterDto filter)
+
+        private IQueryable<Document> ApplyFilters(IQueryable<Document> query, DocumentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(d => d.Name.Contains(filter.Name));
@@ -326,7 +321,7 @@ namespace Infrastructure.Repositories
                 query = query.Where(d => d.UploadedById.ToString() == filter.UploadedById);
 
             if (!string.IsNullOrEmpty(filter.UploadedByName))
-                query = query.Where(d => 
+                query = query.Where(d =>
                     d.UploadedBy.UserName.Contains(filter.UploadedByName) ||
                     d.UploadedBy.UserName!.Contains(filter.UploadedByName)
                 );
@@ -334,7 +329,7 @@ namespace Infrastructure.Repositories
             if (filter.IsValidated.HasValue)
                 query = query.Where(d => d.IsValidated == filter.IsValidated);
 
-           
+
             // if (filter.CreatedFrom.HasValue)
             //     query = query.Where(d => d.CreatedAt >= filter.CreatedFrom);
 
@@ -364,10 +359,10 @@ namespace Infrastructure.Repositories
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
-                query = query.Where(d => 
+                query = query.Where(d =>
                     d.Name.Contains(filter.Search) ||
-                   
-                   
+
+
                     d.Folder.Name.Contains(filter.Search)
                 );
             }
@@ -401,14 +396,48 @@ namespace Infrastructure.Repositories
                                             : query.OrderBy(d => d.UpdatedAt),
                 "isvalidated" => isDescending ? query.OrderByDescending(d => d.IsValidated)
                                               : query.OrderBy(d => d.IsValidated),
-             
+
                 _ => query.OrderByDescending(d => d.CreatedAt)
             };
         }
 
-        public Task MyDocumentAndFolderStats()
+        public async Task<DocFolderStats> MyDocumentAndFolderStats(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var documentCount = await _context.Documents.CountAsync(d => d.UploadedById == userId);
+                var folderCount = await _context.Folders.CountAsync(f => f.CreatedById == userId);
+                var totalFileSize = await _context.Documents
+                    .Where(d => d.UploadedById == userId)
+                    .SumAsync(d => d.FileSize);
+                var imageCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "png" || d.FileType == "jpg" || d.FileType == "image"));
+                var wordCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "docx" || d.FileType == "doc" || d.FileType == "word"));
+                var pdfCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && d.FileType == "pdf");
+                var audioCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "mp3" || d.FileType == "wav" || d.FileType == "audio"));
+               
+                 var videoCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "mp4" || d.FileType == "avi" || d.FileType == "video"));
+
+                var stats = new DocFolderStats
+                {
+
+                    DocumentCount = documentCount,
+                    FolderCount = folderCount,
+                    TotalFileSize = totalFileSize,
+                    ImageCount = imageCount,
+                    WordCount = wordCount,
+                    PdfCount = pdfCount,
+                    AudioCount = audioCount,
+                    VideoCount = videoCount
+                };
+                Console.WriteLine($"Stats for user {userId}: Documents={documentCount}, Folders={folderCount}, TotalFileSize={totalFileSize}");
+                Console.WriteLine($"ImageCount={imageCount}, WordCount={wordCount}, PdfCount={pdfCount}, AudioCount={audioCount}, VideoCount={videoCount}");
+                return stats;
+            }
+            catch
+            {
+                // Handle exceptions
+                throw;
+            }
         }
     }
 }

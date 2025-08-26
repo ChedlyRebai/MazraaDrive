@@ -18,7 +18,7 @@ namespace API.Controllers;
 public class AccessRequestsController : BaseController
 {
 
-    
+
     private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
 
     public AccessRequestsController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAccessRightService accessRightService, IAuditLogRepository auditLogger = null)
@@ -30,17 +30,18 @@ public class AccessRequestsController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetPaged([FromQuery] PaginationParams p)
     {
+
         var result = await _unitOfWork.AccessRequestRepository.GetPagedAsync(p);
         return Ok(result);
     }
 
     [HttpGet("my-requests")]
-      public async Task<ActionResult<PagedResult<AccessRequestDto>>> GetUserAccessRights(
+    public async Task<ActionResult<PagedResult<AccessRequestDto>>> GetUserAccessRights(
             string userId,
             [FromQuery] PaginationParams pagination)
+    {
+        try
         {
-            try
-            {
             // Authorization: Users can only view their own access rights unless they're Admin/Manager
             // var currentUserId = "10";
             // if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
@@ -61,17 +62,17 @@ public class AccessRequestsController : BaseController
             //     pagedAccessRights.SortBy,
             //     pagedAccessRights.SortDirection
             // );
-                var result = await _unitOfWork.AccessRequestRepository.GetMyRequestsAsync(pagination);
-                return Ok(result);
-
-                //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
+            var result = await _unitOfWork.AccessRequestRepository.GetMyRequestsAsync(pagination);
             return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
+
+            //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
+            return Ok(result);
         }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+    }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
@@ -144,7 +145,7 @@ public class AccessRequestsController : BaseController
         return Ok(entity);
     }
 
-  // [HttpDelete("{id}")]
+    // [HttpDelete("{id}")]
     // [Authorize(Roles = "Admin")]
     // public async Task<IActionResult> Delete(int id)
     // {

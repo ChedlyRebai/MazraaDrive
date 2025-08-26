@@ -88,6 +88,18 @@ namespace Core.DTOs
     }
 
 
+    public class DocFolderStats
+    {
+        public long TotalFileSize { get; set; }
+        public int DocumentCount { get; set; }
+        public int FolderCount { get; set; }
+
+        public int ImageCount { get; set; }
+        public int WordCount { get; set; }
+        public int PdfCount { get; set; }
+        public int AudioCount { get; set; }
+        public int VideoCount { get; set; }
+    }
 
     public class DocumentFilterDto : PaginationParams
     {

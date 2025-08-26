@@ -1,3 +1,4 @@
+import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +20,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from "../../admin/themeswitcher";
 import { TabsModule } from 'primeng/tabs';
+import { DocFolderStats } from '../../shared/models/document';
 
 
 interface Document {
@@ -263,12 +265,28 @@ export class Documents implements OnInit {
 
   // Context menu
   contextMenuItems: any[] = [];
-
-  constructor(private messageService: MessageService) {}
+  //stats
+  stats: DocFolderStats | null = null;
+  constructor(
+    private messageService: MessageService,
+    public documentService: DocumentService
+  ) {}
 
   ngOnInit() {
-    this.initializeCharts();
-    this.setupContextMenu();
+     this.initializeCharts();
+     this.setupContextMenu();
+    this.initializeStats();
+  }
+  initializeStats(){
+    this.documentService.getMyStats().subscribe({
+      next: (stats: DocFolderStats) => {
+        this.stats = stats;
+        console.log('Document stats fetched:', stats.pdfCount);
+      },
+      error: (error) => {
+        console.error('Error fetching document stats:', error);
+      }
+    });
   }
 
   initializeCharts() {

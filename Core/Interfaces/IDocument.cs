@@ -9,12 +9,12 @@ namespace Core.Interfaces;
 public interface IDocument : IGenericRepository<Document>
 {
     Task<Document?> GetByIdWithDetailsAsync(int id);
-        
+
     Task<PagedResult<Document>> GetPagedAsync(DocumentFilterDto filter);
-        Task<PagedResult<Document>> GetByFolderPagedAsync(int folderId, PaginationParams pagination);
-        Task<PagedResult<Document>> GetByUserPagedAsync(string userId, PaginationParams pagination);
+    Task<PagedResult<Document>> GetByFolderPagedAsync(int folderId, PaginationParams pagination);
+    Task<PagedResult<Document>> GetByUserPagedAsync(string userId, PaginationParams pagination);
     Task<Document> AddAsync(Document document);
-    Task MyDocumentAndFolderStats();
+    Task<DocFolderStats> MyDocumentAndFolderStats(string userId);
     Task<DocumentSearchDTO[]> getDocumentByName(string name);
     Task DeleteAsync(int id);
     Task<IReadOnlyList<Document>> GetAllAsync();

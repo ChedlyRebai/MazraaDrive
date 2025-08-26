@@ -10,7 +10,8 @@ namespace Api.Controllers
     {
         
 
-        public MessageController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public MessageController(ICurrentUserService icurrentUser, IUnitOfWork unitOfWork, IMapper mapper) 
+            : base(icurrentUser, unitOfWork, mapper)
         {
         }
     }

@@ -13,7 +13,7 @@ namespace Api.Controllers
          public readonly IAuditLogRepository _auditLogger;
         // protected readonly IAuditLogger _auditLogger;
 
-        private readonly ICurrentUserService _currentUser;
+        protected readonly ICurrentUserService _currentUser;
         public BaseController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
