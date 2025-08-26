@@ -83,6 +83,37 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("my-docs")]
+        public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByUser(
+
+            [FromQuery] DocumentFilterDto filter)
+        {
+            try
+            {
+                // Authorization: Users can only view their own documents unless they're Admin/Manager
+                var userId = _currentUser?.UserId ?? "10";
+
+
+                var pagedDocuments = await _unitOfWork.DocumentRepository.GetByUserPagedAsync(userId, filter);
+                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
+
+                var result = documentDtos.ToPagedResult(
+                    pagedDocuments.PageNumber,
+                    pagedDocuments.PageSize,
+                    pagedDocuments.TotalRecords,
+                    pagedDocuments.Search,
+                    pagedDocuments.SortBy,
+                    pagedDocuments.SortDirection
+                );
+
+                //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
+                return Ok(new { success = true, data = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<DocumentDto>> GetDocument(int id)
         {
@@ -130,40 +161,35 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByUser(
-            string userId,
-            [FromQuery] PaginationParams pagination)
-        {
-            try
-            {
-                // Authorization: Users can only view their own documents unless they're Admin/Manager
-                var currentUserId = "10";
-                if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
-                {
-                    return Forbid();
-                }
+        // [HttpGet("user/{userId}")]
+        // public async Task<ActionResult<PagedResult<DocumentDto>>> GetDocumentsByUser(
+        //     string userId,
+        //     [FromQuery] PaginationParams pagination)
+        // {
+        //     try
+        //     {
 
-                var pagedDocuments = await _unitOfWork.DocumentRepository.GetByUserPagedAsync(userId, pagination);
-                var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
 
-                var result = documentDtos.ToPagedResult(
-                    pagedDocuments.PageNumber,
-                    pagedDocuments.PageSize,
-                    pagedDocuments.TotalRecords,
-                    pagedDocuments.Search,
-                    pagedDocuments.SortBy,
-                    pagedDocuments.SortDirection
-                );
+        //         var pagedDocuments = await _unitOfWork.DocumentRepository.GetByUserPagedAsync(userId, pagination);
+        //         var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(pagedDocuments.Data);
 
-                //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
-                return Ok(new { success = true, data = result });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
-        }
+        //         var result = documentDtos.ToPagedResult(
+        //             pagedDocuments.PageNumber,
+        //             pagedDocuments.PageSize,
+        //             pagedDocuments.TotalRecords,
+        //             pagedDocuments.Search,
+        //             pagedDocuments.SortBy,
+        //             pagedDocuments.SortDirection
+        //         );
+
+        //         //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
+        //         return Ok(new { success = true, data = result });
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return BadRequest(new { success = false, message = ex.Message });
+        //     }
+        // }
 
 
         /*[HttpGet]
@@ -260,8 +286,6 @@ namespace Api.Controllers
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
-
-
 
 
 

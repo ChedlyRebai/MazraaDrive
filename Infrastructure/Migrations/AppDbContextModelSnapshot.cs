@@ -481,6 +481,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");

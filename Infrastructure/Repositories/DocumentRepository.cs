@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
         private readonly IHttpContextAccessor _httpContextAccessor;
         public DocumentRepository(AppDbContext ctx, IHttpContextAccessor httpContextAccessor) : base(ctx)
         {
-             _context = ctx ?? throw new ArgumentNullException(nameof(ctx));
+            _context = ctx ?? throw new ArgumentNullException(nameof(ctx));
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -115,39 +115,36 @@ namespace Infrastructure.Repositories
             );
         }
 
-        public async Task<PagedResult<Document>> GetByUserPagedAsync(string userId, PaginationParams pagination)
+        public async Task<PagedResult<Document>> GetByUserPagedAsync(string userId, DocumentFilterDto filter)
         {
-            var query = _context.Documents
-                .Include(d => d.Folder)
-                .Include(d => d.UploadedBy)
-                .Where(d => d.UploadedById.ToString() == userId);
+           var query = _context.Documents
+               .Where(d => d.UploadedById == userId)
+               .Include(d => d.Folder)
+               .Include(d => d.UploadedBy)
+               .AsQueryable();
 
-            // Apply search if provided
-            if (!string.IsNullOrEmpty(pagination.Search))
-            {
-                query = query.Where(d =>
-                    d.Name.Contains(pagination.Search) ||
+            // Apply filters
+            query = ApplyFilters(query, filter);
 
-                    d.Folder.Name.Contains(pagination.Search)
-                );
-            }
-
+            // Get total count before pagination
             var totalRecords = await query.CountAsync();
 
-            query = ApplySorting(query, pagination.SortBy, pagination.SortDirection);
+            // Apply sorting
+            query = ApplySorting(query, filter.SortBy, filter.SortDirection);
 
+            // Apply pagination
             var documents = await query
-                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
-                .Take(pagination.PageSize)
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
                 .ToListAsync();
 
             return documents.ToPagedResult(
-                pagination.PageNumber,
-                pagination.PageSize,
+                filter.PageNumber,
+                filter.PageSize,
                 totalRecords,
-                pagination.Search,
-                pagination.SortBy,
-                pagination.SortDirection
+                filter.Search,
+                filter.SortBy,
+                filter.SortDirection
             );
         }
 
@@ -414,8 +411,8 @@ namespace Infrastructure.Repositories
                 var wordCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "docx" || d.FileType == "doc" || d.FileType == "word"));
                 var pdfCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && d.FileType == "pdf");
                 var audioCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "mp3" || d.FileType == "wav" || d.FileType == "audio"));
-               
-                 var videoCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "mp4" || d.FileType == "avi" || d.FileType == "video"));
+
+                var videoCount = await _context.Documents.CountAsync(d => d.UploadedById == userId && (d.FileType == "mp4" || d.FileType == "avi" || d.FileType == "video"));
 
                 var stats = new DocFolderStats
                 {
