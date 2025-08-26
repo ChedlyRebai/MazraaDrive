@@ -21,8 +21,10 @@ public class AccessRequestsController : BaseController
     
     private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
 
-    public AccessRequestsController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null) : base(unitOfWork, mapper, auditLogger)
+    public AccessRequestsController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAccessRightService accessRightService, IAuditLogRepository auditLogger = null)
+        : base(currentUser, unitOfWork, mapper, auditLogger)
     {
+        _accessRightService = accessRightService;
     }
 
     [HttpGet]

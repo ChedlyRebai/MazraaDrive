@@ -13,8 +13,9 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class AccessRightController : BaseController
     {
-        public AccessRightController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-        {}
+        public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null) : base(currentUser, unitOfWork, mapper, auditLogger)
+        {
+        }
 
         [HttpGet("test")]
         public string TestApi()

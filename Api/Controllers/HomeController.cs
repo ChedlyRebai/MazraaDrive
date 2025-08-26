@@ -10,7 +10,8 @@ namespace Api.Controllers
 
     public class HomeController : BaseController
     {
-        public HomeController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public HomeController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, auditLogger)
         {
         }
 

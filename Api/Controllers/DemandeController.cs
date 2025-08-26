@@ -8,8 +8,8 @@ namespace Api.Controllers
     //------------------------------------------------------------------------------
     public class DemandeController : BaseController
     {
-        public DemandeController(IUnitOfWork unitOfWork, IMapper mapper) 
-            : base(unitOfWork, mapper)
+        public DemandeController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, auditLogger)
         {
         }
 

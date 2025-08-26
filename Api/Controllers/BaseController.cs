@@ -13,11 +13,13 @@ namespace Api.Controllers
          public readonly IAuditLogRepository _auditLogger;
         // protected readonly IAuditLogger _auditLogger;
 
-        public BaseController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
+        private readonly ICurrentUserService _currentUser;
+        public BaseController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _auditLogger = auditLogger;
+             _currentUser = currentUser;
             //_auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));
         }
     }

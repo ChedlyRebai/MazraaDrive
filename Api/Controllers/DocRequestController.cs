@@ -11,8 +11,9 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class DocumentRequestController : BaseController
 {
-    public DocumentRequestController(IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger) : base(unitOfWork, mapper, auditLogger)
-    {   
+    public DocumentRequestController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
+        : base(currentUser, unitOfWork, mapper, auditLogger)
+    {
     }
 
     [HttpGet]
