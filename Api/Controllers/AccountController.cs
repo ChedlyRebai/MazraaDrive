@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata;
 using Api.Helper;
 using AutoMapper;
 using Core.DTO;
@@ -38,11 +40,11 @@ namespace Api.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
 
-            if(loginDTO == null || string.IsNullOrEmpty(loginDTO.Email) || string.IsNullOrEmpty(loginDTO.Password))
+            if (loginDTO == null || string.IsNullOrEmpty(loginDTO.Email) || string.IsNullOrEmpty(loginDTO.Password))
             {
                 return BadRequest(new ResponseAPI(400, "Email and Password are required"));
             }
-            
+
             var result = await _unitOfWork.Auth.LoginAsync(loginDTO);
             if (result.StartsWith("please"))
             {
@@ -63,10 +65,70 @@ namespace Api.Controllers
         }
 
 
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            // Remove the cookie
+            Response.Cookies.Delete("token");
+            return Ok(new ResponseAPI(200, "Logout successful"));
+        }
 
+        [HttpPost("validate-token")]
+        public IActionResult ValidateToken()
+        {
+            if (!Request.Cookies.TryGetValue("token", out var token))
+            {
+                return Unauthorized(new ResponseAPI(401, "Token is missing"));
+            }
 
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
 
+                var jwtToken = handler.ReadJwtToken(token);
+                if (jwtToken.ValidTo < DateTime.UtcNow)
+                    return Unauthorized(new ResponseAPI(401, "Token is expired"));
 
+                return Ok(new { valid = true });
+            }
+            catch (System.Exception)
+            {
 
+                return Unauthorized(new ResponseAPI(401, "Token is invalid"));
+            }
+        }
+
+        // [HttpPost("validate-admin")]
+        // public IActionResult ValidateAdmin()
+        // {
+        //     if (!Request.Cookies.TryGetValue("token", out var token))
+        //     {
+        //         return Unauthorized(new ResponseAPI(401, "Token is missing"));
+        //     }
+
+        //     var handler = new JwtSecurityTokenHandler();
+        //     try
+        //     {
+
+        //         var jwtToken = handler.ReadJwtToken(token);
+        //         if (jwtToken.ValidTo < DateTime.UtcNow)
+        //             return Unauthorized(new ResponseAPI(401, "Token is expired"));
+
+        //          // var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "role" );
+        //         var roleClaim = jwtToken.cl
+        //         if (roleClaim == null || roleClaim.Value != "Admin")
+        //         {
+        //             return Unauthorized(new ResponseAPI(401, "User is not an admin"));
+        //         }
+
+        //         return Ok(new { valid = true });
+        //     }
+        //     catch (System.Exception)
+        //     {
+
+        //         return Unauthorized(new ResponseAPI(401, "Token is invalid"));
+        //     }
+        // }
+        
     }
 }

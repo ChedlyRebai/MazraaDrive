@@ -19,5 +19,10 @@ export class AuthService {
   currentUser$:Observable<UserDto | null>=this.currentUser.asObservable();
 
   //private
-  
+
+  validateToken(token: string): Observable<any> {
+    console.log(token)
+    return this.http.post<{ valid: boolean }>(`${this.baseUrl}/validate-token`, token, { withCredentials: true });
+  }
+
 }
