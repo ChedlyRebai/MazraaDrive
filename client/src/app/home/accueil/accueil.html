@@ -46,7 +46,7 @@
       </div>
 
       <!-- Quick Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <!-- <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div
           class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white"
         >
@@ -91,7 +91,7 @@
             <i class="pi pi-clock text-3xl text-orange-200"></i>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Search and Filter Bar -->
@@ -155,7 +155,7 @@
     <!-- Main Content Area -->
     <div class="grid grid-cols-12 gap-6">
       <!-- Sidebar Categories (Optional) -->
-      <div class="col-span-12 lg:col-span-3" *ngIf="showSidebar">
+      <!-- <div class="col-span-12 lg:col-span-3" *ngIf="showSidebar">
         <div class="card sticky top-4">
           <div
             class="text-surface-900 dark:text-surface-0 text-xl font-semibold mb-4 flex items-center gap-2"
@@ -202,10 +202,10 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
 
       <!-- Folders Content Area -->
-      <div [class]="showSidebar ? 'col-span-12 lg:col-span-9' : 'col-span-12'">
+      <div [class]="showSidebar ? 'col-span-12 lg:col-span-12' : 'col-span-12'">
         <div class="card">
           <!-- Section Header -->
           <div class="flex items-center justify-between mb-6">
@@ -217,7 +217,7 @@
                 Mes Dossiers
               </h2>
               <p-tag
-                [value]="filteredFolders.length.toString()"
+                [value]="(folderService.folders$ | async)?.totalRecords?.toString() || '0'"
                 severity="info"
               />
             </div>

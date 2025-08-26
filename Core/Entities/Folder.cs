@@ -12,6 +12,7 @@ public class Folder : BaseEntity<int>
 
   
     public int DepartmentId { get; set; }
+    public string? Description { get; set; }
 
   
     public string CreatedById { get; set; }

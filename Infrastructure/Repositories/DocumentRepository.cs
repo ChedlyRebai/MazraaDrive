@@ -3,6 +3,8 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -10,15 +12,24 @@ namespace Infrastructure.Repositories
     public class DocumentRepository : GenericRepository<Document>, IDocument
     {
         private readonly AppDbContext _context;
-
-        public DocumentRepository(AppDbContext context) : base(context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DocumentRepository(AppDbContext ctx, IHttpContextAccessor httpContextAccessor) : base(ctx)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _httpContextAccessor = httpContextAccessor;
         }
+
+         private string? CurrentUserId => _httpContextAccessor.HttpContext?.GetUserIdFromCookieToken();
+
+        
+
+
+
 
 
         public async Task<DocumentSearchDTO[]> getDocumentByName(string name)
-        {
+        {   
+            var userId = CurrentUserId;
+            Console.WriteLine($"Searching documents with name containing: {userId}");
             try
             {
                 var documents = await _context.Documents.Where(d => d.Name.Contains(name))
@@ -29,7 +40,7 @@ namespace Infrastructure.Repositories
                     FolderId = d.FolderId.ToString(),
                     UploadedByName = d.UploadedBy.UserName,
                     UploadedById = d.UploadedById,
-                    
+
                 }).ToArrayAsync();
 
                 return documents;
@@ -393,6 +404,11 @@ namespace Infrastructure.Repositories
              
                 _ => query.OrderByDescending(d => d.CreatedAt)
             };
+        }
+
+        public Task MyDocumentAndFolderStats()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -261,6 +261,9 @@ namespace Api.Controllers
             }
         }
 
+
+        [HttpGet("MyDocumentAndFolderstat")]
+        
         [HttpPost("upload")]
         public async Task<ActionResult<DocumentDto>> UploadDocument([FromForm] DocumentUploadDto uploadDto)
         {

@@ -54,6 +54,10 @@ export class FolderService {
     );
   }
 
+
+ UpdateFolder(editfolder:any){
+   return this.http.put<UpdateFolderDTO>(`${this.baseUrl}/${editfolder.id}`, editfolder)
+ }
   // UpdateFolder(folder: UpdateFolderDTO) {
   //   return this.http.put<UpdateFolderDTO>(`${this.baseUrl}/${folder.id}`, folder).subscribe(
   //     (result) => {
@@ -65,15 +69,8 @@ export class FolderService {
   //   );
   // }
 
-  deleteFolder(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`).subscribe(
-      () => {
-        console.log('Folder deleted');
-      },
-      (error) => {
-        console.error('Error deleting folder:', error);
-      }
-    );
+  deleteFolder(id: string) {
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 
   getFolderById(id: number) {
@@ -95,6 +92,10 @@ export class FolderService {
     return this.http.get<FolderPagedResult>(
       `${this.baseUrl}/my-folders`
     );
+  }
+
+  CreateFolder(newFolder :any){
+    return this.http.post<FolderDTO>(`${this.baseUrl}`, newFolder)
   }
 
 }

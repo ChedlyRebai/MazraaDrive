@@ -16,10 +16,13 @@ namespace Api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AccountController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly Core.Interfaces.ICurrentUserService _currentUser;
+         [ActivatorUtilitiesConstructor] 
+        public AccountController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _currentUser = currentUser;
         }
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
@@ -73,6 +76,13 @@ namespace Api.Controllers
             return Ok(new ResponseAPI(200, "Logout successful"));
         }
 
+
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            if (!_currentUser.IsAuthenticated) return Unauthorized();
+            return Ok(new { id = _currentUser.UserId, name = _currentUser.UserName });
+        }
         [HttpPost("validate-token")]
         public IActionResult ValidateToken()
         {
@@ -129,6 +139,6 @@ namespace Api.Controllers
         //         return Unauthorized(new ResponseAPI(401, "Token is invalid"));
         //     }
         // }
-        
+
     }
 }

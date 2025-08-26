@@ -39,6 +39,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IMessageRepository MessageRepository { get; }
 
+    public ICurrentUserService CurrentUserService { get; }
     public IUserRepository UserRepository { get; }
 
 
@@ -64,8 +65,8 @@ public class UnitOfWork : IUnitOfWork
         IDocument documentRepository,
         IUserRepository userRepository,
         IDocRequestRepository docRequestRepository,
-        IAuditLogRepository auditLogRepository
-,
+        IAuditLogRepository auditLogRepository,
+        ICurrentUserService currentUserService,
         IGenerateToken token
         //IConnectionMultiplexer redis, 
         // UserManager<AppUser> userManager,
@@ -95,10 +96,12 @@ public class UnitOfWork : IUnitOfWork
         //_redis = redis;
         //_userManager = userManager;
         // _signInManager = signInManager;
+
         //_emailService = emailService;
         // _token = token;
         AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         this.token = token;
+        CurrentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
         // Initialize Auth with proper null checks
         // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
     }

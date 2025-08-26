@@ -22,9 +22,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { ThemeSwitcher } from "../../admin/themeswitcher";
-import { AdminRoutingModule } from "../../admin/admin-routing-module";
-
+import { ThemeSwitcher } from '../../admin/themeswitcher';
+import { AdminRoutingModule } from '../../admin/admin-routing-module';
 
 interface Folder {
   id: string;
@@ -63,11 +62,11 @@ interface Folder {
     ContextMenuModule,
     RadioButtonModule,
     ThemeSwitcher,
-    AdminRoutingModule
-],
+    AdminRoutingModule,
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './accueil.html',
-  styleUrls: ['./accueil.css']
+  styleUrls: ['./accueil.css'],
 })
 export class Accueil implements OnInit {
   @ViewChild('contextMenu') contextMenu: any;
@@ -76,7 +75,7 @@ export class Accueil implements OnInit {
   folders: Folder[] = [];
   filteredFolders: Folder[] = [];
   selectedFolder: Folder | null = null;
-  
+
   // Statistics
   totalFolders = 0;
   totalDocuments = 0;
@@ -91,7 +90,7 @@ export class Accueil implements OnInit {
   saving = false;
   showSidebar = true;
   viewMode = 'grid';
-  
+
   // Dialog States
   folderDialog = false;
   importDialog = false;
@@ -105,7 +104,7 @@ export class Accueil implements OnInit {
 
   // Forms
   newFolder: Partial<Folder> = {
-    visibility: 'private'
+    visibility: 'private',
   };
 
   // Breadcrumb
@@ -119,12 +118,12 @@ export class Accueil implements OnInit {
     { label: 'Date (Plus récent)', value: 'date_desc' },
     { label: 'Date (Plus ancien)', value: 'date_asc' },
     { label: 'Taille (Plus grand)', value: 'size_desc' },
-    { label: 'Taille (Plus petit)', value: 'size_asc' }
+    { label: 'Taille (Plus petit)', value: 'size_asc' },
   ];
 
   viewModeOptions = [
     { label: 'Grille', value: 'grid' },
-    { label: 'Liste', value: 'list' }
+    { label: 'Liste', value: 'list' },
   ];
 
   // Context Menu
@@ -132,28 +131,28 @@ export class Accueil implements OnInit {
     {
       label: 'Ouvrir',
       icon: 'pi pi-folder-open',
-      command: () => this.openFolder(this.selectedFolder!)
+      command: () => this.openFolder(this.selectedFolder!),
     },
     {
       label: 'Modifier',
       icon: 'pi pi-pencil',
-      command: () => this.editFolder(this.selectedFolder!)
+      command: () => this.editFolder(this.selectedFolder!),
     },
     {
       label: 'Partager',
       icon: 'pi pi-share-alt',
-      command: () => this.shareFolder(this.selectedFolder!)
+      command: () => this.shareFolder(this.selectedFolder!),
     },
     { separator: true },
     {
       label: 'Supprimer',
       icon: 'pi pi-trash',
-      command: () => this.deleteFolder(this.selectedFolder!)
-    }
+      command: () => this.deleteFolder(this.selectedFolder!),
+    },
   ];
 
   constructor(
-    public folderService:FolderService,
+    public folderService: FolderService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router
@@ -167,14 +166,10 @@ export class Accueil implements OnInit {
   }
 
   initializeBreadcrumb() {
-    this.items = [
-      { label: 'Accueil' }
-    ];
+    this.items = [{ label: 'Accueil' }];
   }
 
   loadFolders() {
-    
-    
     // // Mock data - replace with actual API call
     // setTimeout(() => {
     //   this.folders = [
@@ -227,27 +222,25 @@ export class Accueil implements OnInit {
     //       category: 'videos'
     //     }
     //   ];
-      
     //   this.filteredFolders = [...this.folders];
     //   this.updateStatistics();
     //   this.loading = false;
     // }, 1000);
   }
 
-   PageSize?: number = 5;
+  PageSize?: number = 5;
   Search?: string = '';
   PageNumber?: number = 1;
   SortBy?: string = '';
   SortDirection?: string = '';
   getAllFolders() {
-    this.folderService
-       .getFolders(
-         this.PageSize,
-         this.Search,
-         this.PageNumber,
-         this.SortBy,
-         this.SortDirection
-       )
+    this.folderService.getFolders(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
     //   .subscribe({
     //     next: (response: any) => {
     //       this.PageNumber = response.pageNumber;
@@ -263,9 +256,8 @@ export class Accueil implements OnInit {
     //   });
   }
 
-
   onPageChange(event: any) {
-   // this.first = event.first;
+    // this.first = event.first;
     this.PageNumber = event.first / event.rows + 1;
     this.PageSize = event.rows;
     this.getAllFolders();
@@ -286,14 +278,29 @@ export class Accueil implements OnInit {
   }
 
   updateCategoryCounts() {
-    this.documentCount = this.folders.filter(f => f.category === 'documents').length;
-    this.imageCount = this.folders.filter(f => f.category === 'images').length;
-    this.videoCount = this.folders.filter(f => f.category === 'videos').length;
+    this.documentCount = this.folders.filter(
+      (f) => f.category === 'documents'
+    ).length;
+    this.imageCount = this.folders.filter(
+      (f) => f.category === 'images'
+    ).length;
+    this.videoCount = this.folders.filter(
+      (f) => f.category === 'videos'
+    ).length;
   }
 
   // Search and Filter Methods
   onSearch(event: any) {
-    this.applyFilters();
+    if (event.data != null) {
+      console.log('Search event:', event.data);
+      this.Search += event.data;
+      this.getAllFolders();
+      this.applyFilters();
+    }else{
+      this.Search = '';
+      this.getAllFolders();
+      this.applyFilters();
+    }
   }
 
   onSort(event: any) {
@@ -309,16 +316,21 @@ export class Accueil implements OnInit {
   }
 
   applyFilters() {
-    this.filteredFolders = this.folders.filter(folder => {
-      const matchesSearch = !this.searchTerm || 
+    this.filteredFolders = this.folders.filter((folder) => {
+      const matchesSearch =
+        !this.searchTerm ||
         folder.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (folder.description && folder.description.toLowerCase().includes(this.searchTerm.toLowerCase()));
-      
-      const matchesCategory = !this.currentCategory || folder.category === this.currentCategory;
-      
+        (folder.description &&
+          folder.description
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()));
+
+      const matchesCategory =
+        !this.currentCategory || folder.category === this.currentCategory;
+
       return matchesSearch && matchesCategory;
     });
-    
+
     this.applySorting();
   }
 
@@ -332,9 +344,13 @@ export class Accueil implements OnInit {
         case 'name_desc':
           return b.name.localeCompare(a.name);
         case 'date_desc':
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         case 'date_asc':
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
         case 'size_desc':
           return this.parseSize(b.size || '0') - this.parseSize(a.size || '0');
         case 'size_asc':
@@ -348,15 +364,19 @@ export class Accueil implements OnInit {
   parseSize(sizeStr: string): number {
     const match = sizeStr.match(/^(\d+(?:\.\d+)?)\s*(KB|MB|GB)?$/i);
     if (!match) return 0;
-    
+
     const value = parseFloat(match[1]);
     const unit = (match[2] || 'KB').toUpperCase();
-    
+
     switch (unit) {
-      case 'GB': return value * 1024 * 1024;
-      case 'MB': return value * 1024;
-      case 'KB': return value;
-      default: return value;
+      case 'GB':
+        return value * 1024 * 1024;
+      case 'MB':
+        return value * 1024;
+      case 'KB':
+        return value;
+      default:
+        return value;
     }
   }
 
@@ -377,11 +397,11 @@ export class Accueil implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Navigation',
-      detail: `Ouverture du dossier: ${folder.name}`
+      detail: `Ouverture du dossier: ${folder.name}`,
     });
 
     this.router.navigate([`/home/folder/${folder.id}`]);
-    
+
     // Navigate to folder content - implement navigation logic here
     // this.router.navigate(['/folder', folder.id]);
   }
@@ -395,60 +415,113 @@ export class Accueil implements OnInit {
 
   saveFolder() {
     this.submitted = true;
-    
+
     if (!this.newFolder.name?.trim()) {
       return;
     }
 
     this.saving = true;
 
-    setTimeout(() => {
-      if (this.editMode) {
-        // Update existing folder
-        const index = this.folders.findIndex(f => f.id === this.newFolder.id);
-        if (index !== -1) {
-          this.folders[index] = { ...this.newFolder } as Folder;
+    if (this.editMode) {
+      // Call update service
+      this.folderService
+        .UpdateFolder(this.newFolder as any)
+        .subscribe((res) => {
+          next: this.folderService.getFolders();
+          this.saving = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
-            detail: 'Dossier modifié avec succès'
+            detail: 'Dossier modifié avec succès',
           });
-        }
-      } else {
-        // Create new folder
-        const newFolder: Folder = {
-          id: (this.folders.length + 1).toString(),
-          name: this.newFolder.name!,
-          description: this.newFolder.description,
-          createdAt: new Date(),
-          createdByName: 'Utilisateur Courant',
-          createdById: 'current_user',
-          fileCount: 0,
-          size: '0 KB',
-          visibility: this.newFolder.visibility || 'private',
-          category: 'documents'
-        };
-        
-        this.folders.unshift(newFolder);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Dossier créé avec succès'
         });
-      }
 
-      this.applyFilters();
-      this.updateStatistics();
-      this.folderDialog = false;
-      this.saving = false;
-    }, 1500);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Dossier modifié avec succès',
+      });
+    }
+
+    console.log('editmode:', this.editMode);
+    if (this.editMode == false) {
+      this.folderService
+        .CreateFolder(this.newFolder as any)
+        .subscribe((res) => {
+          this.folderService.getFolders();
+          this.saving = false;
+        });
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Dossier créé avec succès',
+      });
+    }
+
+    this.folderDialog = false;
+    // setTimeout(() => {
+    //   if (this.editMode) {
+    //     // Update existing folder
+    //     const index = this.folders.findIndex(f => f.id === this.newFolder.id);
+    //     if (index !== -1) {
+    //       this.folders[index] = { ...this.newFolder } as Folder;
+    //       this.messageService.add({
+    //         severity: 'success',
+    //         summary: 'Succès',
+    //         detail: 'Dossier modifié avec succès'
+    //       });
+    //     }
+    //   } else {
+    //     // Create new folder
+    //     const newFolder: Folder = {
+    //       id: (this.folders.length + 1).toString(),
+    //       name: this.newFolder.name!,
+    //       description: this.newFolder.description,
+    //       createdAt: new Date(),
+    //       createdByName: 'Utilisateur Courant',
+    //       createdById: 'current_user',
+    //       fileCount: 0,
+    //       size: '0 KB',
+    //       visibility: this.newFolder.visibility || 'private',
+    //       category: 'documents'
+    //     };
+
+    //     this.folders.unshift(newFolder);
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Succès',
+    //       detail: 'Dossier créé avec succès'
+    //     });
+    //   }
+
+    //   this.applyFilters();
+    //   this.updateStatistics();
+    //   this.folderDialog = false;
+    //   this.saving = false;
+    // }, 1500);
   }
 
   shareFolder(folder: Folder | any) {
+    //create func using  ng add @angular/cdk to copy link of folder
+
+    //create partage function to copie links i mean make copier like cntrl+c of link
+
+    const link = `https://example.com/folder/${folder.id}`;
+
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        console.log('Link copied to clipboard:', link);
+      })
+      .catch((err) => {
+        console.error('Failed to copy:', err);
+      });
+
     this.messageService.add({
-      severity: 'info',
+      severity: 'success',
       summary: 'Partage',
-      detail: `Fonction de partage pour: ${folder.name}`
+      detail: `Lien copié dans le presse-papiers: ${link}`,
     });
   }
 
@@ -458,16 +531,29 @@ export class Accueil implements OnInit {
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.folders = this.folders.filter(f => f.id !== folder.id);
-        this.applyFilters();
-        this.updateStatistics();
-        
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Supprimé',
-          detail: 'Dossier supprimé avec succès'
-        });
-      }
+        this.folderService.deleteFolder(folder.id).subscribe(
+          (res: any) => {
+            this.folders = this.folders.filter((f) => f.id !== folder.id);
+            this.applyFilters();
+            this.updateStatistics();
+            this.getAllFolders();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Supprimé',
+              detail: 'Dossier supprimé avec succès',
+            });
+          },
+          (error: any) => {
+            console.log(error);
+            console.log(error.error.message);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: error.error.message,
+            });
+          }
+        );
+      },
     });
   }
 
@@ -478,13 +564,12 @@ export class Accueil implements OnInit {
   }
 
   // Context Menu
-  showContextMenu(event: any, folder: Folder | null| any) {
+  showContextMenu(event: any, folder: Folder | null | any) {
     event.preventDefault();
 
     if (folder) {
       this.selectedFolder = folder;
       this.contextMenu.show(event);
-      
     }
   }
 
@@ -498,7 +583,7 @@ export class Accueil implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Actualisé',
-      detail: 'Liste des dossiers actualisée'
+      detail: 'Liste des dossiers actualisée',
     });
   }
 
@@ -506,7 +591,7 @@ export class Accueil implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Export',
-      detail: 'Export des dossiers en cours...'
+      detail: 'Export des dossiers en cours...',
     });
   }
 
@@ -519,13 +604,17 @@ export class Accueil implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Fichiers sélectionnés',
-      detail: `${files.length} fichier(s) sélectionné(s)`
+      detail: `${files.length} fichier(s) sélectionné(s)`,
     });
   }
 
   // Utility Methods
   getInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase();
   }
 
   formatFileSize(bytes: number): string {
@@ -538,20 +627,20 @@ export class Accueil implements OnInit {
 
   getFolderIcon(category: string): string {
     const iconMap: { [key: string]: string } = {
-      'documents': 'pi-file-text',
-      'images': 'pi-image',
-      'videos': 'pi-video',
-      'default': 'pi-folder'
+      documents: 'pi-file-text',
+      images: 'pi-image',
+      videos: 'pi-video',
+      default: 'pi-folder',
     };
     return iconMap[category] || iconMap['default'];
   }
 
   getFolderColor(category: string): string {
     const colorMap: { [key: string]: string } = {
-      'documents': 'text-blue-500',
-      'images': 'text-purple-500',
-      'videos': 'text-green-500',
-      'default': 'text-amber-500'
+      documents: 'text-blue-500',
+      images: 'text-purple-500',
+      videos: 'text-green-500',
+      default: 'text-amber-500',
     };
     return colorMap[category] || colorMap['default'];
   }

@@ -14,7 +14,7 @@ public interface IDocument : IGenericRepository<Document>
         Task<PagedResult<Document>> GetByFolderPagedAsync(int folderId, PaginationParams pagination);
         Task<PagedResult<Document>> GetByUserPagedAsync(string userId, PaginationParams pagination);
     Task<Document> AddAsync(Document document);
-
+    Task MyDocumentAndFolderStats();
     Task<DocumentSearchDTO[]> getDocumentByName(string name);
     Task DeleteAsync(int id);
     Task<IReadOnlyList<Document>> GetAllAsync();

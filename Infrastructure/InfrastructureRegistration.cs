@@ -58,7 +58,10 @@ public static class InfrastructureRegistration
         services.AddScoped<IFolderRepository, FolderRepository>();
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        //services.AddScoped<ICurrentUserService, CurrentUserService>();
         //services.AddScoped<IAuditLogger, AuditLogger>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
