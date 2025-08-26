@@ -51,12 +51,12 @@ namespace Api.Controllers
             // Set cookie to be accessible on client-side (remove HttpOnly)
             Response.Cookies.Append("token", result, new CookieOptions
             {
-                Secure = true,
+                Secure = false,
                 HttpOnly = false, // Allow client-side access
                 Domain = "localhost",
                 Expires = DateTimeOffset.UtcNow.AddDays(7),
                 IsEssential = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.Lax,
             });
 
             return Ok(new ResponseAPI(200, "Login successful"));

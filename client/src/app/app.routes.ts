@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: 'home', loadChildren: () => import('./home/home-routing-module').then(m => m.HomeRoutingModule) },
+  { path: 'home', loadChildren: () => import('./home/home-routing-module').then(m => m.HomeRoutingModule) ,
+    canActivate: [AuthGuard]
+  },
   { path: 'admin', loadChildren: () => import('./admin/admin-routing-module').then(m => m.AdminRoutingModule) },
   {
     path: 'login',

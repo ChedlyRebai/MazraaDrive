@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -25,7 +26,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private messageService:MessageService) {}
   onSubmit() {
     this.authService
       .login({ Email: this.email, Password: this.password })
@@ -36,10 +37,12 @@ export class LoginComponent {
           res.headers?.get('set-cookie') || res.headers?.get('Set-Cookie');
           console.log('Cookies:', cookies);
           console.log('Login successful:');
-          console.log(res);
-          // window.location.href = '/home';
+          console.log(res); 
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful' });
+          window.location.href = '/home/accueil';
         },
         (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Login failed' });
           console.error('Login failed:', error);
         }
       );
