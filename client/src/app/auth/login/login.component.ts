@@ -26,7 +26,10 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  constructor(private authService: AuthService,private messageService:MessageService) {}
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {}
   onSubmit() {
     this.authService
       .login({ Email: this.email, Password: this.password })
@@ -34,15 +37,23 @@ export class LoginComponent {
         (res: any) => {
           // To access cookies from response headers
           const cookies =
-          res.headers?.get('set-cookie') || res.headers?.get('Set-Cookie');
+            res.headers?.get('set-cookie') || res.headers?.get('Set-Cookie');
           console.log('Cookies:', cookies);
           console.log('Login successful:');
-          console.log(res); 
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login successful' });
+          console.log(res);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Login successful',
+          });
           window.location.href = '/home/accueil';
         },
         (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Login failed' });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Login failed',
+          });
           console.error('Login failed:', error);
         }
       );
