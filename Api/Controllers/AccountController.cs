@@ -16,8 +16,8 @@ namespace Api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        private readonly Core.Interfaces.ICurrentUserService _currentUser;
-         [ActivatorUtilitiesConstructor] 
+        private readonly ICurrentUserService _currentUser;
+        [ActivatorUtilitiesConstructor]
         public AccountController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;

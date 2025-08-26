@@ -68,23 +68,13 @@ public class UnitOfWork : IUnitOfWork
         IAuditLogRepository auditLogRepository,
         ICurrentUserService currentUserService,
         IGenerateToken token
-        //IConnectionMultiplexer redis, 
-        // UserManager<AppUser> userManager,
-        // SignInManager<AppUser> signInManager,
-        // IEmailService? emailService = null,
-        // IGenerateToken? token = null
+
         )
     {
 
         _context = context;
-        //   DocRequestRepository= docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
         DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
-        // FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
-        //MessageRepository = messageRepository ?? throw new ArgumentNullException(nameof(messageRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        //  PermissionsRepository = permissionsRepository ?? throw new ArgumentNullException(nameof(permissionsRepository));
-        //AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
-        //Auth = auth ?? throw new ArgumentNullException(nameof(auth));
         FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));
         RoleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         UserRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
@@ -93,31 +83,19 @@ public class UnitOfWork : IUnitOfWork
         HomeRepository = homeRepository ?? throw new ArgumentNullException(nameof(homeRepository));
         DocRequestRepository = docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
         AccessRequestRepository = accessRequestRepository ?? throw new ArgumentNullException(nameof(accessRequestRepository));
-        //_redis = redis;
-        //_userManager = userManager;
-        // _signInManager = signInManager;
-
-        //_emailService = emailService;
-        // _token = token;
         AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         this.token = token;
         CurrentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
-        // Initialize Auth with proper null checks
-        // Auth = new AuthRepository(_userManager, _emailService, _signInManager, _token);
     }
 
     public async Task<int> SaveChangesAsync()
     {
         try
         {
-            // Update timestamps before saving
-            // UpdateTimestamps();
-
             return await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
-            // Log the error (you can inject ILogger if needed)
             Console.WriteLine($"Error saving changes: {ex.Message}");
             throw;
         }

@@ -8,6 +8,7 @@ using Infrastructure.Data;
 using Core.DTO;
 
 namespace Infrastructure.Repositories;
+
 public class AccessRequestRepository : IAccessRequestRepository
 {
     private readonly AppDbContext _ctx;
