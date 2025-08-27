@@ -72,7 +72,9 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="text-purple-100 text-sm">Stockage</p>
-              <p class="text-2xl font-bold">{{ formatFileSize(stats?.totalFileSize || 0) }}</p>
+              <p class="text-2xl font-bold">
+                {{ formatFileSize(stats?.totalFileSize || 0) }}
+              </p>
             </div>
             <i class="pi pi-database text-3xl text-purple-200"></i>
           </div>
@@ -133,13 +135,13 @@
         </div> -->
 
         <div class="card">
-          <p-tabs value="files">
+          <p-tabs value="folders">
             <p-tablist>
-              <p-tab value="files">Folders</p-tab>
-              <p-tab value="Folders">File</p-tab>
+              <p-tab value="folders">Folders</p-tab>
+              <p-tab value="files">File</p-tab>
             </p-tablist>
             <p-tabpanels>
-              <p-tabpanel value="files">
+              <p-tabpanel value="folders">
                 <div class="flex items-center justify-between mb-6">
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
@@ -172,7 +174,6 @@
                   <div
                     *ngFor="let item of myFolders.data"
                     class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
-                    
                   >
                     <div class="flex items-start justify-between mb-3">
                       <div
@@ -197,7 +198,6 @@
                           icon="pi pi-ellipsis-v"
                           [text]="true"
                           size="small"
-                          
                         />
                       </div>
                     </div>
@@ -234,9 +234,140 @@
                     </div>
                   </div>
                 </div>
-                
+
+                <!-- List View -->
+                <div *ngIf="viewMode === 'list'">
+                  <p-table
+                    [value]="myFolders.data"
+                    [paginator]="true"
+                    [rows]="10"
+                    [sortField]="'modifiedDate'"
+                    [sortOrder]="-1"
+                    responsiveLayout="scroll"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th pSortableColumn="name">
+                          <div class="flex items-center gap-2">
+                            Nom
+                            <p-sortIcon field="name" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="modifiedDate">
+                          <div class="flex items-center gap-2">
+                            Modifié
+                            <p-sortIcon field="modifiedDate" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="size">
+                          <div class="flex items-center gap-2">
+                            Documents Count
+                            <p-sortIcon field="size" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="owner">
+                          <div class="flex items-center gap-2">
+                            Size
+                            <p-sortIcon field="owner" />
+                          </div>
+                        </th>
+                        <th>Actions</th>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-folder>
+                      <tr
+                        class="cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-700"
+                        (click)="openItem(folder)"
+                      >
+                        <td>
+                          <div class="flex items-center gap-3">
+                            <i
+                              [class]="getFileIcon('folder')"
+                              [style.color]="getFileTypeColor('folder')"
+                            ></i>
+                            <div>
+                              <div class="font-medium">{{ folder.name }}</div>
+                              <div
+                                class="text-sm text-surface-600"
+                                *ngIf="folder.isShared"
+                              >
+                                <i class="pi pi-users text-xs mr-1"></i>Partagé
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{{ folder.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
+                        <td>{{ folder.documentCount }}</td>
+                        <td>
+                          <div class="flex items-center gap-2">
+                            <!-- <p-avatar
+                        [label]="getInitials(folder.owner)"
+                        shape="circle"
+                      /> -->
+                            {{ formatFileSize(folder.size) }}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="flex items-center gap-1">
+                            <p-button
+                              icon="pi pi-eye"
+                              severity="info"
+                              [text]="true"
+                              size="small"
+                              pTooltip="Aperçu"
+                              (click)="
+                                viewFolder(folder)
+                              "
+                            />
+                            <!-- <p-button
+                        icon="pi pi-download"
+                        severity="success"
+                        [text]="true"
+                        size="small"
+                        pTooltip="Télécharger"
+                        (click)="downloadItem(folder); $event.stopPropagation()"
+                      /> -->
+                            <p-button
+                              icon="pi pi-share-alt"
+                              [text]="true"
+                              size="small"
+                              pTooltip="Partager"
+                              (click)="shareItem(folder); $event.stopPropagation()"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="5" class="text-center py-8">
+                          <div class="flex flex-col items-center gap-3">
+                            <i
+                              class="pi pi-folder-open text-4xl text-surface-400"
+                            ></i>
+                            <div>
+                              <h3 class="font-medium mb-2">
+                                Aucun fichier trouvé
+                              </h3>
+                              <p class="text-surface-600 text-sm">
+                                Commencez par télécharger vos premiers documents
+                              </p>
+                            </div>
+                            <p-button
+                              label="Télécharger un fichier"
+                              icon="pi pi-upload"
+                              (click)="uploadFiles()"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
               </p-tabpanel>
-              <p-tabpanel value="Folders">
+              <p-tabpanel value="files">
                 <div class="flex items-center justify-between mb-6">
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
@@ -267,34 +398,33 @@
                   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
                 >
                   <div
-                    *ngFor="let item of recentItems"
+                    *ngFor="let item of myDocumentss.data"
+                    (click)="openItem(item)"
                     class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
-                   
                   >
                     <div class="flex items-start justify-between mb-3">
                       <div
                         class="p-3 rounded-lg"
                         [style.background-color]="
-                          getFileTypeColor(item.type) + '20'
+                          getFileTypeColor(item.fileType) + '20'
                         "
                       >
                         <i
-                          [class]="getFileIcon(item.type)"
+                          [class]="getFileIcon(item.fileType)"
                           class="text-2xl"
-                          [style.color]="getFileTypeColor(item.type)"
+                          [style.color]="getFileTypeColor(item.fileType)"
                         ></i>
                       </div>
                       <div class="flex items-center gap-1">
                         <span
                           class="text-xs text-surface-500 dark:text-surface-400"
                         >
-                          {{ item.size }}
+                          {{ formatFileSize(item.fileSize) }}
                         </span>
                         <p-button
                           icon="pi pi-ellipsis-v"
                           [text]="true"
                           size="small"
-                         
                         />
                       </div>
                     </div>
@@ -309,116 +439,115 @@
                         class="text-sm text-surface-600 dark:text-surface-300"
                       >
                         <p class="mb-1">
-                          {{ item.modifiedDate | date : "dd/MM/yyyy HH:mm" }}
+                          {{ item.createdAt | date : "dd/MM/yyyy HH:mm" }}
                         </p>
-                        <p class="text-xs">Par: {{ item.owner }}</p>
+                        <p class="text-xs">Par: {{ item.uploadedByName }}</p>
                       </div>
                     </div>
 
                     <div class="flex items-center justify-between">
                       <p-tag
-                        [value]="item.type"
-                        [severity]="getTagSeverity(item.type)"
+                        [value]="item.fileType"
+                        [severity]="getTagSeverity(item.fileType)"
                         size="small"
                       />
-                      <div
+                      <!-- <div
                         class="flex items-center gap-1"
                         *ngIf="item.isShared"
                       >
                         <i class="pi pi-users text-xs text-blue-500"></i>
                         <span class="text-xs text-surface-600">Partagé</span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
-              </p-tabpanel>
-            </p-tabpanels>
-          </p-tabs>
 
-          <!-- List View -->
-          <div *ngIf="viewMode === 'list'">
-            <p-table
-              [value]="myFolders.data"
-              [paginator]="true"
-              [rows]="10"
-              [sortField]="'modifiedDate'"
-              [sortOrder]="-1"
-              responsiveLayout="scroll"
-            >
-              <ng-template pTemplate="header">
-                <tr>
-                  <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">
-                      Nom
-                      <p-sortIcon field="name" />
-                    </div>
-                  </th>
-                  <th pSortableColumn="modifiedDate">
-                    <div class="flex items-center gap-2">
-                      Modifié
-                      <p-sortIcon field="modifiedDate" />
-                    </div>
-                  </th>
-                  <th pSortableColumn="size">
-                    <div class="flex items-center gap-2">
-                      Documents Count
-                      <p-sortIcon field="size" />
-                    </div>
-                  </th>
-                  <th pSortableColumn="owner">
-                    <div class="flex items-center gap-2">
-                      Size
-                      <p-sortIcon field="owner" />
-                    </div>
-                  </th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
+                <!-- List View -->
+                <div *ngIf="viewMode === 'list'">
+                  <p-table
+                    [value]="myDocumentss.data"
+                    [paginator]="true"
+                    [rows]="10"
+                    [sortField]="'modifiedDate'"
+                    [sortOrder]="-1"
+                    responsiveLayout="scroll"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th pSortableColumn="name">
+                          <div class="flex items-center gap-2">
+                            Nom
+                            <p-sortIcon field="name" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="modifiedDate">
+                          <div class="flex items-center gap-2">
+                            Modifié
+                            <p-sortIcon field="modifiedDate" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="size">
+                          <div class="flex items-center gap-2">
+                            Documents Count
+                            <p-sortIcon field="size" />
+                          </div>
+                        </th>
+                        <th pSortableColumn="owner">
+                          <div class="flex items-center gap-2">
+                            Size
+                            <p-sortIcon field="owner" />
+                          </div>
+                        </th>
+                        <th>Actions</th>
+                      </tr>
+                    </ng-template>
 
-              <ng-template pTemplate="body" let-folder>
-                <tr
-                  class="cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-700"
-                  (click)="openItem(folder)"
-                >
-                  <td>
-                    <div class="flex items-center gap-3">
-                      <i
-                        [class]="getFileIcon('folder')"
-                        [style.color]="getFileTypeColor('folder')"
-                      ></i>
-                      <div>
-                        <div class="font-medium">{{ folder.name }}</div>
-                        <div
-                          class="text-sm text-surface-600"
-                          *ngIf="folder.isShared"
-                        >
-                          <i class="pi pi-users text-xs mr-1"></i>Partagé
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{{ folder.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
-                  <td>{{ folder.documentCount }}</td>
-                  <td>
-                    <div class="flex items-center gap-2">
-                      <!-- <p-avatar
+                    <ng-template pTemplate="body" let-doc>
+                      <tr
+                        class="cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-700"
+                        (click)="openItem(doc)"
+                      >
+                        <td>
+                          <div class="flex items-center gap-3">
+                            <i
+                              [class]="getFileIcon(doc.fileType)"
+                              [style.color]="getFileTypeColor(doc.fileType)"
+                            ></i>
+                            <div>
+                              <div class="font-medium">{{ doc.name }}</div>
+                              <div
+                                class="text-sm text-surface-600"
+                                *ngIf="doc.isShared"
+                              >
+                                <i class="pi pi-users text-xs mr-1"></i>Partagé
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{{ doc.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
+                        <td>{{ doc.documentCount }}</td>
+                        <td>
+                          <div class="flex items-center gap-2">
+                            <!-- <p-avatar
                         [label]="getInitials(folder.owner)"
                         shape="circle"
                       /> -->
-                      {{ formatFileSize(folder.size) }}
-                    </div>
-                  </td>
-                  <td>
-                    <div class="flex items-center gap-1">
-                      <p-button
-                        icon="pi pi-eye"
-                        severity="info"
-                        [text]="true"
-                        size="small"
-                        pTooltip="Aperçu"
-                        (click)="previewItem(folder); $event.stopPropagation()"
-                      />
-                      <!-- <p-button
+                            {{ formatFileSize(doc.fileSize) }}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="flex items-center gap-1">
+                            <p-button
+                              icon="pi pi-eye"
+                              severity="info"
+                              [text]="true"
+                              size="small"
+                              pTooltip="Aperçu"
+                              (click)="
+                                viewDocument(doc)
+                              "
+                            />
+                            <!-- <p-button
                         icon="pi pi-download"
                         severity="success"
                         [text]="true"
@@ -426,42 +555,47 @@
                         pTooltip="Télécharger"
                         (click)="downloadItem(folder); $event.stopPropagation()"
                       /> -->
-                      <p-button
-                        icon="pi pi-share-alt"
-                        [text]="true"
-                        size="small"
-                        pTooltip="Partager"
-                        (click)="shareItem(folder); $event.stopPropagation()"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
+                            <p-button
+                              icon="pi pi-share-alt"
+                              [text]="true"
+                              size="small"
+                              pTooltip="Partager"
+                              (click)="shareItem(doc); $event.stopPropagation()"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
 
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="5" class="text-center py-8">
-                    <div class="flex flex-col items-center gap-3">
-                      <i
-                        class="pi pi-folder-open text-4xl text-surface-400"
-                      ></i>
-                      <div>
-                        <h3 class="font-medium mb-2">Aucun fichier trouvé</h3>
-                        <p class="text-surface-600 text-sm">
-                          Commencez par télécharger vos premiers documents
-                        </p>
-                      </div>
-                      <p-button
-                        label="Télécharger un fichier"
-                        icon="pi pi-upload"
-                        (click)="uploadFiles()"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="5" class="text-center py-8">
+                          <div class="flex flex-col items-center gap-3">
+                            <i
+                              class="pi pi-folder-open text-4xl text-surface-400"
+                            ></i>
+                            <div>
+                              <h3 class="font-medium mb-2">
+                                Aucun fichier trouvé
+                              </h3>
+                              <p class="text-surface-600 text-sm">
+                                Commencez par télécharger vos premiers documents
+                              </p>
+                            </div>
+                            <p-button
+                              label="Télécharger un fichier"
+                              icon="pi pi-upload"
+                              (click)="uploadFiles()"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </p-tabpanel>
+            </p-tabpanels>
+          </p-tabs>
         </div>
       </div>
 
@@ -701,32 +835,123 @@
 <p-contextMenu #contextMenu [model]="contextMenuItems" />
 
 <!-- File Upload Dialog -->
-<p-dialog
-  header="Télécharger des fichiers"
-  [(visible)]="showUploadDialog"
-  [modal]="true"
-  [style]="{ width: '500px' }"
->
-  <ng-template pTemplate="content">
-    <p-fileUpload
-      mode="advanced"
-      name="files"
-      url="./upload.php"
-      [multiple]="true"
-      accept="*/*"
-      maxFileSize="100000000"
-      (onUpload)="onUpload($event)"
-      (onError)="onUploadError($event)"
-    >
-      <ng-template pTemplate="content">
-        <ul *ngIf="uploadedFiles.length">
-          <li *ngFor="let file of uploadedFiles">
-            {{ file.name }} - {{ file.size }} bytes
-          </li>
-        </ul>
-      </ng-template>
-    </p-fileUpload>
-  </ng-template>
-</p-dialog>
 
+
+  <!-- Document Preview Dialog -->
+  <p-dialog
+    [(visible)]="previewDialog"
+    [style]="{ width: '70rem', height: '80vh' }"
+    header="Aperçu du Document"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-4 h-full" *ngIf="selectedDocument">
+        <!-- Document Info -->
+        <div class="flex items-center justify-between pb-4 border-b">
+          <div class="flex items-center gap-3">
+            <i
+              [class]="getFileIcon(selectedDocument.fileType)"
+              style="font-size: 2rem"
+            ></i>
+            <div>
+              <h4 class="m-0">{{ selectedDocument.name }}</h4>
+              <p class="text-sm text-gray-500 m-0">
+                {{ selectedDocument.fileType }} •
+                {{ formatFileSize(selectedDocument.fileSize) }}
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-download"
+              severity="success"
+              [outlined]="true"
+            
+              label="Télécharger"
+            />
+          </div>test(1).doc
+        </div>
+        <iframe style="width: 100%; height: 50vh" src="http://localhost:5108/api/uploads/f75211e0-d03b-4074-8b82-e9e82a639a70.doc" frameborder="0">
+
+        </iframe>
+        <ng-container [ngSwitch]="selectedDocument.fileType">
+          <!-- PDF Preview -->
+          <iframe
+            *ngSwitchCase="'pdf'"
+            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            style="width: 100%; height: 50vh"
+            frameborder="0"
+          ></iframe>
+
+          <!-- Image Preview -->
+          <img
+            *ngSwitchCase="'jpg'"
+            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            style="max-width: 100%; max-height: 50vh; display: block; margin: auto;"
+            alt="Aperçu de l'image"
+          />
+          <img
+            *ngSwitchCase="'png'"
+            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            style="max-width: 100%; max-height: 50vh; display: block; margin: auto;"
+            alt="Aperçu de l'image"
+          />
+
+          <!-- Office/Doc Preview -->
+          <ngx-doc-viewer
+            *ngSwitchCase="'doc'"
+            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            viewer="mammoth"
+            style="width: 100%; height: 50vh"
+          ></ngx-doc-viewer>
+          <ngx-doc-viewer
+            *ngSwitchCase="'docx'"
+            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            viewer="mammoth"
+            style="width: 100%; height: 50vh"
+          ></ngx-doc-viewer>
+          <ngx-doc-viewer
+            *ngSwitchCase="'txt'"
+            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
+            viewer="mammoth"
+            style="width: 100%; height: 50vh"
+          ></ngx-doc-viewer>
+
+          <!-- Fallback for unsupported types -->
+          <div *ngSwitchDefault class="flex-1 bg-gray-50 rounded border p-4">
+            <div class="text-center">
+              <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
+              <p class="text-gray-600">
+                Aperçu non disponible pour ce type de fichier
+              </p>
+              <p class="text-sm text-gray-500">
+                Cliquez sur "Télécharger" pour ouvrir le fichier
+              </p>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Preview Area -->
+        <!-- <div class="flex-1 bg-gray-50 rounded border p-4">
+          <div class="text-center">
+            <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600">
+              Aperçu non disponible pour ce type de fichier
+            </p>
+            <p class="text-sm text-gray-500">
+              Cliquez sur "Télécharger" pour ouvrir le fichier
+            </p>
+          </div>
+        </div> -->
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Fermer"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="previewDialog = false"
+      />
+    </ng-template>
+  </p-dialog>
 <p-toast />

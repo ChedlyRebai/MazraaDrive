@@ -23,9 +23,12 @@ import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { TabsModule } from 'primeng/tabs';
 import {
   DocFolderStats,
+  DocumentDto,
   DocumentPagedResult,
 } from '../../shared/models/document';
 import { FolderDTO, FolderPagedResult } from '../../shared/models/folder';
+import { Router } from '@angular/router';
+import { NgxDocViewerModule } from "ngx-doc-viewer";
 
 interface Document {
   id?: number;
@@ -93,7 +96,8 @@ interface FileCategory {
     TooltipModule,
     ThemeSwitcher,
     TabsModule,
-  ],
+    NgxDocViewerModule
+],
   providers: [MessageService],
   templateUrl: './documents.html',
   styleUrls: ['./documents.css'],
@@ -112,7 +116,7 @@ export class Documents implements OnInit {
 
   documents: Document[] = [];
   selectedDocuments: Document[] = [];
-  selectedDocument: Document | null = null;
+  selectedDocument: DocumentDto | null = null;
   document: Document = this.getEmptyDocument();
 
   documentDialog = false;
@@ -269,20 +273,32 @@ export class Documents implements OnInit {
   //stats
   stats: DocFolderStats = {} as DocFolderStats;
   constructor(
+    private router: Router,
     private messageService: MessageService,
     public documentService: DocumentService,
     public folderService: FolderService
   ) {}
 
+  viewDocument(document: DocumentDto) {
+    this.selectedDocument = document;
+    this.previewDialog = true;
+    console.log('Viewing document:', document);
+    this.previewDialog = true;
+    this.showUploadDialog = true;
+    this.documentDialog=true;
+  }
   ngOnInit() {
     this.getmyDocs();
-    this.getMyFolders()
+    this.getMyFolders();
     this.initializeCharts();
     this.setupContextMenu();
     this.initializeStats();
   }
 
-  getMyFolders(){
+   viewFolder(folder:FolderDTO){
+     window.open(`/home/folder/${folder.id}`, '_blank');
+   }
+  getMyFolders() {
     this.folderService.getMyFolders().subscribe({
       next: (folders: FolderPagedResult) => {
         this.myFolders = folders;
@@ -293,7 +309,6 @@ export class Documents implements OnInit {
       },
     });
   }
-
 
   initializeStats() {
     this.documentService.getMyStats().subscribe({
@@ -474,19 +489,24 @@ export class Documents implements OnInit {
   }
 
   // File operations
-  openItem(item: FolderDTO) {
-    // if (item.type === 'folder') {
-    //   // Navigate to folder
-    //   this.messageService.add({
-    //     severity: 'info',
-    //     summary: 'Navigation',
-    //     detail: `Ouverture du dossier: ${item.name}`,
-    //   });
-    // } else {
-    //   // Open file
-    //   this.previewItem(item);
-    // }
+  openItem(item: any) {
+    if (item.type === 'folder') {
+      // Navigate to folder
+      this.router.navigate([`/home/folder/${item.id}`]);
+    } else {
+      // Open file
+      this.previewItem(item);
+    }
   }
+
+  //     severity: 'info',
+  //     summary: 'Navigation',
+  //     detail: `Ouverture du dossier: ${item.name}`,
+  //   });
+  // } else {
+  //   // Open file
+  //   this.previewItem(item);
+  // }
 
   previewItem(item: FolderDTO) {
     this.messageService.add({
@@ -641,6 +661,7 @@ export class Documents implements OnInit {
   getFileIcon(type: string): string {
     const iconMap: { [key: string]: string } = {
       pdf: 'pi pi-file-pdf',
+      doc: 'pi pi-file-word',
       word: 'pi pi-file-word',
       excel: 'pi pi-file-excel',
       powerpoint: 'pi pi-file',
@@ -656,7 +677,10 @@ export class Documents implements OnInit {
   getFileTypeColor(type: string): string {
     const colorMap: { [key: string]: string } = {
       PDF: '#EF4444',
+      pdf: '#EF4444',
+      png: '#7C3AED',
       word: '#2563EB',
+      doc: '#2563EB',
       excel: '#059669',
       powerpoint: '#DC2626',
       image: '#7C3AED',
@@ -671,6 +695,9 @@ export class Documents implements OnInit {
   getTagSeverity(type: string): string {
     const severityMap: { [key: string]: string } = {
       PDF: 'danger',
+      pdf: 'danger',
+      doc: 'info',
+      png: 'secondary',
       word: 'info',
       excel: 'success',
       powerpoint: 'warning',
