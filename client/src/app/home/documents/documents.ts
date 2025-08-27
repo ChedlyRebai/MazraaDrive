@@ -28,7 +28,7 @@ import {
 } from '../../shared/models/document';
 import { FolderDTO, FolderPagedResult } from '../../shared/models/folder';
 import { Router } from '@angular/router';
-import { NgxDocViewerModule } from "ngx-doc-viewer";
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 interface Document {
   id?: number;
@@ -96,8 +96,8 @@ interface FileCategory {
     TooltipModule,
     ThemeSwitcher,
     TabsModule,
-    NgxDocViewerModule
-],
+    NgxDocViewerModule,
+  ],
   providers: [MessageService],
   templateUrl: './documents.html',
   styleUrls: ['./documents.css'],
@@ -285,7 +285,7 @@ export class Documents implements OnInit {
     console.log('Viewing document:', document);
     this.previewDialog = true;
     this.showUploadDialog = true;
-    this.documentDialog=true;
+    this.documentDialog = true;
   }
   ngOnInit() {
     this.getmyDocs();
@@ -295,9 +295,9 @@ export class Documents implements OnInit {
     this.initializeStats();
   }
 
-   viewFolder(folder:FolderDTO){
-     window.open(`/home/folder/${folder.id}`, '_blank');
-   }
+  viewFolder(folder: FolderDTO) {
+    window.open(`/home/folder/${folder.id}`, '_blank');
+  }
   getMyFolders() {
     this.folderService.getMyFolders().subscribe({
       next: (folders: FolderPagedResult) => {
@@ -389,6 +389,41 @@ export class Documents implements OnInit {
         },
       },
     };
+  }
+
+  shareDoc(document: DocumentDto) {
+    const link = `https://example.com/document/${document.id}`;
+
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        console.log('Link copied to clipboard:', link);
+      })
+      .catch((err) => {
+        console.error('Failed to copy:', err);
+      });
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Partage',
+      detail: `Copie lien du document: ${document.name}`,
+    });
+  }
+  shareFolder(folder: FolderDTO) {
+    const link = `https://example.com/folder/${folder.id}`;
+
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        console.log('Link copied to clipboard:', link);
+      })
+      .catch((err) => {
+        console.error('Failed to copy:', err);
+      });
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Partage',
+      detail: `Copie lien du dossier: ${folder.name}`,
+    });
   }
   initializeFileCategories() {
     this.fileCategories = [

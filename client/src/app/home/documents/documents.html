@@ -297,7 +297,9 @@
                             </div>
                           </div>
                         </td>
-                        <td>{{ folder.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
+                        <td>
+                          {{ folder.createdAt | date : "dd/MM/yyyy HH:mm" }}
+                        </td>
                         <td>{{ folder.documentCount }}</td>
                         <td>
                           <div class="flex items-center gap-2">
@@ -316,9 +318,7 @@
                               [text]="true"
                               size="small"
                               pTooltip="Aperçu"
-                              (click)="
-                                viewFolder(folder)
-                              "
+                              (click)="viewFolder(folder)"
                             />
                             <!-- <p-button
                         icon="pi pi-download"
@@ -333,7 +333,9 @@
                               [text]="true"
                               size="small"
                               pTooltip="Partager"
-                              (click)="shareItem(folder); $event.stopPropagation()"
+                              (click)="
+                                shareFolder(folder); $event.stopPropagation()
+                              "
                             />
                           </div>
                         </td>
@@ -543,9 +545,7 @@
                               [text]="true"
                               size="small"
                               pTooltip="Aperçu"
-                              (click)="
-                                viewDocument(doc)
-                              "
+                              (click)="viewDocument(doc)"
                             />
                             <!-- <p-button
                         icon="pi pi-download"
@@ -560,7 +560,7 @@
                               [text]="true"
                               size="small"
                               pTooltip="Partager"
-                              (click)="shareItem(doc); $event.stopPropagation()"
+                              (click)="shareDoc(doc); $event.stopPropagation()"
                             />
                           </div>
                         </td>
@@ -653,47 +653,6 @@
               </div>
               <span class="font-bold text-lg">{{ category.count }}</span>
             </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="card">
-          <h3
-            class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0"
-          >
-            Actions rapides
-          </h3>
-          <div class="space-y-3">
-            <p-button
-              label="Nouveau dossier"
-              icon="pi pi-folder-plus"
-              severity="secondary"
-              [outlined]="true"
-              fluid
-              (click)="createNewFolder()"
-            />
-            <p-button
-              label="Télécharger des fichiers"
-              icon="pi pi-upload"
-              fluid
-              (click)="uploadFiles()"
-            />
-            <p-button
-              label="Partager un lien"
-              icon="pi pi-share-alt"
-              severity="info"
-              [outlined]="true"
-              fluid
-              (click)="createShareLink()"
-            />
-            <p-button
-              label="Voir la corbeille"
-              icon="pi pi-trash"
-              severity="secondary"
-              [text]="true"
-              fluid
-              (click)="viewTrash()"
-            />
           </div>
         </div>
       </div>
@@ -836,102 +795,126 @@
 
 <!-- File Upload Dialog -->
 
-
-  <!-- Document Preview Dialog -->
-  <p-dialog
-    [(visible)]="previewDialog"
-    [style]="{ width: '70rem', height: '80vh' }"
-    header="Aperçu du Document"
-    [modal]="true"
-  >
-    <ng-template pTemplate="content">
-      <div class="flex flex-col gap-4 h-full" *ngIf="selectedDocument">
-        <!-- Document Info -->
-        <div class="flex items-center justify-between pb-4 border-b">
-          <div class="flex items-center gap-3">
-            <i
-              [class]="getFileIcon(selectedDocument.fileType)"
-              style="font-size: 2rem"
-            ></i>
-            <div>
-              <h4 class="m-0">{{ selectedDocument.name }}</h4>
-              <p class="text-sm text-gray-500 m-0">
-                {{ selectedDocument.fileType }} •
-                {{ formatFileSize(selectedDocument.fileSize) }}
-              </p>
-            </div>
+<!-- Document Preview Dialog -->
+<p-dialog
+  [(visible)]="previewDialog"
+  [style]="{ width: '70rem', height: '80vh' }"
+  header="Aperçu du Document"
+  [modal]="true"
+>
+  <ng-template pTemplate="content">
+    <div class="flex flex-col gap-4 h-full" *ngIf="selectedDocument">
+      <!-- Document Info -->
+      <div class="flex items-center justify-between pb-4 border-b">
+        <div class="flex items-center gap-3">
+          <i
+            [class]="getFileIcon(selectedDocument.fileType)"
+            style="font-size: 2rem"
+          ></i>
+          <div>
+            <h4 class="m-0">{{ selectedDocument.name }}</h4>
+            <p class="text-sm text-gray-500 m-0">
+              {{ selectedDocument.fileType }} •
+              {{ formatFileSize(selectedDocument.fileSize) }}
+            </p>
           </div>
-          <div class="flex gap-2">
-            <p-button
-              icon="pi pi-download"
-              severity="success"
-              [outlined]="true"
-            
-              label="Télécharger"
-            />
-          </div>test(1).doc
         </div>
-        <iframe style="width: 100%; height: 50vh" src="http://localhost:5108/api/uploads/f75211e0-d03b-4074-8b82-e9e82a639a70.doc" frameborder="0">
-
-        </iframe>
-        <ng-container [ngSwitch]="selectedDocument.fileType">
-          <!-- PDF Preview -->
-          <iframe
-            *ngSwitchCase="'pdf'"
-            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            style="width: 100%; height: 50vh"
-            frameborder="0"
-          ></iframe>
-
-          <!-- Image Preview -->
-          <img
-            *ngSwitchCase="'jpg'"
-            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            style="max-width: 100%; max-height: 50vh; display: block; margin: auto;"
-            alt="Aperçu de l'image"
+        <div class="flex gap-2">
+          <p-button
+            icon="pi pi-download"
+            severity="success"
+            [outlined]="true"
+            label="Télécharger"
           />
-          <img
-            *ngSwitchCase="'png'"
-            [src]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            style="max-width: 100%; max-height: 50vh; display: block; margin: auto;"
-            alt="Aperçu de l'image"
-          />
+        </div>
+        test(1).doc
+      </div>
+      <iframe
+        style="width: 100%; height: 50vh"
+        src="http://localhost:5108/api/uploads/f75211e0-d03b-4074-8b82-e9e82a639a70.doc"
+        frameborder="0"
+      >
+      </iframe>
+      <ng-container [ngSwitch]="selectedDocument.fileType">
+        <!-- PDF Preview -->
+        <iframe
+          *ngSwitchCase="'pdf'"
+          [src]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          style="width: 100%; height: 50vh"
+          frameborder="0"
+        ></iframe>
 
-          <!-- Office/Doc Preview -->
-          <ngx-doc-viewer
-            *ngSwitchCase="'doc'"
-            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            viewer="mammoth"
-            style="width: 100%; height: 50vh"
-          ></ngx-doc-viewer>
-          <ngx-doc-viewer
-            *ngSwitchCase="'docx'"
-            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            viewer="mammoth"
-            style="width: 100%; height: 50vh"
-          ></ngx-doc-viewer>
-          <ngx-doc-viewer
-            *ngSwitchCase="'txt'"
-            [url]="'http://localhost:5108/api/uploads/' + selectedDocument.storagePath"
-            viewer="mammoth"
-            style="width: 100%; height: 50vh"
-          ></ngx-doc-viewer>
+        <!-- Image Preview -->
+        <img
+          *ngSwitchCase="'jpg'"
+          [src]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          style="
+            max-width: 100%;
+            max-height: 50vh;
+            display: block;
+            margin: auto;
+          "
+          alt="Aperçu de l'image"
+        />
+        <img
+          *ngSwitchCase="'png'"
+          [src]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          style="
+            max-width: 100%;
+            max-height: 50vh;
+            display: block;
+            margin: auto;
+          "
+          alt="Aperçu de l'image"
+        />
 
-          <!-- Fallback for unsupported types -->
-          <div *ngSwitchDefault class="flex-1 bg-gray-50 rounded border p-4">
-            <div class="text-center">
-              <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
-              <p class="text-gray-600">
-                Aperçu non disponible pour ce type de fichier
-              </p>
-              <p class="text-sm text-gray-500">
-                Cliquez sur "Télécharger" pour ouvrir le fichier
-              </p>
-            </div>
+        <!-- Office/Doc Preview -->
+        <ngx-doc-viewer
+          *ngSwitchCase="'doc'"
+          [url]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          viewer="mammoth"
+          style="width: 100%; height: 50vh"
+        ></ngx-doc-viewer>
+        <ngx-doc-viewer
+          *ngSwitchCase="'docx'"
+          [url]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          viewer="mammoth"
+          style="width: 100%; height: 50vh"
+        ></ngx-doc-viewer>
+        <ngx-doc-viewer
+          *ngSwitchCase="'txt'"
+          [url]="
+            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+          "
+          viewer="mammoth"
+          style="width: 100%; height: 50vh"
+        ></ngx-doc-viewer>
+
+        <!-- Fallback for unsupported types -->
+        <div *ngSwitchDefault class="flex-1 bg-gray-50 rounded border p-4">
+          <div class="text-center">
+            <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600">
+              Aperçu non disponible pour ce type de fichier
+            </p>
+            <p class="text-sm text-gray-500">
+              Cliquez sur "Télécharger" pour ouvrir le fichier
+            </p>
           </div>
-        </ng-container>
-        <!-- Preview Area -->
-        <!-- <div class="flex-1 bg-gray-50 rounded border p-4">
+        </div>
+      </ng-container>
+      <!-- Preview Area -->
+      <!-- <div class="flex-1 bg-gray-50 rounded border p-4">
           <div class="text-center">
             <i class="pi pi-file text-6xl text-gray-400 mb-4"></i>
             <p class="text-gray-600">
@@ -942,16 +925,16 @@
             </p>
           </div>
         </div> -->
-      </div>
-    </ng-template>
+    </div>
+  </ng-template>
 
-    <ng-template pTemplate="footer">
-      <p-button
-        label="Fermer"
-        icon="pi pi-times"
-        [text]="true"
-        (click)="previewDialog = false"
-      />
-    </ng-template>
-  </p-dialog>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Fermer"
+      icon="pi pi-times"
+      [text]="true"
+      (click)="previewDialog = false"
+    />
+  </ng-template>
+</p-dialog>
 <p-toast />
