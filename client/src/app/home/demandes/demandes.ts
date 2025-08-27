@@ -100,7 +100,7 @@ export class Demandes implements OnInit {
   loading = false;
   saving = false;
   processing = false;
-
+  
   // Process variables
   processAction = '';
   processNote = '';

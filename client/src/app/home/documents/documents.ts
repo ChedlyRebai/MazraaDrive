@@ -3,7 +3,7 @@ import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 // PrimeNG Imports
 import { ButtonModule } from 'primeng/button';
@@ -29,6 +29,7 @@ import {
 import { FolderDTO, FolderPagedResult } from '../../shared/models/folder';
 import { Router } from '@angular/router';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 interface Document {
   id?: number;
@@ -88,6 +89,7 @@ interface FileCategory {
     TableModule,
     TagModule,
     AvatarModule,
+    ConfirmDialogModule,
     ToastModule,
     DialogModule,
     FileUploadModule,
@@ -98,7 +100,7 @@ interface FileCategory {
     TabsModule,
     NgxDocViewerModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './documents.html',
   styleUrls: ['./documents.css'],
 })
@@ -274,7 +276,9 @@ export class Documents implements OnInit {
   stats: DocFolderStats = {} as DocFolderStats;
   constructor(
     private router: Router,
-    private messageService: MessageService,
+   
+     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     public documentService: DocumentService,
     public folderService: FolderService
   ) {}
@@ -457,6 +461,43 @@ export class Documents implements OnInit {
       },
     ];
   }
+
+  deleteFolder(folder: FolderDTO) {
+    this.confirmationService.confirm({
+      message: `Êtes-vous sûr de vouloir supprimer le dossier "${folder.name}" ?`,
+      header: 'Confirmer la suppression',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.folderService.deleteFolder(folder.id.toString()).subscribe(
+          (res: any) => {
+            // this.folders = this.folders.filter((f) => f.id !== folder.id);
+            // this.applyFilters();
+            // this.updateStatistics();
+            // this.getAllFolders();
+            this.folderService.getMyFolders().subscribe((folders) => {
+              this.myFolders = folders;
+            });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Supprimé',
+              detail: 'Dossier supprimé avec succès',
+            });
+          },
+          (error: any) => {
+            console.log(error);
+            console.log(error.error.message);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: error.error.message,
+            });
+          }
+        );
+      },
+    });
+  }
+
+
   fileCategories: FileCategory[] = [
     {
       name: 'Images',

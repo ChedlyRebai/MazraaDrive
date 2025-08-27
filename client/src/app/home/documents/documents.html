@@ -1,4 +1,4 @@
-<theme-switcher/>
+<theme-switcher />
 <div class="layout-content-wrappe">
   <div class="mx-auto py-6">
     <!-- Welcome Header -->
@@ -337,6 +337,14 @@
                                 shareFolder(folder); $event.stopPropagation()
                               "
                             />
+                            <p-button
+                              icon="pi pi-trash"
+                              severity="danger"
+                              [text]="true"
+                              size="small"
+                              pTooltip="Supprimer"
+                              (click)="deleteFolder(folder); $event.stopPropagation()"
+                            />
                           </div>
                         </td>
                       </tr>
@@ -488,12 +496,12 @@
                             <p-sortIcon field="modifiedDate" />
                           </div>
                         </th>
-                        <th pSortableColumn="size">
+                        <!-- <th pSortableColumn="size">
                           <div class="flex items-center gap-2">
                             Documents Count
                             <p-sortIcon field="size" />
                           </div>
-                        </th>
+                        </th> -->
                         <th pSortableColumn="owner">
                           <div class="flex items-center gap-2">
                             Size
@@ -527,7 +535,7 @@
                           </div>
                         </td>
                         <td>{{ doc.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
-                        <td>{{ doc.documentCount }}</td>
+                        <!-- <td>{{ doc.documentCount }}</td> -->
                         <td>
                           <div class="flex items-center gap-2">
                             <!-- <p-avatar
@@ -562,6 +570,7 @@
                               pTooltip="Partager"
                               (click)="shareDoc(doc); $event.stopPropagation()"
                             />
+                            
                           </div>
                         </td>
                       </tr>
