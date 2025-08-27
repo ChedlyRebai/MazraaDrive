@@ -58,6 +58,44 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("my-folders")]
+        public async Task<ActionResult<FolderPagedResult>> GetUserFolders([FromQuery] FolderFilterDto filter)
+        {
+            try
+            {
+                // Authorization: Users can only view their own folders unless they're Admin/Manager
+                var currentUserId = _currentUser.UserId ?? "10";
+
+
+                var pagedFolders = await _unitOfWork.FolderRepository.GetByUserPagedAsync(currentUserId, filter);
+                var folderDtos = _mapper.Map<IEnumerable<FolderDTO>>(pagedFolders.Data);
+
+                var result = new FolderPagedResult
+                {
+                    Data = folderDtos,
+                    PageNumber = pagedFolders.PageNumber,
+                    PageSize = pagedFolders.PageSize,
+                    TotalRecords = pagedFolders.TotalRecords,
+                    TotalPages = pagedFolders.TotalPages,
+                    HasPreviousPage = pagedFolders.HasPreviousPage,
+                    HasNextPage = pagedFolders.HasNextPage,
+                    Search = pagedFolders.Search,
+                    SortBy = pagedFolders.SortBy,
+                    SortDirection = pagedFolders.SortDirection,
+                    TotalFolders = folderDtos.Count(),
+                    TotalDepartments = 10,
+                    TotalDocuments = 100
+                };
+
+                //await _auditLogger.LogAsync("GetUserFolders", "Retrieved user's folders", "10", "Folder");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
         [HttpGet("id/{id}")]
         public async Task<ActionResult<FolderPagedResult>> GetFolderById([FromQuery] FolderFilterDto filter, int id)
         {

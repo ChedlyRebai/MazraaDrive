@@ -12,7 +12,7 @@ public interface IFolderRepository : IGenericRepository<Folder>
     Task<PagedResult<Folder>> GetByDepartmentPagedAsync(int departmentId, PaginationParams pagination);
     Task<PagedResult<Folder>> GetHomeFolders(FolderFilterDto filter,int departmentId);
     Task<PagedResult<Folder>> GetByParentPagedAsync(int? parentFolderId, PaginationParams pagination);
-    Task<PagedResult<Folder>> GetByUserPagedAsync(string userId, PaginationParams pagination);
+    Task<PagedResult<FolderDTO>> GetByUserPagedAsync(string userId, PaginationParams pagination);
     Task<Folder> AddAsync(CreateFolderDTO folder);
     Task DeleteAsync(int id);
     Task<IReadOnlyList<Folder>> GetAllAsync();

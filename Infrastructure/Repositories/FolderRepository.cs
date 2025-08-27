@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Core.DTO;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Infrastructure.Repositories
 {
@@ -169,7 +170,7 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
 
             return folders.ToPagedResult(
-                
+
                 filter.PageNumber,
                 filter.PageSize,
                 totalRecords,
@@ -254,29 +255,47 @@ namespace Infrastructure.Repositories
             );
         }
 
-        public async Task<PagedResult<Folder>> GetByUserPagedAsync(string userId, PaginationParams pagination)
+        public async Task<PagedResult<FolderDTO>> GetByUserPagedAsync(string userId, PaginationParams pagination)
         {
             var query = _context.Folders
-                .Include(f => f.ParentFolder)
-                .Include(f => f.Department)
+                //.Include(f => f.ParentFolder)
+                //.Include(f => f.Department.Name)
+                //.Include(f => f.CreatedBy.UserName)
+                //.Include(f => f.SubFolders)
+                //.Include(f => f.Documents)
+                //add select document number
                 .Include(f => f.CreatedBy)
-                .Include(f => f.SubFolders)
-                .Include(f => f.Documents)
-                .Where(f => f.CreatedById.ToString() == userId);
+                
+                .Where(f => f.CreatedById == userId).Select(f => new FolderDTO
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Description = f.Description,
+                    DocumentCount = f.Documents.Count,
+                    CreatedAt = f.CreatedAt,
+                    UpdatedAt = f.UpdatedAt,
+                    Size = f.Documents.Sum(d=>d.FileSize),
+                    ParentFolderId = f.ParentFolderId,
+                    ParentFolderName = f.ParentFolder != null ? f.ParentFolder.Name : null,
+                    DepartmentId = f.DepartmentId,
+                    DepartmentName = f.Department != null ? f.Department.Name : null,
+                    CreatedById = f.CreatedById,
+                    CreatedByName = f.CreatedBy != null ? f.CreatedBy.UserName : null
+                });
 
             // Apply search if provided
-            if (!string.IsNullOrEmpty(pagination.Search))
-            {
-                query = query.Where(f =>
-                    f.Name.Contains(pagination.Search) ||
+            // if (!string.IsNullOrEmpty(pagination.Search))
+            // {
+            //     query = query.Where(f =>
+            //         f.Name.Contains(pagination.Search) ||
 
-                    f.Department.Name.Contains(pagination.Search)
-                );
-            }
+            //         f.Department.Name.Contains(pagination.Search)
+            //     );
+            // }
 
             var totalRecords = await query.CountAsync();
 
-            query = ApplySorting(query, pagination.SortBy, pagination.SortDirection);
+            query = ApplySortingDTO(query, pagination.SortBy, pagination.SortDirection);
 
             var folders = await query
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
@@ -516,6 +535,32 @@ namespace Infrastructure.Repositories
             return query;
         }
 
+        private IQueryable<FolderDTO> ApplySortingDTO(IQueryable<FolderDTO> query, string? sortBy, string? sortDirection)
+        {
+            if (string.IsNullOrEmpty(sortBy))
+                return query.OrderBy(f => f.Name);
+
+            var isDescending = sortDirection?.ToLower() == "desc";
+
+            return sortBy.ToLower() switch
+            {
+                "name" => isDescending ? query.OrderByDescending(f => f.Name)
+                                       : query.OrderBy(f => f.Name),
+
+                "departmentname" => isDescending ? query.OrderByDescending(f => f.DepartmentName)
+                                                 : query.OrderBy(f => f.DepartmentName),
+                "parentfoldername" => isDescending ? query.OrderByDescending(f => f.ParentFolderName)
+                                                   : query.OrderBy(f => f.ParentFolderName),
+                "createdbyname" => isDescending ? query.OrderByDescending(f => f.CreatedByName)
+                                                : query.OrderBy(f => f.CreatedByName),
+                "createdat" => isDescending ? query.OrderByDescending(f => f.CreatedAt)
+                                            : query.OrderBy(f => f.CreatedAt),
+                "updatedat" => isDescending ? query.OrderByDescending(f => f.UpdatedAt)
+                                            : query.OrderBy(f => f.UpdatedAt),
+
+                _ => query.OrderBy(f => f.Name)
+            };
+        }
         private IQueryable<Folder> ApplySorting(IQueryable<Folder> query, string? sortBy, string? sortDirection)
         {
             if (string.IsNullOrEmpty(sortBy))

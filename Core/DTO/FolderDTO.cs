@@ -17,7 +17,8 @@ public class FolderDTO
         public string CreatedByName { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public bool IsActive { get; set; }
+        public long Size { get; set; }
+    public bool IsActive { get; set; }
         public int SubFolderCount { get; set; }
         //public Folder ParentFolder { get; set; }
         public ICollection<SubFolderDTO> SubFolders { get; set; }

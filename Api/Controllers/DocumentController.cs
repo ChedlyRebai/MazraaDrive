@@ -107,7 +107,7 @@ namespace Api.Controllers
                 );
 
                 //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
-                return Ok(new { success = true, data = result });
+                return Ok(result);
             }
             catch (Exception ex)
             {

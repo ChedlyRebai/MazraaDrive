@@ -81,10 +81,11 @@ export class DocumentService {
 
   getMydocuments(){
     return this.http.get<DocumentPagedResult>(
-      `${this.baseUrl}/my-documents`
+      `${this.baseUrl}/my-docs`
     );
   }
 
+  
   getMyStats() {
     return this.http.get<DocFolderStats>(
       `${this.baseUrl}/MyDocumentAndFolderstat`

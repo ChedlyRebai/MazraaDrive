@@ -14,6 +14,7 @@ export interface FolderDTO {
     createdByName: string;
     createdAt: string;
     updatedAt: string | null;
+    size?: number;
     isActive: boolean;
     subFolderCount: number;
     parentFolder: FolderDTO;

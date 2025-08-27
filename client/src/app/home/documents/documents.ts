@@ -1,3 +1,4 @@
+import { FolderService } from './../../core/services/folder-service';
 import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,7 +21,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { TabsModule } from 'primeng/tabs';
-import { DocFolderStats } from '../../shared/models/document';
+import {
+  DocFolderStats,
+  DocumentPagedResult,
+} from '../../shared/models/document';
+import { FolderDTO, FolderPagedResult } from '../../shared/models/folder';
 
 interface Document {
   id?: number;
@@ -182,7 +187,6 @@ export class Documents implements OnInit {
   ];
 
   // File categories
-  
 
   // Recent files and folders
   recentItems: FileItem[] = [
@@ -237,6 +241,20 @@ export class Documents implements OnInit {
       path: '/documents/assets',
     },
   ];
+  myDocumentss: DocumentPagedResult = {} as DocumentPagedResult;
+  myFolders: FolderPagedResult = {} as FolderPagedResult;
+
+  getmyDocs() {
+    this.documentService.getMydocuments().subscribe({
+      next: (docs: DocumentPagedResult) => {
+        this.myDocumentss = docs;
+        console.log('My documents fetched:', docs);
+      },
+      error: (error) => {
+        console.error('Error fetching my documents:', error);
+      },
+    });
+  }
 
   // Chart data
   storageChartData: any;
@@ -252,21 +270,38 @@ export class Documents implements OnInit {
   stats: DocFolderStats = {} as DocFolderStats;
   constructor(
     private messageService: MessageService,
-    public documentService: DocumentService
+    public documentService: DocumentService,
+    public folderService: FolderService
   ) {}
 
   ngOnInit() {
+    this.getmyDocs();
+    this.getMyFolders()
     this.initializeCharts();
     this.setupContextMenu();
     this.initializeStats();
   }
+
+  getMyFolders(){
+    this.folderService.getMyFolders().subscribe({
+      next: (folders: FolderPagedResult) => {
+        this.myFolders = folders;
+        console.log('My folders fetched:', folders);
+      },
+      error: (error) => {
+        console.error('Error fetching my folders:', error);
+      },
+    });
+  }
+
+
   initializeStats() {
     this.documentService.getMyStats().subscribe({
       next: (stats: DocFolderStats) => {
         this.stats = stats;
         console.log('Document stats fetched:', stats.pdfCount);
         this.storageChartData = {
-          labels: ['Documents', 'Images', 'Vidéos', 'Word', 'Pdf','Audio'],
+          labels: ['Documents', 'Images', 'Vidéos', 'Word', 'Pdf', 'Audio'],
           datasets: [
             {
               data: [
@@ -339,7 +374,6 @@ export class Documents implements OnInit {
         },
       },
     };
-  
   }
   initializeFileCategories() {
     this.fileCategories = [
@@ -440,29 +474,29 @@ export class Documents implements OnInit {
   }
 
   // File operations
-  openItem(item: FileItem) {
-    if (item.type === 'folder') {
-      // Navigate to folder
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Navigation',
-        detail: `Ouverture du dossier: ${item.name}`,
-      });
-    } else {
-      // Open file
-      this.previewItem(item);
-    }
+  openItem(item: FolderDTO) {
+    // if (item.type === 'folder') {
+    //   // Navigate to folder
+    //   this.messageService.add({
+    //     severity: 'info',
+    //     summary: 'Navigation',
+    //     detail: `Ouverture du dossier: ${item.name}`,
+    //   });
+    // } else {
+    //   // Open file
+    //   this.previewItem(item);
+    // }
   }
 
-  previewItem(item: FileItem) {
+  previewItem(item: FolderDTO) {
     this.messageService.add({
       severity: 'info',
       summary: 'Aperçu',
-      detail: `Aperçu du fichier: ${item.name}`,
+      detail: `Aperçu du dossier: ${item.name}`,
     });
   }
 
-  downloadItem(item: FileItem) {
+  downloadItem(item: FolderDTO) {
     this.messageService.add({
       severity: 'success',
       summary: 'Téléchargement',
@@ -470,7 +504,7 @@ export class Documents implements OnInit {
     });
   }
 
-  shareItem(item: FileItem) {
+  shareItem(item: FolderDTO) {
     this.messageService.add({
       severity: 'info',
       summary: 'Partage',
@@ -479,12 +513,12 @@ export class Documents implements OnInit {
   }
 
   // Context menu actions
-  showContextMenu(event: any, item: FileItem) {
+  showContextMenu(event: any, item: FolderDTO) {
     event.preventDefault();
     this.contextMenu.show(event);
   }
 
-  showItemMenu(event: any, item: FileItem) {
+  showItemMenu(event: any, item: FolderDTO) {
     // Show dropdown menu for item
     event.stopPropagation();
   }
