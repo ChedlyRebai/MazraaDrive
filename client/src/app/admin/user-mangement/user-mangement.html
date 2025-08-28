@@ -188,13 +188,7 @@
         [showCurrentPageReport]="true"
         responsiveLayout="scroll"
         styleClass="p-datatable-sm"
-        [globalFilterFields]="[
-          'fullName',
-          
-          'userName',
-          'department',
-          'role'
-        ]"
+        [globalFilterFields]="['fullName', 'userName', 'department', 'role']"
         [lazy]="true"
         (onLazyLoad)="onPageChange($event)"
         [totalRecords]="users.totalRecords"
@@ -215,7 +209,6 @@
               Nom Complet
               <p-sortIcon field="fullName" />
             </th>
-           
 
             <th pSortableColumn="department">
               Département
@@ -305,19 +298,15 @@
     </ng-container>
     <!-- User Dialog -->
     <p-dialog
-
       [(visible)]="userDialog"
       [style]="{ width: '48rem' }"
       [header]="dialogTitle"
       [modal]="true"
-      
       [draggable]="true"
       class="overflow-y-scroll"
     >
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
-          
-
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
@@ -349,7 +338,6 @@
                 >Requis.</small
               >
             </div>
-            
 
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
@@ -377,7 +365,6 @@
                   [forceSelection]="true"
                   [minLength]="1"
                   (onSelect)="user.departmentId = $event.value.id"
-                 
                 >
                   <ng-template let-department pTemplate="item">
                     <div class="flex flex-col">
@@ -390,13 +377,15 @@
                 </p-autocomplete>
                 <label for="department">Département *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.departmentId">
+              <small
+                class="text-red-500"
+                *ngIf="submitted && !user.departmentId"
+              >
                 Requis.
               </small>
             </div>
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                
                 <p-autocomplete
                   inputId="role"
                   [(ngModel)]="user.roleName"
@@ -407,7 +396,7 @@
                   optionLabel="name"
                   optionValue="name"
                 >
-                 <!-- <ng-template let-department pTemplate="item">
+                  <!-- <ng-template let-department pTemplate="item">
                     <div class="flex flex-col">
                       <span class="font-medium">{{ department.name }}</span>
                       <small class="text-gray-500">{{
@@ -416,7 +405,7 @@
                     </div>
                   </ng-template> -->
                 </p-autocomplete>
-                
+
                 <label for="role">Rôle *</label>
               </p-floatLabel>
               <small class="text-red-500" *ngIf="submitted && !user.roleId"
@@ -447,7 +436,9 @@
                 />
                 <label for="confirmPassword">Confirmer le mot de passe *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.confirmPassword"
+              <small
+                class="text-red-500"
+                *ngIf="submitted && !user.confirmPassword"
                 >Requis.</small
               >
             </div>

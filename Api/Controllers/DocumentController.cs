@@ -353,6 +353,8 @@ namespace Api.Controllers
                     await uploadDto.File.CopyToAsync(stream);
                 }
 
+                var currentUserId = _currentUser?.UserId ?? "10";
+                var currentDepId = _unitOfWork.UserRepository.GetByIdAsync(currentUserId).Result.DepartmentId;
                 // Create document entity
                 var document = new Document
                 {
@@ -364,8 +366,8 @@ namespace Api.Controllers
                     FileSize = uploadDto.File.Length,
                     StoragePath = fileName,
                     FolderId = uploadDto.FolderId,
-                    DepartmentId = 10,
-                    UploadedById = "10",
+                    DepartmentId = currentDepId,
+                    UploadedById = currentUserId,
                     Version = 1,
                     IsValidated = false,
 
@@ -378,7 +380,7 @@ namespace Api.Controllers
                 // Log the document upload
                 //await _auditLogger.LogAsync("UploadDocument", "Uploaded new document", "10", "Document");
                 return CreatedAtAction(nameof(GetDocument), new { id = documentDto.Id },
-                    new { success = true, data = documentDto });
+                    documentDto );
             }
             catch (Exception ex)
             {

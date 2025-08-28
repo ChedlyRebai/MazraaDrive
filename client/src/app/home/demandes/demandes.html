@@ -283,7 +283,7 @@
                        [rounded]="true"
                     size="small"
                     pTooltip="Répondre"
-                    [disabled]="request.status !== 'Pending'"
+                    
                     (click)="respondToRequest(request)"
                   />
                     <p-button
@@ -644,6 +644,30 @@
               >Le type de document est requis.</small
             >
           </div>
+          
+
+          <div class="col-span-12 md:col-span-6">
+            <label for="departmentId" class="block font-bold mb-3"
+              >Département *</label
+            >
+            <div class="flex justify-start">
+              <p-autocomplete
+                [(ngModel)]="request.departmentId"
+                [dropdown]="true"
+                [suggestions]="filteredDepartments"
+                (completeMethod)="searchDepartment($event)"
+                placeholder="Sélectionner le département"
+                (onSelect)="onDepartmentSelect($event)"
+                fluid
+              />
+            </div>
+            <small
+              class="text-red-500"
+              *ngIf="submitted && !request.documentType"
+              >Le type de document est requis.</small
+            >
+          </div>
+
 
           <!-- Priority -->
           <div class="col-span-12 md:col-span-6">
@@ -1120,7 +1144,7 @@
                 fluid
                 (click)="quickReject()"
               />
-              <!-- <p-button
+              <p-button
                 label="Demander Info"
                 icon="pi pi-question-circle"
                 severity="help"
@@ -1128,7 +1152,7 @@
                 [outlined]="true"
                 fluid
                 (click)="requestMoreInfo()"
-              /> -->
+              />
             </div>
           </div>
         </div>

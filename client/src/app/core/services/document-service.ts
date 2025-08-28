@@ -71,7 +71,7 @@ export class DocumentService {
 
 
   uploadDocument(uploadDocument:FormData){
-    return this.http.post(`${this.baseUrl}/upload`, uploadDocument);
+    return this.http.post<DocumentDto>(`${this.baseUrl}/upload`, uploadDocument);
   }
 
   search(q:string){
