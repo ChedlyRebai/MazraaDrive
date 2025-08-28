@@ -61,6 +61,43 @@ export class DocumentRequsetService {
 
   }
 
+
+  getMyDepartmentDocumentRequests(PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string) {
+    let params = new HttpParams();
+  
+    if(PageSize){
+      params = params.append('PageSize', PageSize.toString());
+      console.log('PageSize:', PageSize);
+    }
+    if(PageNumber){
+      params = params.append('PageNumber', PageNumber.toString());
+      console.log('PageNumber:', PageNumber);
+    }
+    if(Search){
+      params = params.append('Search', Search.toString());
+    }
+    if(SortBy){
+      params = params.append('SortBy', SortBy);
+    }
+    if(SortDirection){
+      params = params.append('SortDirection', SortDirection);
+    }
+    return this.http
+      .get<DocumentRequestPagedResult>(`${this.baseUrl}/GetMyDepartmentDocumentRequests`,{params,withCredentials:true}).subscribe(
+        (result) => {
+          console.log('Document requests fetched:', result);
+          this.documentRequest.next(result);
+        },
+        (error) => {
+          console.error('Error fetching document requests:', error);
+        }
+      ); 
+    }
+
   getDocumentRequestById(id: number) {
     return this.http
       .get<DocumentRequestDTO>(`${this.baseUrl}/${id}`)

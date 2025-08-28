@@ -1,3 +1,4 @@
+import { JwtService } from './../../core/services/jwt-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -40,12 +41,29 @@ import {
   TabPanels,
   TabPanel,
 } from '../../../../node_modules/primeng/tabs/index';
+import { DocumentService } from '../../core/services/document-service';
 
 interface Department {
   id: number;
   name: string;
 }
 
+interface Request {
+  id: string;
+  requesterName: string;
+  requesterEmail: string;
+  departmentName: string;
+  departmentId: string;
+  documentType: string;
+  priority: string;
+  status: string;
+  description: string;
+  requestedAt: Date;
+  createdAt: Date;
+  respondedAt?: Date;
+  processedByName?: string;
+  responseDocumentName?: string;
+}
 @Component({
   selector: 'app-doc-req-management',
   standalone: true,
@@ -76,31 +94,141 @@ interface Department {
   styleUrls: ['./demandes.css'],
 })
 export class Demandes implements OnInit {
-  validationErrors: any;
+  requests: Request[] = [];
+  filteredRequests: Request[] = [];
+  selectedRequest: DocumentRequestDTO = {} as DocumentRequestDTO;
+
+  // Stats
+  totalRequests = 0;
+  pendingRequests = 0;
+  approvedRequests = 0;
+  rejectedRequests = 0;
+
+  // Dialog states
+  createDialog = false;
+  detailsDialog = false;
+  responseDialog = false;
+  loading = false;
+  creatingRequest = false;
+  sendingResponse = false;
+
+  // Filters
+  searchTerm = '';
+  statusFilter: any = '';
+  priorityFilter: any = '';
+
+  requestResponse: DocumentRequestDTO = {} as DocumentRequestDTO;
+  // Forms
+  newRequest: Partial<Request> = {};
+  responseForm = {
+    status: '',
+    message: '',
+    notes: '',
+  };
+
+  // File upload
+  selectedFile: File | null = null;
+  uploadUrl = '/api/upload';
+
+  // Validation
+  validationErrors: string[] = [];
+
+  // AutoComplete Suggestions
+  statusFilterSuggestions: any[] = [];
+  priorityFilterSuggestions: any[] = [];
+  documentTypeSuggestions: any[] = [];
+  prioritySuggestions: any[] = [];
+  departmentSuggestions: any[] = [];
+  responseStatusSuggestions: any[] = [];
+
+  // Options
+  documentTypes = [
+    { label: 'Certificat de travail', value: 'certificat_travail' },
+    { label: 'Attestation de salaire', value: 'attestation_salaire' },
+    { label: 'Congé payé', value: 'conge_paye' },
+    { label: 'Bulletin de paie', value: 'bulletin_paie' },
+    { label: 'Contrat de travail', value: 'contrat_travail' },
+    { label: 'Formation professionnelle', value: 'formation' },
+    { label: 'Autres', value: 'autres' },
+  ];
+
+  priorityOptions = [
+    { label: 'Urgent', value: 'urgent' },
+    { label: 'Haute', value: 'haute' },
+    { label: 'Normale', value: 'normale' },
+    { label: 'Basse', value: 'basse' },
+  ];
+
+  departments = [
+    { id: '1', name: 'Ressources Humaines' },
+    { id: '2', name: 'Informatique' },
+    { id: '3', name: 'Finance' },
+    { id: '4', name: 'Marketing' },
+    { id: '5', name: 'Opérations' },
+  ];
+
+  statusFilterOptions = [
+    { label: 'En attente', value: 'Pending' },
+    { label: 'Approuvé', value: 'Approved' },
+    { label: 'Rejeté', value: 'Rejected' },
+    { label: 'En cours', value: 'In Progress' },
+  ];
+
+  priorityFilterOptions = [
+    { label: 'Urgent', value: 'urgent' },
+    { label: 'Haute', value: 'haute' },
+    { label: 'Normale', value: 'normale' },
+    { label: 'Basse', value: 'basse' },
+  ];
+
+  responseStatuses = [
+    { label: 'Approuvé', value: 'Approved' },
+    { label: 'Rejeté', value: 'Rejected' },
+    { label: 'En cours', value: 'In Progress' },
+    { label: 'Information nécessaire', value: 'More Info Required' },
+  ];
+
   cancelCreate() {
     throw new Error('Method not implemented.');
   }
   isFormValid() {
     throw new Error('Method not implemented.');
   }
-  creatingRequest: unknown;
+  removeSelectedFile() {
+    this.selectedFile = null;
+  }
+  onFileSelect(event: any) {
+    this.selectedFile = event.files[0];
+  }
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  cancelResponse() {
+    this.responseDialog = false;
+    this.resetResponseForm();
+  }
   resetForm() {
     throw new Error('Method not implemented.');
   }
 
   documentRequests: DocumentRequestDTO[] = [];
   selectedRequests: DocumentRequestDTO[] = [];
-  selectedRequest: DocumentRequestDTO | null = null;
+
   request: any = this.getEmptyRequest();
 
   requestDialog = false;
   requestDetailsDialog = false;
   processDialog = false;
   submitted = false;
-  loading = false;
+
   saving = false;
   processing = false;
-  
+
   // Process variables
   processAction = '';
   processNote = '';
@@ -130,39 +258,12 @@ export class Demandes implements OnInit {
   totalRejectedRequests = 0;
 
   // Options
-  departments: Department[] = [
-    { id: 1, name: 'Ressources Humaines' },
-    { id: 2, name: 'Finance' },
-    { id: 3, name: 'IT' },
-    { id: 4, name: 'Marketing' },
-    { id: 5, name: 'Opérations' },
-    { id: 6, name: 'Administration' },
-  ];
 
-  documentTypes = [
-    'Certificat de Travail',
-    'Attestation de Salaire',
-    'Contrat de Travail',
-    'Relevé de Notes',
-    'Certificat Médical',
-    'Justificatif de Domicile',
-    "Pièce d'Identité",
-    'Autre',
-  ];
-  newRequest?: DocumentRequestDTO;
   showCreateDialog() {
     this.requestDialog = true;
   }
 
-  showDetailsDialog(request: Request) {
-
-  }
-  priorityOptions = [
-    { label: 'Faible', value: 'Faible' },
-    { label: 'Normale', value: 'Normale' },
-    { label: 'Élevée', value: 'Élevée' },
-    { label: 'Urgente', value: 'Urgente' },
-  ];
+  showDetailsDialog(request: Request) {}
 
   statusOptions = [
     { label: 'En Attente', value: 'En Attente' },
@@ -178,13 +279,15 @@ export class Demandes implements OnInit {
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private http: HttpClient
+    private http: HttpClient,
+    public documentService: DocumentService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit() {
     this.loadDocumentRequests();
-    this.getAlldocReq();
-    this.documentRequsetService.getDocumentRequests();
+    this.getMyallDocReq();
+    this.documentRequsetService.getMyDepartmentDocumentRequests();
   }
   PageSize?: number = 5;
   Search?: string = '';
@@ -214,6 +317,15 @@ export class Demandes implements OnInit {
     //  });
   }
 
+  getMyallDocReq() {
+    this.documentRequsetService.getMyDepartmentDocumentRequests(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
+  }
   get dialogTitle(): string {
     return this.request.id ? 'Modifier la demande' : 'Nouvelle demande';
   }
@@ -221,7 +333,7 @@ export class Demandes implements OnInit {
   loadDocumentRequests() {
     this.loading = true;
     // Mock data for demonstration
-  
+
     // Real API call would be:
     /*
     this.http.get<DocumentRequestPagedResult>(`${this.baseUrl}/DocumentRequest`, { params: this.filter as any }).subscribe({
@@ -398,41 +510,41 @@ export class Demandes implements OnInit {
       priority: this.request.priority,
     };
 
-    setTimeout(() => {
-      const newRequest: DocumentRequestDTO = {
-        id: Math.max(...this.documentRequests.map((r) => r.id)) + 1,
-        requesterId: createDto.requesterId,
-        requesterName: 'Utilisateur Actuel',
-        departmentId: createDto.departmentId,
-        departmentName:
-          this.departments.find((d) => d.id === createDto.departmentId)?.name ||
-          '',
-        documentType: createDto.documentType,
-        description: createDto.description,
-        priority: createDto.priority,
-        status: 'En Attente',
-        responseDocumentId: null,
-        responseDocumentName: null,
-        requestedAt: new Date().toISOString(),
-        respondedAt: null,
-        processedById: null,
-        processedByName: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: null,
-        isActive: true,
-      };
+    // setTimeout(() => {
+    //   const newRequest: DocumentRequestDTO = {
+    //     id: Math.max(...this.documentRequests.map((r) => r.id)) + 1,
+    //     requesterId: createDto.requesterId,
+    //     requesterName: 'Utilisateur Actuel',
+    //     departmentId: createDto.departmentId,
+    //     departmentName:
+    //       this.departments.find((d) => d.id === createDto.departmentId)?.name ||
+    //       '',
+    //     documentType: createDto.documentType,
+    //     description: createDto.description,
+    //     priority: createDto.priority,
+    //     status: 'En Attente',
+    //     responseDocumentId: null,
+    //     responseDocumentName: null,
+    //     requestedAt: new Date().toISOString(),
+    //     respondedAt: null,
+    //     processedById: null,
+    //     processedByName: null,
+    //     createdAt: new Date().toISOString(),
+    //     updatedAt: null,
+    //     isActive: true,
+    //   };
 
-      this.documentRequests.unshift(newRequest);
-      this.totalRecords++;
-      this.totalPendingRequests++;
+    //   this.documentRequests.unshift(newRequest);
+    //   this.totalRecords++;
+    //   this.totalPendingRequests++;
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Demande créée avec succès',
-      });
-      this.hideDialog();
-    }, 1500);
+    //   this.messageService.add({
+    //     severity: 'success',
+    //     summary: 'Succès',
+    //     detail: 'Demande créée avec succès',
+    //   });
+    //   this.hideDialog();
+    // }, 1500);
   }
 
   createNewRequest() {
@@ -671,9 +783,9 @@ export class Demandes implements OnInit {
 
   searchDocumentType(event: any) {
     const query = event.query.toLowerCase();
-    this.filteredDocumentTypes = this.documentTypes.filter((type) =>
-      type.toLowerCase().includes(query)
-    );
+    // this.filteredDocumentTypes = this.documentTypes.filter((type) =>
+    //   type.toLowerCase().includes(query)
+    // );
   }
 
   searchRequestPriority(event: any) {
@@ -733,5 +845,274 @@ export class Demandes implements OnInit {
 
   onRequestStatusSelect(event: any) {
     this.request.status = event.value;
+  }
+
+  updateStats() {
+    this.totalRequests = this.requests.length;
+    this.pendingRequests = this.requests.filter(
+      (r: any) => r.status === 'Pending'
+    ).length;
+    this.approvedRequests = this.requests.filter(
+      (r: any) => r.status === 'Approved'
+    ).length;
+    this.rejectedRequests = this.requests.filter(
+      (r: any) => r.status === 'Rejected'
+    ).length;
+  }
+
+  // AutoComplete search methods
+  searchStatusFilter(event: any) {
+    const query = event.query.toLowerCase();
+    this.statusFilterSuggestions = this.statusFilterOptions.filter((option) =>
+      option.label.toLowerCase().includes(query)
+    );
+  }
+
+  quickApprove() {
+    this.requestResponse.status = 'Approved';
+    // this.requestResponse.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
+  }
+
+  quickReject() {
+    this.responseForm.status = 'Rejected';
+    // this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
+  }
+
+  requestMoreInfo() {
+    this.responseForm.status = 'More Info Required';
+    //this.responseForm.message = 'Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.';
+  }
+  searchPriorityFilter(event: any) {
+    const query = event.query.toLowerCase();
+    this.priorityFilterSuggestions = this.priorityFilterOptions.filter(
+      (option) => option.label.toLowerCase().includes(query)
+    );
+  }
+
+  searchResponseStatus(event: any) {
+    const query = event.query.toLowerCase();
+    this.responseStatusSuggestions = this.responseStatuses.filter((status) =>
+      status.label.toLowerCase().includes(query)
+    );
+  }
+
+  // Filter methods
+  onSearch(event: any) {
+    this.applyFilters();
+  }
+
+  // CRUD operations
+
+  respondToRequest(request: DocumentRequestDTO) {
+    this.selectedRequest = request;
+    this.responseDialog = true;
+    this.resetResponseForm();
+  }
+
+  resetResponseForm() {
+    this.responseForm = {
+      status: '',
+      message: '',
+      notes: '',
+    };
+    this.selectedFile = null;
+  }
+
+  sendResponse() {
+    // if (!this.isResponseValid()) {
+    //   return;
+    // }
+
+    this.sendingResponse = true;
+    console.log('Sending response:', this.responseForm);
+    console.log('request response:', this.requestResponse);
+    console.log('selected request:', this.selectedRequest);
+    console.log('selected file:', this.selectedFile);
+    console.log('response message:', this.selectedRequest.responseMessage);
+
+    const formData = new FormData();
+    formData.append('File', this.selectedFile ? this.selectedFile : '');
+    formData.append('Name', this.selectedFile ? this.selectedFile.name : '');
+    formData.append('FolderId', '10');
+
+    // Example folderId
+    this.documentService.uploadDocument(formData).subscribe({
+      next: (response: any) => {
+        console.log('File uploaded successfully:', response);
+        this.selectedRequest.responseDocumentId = response.id;
+        console.log('id:', this.selectedRequest.id);
+        this.documentRequsetService
+          .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+          .subscribe({
+            next: (response) => {
+              console.log('Document request updated successfully:', response);
+            },
+            error: (error) => {
+              console.error('Error updating document request:', error);
+            },
+          });
+      },
+      error: (error) => {
+        console.error('Error uploading file:', error);
+      },
+    });
+
+    // setTimeout(() => {
+    //   if (this.selectedRequest) {
+    //     this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
+    //     this.selectedRequest.respondedAt = new Date();
+    //     this.selectedRequest.processedByName = 'Admin Courant';
+
+    //     if (this.selectedFile) {
+    //       this.selectedRequest.responseDocumentName = this.selectedFile.name;
+    //     }
+    //   }
+
+    //   this.applyFilters();
+    //   this.updateStats();
+
+    //   this.messageService.add({
+    //     severity: 'success',
+    //     summary: 'Réponse envoyée',
+    //     detail: 'La réponse a été envoyée avec succès'
+    //   });
+
+    //   this.responseDialog = false;
+    //   this.sendingResponse = false;
+    // }, 1500);
+  }
+
+  applyFilters() {
+    this.filteredRequests = this.requests.filter((request) => {
+      const matchesSearch =
+        !this.searchTerm ||
+        request.requesterName
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        request.documentType
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        request.description
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase());
+
+      const statusValue = this.getSelectedValue(this.statusFilter);
+      const priorityValue = this.getSelectedValue(this.priorityFilter);
+
+      const matchesStatus = !statusValue || request.status === statusValue;
+      const matchesPriority =
+        !priorityValue || request.priority === priorityValue;
+
+      return matchesSearch && matchesStatus && matchesPriority;
+    });
+  }
+  getSelectedValue(value: any): string {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value.value) return value.value;
+    if (typeof value === 'object' && value.id) return value.id;
+    return value.toString();
+  }
+
+  onResponseMessageChange() {
+    console.log(this.selectedRequest.responseMessage);
+  }
+  sendRespnse() {
+    if (!this.selectedRequest) {
+      console.error('No request selected!');
+      return;
+    }
+
+    this.sendingResponse = true;
+    console.log('Sending response:', this.responseForm);
+    console.log('Selected request:', this.selectedRequest);
+    console.log('Selected file:', this.selectedFile);
+
+    let upload$;
+
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('File', this.selectedFile);
+      formData.append('Name', this.selectedFile.name);
+      formData.append('FolderId', '10'); // example folderId
+
+      upload$ = this.documentService.uploadDocument(formData);
+    }
+
+    if (upload$) {
+      upload$.subscribe({
+        next: (uploadResponse: any) => {
+          console.log('Upload response:', uploadResponse);
+
+          // Update selectedRequest fields
+          this.selectedRequest.status = this.getSelectedValue(
+            this.responseForm.status
+          );
+          // this.selectedRequest.createdAt = new Date();
+          this.selectedRequest.processedByName = 'Admin Courant';
+
+          if (this.selectedFile) {
+            this.selectedRequest.responseDocumentName = this.selectedFile.name;
+          }
+
+          this.documentRequsetService
+            .updateDocumentRequest(
+              this.selectedRequest,
+              this.selectedRequest.id
+            )
+            .subscribe({
+              next: (response) => {
+                console.log('Document request updated successfully:', response);
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Réponse envoyée',
+                  detail: 'La réponse a été envoyée avec succès',
+                });
+                this.responseDialog = false;
+              },
+              error: (err) => {
+                console.error('Error updating document request:', err);
+              },
+              complete: () => {
+                this.sendingResponse = false;
+                this.applyFilters();
+                this.updateStats();
+              },
+            });
+        },
+        error: (err: any) => {
+          console.error('Error uploading file:', err);
+          this.sendingResponse = false;
+        },
+      });
+    } else {
+      // No file to upload, just update the request
+      this.selectedRequest.status = this.getSelectedValue(
+        this.responseForm.status
+      );
+      this.selectedRequest.processedByName = 'Admin Courant';
+
+      this.documentRequsetService
+        .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+        .subscribe({
+          next: (response) => {
+            console.log('Document request updated successfully:', response);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Réponse envoyée',
+              detail: 'La réponse a été envoyée avec succès',
+            });
+            this.responseDialog = false;
+          },
+          error: (err) => {
+            console.error('Error updating document request:', err);
+          },
+          complete: () => {
+            this.sendingResponse = false;
+            this.applyFilters();
+            this.updateStats();
+          },
+        });
+    }
   }
 }

@@ -49,8 +49,9 @@ export class DocumentService {
     if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
+    
     return this.http
-      .get<DocumentPagedResult>(`${this.baseUrl}`, { params })
+      .get<DocumentPagedResult>(`${this.baseUrl}`, { params },)
       .subscribe(
         (result) => {
           console.log('Document  fetched:', result);
@@ -81,7 +82,7 @@ export class DocumentService {
 
   getMydocuments(){
     return this.http.get<DocumentPagedResult>(
-      `${this.baseUrl}/my-docs`
+      `${this.baseUrl}/my-docs`,{withCredentials: true}
     );
   }
 

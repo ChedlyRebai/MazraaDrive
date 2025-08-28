@@ -90,7 +90,8 @@ export class FolderService {
 
   getMyFolders(){
     return this.http.get<FolderPagedResult>(
-      `${this.baseUrl}/my-folders`
+      `${this.baseUrl}/my-folders`,{withCredentials: true}
+
     );
   }
 

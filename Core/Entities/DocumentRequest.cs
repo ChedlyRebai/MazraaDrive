@@ -14,7 +14,8 @@ public class DocumentRequest : BaseEntity<int>
     [Required]
     [MaxLength(100)]
     public string DocumentType { get; set; } = string.Empty;
-    
+
+
     [Required]
     [MaxLength(500)]
     public string Description { get; set; } = string.Empty;

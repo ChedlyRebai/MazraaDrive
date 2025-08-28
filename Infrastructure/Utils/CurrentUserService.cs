@@ -15,6 +15,8 @@ namespace Infrastructure.Services
         private readonly TokenValidationParameters _tokenValidationParameters;
         private string? _userId;
         private string? _userName;
+        private string? _departmentId;
+        private string? _roleId;
         private bool _initialized;
 
         public CurrentUserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
@@ -51,24 +53,42 @@ namespace Infrastructure.Services
             {
                 var principal = JwtUtils.ValidateToken(token, _tokenValidationParameters);
 
-                Console.WriteLine($"User ID: ",principal);
+                Console.WriteLine($"User IDxxxxxxxxxxxxxxxxxx: ", principal);
                 Console.WriteLine($"User ID: {principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value}");
+                Console.WriteLine("roleid", principal.FindFirst("RoleId")?.Value);
+                Console.WriteLine("departmenid****************************************************************************", principal.FindFirst("DepartmentId")?.Value);
+                _departmentId = principal.FindFirst("DepartmentId")?.Value;
+
+
+                // Extract RoleId (custom claim)
+                _roleId = principal.FindFirst("RoleId")?.Value;
+
                 _userId = principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                           ?? principal.FindFirst("id")?.Value
                           ?? principal.FindFirst("sub")?.Value;
                 _userName = principal.Identity?.Name ?? principal.FindFirst("name")?.Value;
+                // _departmentId=principal.Identity?.
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine("Token validation failed: " + ex.Message);
                 // invalid token => no current user
+                _roleId = null;
+                _departmentId = null;
                 _userId = null;
                 _userName = null;
             }
         }
 
+
+
         public string? UserId { get { EnsureInitialized(); return _userId; } }
         public string? UserName { get { EnsureInitialized(); return _userName; } }
         public bool IsAuthenticated { get { EnsureInitialized(); return !string.IsNullOrEmpty(_userId); } }
+
+        public string? DepartmentId { get { EnsureInitialized(); return _departmentId; } }
+
+        public string? RoleId { get { EnsureInitialized(); return _roleId; } }
     }
 
 

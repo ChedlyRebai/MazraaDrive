@@ -294,8 +294,10 @@ namespace Api.Controllers
         {
             try
             {
-                var userId = _currentUser?.UserId ?? "10";
+                var userId = _currentUser?.UserId;
+                var depId = _currentUser?.DepartmentId;
                 Console.WriteLine("UserId: " + userId);
+                 Console.WriteLine("depId: " + depId);
                 var stats = await _unitOfWork.DocumentRepository.MyDocumentAndFolderStats(userId);
                 Console.WriteLine($"Stats for user {userId}: {stats.DocumentCount} documents, {stats.FolderCount} folders");
                 return Ok(stats);
