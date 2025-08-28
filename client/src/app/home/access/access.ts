@@ -111,7 +111,7 @@ export class Access implements OnInit {
 
   ngOnInit(): void {
     this.load();
-    this.getAllAccessRequests();
+    this.getAllMyAccessRequests();
   }
 
    onPageChange(event: any) {
@@ -119,7 +119,7 @@ export class Access implements OnInit {
     this.PageNumber = event.first / event.rows + 1;
     this.PageSize = event.rows;
 
-    this.getAllAccessRequests();
+    this.getAllMyAccessRequests();
   }
 
   myAccessRequest:AccessRequestPagedResult = {} as AccessRequestPagedResult;
@@ -188,7 +188,7 @@ export class Access implements OnInit {
   PageNumber?: number = 1;
   SortBy?: string = '';
   SortDirection?: string = '';
-  getAllAccessRequests() {
+  getAllMyAccessRequests() {
     this.accessRequestService.getAccessMyRequests(
       this.PageSize,
       this.Search,
@@ -300,13 +300,16 @@ export class Access implements OnInit {
         this.creatingRequest = false;
         this.createDialog = false;
         this.load();
-      },error: (err)=>{
-        this.creatingRequest = false;
-        this.toast.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée' });
+      },error: (err:any)=>{
+        console.log(err);
+        console.log(err.error);
+        console.log(err.message.message);
+        //this.creatingRequest = false;
+        this.toast.add({ severity: 'error', summary: 'Erreur', detail: err.error });
       }
     })
     console.log('Creating access request:', dto);
-    this.creatingRequest = true;
+    
     // this.svc.create(dto).subscribe({
     //   next: _ => {
     //     this.toast.add({ severity: 'success', summary: 'Demande créée' });
@@ -344,12 +347,13 @@ export class Access implements OnInit {
     this.confirm.confirm({
       message: 'Annuler cette demande ?',
       accept: () => {
-        // this.svc.decide(r.id, false).subscribe({
-        //   next: _ => {
-        //     this.toast.add({ severity: 'info', summary: 'Rejetée' });
-        //     this.load();
-        //   }
-        // });
+        this.accessRequestService.deleteAccessRequest(r.id).subscribe({
+          next: _ => {
+            this.toast.add({ severity: 'danger', summary: 'Supprimée avec succès' });
+            this.getAllMyAccessRequests();
+            this.load();
+          }
+        });
       }
     });
   }

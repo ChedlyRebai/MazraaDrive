@@ -74,11 +74,11 @@
     <p-table
       [value]="myAccessRequest.data"
       [paginator]="true"
-      [rows]="pageSize"
+      [rows]="PageSize"
       [totalRecords]="myAccessRequest.totalRecords"
       [lazy]="true"
    
-      [loading]="loading"
+      
       dataKey="id"
       responsiveLayout="scroll"
       styleClass="p-datatable-sm"
@@ -89,7 +89,7 @@
       dataKey="id"
       currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} résultats"
       [showCurrentPageReport]="true"
-      [loading]="loading"
+      
       [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
     >
       <ng-template pTemplate="header">
@@ -145,8 +145,9 @@
               ></p-button>
 
               <p-button
-                icon="pi pi-times"
+                icon="pi pi-trash"
                 severity="danger"
+                
                 [rounded]="true"
                 [outlined]="true"
                 *ngIf="r.status === 'Pending'"
@@ -186,7 +187,7 @@
         [showClear]="true"
         placeholder="Rechercher un document"
         class="w-auto"
-      >
+      > 
         <ng-template let-doc onclick="console.log(doc)" pTemplate="item">
           <div class="flex flex-col">
             <span class="font-medium">{{ doc.name }}</span>

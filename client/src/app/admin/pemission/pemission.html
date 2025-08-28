@@ -176,7 +176,7 @@
         [lazy]="true"
         (onLazyLoad)="onPageChange($event)"
         (onPage)="onPage($event)"
-        [loading]="loading"
+        
         dataKey="id"
         responsiveLayout="scroll"
         styleClass="p-datatable-sm"
@@ -184,7 +184,7 @@
         selectionMode="multiple"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
         [showCurrentPageReport]="true"
-        [loading]="loading"
+        
         [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
       >
         <ng-template pTemplate="header">

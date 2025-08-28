@@ -9,14 +9,7 @@
         class="mr-2"
         (onClick)="openNew()"
       />
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedRoles()"
-        [disabled]="!selectedRoles || !selectedRoles.length"
-      />
+     
     </ng-template>
     <ng-template #end>
       <p-button
@@ -79,7 +72,7 @@
       dataKey="id"
       currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
       [showCurrentPageReport]="true"
-      [loading]="loading"
+      
       [rowsPerPageOptions]="[1,10, 25, 50]"
     >
       <ng-template pTemplate="caption">
@@ -116,7 +109,7 @@
               icon="pi pi-refresh"
               [outlined]="true"
               (click)="reload()"
-              [loading]="loading"
+              
             />
           </div>
         </div>

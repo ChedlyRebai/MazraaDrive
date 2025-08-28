@@ -154,13 +154,6 @@ export class DocumentRequsetService {
   }
 
   deleteDocumentRequest(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`).subscribe(
-      () => {
-        console.log('Document request deleted');
-      },
-      (error) => {
-        console.error('Error deleting document request:', error);
-      }
-    );
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 }

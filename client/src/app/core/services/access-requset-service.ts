@@ -44,12 +44,12 @@ export class AccessRequsetService {
       params = params.append('SortDirection', SortDirection);
     }
 
-    return this.http.get<AccessRequestPagedResult>(this.baseUrl, { params })
+    return this.http.get<AccessRequestPagedResult>(this.baseUrl, { params,withCredentials: true })
   }
 
 
   createAccessRequest(dto: AccessRequestCreateDto) {
-    return this.http.post(this.baseUrl, dto);
+    return this.http.post(this.baseUrl, dto,{withCredentials: true});
   }
 
   getAccessMyRequests(PageSize?: number,
@@ -79,7 +79,12 @@ export class AccessRequsetService {
       params = params.append('SortDirection', SortDirection);
     }
     params.append('userId', "10");
-    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests?userId=10', { params },)
+    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests?userId=10', { params,withCredentials: true })
+  }
+
+
+  deleteAccessRequest(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
 }

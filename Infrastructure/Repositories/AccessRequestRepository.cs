@@ -158,10 +158,12 @@ public class AccessRequestRepository : IAccessRequestRepository
 
     public Task SaveChangesAsync() => _ctx.SaveChangesAsync();
 
-    public Task DeleteAsync(AccessRequest entity)
+    public async Task DeleteAsync(int id)
     {
-        _ctx.AccessRequests.Remove(entity);
-        return Task.CompletedTask;
+        var accessRequest = await _ctx.AccessRequests.FindAsync(id);
+
+        _ctx.AccessRequests.Remove(accessRequest);
+
     }
 
     public Task<AccessRequestDto> UpdateAsync(AccessRequest entity)
@@ -187,5 +189,45 @@ public class AccessRequestRepository : IAccessRequestRepository
     public Task UpdateAsync(AccessRequestDto entity)
     {
         throw new NotImplementedException();
+    }
+
+
+    public async Task<PagedResult<AccessRequestDto>> GetRequestsByUserIdAsync(string userId, PaginationParams paginationParams)
+    {
+        
+        var q = _ctx.AccessRequests
+            .Where(a => a.RequesterId == userId)
+            .AsQueryable();
+
+        var total = await q.CountAsync();
+        var items = await q
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .Select(x => new AccessRequestDto
+            {
+                Id = x.Id,
+                DocumentId = x.DocumentId,
+                DocumentName = x.Document.Name,
+                RequesterId = x.RequesterId,
+                RequesterName = x.Requester.UserName,
+                RequestRead = x.RequestRead,
+                RequestWrite = x.RequestWrite,
+                RequestDelete = x.RequestDelete,
+                Status = x.Status,
+                CreatedAt = x.CreatedAt,
+                DecisionAt = x.DecisionAt,
+                DecidedById = x.DecidedById,
+                DecidedByName = x.DecidedBy != null ? x.DecidedBy.UserName : null
+            })
+            .ToListAsync();
+
+
+        return new PagedResult<AccessRequestDto>
+        {
+            Data = items,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize,
+            TotalRecords = total
+        };
     }
 }

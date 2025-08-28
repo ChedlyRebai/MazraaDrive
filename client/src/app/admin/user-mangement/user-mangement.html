@@ -73,14 +73,7 @@
             icon="pi pi-user-plus"
             (onClick)="openNew()"
           />
-          <p-button
-            severity="danger"
-            label="Supprimer"
-            icon="pi pi-trash"
-            [outlined]="true"
-            (onClick)="deleteSelectedUsers()"
-            [disabled]="!selectedUsers || !selectedUsers.length"
-          />
+         
         </div>
       </ng-template>
       <ng-template #end>
@@ -95,7 +88,7 @@
             icon="pi pi-refresh"
             [outlined]="true"
             (onClick)="loadUsers()"
-            [loading]="loading"
+            
           />
         </div>
       </ng-template>
@@ -180,7 +173,7 @@
         [paginator]="true"
         [rows]="10"
         [rowsPerPageOptions]="[1, 10, 25, 50]"
-        [loading]="loading"
+        
         (onLazyLoad)="onPageChange($event)"
         [rowHover]="true"
         dataKey="id"
@@ -197,7 +190,7 @@
         dataKey="id"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
         [showCurrentPageReport]="true"
-        [loading]="loading"
+        
         [rowsPerPageOptions]="[1, 10, 25, 50]"
       >
         <ng-template pTemplate="header">

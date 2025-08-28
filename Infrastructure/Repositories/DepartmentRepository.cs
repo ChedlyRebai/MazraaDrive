@@ -183,11 +183,11 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
             query = query.Where(d => d.Name.ToLower().Contains(searchTerm.ToLower()));
         }
 
-   
-        var departments = await query   
+
+        var departments = await query
             .Select(d => new DepartmentSearchDTO
             {
-                Id=d.Id,
+                Id = d.Id,
                 Name = d.Name,
                 Description = d.Description
             })

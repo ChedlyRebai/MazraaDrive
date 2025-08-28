@@ -15,6 +15,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    
     public async Task<PagedResult<DocumentRequest>> GetPagedAsync(DocumentRequestFilterDTO filter)
     {
         var query = _context.DocumentRequests

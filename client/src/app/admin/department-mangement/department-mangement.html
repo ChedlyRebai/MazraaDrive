@@ -21,14 +21,7 @@
         class="mr-2"
         (onClick)="openNew()"
       />
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedDepartments()"
-        [disabled]="!selectedDepartments || !selectedDepartments.length"
-      />
+      
     </ng-template>
 
     <ng-template #end>
@@ -96,7 +89,7 @@
       dataKey="id"
       currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
       [showCurrentPageReport]="true"
-      [loading]="loading"
+     
       [rowsPerPageOptions]="[2,5,10, 25, 50]"
     >
       <ng-template pTemplate="caption">
@@ -141,7 +134,7 @@
               icon="pi pi-refresh"
               [outlined]="true"
               (click)="loadDepartments()"
-              [loading]="loading"
+              
             />
           </div>
         </div>

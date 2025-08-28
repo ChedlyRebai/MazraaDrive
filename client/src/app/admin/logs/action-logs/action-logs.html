@@ -63,18 +63,18 @@
         dataKey="id"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} logs"
         [showCurrentPageReport]="true"
-        [loading]="loading"
+       
         [rowsPerPageOptions]="[10, 25, 50]"
     >
         <ng-template pTemplate="caption">
             <div class="flex items-center justify-between">
-                <h5 class="m-0">Gestion des Logs d'Actions</h5>
+                <h5 class="m-0"></h5>
                 <div class="flex gap-2">
                     <p-iconField iconPosition="left">
                         <p-inputIcon class="pi pi-search" />
                         <input pInputText type="text"   placeholder="Rechercher..." />
                     </p-iconField>
-                    <div class="card flex justify-center">
+                    <div class=" flex justify-center">
                         <p-autocomplete 
                             
                             [dropdown]="true" 
@@ -87,7 +87,7 @@
                             [style]="{ minWidth: '150px' }"
                         />
                     </div>
-                    <div class="card flex justify-center">
+                    <div class=" flex justify-center">
                         <p-autocomplete 
                           
                             [dropdown]="true" 

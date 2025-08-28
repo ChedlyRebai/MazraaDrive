@@ -67,14 +67,7 @@
         class="mr-2"
         (onClick)="openNew()"
       />
-      <p-button
-        severity="danger"
-        label="Supprimer"
-        icon="pi pi-trash"
-        [outlined]="true"
-        (onClick)="deleteSelectedDocuments()"
-        [disabled]="!selectedDocuments || !selectedDocuments.length"
-      />
+     
     </ng-template>
 
     <ng-template #end>
@@ -114,7 +107,7 @@
       dataKey="id"
       currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
       [showCurrentPageReport]="true"
-      [loading]="loading"
+      
       [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
     >
       <ng-template pTemplate="caption">
@@ -129,7 +122,7 @@
               icon="pi pi-refresh"
               [outlined]="true"
               (click)="loadDocuments()"
-              [loading]="loading"
+              
             />
           </div>
         </div>
@@ -137,9 +130,7 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox />
-          </th>
+          
           <th pSortableColumn="name" style="min-width: 16rem">
             <div class="flex items-center gap-2">
               Nom du Document
@@ -188,9 +179,7 @@
 
       <ng-template pTemplate="body" let-document>
         <tr>
-          <td>
-            <p-tableCheckbox [value]="document" />
-          </td>
+          
           <td>
             <div class="flex items-center gap-2">
               <i

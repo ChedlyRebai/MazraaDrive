@@ -418,7 +418,24 @@ export class Demandes implements OnInit {
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.performDeleteRequest(request.id);
+        //this.performDeleteRequest(request.id);
+        this.documentRequsetService.deleteDocumentRequest(request.id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Demande supprimée avec succès',
+            });
+            this.documentRequsetService.getDocumentRequests();
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Une erreur est survenue lors de la suppression de la demande',
+            });
+          },
+        });
       },
     });
   }
@@ -434,7 +451,7 @@ export class Demandes implements OnInit {
     });
   }
 
-  private performDeleteRequest(requestId: number) {
+  /*private performDeleteRequest(requestId: number) {
     setTimeout(() => {
       this.documentRequests = this.documentRequests.filter(
         (r) => r.id !== requestId
@@ -446,7 +463,7 @@ export class Demandes implements OnInit {
         detail: 'Demande supprimée avec succès',
       });
     }, 500);
-  }
+  }*/
 
   private performBulkDelete() {
     const requestIds = this.selectedRequests.map((r) => r.id);

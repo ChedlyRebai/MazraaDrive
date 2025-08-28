@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Core.DTO;
 using Api.Controllers;
 using AutoMapper;
+using Api.Helper;
 
 namespace API.Controllers;
 
@@ -37,36 +38,15 @@ public class AccessRequestsController : BaseController
 
     [HttpGet("my-requests")]
     public async Task<ActionResult<PagedResult<AccessRequestDto>>> GetUserAccessRights(
-            string userId,
+
             [FromQuery] PaginationParams pagination)
     {
         try
         {
-            // Authorization: Users can only view their own access rights unless they're Admin/Manager
-            // var currentUserId = "10";
-            // if (userId != currentUserId && !User.IsInRole("Admin") && !User.IsInRole("Manager"))
-            // {
-            //     return Forbid();
-            // }
-
-            // var pagedAccessRights = await _unitOfWork.PermissionsRepository
-            //     .GetUserAccessRightsPagedAsync(userId, pagination);
-
-            // var accessRightDtos = _mapper.Map<IEnumerable<AccessRequestDto>>(pagedAccessRights.Data);
-
-            // var result = accessRightDtos.ToPagedResult(
-            //     pagedAccessRights.PageNumber,
-            //     pagedAccessRights.PageSize,
-            //     pagedAccessRights.TotalRecords,
-            //     pagedAccessRights.Search,
-            //     pagedAccessRights.SortBy,
-            //     pagedAccessRights.SortDirection
-            // );
-            var result = await _unitOfWork.AccessRequestRepository.GetMyRequestsAsync(pagination);
+            var userId = _currentUser.UserId;
+            var result = await _unitOfWork.AccessRequestRepository.GetRequestsByUserIdAsync(userId, pagination);
             return Ok(result);
 
-            //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
-            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -81,11 +61,20 @@ public class AccessRequestsController : BaseController
         return entity == null ? NotFound() : Ok(entity);
     }
 
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _unitOfWork.AccessRequestRepository.DeleteAsync(id);
+        await _unitOfWork.SaveChangesAsync();
+        return Ok(new ResponseAPI(200, "Access request deleted successfully."));
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AccessRequestCreateDto dto)
     {
         // var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var userId = "10";
+        var userId = _currentUser.UserId;
         if (!dto.RequestRead && !dto.RequestWrite && !dto.RequestDelete)
             return BadRequest("At least one permission must be requested.");
         if (await _unitOfWork.AccessRequestRepository.ExistsPendingAsync(dto.DocumentId, userId))
