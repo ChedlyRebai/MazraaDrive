@@ -51,7 +51,7 @@ export class DocumentService {
     }
     
     return this.http
-      .get<DocumentPagedResult>(`${this.baseUrl}`, { params },)
+      .get<DocumentPagedResult>(`${this.baseUrl}`, { params,withCredentials: true })
       .subscribe(
         (result) => {
           console.log('Document  fetched:', result);
@@ -65,13 +65,13 @@ export class DocumentService {
 
   getFolderDocuments(folderId: number) {
     return this.http.get<DocumentPagedResult>(
-      `${this.baseUrl}/folder/${folderId}`
+      `${this.baseUrl}/folder/${folderId}`,{withCredentials: true}
     );
   }
 
 
   uploadDocument(uploadDocument:FormData){
-    return this.http.post<DocumentDto>(`${this.baseUrl}/upload`, uploadDocument);
+    return this.http.post<DocumentDto>(`${this.baseUrl}/upload`, uploadDocument,{withCredentials: true});
   }
 
   search(q:string){
@@ -89,7 +89,7 @@ export class DocumentService {
   
   getMyStats() {
     return this.http.get<DocFolderStats>(
-      `${this.baseUrl}/MyDocumentAndFolderstat`
+      `${this.baseUrl}/MyDocumentAndFolderstat`,{withCredentials: true}
     );
   }
 }
