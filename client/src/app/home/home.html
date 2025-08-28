@@ -27,8 +27,8 @@
       <div class="border-t border-gray-800 p-4 flex items-center gap-3">
         <p-avatar image="/assets/avatar.png" shape="circle" size="large"></p-avatar>
         <div class="text-sm text-gray-300 leading-tight">
-          <div class="font-medium">{{ currentUser?.fullName || 'Utilisateur' }}</div>
-          <div class="text-xs text-gray-500">{{ currentUser?.role }}</div>
+          <div class="font-medium">{{ currentUser!.fullName || 'Utilisateur' }}</div>
+          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
         </div>
         <button pButton icon="pi pi-sign-out" class="ml-auto p-button-text p-button-sm"
                 (click)="logout()" aria-label="Déconnexion"></button>
@@ -59,8 +59,8 @@
       <div class="mt-auto border-t border-gray-800 p-4 flex items-center gap-3">
         <p-avatar image="/assets/avatar.png" shape="circle"></p-avatar>
         <div class="text-sm text-gray-300 leading-tight">
-          <div class="font-medium">{{ currentUser?.fullName || 'Utilisateur' }}</div>
-          <div class="text-xs text-gray-500">{{ currentUser?.role }}</div>
+          <div class="font-medium">{{ currentUser!.fullName || 'Utilisateur' }}</div>
+          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
         </div>
         <button pButton icon="pi pi-sign-out" class="ml-auto p-button-text p-button-sm"
                 (click)="logout()" aria-label="Déconnexion"></button>

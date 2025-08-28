@@ -4,10 +4,17 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { bootstrapApplication } from '@angular/platform-browser';
 //import { TableProductsDemo } from './app/table-products-demo';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        provideHttpClient(
+            withInterceptors([
+                authInterceptor
+            ]),
+            withFetch() 
+        ),
         provideAnimationsAsync(),
         providePrimeNG({
             theme: {

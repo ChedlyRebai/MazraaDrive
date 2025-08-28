@@ -146,7 +146,11 @@ public class DocumentRequestController : BaseController
 
         var currentUserId = _currentUser.UserId;
         var currentDepId = _unitOfWork.UserRepository.GetByIdAsync(currentUserId).Result.DepartmentId;
-        
+            Console.WriteLine("Updating document request ID: " + id + " with data: " + updateDto);
+            Console.WriteLine("Updating document request ID: " + id + " with data: " + updateDto);
+            Console.WriteLine("Current User ID: " + currentUserId);
+            Console.WriteLine("Current Department ID: " + currentDepId);
+
             if (!ModelState.IsValid)
                 return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
 

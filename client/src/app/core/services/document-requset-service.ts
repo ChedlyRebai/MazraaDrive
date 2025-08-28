@@ -20,36 +20,42 @@ export class DocumentRequsetService {
   );
   documentRequests$ = this.documentRequest.asObservable();
 
-  getDocumentRequests(PageSize?: number,
+  getDocumentRequests(
+    PageSize?: number,
     Search?: string,
     PageNumber?: number,
     SortBy?: string,
-    SortDirection?: string) {
+    SortDirection?: string
+  ) {
     let params = new HttpParams();
 
-    if(PageSize){
+    if (PageSize) {
       params = params.append('PageSize', PageSize.toString());
       console.log('PageSize:', PageSize);
     }
 
-    if(PageNumber){
+    if (PageNumber) {
       params = params.append('PageNumber', PageNumber.toString());
       console.log('PageNumber:', PageNumber);
     }
 
-    if(Search){
+    if (Search) {
       params = params.append('Search', Search.toString());
     }
 
-    if(SortBy){
+    if (SortBy) {
       params = params.append('SortBy', SortBy);
     }
 
-    if(SortDirection){
+    if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
     return this.http
-      .get<DocumentRequestPagedResult>(`${this.baseUrl}`,{params}).subscribe(
+      .get<DocumentRequestPagedResult>(`${this.baseUrl}`, {
+        params,
+        withCredentials: true,
+      })
+      .subscribe(
         (result) => {
           console.log('Document requests fetched:', result);
           this.documentRequest.next(result);
@@ -58,36 +64,40 @@ export class DocumentRequsetService {
           console.error('Error fetching document requests:', error);
         }
       );
-
   }
 
-
-  getMyDepartmentDocumentRequests(PageSize?: number,
+  getMyDepartmentDocumentRequests(
+    PageSize?: number,
     Search?: string,
     PageNumber?: number,
     SortBy?: string,
-    SortDirection?: string) {
+    SortDirection?: string
+  ) {
     let params = new HttpParams();
-  
-    if(PageSize){
+
+    if (PageSize) {
       params = params.append('PageSize', PageSize.toString());
       console.log('PageSize:', PageSize);
     }
-    if(PageNumber){
+    if (PageNumber) {
       params = params.append('PageNumber', PageNumber.toString());
       console.log('PageNumber:', PageNumber);
     }
-    if(Search){
+    if (Search) {
       params = params.append('Search', Search.toString());
     }
-    if(SortBy){
+    if (SortBy) {
       params = params.append('SortBy', SortBy);
     }
-    if(SortDirection){
+    if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
     return this.http
-      .get<DocumentRequestPagedResult>(`${this.baseUrl}/GetMyDepartmentDocumentRequests`,{params,withCredentials:true}).subscribe(
+      .get<DocumentRequestPagedResult>(
+        `${this.baseUrl}/GetMyDepartmentDocumentRequests`,
+        { params, withCredentials: true }
+      )
+      .subscribe(
         (result) => {
           console.log('Document requests fetched:', result);
           this.documentRequest.next(result);
@@ -95,12 +105,14 @@ export class DocumentRequsetService {
         (error) => {
           console.error('Error fetching document requests:', error);
         }
-      ); 
-    }
+      );
+  }
 
   getDocumentRequestById(id: number) {
     return this.http
-      .get<DocumentRequestDTO>(`${this.baseUrl}/${id}`)
+      .get<DocumentRequestDTO>(`${this.baseUrl}/${id}`, {
+        withCredentials: true,
+      })
       .subscribe(
         (result) => {
           console.log('Document request fetched:', result);
@@ -112,50 +124,43 @@ export class DocumentRequsetService {
   }
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
-    
-       // Replace with actual requester ID from authenticated user
+    // Replace with actual requester ID from authenticated user
     documentRequest.departmentId = 10;
     // documentRequest.documentType = "Certificat de Travail";
     // documentRequest.description = "string";
     // documentRequest.priority = "Normal";
 
-    return this.http
-      .post<DocumentRequestDTO>(
-        `http://localhost:5108/api/DocumentRequest`,
-        documentRequest
-      )
-
+    return this.http.post<DocumentRequestDTO>(
+      `http://localhost:5108/api/DocumentRequest`,
+      documentRequest,
+      { withCredentials: true }
+    );
   }
 
-//   "priority": "string"
-// }
-    // return this.http
-    //   .post<DocumentRequestDTO>(
-    //     `http://localhost:5108/api/DocumentRequest`,
-    //     documentRequest
-    //   )
-      
-  
+  //   "priority": "string"
+  // }
+  // return this.http
+  //   .post<DocumentRequestDTO>(
+  //     `http://localhost:5108/api/DocumentRequest`,
+  //     documentRequest
+  //   )
+
   updateDocumentRequest(documentRequest: DocumentRequestDTO, id: number) {
-    return this.http
-      .put<UpdateDocumentRequestDTO>(
-        `${this.baseUrl}/${id}`,
-        documentRequest
-      )
+    return this.http.put<UpdateDocumentRequestDTO>(
+      `${this.baseUrl}/${id}`,
+      documentRequest,
+      { withCredentials: true }
+    );
   }
 
   deleteDocumentRequest(id: number) {
-    return this.http
-      .delete(`${this.baseUrl}/${id}`)
-      .subscribe(
-        () => {
-          console.log('Document request deleted');
-        },
-        (error) => {
-          console.error('Error deleting document request:', error);
-        }
-      );
+    return this.http.delete(`${this.baseUrl}/${id}`).subscribe(
+      () => {
+        console.log('Document request deleted');
+      },
+      (error) => {
+        console.error('Error deleting document request:', error);
+      }
+    );
   }
-
-  
 }

@@ -290,25 +290,25 @@
         <div class="flex items-center gap-4 pb-4 border-b">
           <i class="pi pi-shield text-4xl text-blue-500"></i>
           <div>
-            <h3 class="m-0">{{ selectedRole?.name }}</h3>
+            <h3 class="m-0">{{ selectedRole!.name }}</h3>
             <p class="m-0 text-color-secondary">
-              {{ selectedRole?.description }}
+              {{ selectedRole!.description }}
             </p>
             <p-tag
               class="mt-2"
-              [value]="selectedRole?.isActive ? 'Actif' : 'Inactif'"
-              [severity]="selectedRole?.isActive ? 'success' : 'danger'"
+              [value]="selectedRole!.isActive ? 'Actif' : 'Inactif'"
+              [severity]="selectedRole!.isActive ? 'success' : 'danger'"
             />
           </div>
         </div>
         <div class="grid grid-cols-12 gap-4 text-sm">
           <div class="col-span-6">
             <span class="font-semibold">ID:</span>
-            <div>{{ selectedRole?.id }}</div>
+            <div>{{ selectedRole!.id }}</div>
           </div>
           <div class="col-span-6">
             <span class="font-semibold">Statut:</span>
-            <div>{{ selectedRole?.isActive ? "Actif" : "Inactif" }}</div>
+            <div>{{ selectedRole!.isActive ? "Actif" : "Inactif" }}</div>
           </div>
         </div>
       </div>
