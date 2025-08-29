@@ -527,6 +527,8 @@ namespace Api.Controllers
             }
         }
 
+
+        
         private string GetCurrentUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";

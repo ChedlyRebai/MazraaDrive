@@ -31,6 +31,7 @@ import {
   DocumentRequestDTO,
   DocumentRequestFilterDTO,
   DocumentRequestPagedResult,
+  DocumentRequestStatsDto,
   UpdateDocumentRequestDTO,
 } from '../../shared/models/docrequest';
 import { DocumentRequsetService } from '../../core/services/document-requset-service';
@@ -276,6 +277,7 @@ export class Demandes implements OnInit {
   private baseUrl = 'http://localhost:5108/api';
   globalFilterValue: any;
 
+  documentReqStat: DocumentRequestStatsDto = {} as DocumentRequestStatsDto;
   constructor(
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
@@ -289,7 +291,23 @@ export class Demandes implements OnInit {
     this.loadDocumentRequests();
     this.getMyallDocReq();
     this.documentRequsetService.getMyDepartmentDocumentRequests();
+    this.getStats();
   }
+
+
+  getStats(){
+    this.documentRequsetService.getMyDocumentRequestStats().subscribe(
+      (result) => {
+        console.log('Document request stats fetched:', result);
+        this.documentReqStat = result;
+       
+      },
+      (error) => {
+        console.error('Error fetching document request stats:', error);
+      }
+    );
+  }
+
   PageSize?: number = 5;
   Search?: string = '';
   PageNumber?: number = 1;

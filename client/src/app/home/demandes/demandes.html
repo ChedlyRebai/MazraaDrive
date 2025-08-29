@@ -17,7 +17,7 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-blue-100 text-sm">Total Demandes</p>
-          <p class="text-2xl font-bold">4</p>
+          <p class="text-2xl font-bold">{{ documentReqStat.totalDocumentsRequest }}</p>
         </div>
         <i class="pi pi-folder text-3xl text-blue-200"></i>
       </div>
@@ -28,7 +28,7 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-purple-100 text-sm">Demandes en Cours</p>
-          <p class="text-2xl font-bold">93</p>
+          <p class="text-2xl font-bold">{{ documentReqStat.totalPendingRequests }}</p>
         </div>
         <i class="pi pi-file text-3xl text-purple-200"></i>
       </div>
@@ -38,8 +38,8 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-green-100 text-sm">Taille Totale</p>
-          <p class="text-2xl font-bold"></p>
+          <p class="text-green-100 text-sm">Demandes Rejetées</p>
+          <p class="text-2xl font-bold">{{documentReqStat.totalRejectedRequests}}</p>
         </div>
         <i class="pi pi-database text-3xl text-green-200"></i>
       </div>
@@ -49,8 +49,8 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-orange-100 text-sm">Récents</p>
-          <p class="text-2xl font-bold">12s</p>
+          <p class="text-orange-100 text-sm">Demandes Traitées</p>
+          <p class="text-2xl font-bold">{{documentReqStat.totalProcessedRequests}}</p>
         </div>
         <i class="pi pi-clock text-3xl text-orange-200"></i>
       </div>
@@ -98,7 +98,7 @@
           <p-table
             #dt
             [value]="documentrequest.data"
-            [loading]="loading"
+          
             [rows]="PageSize"
             [paginator]="true"
             [lazy]="true"
@@ -110,7 +110,7 @@
             dataKey="id"
             currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
             [showCurrentPageReport]="true"
-            [loading]="loading"
+            
             [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
           >
             <ng-template pTemplate="caption">

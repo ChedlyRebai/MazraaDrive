@@ -1,3 +1,4 @@
+using Api.Helper;
 using AutoMapper;
 using Core.DTO;
 using Core.Entities;
@@ -140,6 +141,21 @@ public class DocumentRequestController : BaseController
     }
 
 
+    [HttpGet("document-req-stats")]
+        public async Task<ActionResult<DocumentRequestStatsDto>> GetDocumentStatistics()
+        {
+            try
+            {
+                var currentUserId = _currentUser.UserId;
+                var stats = await _unitOfWork.DocRequestRepository.GetDocumentStatisticsAsyncByUserId(currentUserId);
+                //await _auditLogger.LogAsync("GetDocumentStatistics", "Retrieved document statistics", "10", "Document");
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseAPI(500, ex.Message));
+            }
+        }
     
     [HttpPut("{id}")]
     public async Task<ActionResult<DocumentRequestDTO>> UpdateDocumentRequest(int id, [FromBody] UpdateDocumentRequestDTO updateDto)

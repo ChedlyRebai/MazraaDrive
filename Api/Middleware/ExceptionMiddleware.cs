@@ -64,7 +64,7 @@ public class ExceptionMiddleware
 
         if (dateNow - timesTamp < _rateLimitWindow)
         {
-            if (count > 20)
+            if (count > 40)
             {
                 return false;
             }

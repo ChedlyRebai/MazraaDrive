@@ -22,11 +22,21 @@ public class DocumentRequestDTO{
     public bool IsActive { get; set; }
 }
 
+
+   public class DocumentRequestStatsDto
+    {
+        public int TotalDocumentsRequest { get; set; }
+        public int TotalUsers { get; set; }
+        public int TotalDepartments { get; set; }
+        public int TotalPendingRequests { get; set; }
+        public int TotalProcessedRequests { get; set; }
+        public int TotalRejectedRequests { get; set; }
+    }
 public class CreateDocumentRequestDTO
 {
     public string RequesterId { get; set; }
     public string? ProcessedById { get; set; }
-     public string? ResponseMessage { get; set; }
+    public string? ResponseMessage { get; set; }
     public int DepartmentId { get; set; }
     public string DocumentType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

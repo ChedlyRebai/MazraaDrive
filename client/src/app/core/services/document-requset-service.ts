@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   DocumentRequestDTO,
   DocumentRequestPagedResult,
+  DocumentRequestStatsDto,
   UpdateDocumentRequestDTO,
 } from '../../shared/models/docrequest';
 import { environment } from '../../../environments/environment';
@@ -155,5 +156,14 @@ export class DocumentRequsetService {
 
   deleteDocumentRequest(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`)
+  }
+
+
+  getMyDocumentRequestStats() {
+    return this.http
+      .get<DocumentRequestStatsDto>(`${this.baseUrl}/document-req-stats`, {
+        withCredentials: true,
+      })
+      
   }
 }

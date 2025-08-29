@@ -87,7 +87,7 @@ namespace Core.DTOs
         public bool IsValidated { get; set; }
     }
 
-
+ 
     public class DocFolderStats
     {
         public long TotalFileSize { get; set; }

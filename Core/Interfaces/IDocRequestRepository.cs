@@ -8,8 +8,8 @@ public interface IDocRequestRepository:IGenericRepository<DocumentRequest>
 {
  Task<PagedResult<DocumentRequest>> GetPagedAsync(DocumentRequestFilterDTO filter);
     Task<DocumentRequest?> GetByIdWithDetailsAsync(int id);
-
-    
+    Task<DocumentRequestStatsDto> GetDocumentStatisticsAsyncByUserId(string userId);
+    Task<DocumentRequestStatsDto> GetDocumentStatisticsAsync();
     Task<IEnumerable<DocumentRequest>> GetByRequesterAsync(string requesterId);
     Task<IEnumerable<DocumentRequest>> GetByDepartmentAsync(int departmentId);
     Task<IEnumerable<DocumentRequest>> GetByStatusAsync(string status);
