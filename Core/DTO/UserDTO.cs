@@ -12,7 +12,7 @@ namespace Core.DTOs
 
         public string PhoneNumber { get; set; } = string.Empty;
         public bool IsActive { get; set; }
-         public long? Cin { get; set; }
+        public long? Cin { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int? RoleId { get; set; }
@@ -33,7 +33,7 @@ namespace Core.DTOs
         public string UserName { get; set; } = string.Empty;
 
 
-         public long? Cin { get; set; }
+        public long? Cin { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters")]
@@ -104,10 +104,10 @@ namespace Core.DTOs
     public class UserFilterDto : PaginationParams
     {
         public string? UserName { get; set; }
-        
+
         public string? PhoneNumber { get; set; }
         public bool? IsActive { get; set; }
-       
+
         public int? RoleId { get; set; }
         public string? RoleName { get; set; }
         public int? DepartmentId { get; set; }
@@ -176,8 +176,18 @@ namespace Core.DTOs
         public int DepartmentId { get; set; }
         public string Name { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
-       
+
         public int SubFoldersCount { get; set; }
         public int DocumentsCount { get; set; }
+    }
+    
+
+    public class UserStatisticsDto
+    {
+        public int TotalUsers { get; set; }
+        public int ActiveUsers { get; set; }
+        public int InactiveUsers { get; set; }
+        public int TotalDocuments { get; set; }
+        public int TotalFolders { get; set; }
     }
 }

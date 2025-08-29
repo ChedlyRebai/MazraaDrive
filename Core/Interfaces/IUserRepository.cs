@@ -40,5 +40,7 @@ public interface IUserRepository
         Task DeactivateUserAsync(string userId);
         Task ActivateUserAsync(string userId);
         Task<IReadOnlyList<AppUser>> GetUsersWithRolesAsync();
+
+        Task<UserStatisticsDto> GetUserStatisticsAsync();
         Task<IReadOnlyList<AppUser>> GetRecentUsersAsync(int count = 10);
 }

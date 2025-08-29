@@ -22,7 +22,6 @@ export interface DocumentDto {
   file: File;
 }
 
-
 export interface DocFolderStats {
   totalFileSize: number;
   documentCount: number;
@@ -34,7 +33,6 @@ export interface DocFolderStats {
   audioCount: number;
   videoCount: number;
 }
-
 
 export interface CreateDocumentDto {
   name: string;

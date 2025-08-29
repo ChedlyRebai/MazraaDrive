@@ -426,5 +426,25 @@ namespace Infrastructure.Repositories
                 _ => query.OrderBy(u => u.CreatedAt)
             };
         }
+
+        public Task<UserStatisticsDto> GetUserStatisticsAsync()
+        {
+            var totalUsers = _context.Users.Count();
+            var activeUsers = _context.Users.Count(u => u.IsActive);
+            var inactiveUsers = totalUsers - activeUsers;
+            var totalDocuments = _context.Documents.Count();
+            var totalFolders = _context.Folders.Count();
+
+            var stats = new UserStatisticsDto
+            {
+                TotalUsers = totalUsers,
+                ActiveUsers = activeUsers,
+                InactiveUsers = inactiveUsers,
+                TotalDocuments = totalDocuments,
+                TotalFolders = totalFolders
+            };
+
+            return Task.FromResult(stats);
+        }
     }
 }

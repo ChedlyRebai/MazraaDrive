@@ -163,6 +163,21 @@ namespace Api.Controllers
             }
         }
 
+
+        [HttpGet("stat")]
+        public async Task<ActionResult<UserStatisticsDto>> GetUserStatistics()
+        {
+            try
+            {
+                var stats = await _unitOfWork.UserRepository.GetUserStatisticsAsync();
+
+                return Ok(new { success = true, data = stats });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
         [HttpPut("{id}")]
         public async Task<ActionResult<UserDto>> UpdateUser(string id, [FromBody] UpdateUserDto updateUserDto)
         {
