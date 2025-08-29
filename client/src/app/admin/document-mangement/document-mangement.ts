@@ -31,23 +31,23 @@ import { DocumentDto } from '../../shared/models/document';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { Observable } from 'rxjs';
 
-interface Document {
-  id?: number;
-  name: string;
-  category: string;
-  type: string;
-  size: number;
-  description?: string;
-  tags?: string[];
-  status: string;
-  accessLevel: string;
-  uploadedBy: string;
-  uploadedAt: Date;
-  expirationDate?: Date;
-  version?: string;
-  filePath?: string;
-  isActive: boolean;
-}
+// interface Document {
+//   id?: number;
+//   name: string;
+//   category: string;
+//   type: string;
+//   size: number;
+//   description?: string;
+//   tags?: string[];
+//   status: string;
+//   accessLevel: string;
+//   uploadedBy: string;
+//   uploadedAt: Date;
+//   expirationDate?: Date;
+//   version?: string;
+//   filePath?: string;
+//   isActive: boolean;
+// }
 
 @Component({
   selector: 'app-document-management',
@@ -248,17 +248,28 @@ export class DocumentMangement implements OnInit {
     this.previewDialog = true;
   }
 
-  deleteDocument(document: Document) {
+  deleteDocument(document: DocumentDto) {
     this.confirmationService.confirm({
       message: `Êtes-vous sûr de vouloir supprimer "${document.name}"?`,
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.documents = this.documents.filter((d) => d.id !== document.id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Document supprimé avec succès',
+        this.DocumentService.deleteDocument(document.id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Document supprimé avec succès',
+            });
+            this.DocumentService.getDocument();
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors de la suppression du document',
+            });
+          },
         });
       },
     });
@@ -319,7 +330,7 @@ export class DocumentMangement implements OnInit {
 
     if (this.document.id) {
       // Update existing document
-      
+
       this.http
         .put(`${this.baseUrl}/Document/${this.document.id}`, this.document)
         .subscribe({
@@ -331,7 +342,7 @@ export class DocumentMangement implements OnInit {
             });
             this.getAllDocs();
             this.saving = false;
-            this.hideDialog()
+            this.hideDialog();
             this.documentDialog = false;
           },
           error: () => {
@@ -352,7 +363,7 @@ export class DocumentMangement implements OnInit {
             detail: 'Document créé avec succès',
           });
           this.getAllDocs();
-          this.hideDialog()
+          this.hideDialog();
           this.saving = false;
           this.documentDialog = false;
         },

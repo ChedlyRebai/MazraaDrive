@@ -92,4 +92,8 @@ export class DocumentService {
       `${this.baseUrl}/MyDocumentAndFolderstat`,{withCredentials: true}
     );
   }
+
+  deleteDocument(documentId: number){
+    return this.http.delete(`${this.baseUrl}/${documentId}`, {withCredentials: true});
+  }
 }
