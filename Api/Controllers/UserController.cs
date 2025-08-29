@@ -171,7 +171,7 @@ namespace Api.Controllers
             {
                 var stats = await _unitOfWork.UserRepository.GetUserStatisticsAsync();
 
-                return Ok(new { success = true, data = stats });
+                return Ok(  stats );
             }
             catch (Exception ex)
             {
