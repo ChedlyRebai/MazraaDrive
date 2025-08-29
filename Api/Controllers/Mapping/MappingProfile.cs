@@ -31,6 +31,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Role, opt => opt.Ignore())
             .ForMember(dest => dest.Department, opt => opt.Ignore())
+            .ForMember(dest => dest.Cin, opt => opt.Ignore())
             .ForMember(dest => dest.AccessRights, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedFolders, opt => opt.Ignore())
             .ForMember(dest => dest.UploadedDocuments, opt => opt.Ignore())
@@ -51,6 +52,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AccessFailedCount, opt => opt.Ignore());
 
         CreateMap<UpdateUserDto, AppUser>()
+            .ForMember(dest => dest.Cin, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())

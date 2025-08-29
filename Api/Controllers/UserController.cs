@@ -178,18 +178,13 @@ namespace Api.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
+    
+        // ...existing code...
         [HttpPut("{id}")]
         public async Task<ActionResult<UserDto>> UpdateUser(string id, [FromBody] UpdateUserDto updateUserDto)
         {
             try
             {
-
-                // Users can only update their own profile unless they're Admin
-                // if (id.ToString() != currentUserId && !currentUserRoles.Contains("Admin"))
-                // {
-                //     return Forbid();
-                // }
-                Console.WriteLine($"Received update for user Cin: {updateUserDto.Cin}");
                 if (updateUserDto == null)
                     return BadRequest(new { success = false, message = "Update data is required" });
 
@@ -197,15 +192,43 @@ namespace Api.Controllers
                 if (existingUser == null)
                     return NotFound(new { success = false, message = "User not found" });
 
+                // preserve current values
+                var currentDeptId = existingUser.DepartmentId;
+                var currentCin = existingUser.Cin;
+
+                // Map DTO onto entity (this may set some properties to null/default)
                 _mapper.Map(updateUserDto, existingUser);
-                 Console.WriteLine($"Received update for user Cin update: {updateUserDto.Cin}");
+
+                // If DepartmentId was provided, validate it; otherwise restore previous value
+                if (updateUserDto.DepartmentId.HasValue)
+                {
+                    var dept = await _unitOfWork.DepartmentRepository.GetByIdAsync(updateUserDto.DepartmentId.Value);
+                    if (dept == null)
+                        return BadRequest(new { success = false, message = "Department not found" });
+
+                    existingUser.DepartmentId = updateUserDto.DepartmentId.Value;
+                }
+                else
+                {
+                    existingUser.DepartmentId = currentDeptId;
+                }
+
+                // Update CIN only when provided (avoid overwriting with null/empty)
+                if (string.IsNullOrWhiteSpace(updateUserDto.Cin.ToString()))
+                {
+                    existingUser.Cin = currentCin;
+                }
+                else
+                {
+                    existingUser.Cin = updateUserDto.Cin;
+                    // optional: validate CIN format/uniqueness here
+                    // if (await _unitOfWork.UserRepository.IsCinTakenAsync(existingUser.Cin, existingUser.Id)) ...
+                }
+
                 await _unitOfWork.UserRepository.UpdateAsync(existingUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 var userDto = _mapper.Map<UserDto>(existingUser);
-
-
-                //await _auditLogger.LogAsync("UpdateUser", "Updated user details", "10", "User");
                 return Ok(userDto);
             }
             catch (Exception ex)
@@ -213,7 +236,7 @@ namespace Api.Controllers
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
-
+// ...existing code...
         [HttpDelete("{id}")]
         // [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUser(string id)
