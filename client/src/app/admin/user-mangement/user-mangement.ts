@@ -1,4 +1,4 @@
-import { CreateUserDto, UserDto, UserStatisticsDto } from './../../shared/models/user';
+import { CreateUserDto, UserDto } from './../../shared/models/user';
 import { Password } from 'primeng/password';
 import { UserService } from './../../core/services/user-service';
 import { Component, OnInit, Query, ViewChild } from '@angular/core';
@@ -142,7 +142,7 @@ export class UserMangement implements OnInit {
   departmentFilteredDialog: any[] = [];
 
   profilePictureFile: File | null = null;
-  usersStats: UserStatisticsDto = {} as UserStatisticsDto;
+
   constructor(
     public departmentService: DepartmentService,
     public roleService: RoleService,
@@ -156,16 +156,7 @@ export class UserMangement implements OnInit {
     this.userService.getUsers();
   }
 
-  getUsersStats() {
-    this.userService.getUserStatistics().subscribe(
-      (result:UserStatisticsDto) => {
-        this.usersStats = result;
-      },
-      (error) => {
-        console.error('Error fetching user statistics:', error);
-      }
-    );
-  }
+  
 
   initRoleSearch() {
     // this.roleService.getSearchRoles(this.user.role).subscribe(

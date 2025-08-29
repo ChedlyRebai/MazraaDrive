@@ -21,7 +21,7 @@
         <div>
           <div class="text-sm opacity-80">Total</div>
           <div class="text-2xl font-semibold">
-            {{ usersStats.TotalUsers }}
+            {{ (userService.users$ | async)?.totalUsers ||0 }}
           </div>
         </div>
         <i class="pi pi-users text-3xl opacity-70"></i>
@@ -34,7 +34,7 @@
       >
         <div>
           <div class="text-sm opacity-80">Actifs</div>
-          <div class="text-2xl font-semibold">{{ usersStats.ActiveUsers || 0 }}</div>
+          <div class="text-2xl font-semibold"> {{ (userService.users$ | async)?.activeUsers ||0 }}</div>
         </div>
         <i class="pi pi-check-circle text-3xl opacity-70"></i>
       </div>
@@ -45,7 +45,7 @@
       >
         <div>
           <div class="text-sm opacity-80">Inactifs</div>
-          <div class="text-2xl font-semibold">{{ usersStats.InactiveUsers || 0 }}</div>
+          <div class="text-2xl font-semibold">{{ (userService.users$ | async)?.inactiveUsers || 0 }}</div>
         </div>
         <i class="pi pi-ban text-3xl opacity-70"></i>
       </div>

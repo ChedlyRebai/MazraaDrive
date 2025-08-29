@@ -343,34 +343,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("stats")]
-        // [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> GetUserStats()
-        {
-            try
-            {
-                var totalUsers = await _unitOfWork.UserRepository.GetUserCountAsync();
-                var activeUsers = await _unitOfWork.UserRepository.GetActiveUserCountAsync();
-                var inactiveUsers = totalUsers - activeUsers;
-
-                //await _auditLogger.LogAsync("GetUserStats", "Retrieved user statistics", "10", "User");
-                return Ok(new
-                {
-                    success = true,
-                    data = new
-                    {
-                        totalUsers,
-                        activeUsers,
-                        inactiveUsers
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
-        }
-
+        
         private string GetCurrentUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0";

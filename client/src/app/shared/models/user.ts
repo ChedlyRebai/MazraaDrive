@@ -117,10 +117,4 @@ export interface UserFolderDto {
   documentsCount: number;
 }
 
-export interface UserStatisticsDto {
-  TotalUsers: number;
-  ActiveUsers: number;
-  InactiveUsers: number;
-  TotalDocuments: number;
-  TotalFolders: number;
-}
+
