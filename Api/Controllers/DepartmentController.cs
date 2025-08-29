@@ -77,7 +77,7 @@ namespace Api.Controllers
                     Search = pagedDepartments.Search,
                     SortBy = pagedDepartments.SortBy,
                     SortDirection = pagedDepartments.SortDirection,
-                    TotalDepartments = departmentDtos.Count(),
+                    TotalDepartments = pagedDepartments.TotalRecords,
 
                 };
                 // Log the action

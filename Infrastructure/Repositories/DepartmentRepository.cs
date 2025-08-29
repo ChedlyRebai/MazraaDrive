@@ -20,7 +20,8 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
 
     public async Task<PagedResult<Department>> GetPageAsync(DepartmentFilterDto filter)
     {
-        var query = _context.Departments.AsQueryable();
+        var query = _context.Departments
+        .AsQueryable();
 
         // Apply filters
         query = ApplyFilters(query, filter);

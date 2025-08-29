@@ -382,6 +382,22 @@ export class DepartmentMangement implements OnInit {
       folderCount: department.folderCount,
       documentRequestCount: department.documentRequestCount,
     };
+    this.departmentService.updateDepartment(this.department).subscribe({
+      next: (result:any) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Département mis à jour avec succès',
+        });
+      },
+      error: (error:any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la mise à jour du département',
+        });
+      },
+    });
     this.departmentDialog = true;
   }
 
@@ -467,33 +483,31 @@ export class DepartmentMangement implements OnInit {
   saveDepartment() {
     this.submitted = true;
     console.log('Saving department:', this.department);
-    this.departmentService.createDepartment(this.department).subscribe({
-      next:(result)=>{
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Département créé avec succès',
-        })
-      },
-      error:(error)=>{
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la création du département',
-        });
-      }
-    })
-    if (!this.isDepartmentValid()) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis',
-      });
-      return;
-    }
-
+    // this.departmentService.createDepartment(this.department).subscribe({
+    //   next:(result)=>{
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Succès',
+    //       detail: 'Département créé avec succès',
+    //     })
+    //   },
+    //   error:(error)=>{
+    //     this.messageService.add({
+    //       severity: 'error',
+    //       summary: 'Erreur',
+    //       detail: 'Erreur lors de la création du département',
+    //     });
+    //   }
+    // })
+    // if (!this.isDepartmentValid()) {
+    //   this.messageService.add({
+    //     severity: 'warn',
+    //     summary: 'Validation',
+    //     detail: 'Veuillez remplir tous les champs requis',
+    //   });
+    //   return;
+    // }
     this.saving = true;
-
     if (this.selectedDepartment) {
       this.updateDepartment();
     } else {
@@ -545,26 +559,32 @@ export class DepartmentMangement implements OnInit {
       description: this.department.description,
     };
 
-    setTimeout(() => {
-      const index = this.departments.findIndex(
-        (d) => d.id === this.selectedDepartment!.id
-      );
-      if (index !== -1) {
-        this.departments[index] = {
-          ...this.departments[index],
-          name: updateDto.name,
-          description: updateDto.description,
-          updatedAt: new Date().toISOString(),
-        };
-      }
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Département modifié avec succès',
-      });
-      this.hideDialog();
-    }, 1500);
+    // this.selectedDepartment = department;
+    // this.department = {
+    //   id: department.id,
+    //   name: department.name,
+    //   description: department.description,
+    //   userCount: department.userCount,
+    //   folderCount: department.folderCount,
+    //   documentRequestCount: department.documentRequestCount,
+    // };
+    this.departmentService.updateDepartment(this.department).subscribe({
+      next: (result:any) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Département mis à jour avec succès',
+        });
+      },
+      error: (error:any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la mise à jour du département',
+        });
+      },
+    });
+    this.departmentDialog = true;
   }
 
   hideDialog() {

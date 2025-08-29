@@ -19,6 +19,8 @@ namespace Core.DTOs
         public string UploadedByName { get; set; } = string.Empty;
         public int Version { get; set; }
         public bool IsValidated { get; set; }
+
+        
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -111,13 +113,14 @@ namespace Core.DTOs
         public string? UploadedByName { get; set; }
         public bool? IsValidated { get; set; }
         public bool? IsActive { get; set; }
-
         public string[]? FileTypes { get; set; } // Filter by multiple file types
     }
 
     public class DocumentPagedResult : PagedResult<DocumentDto>
     {
         public int TotalDocuments { get; set; }
+        public long TotalFileSize { get; set; }
+
         public int TotalUsers { get; set; }
     }
 

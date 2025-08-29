@@ -69,14 +69,7 @@ export class DepartmentService {
   updateDepartment(department: DepartmentDto) {
     return this.http
       .put<DepartmentDto>(`${this.baseUrl}/${department.id}`, department)
-      .subscribe(
-        (result) => {
-          console.log('Department updated:', result);
-        },
-        (error) => {
-          console.error('Error updating department:', error);
-        }
-      );
+      
   }
 
   deleteDepartment(id: number) {
