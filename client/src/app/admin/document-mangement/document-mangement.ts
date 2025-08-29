@@ -28,7 +28,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { DatePickerModule } from 'primeng/datepicker';
 import { DocumentDto } from '../../shared/models/document';
-import { NgxDocViewerModule } from "ngx-doc-viewer";
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { Observable } from 'rxjs';
 
 interface Document {
   id?: number;
@@ -73,14 +74,12 @@ interface Document {
     TooltipModule,
     ThemeSwitcher,
     NgxDocViewerModule,
-    
-],
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './document-mangement.html',
-  styleUrls: ['./document-mangement.css']
+  styleUrls: ['./document-mangement.css'],
 })
 export class DocumentMangement implements OnInit {
-
   documents: DocumentDto[] = [];
   selectedDocuments: DocumentDto[] = [];
   selectedDocument: DocumentDto | null = null;
@@ -91,7 +90,7 @@ export class DocumentMangement implements OnInit {
   submitted = false;
   loading = false;
   saving = false;
-  
+
   selectedFile: File | null = null;
 
   categories = [
@@ -103,16 +102,10 @@ export class DocumentMangement implements OnInit {
     'Procédures',
     'Formulaires',
     'Images',
-    'Autres'
+    'Autres',
   ];
 
-  statuses = [
-    'Actif',
-    'Archivé',
-    'Brouillon',
-    'En révision',
-    'Expiré'
-  ];
+  statuses = ['Actif', 'Archivé', 'Brouillon', 'En révision', 'Expiré'];
 
   private baseUrl = 'http://localhost:5108/api';
 
@@ -134,7 +127,7 @@ export class DocumentMangement implements OnInit {
 
   loadDocuments() {
     this.loading = true;
-    
+
     // Mock data for demonstration
     // setTimeout(() => {
     //   this.documents = [
@@ -204,21 +197,19 @@ export class DocumentMangement implements OnInit {
     // }, 1000);
   }
 
-
   PageSize?: number = 5;
   Search?: string = '';
   PageNumber?: number = 1;
   SortBy?: string = '';
   SortDirection?: string = '';
   getAllDocs() {
-     this.DocumentService
-       .getDocument(
-         this.PageSize,
-         this.Search,
-         this.PageNumber,
-         this.SortBy,
-         this.SortDirection
-       )
+    this.DocumentService.getDocument(
+      this.PageSize,
+      this.Search,
+      this.PageNumber,
+      this.SortBy,
+      this.SortDirection
+    );
     //   .subscribe({
     //     next: (response: any) => {
     //       this.PageNumber = response.pageNumber;
@@ -234,10 +225,8 @@ export class DocumentMangement implements OnInit {
     //   });
   }
 
- 
-
   onPageChange(event: any) {
-   // this.first = event.first;
+    // this.first = event.first;
     this.PageNumber = event.first / event.rows + 1;
     this.PageSize = event.rows;
     this.getAllDocs();
@@ -265,13 +254,13 @@ export class DocumentMangement implements OnInit {
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.documents = this.documents.filter(d => d.id !== document.id);
+        this.documents = this.documents.filter((d) => d.id !== document.id);
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Document supprimé avec succès'
+          detail: 'Document supprimé avec succès',
         });
-      }
+      },
     });
   }
 
@@ -281,33 +270,40 @@ export class DocumentMangement implements OnInit {
       header: 'Confirmer la suppression',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.documents = this.documents.filter(d => !this.selectedDocuments.includes(d));
+        this.documents = this.documents.filter(
+          (d) => !this.selectedDocuments.includes(d)
+        );
         this.selectedDocuments = [];
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Documents supprimés avec succès'
+          detail: 'Documents supprimés avec succès',
         });
-      }
+      },
     });
   }
 
   downloadDocument(document: DocumentDto) {
     //download file from this path http://localhost:5108/api/uploads/${selectedDocument.storagePath}
-    this.http.get(`http://localhost:5108/api/uploads/${document.storagePath}`)
-      .subscribe(blob => {
-        window.open(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
+    this.http
+      .get(`http://localhost:5108/api/uploads/${document.storagePath}`, {
+        responseType: 'blob',
+      })
+      .subscribe((blob) => {
+        window.open(
+          `http://localhost:5108/api/uploads/${document.storagePath}`
+        );
         console.log(blob);
       });
 
-   // window.Infinityr(`(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
-      window.history.pushState(null, '', `http://localhost:5108/api/uploads/${document.storagePath}`);
+    // window.Infinityr(`(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
+    // window.history.pushState(null, '', `http://localhost:5108/api/uploads/${document.storagePath}`);
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement',
-      detail: `Téléchargement de "${document.name}" en cours...`
+      detail: `Téléchargement de "${document.name}" en cours...`,
     });
-    
+
     // In real implementation, you would call your API to get the file
     // this.http.get(`${this.baseUrl}/Document/${document.id}/download`, { responseType: 'blob' })
   }
@@ -321,44 +317,54 @@ export class DocumentMangement implements OnInit {
 
     this.saving = true;
 
-    // Simulate API call with file upload
-    setTimeout(() => {
-      if (this.document.id) {
-        // Update existing document
-        const index = this.documents.findIndex(d => d.id === this.document.id);
-        if (index !== -1) {
-          this.documents[index] = { ...this.document };
-        }
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Document modifié avec succès'
+    if (this.document.id) {
+      // Update existing document
+      
+      this.http
+        .put(`${this.baseUrl}/Document/${this.document.id}`, this.document)
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Document modifié avec succès',
+            });
+            this.getAllDocs();
+            this.saving = false;
+            this.hideDialog()
+            this.documentDialog = false;
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors de la modification du document',
+            });
+          },
         });
-      } else {
-        // Create new document
-        this.document.id = Math.max(...this.documents.map(d => d.id || 0)) + 1;
-        //this.document.createdAt = new Date();
-        //this.document.up = 'Utilisateur Actuel'; // Get from auth service
-        this.document.isActive = true;
-        
-        // if (this.selectedFile) {
-        //   this.document.fileType = this.getFileExtension(this.selectedFile.name);
-        //   this.document.size = this.selectedFile.size;
-        // }
-        
-        this.documents.push({ ...this.document });
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Document créé avec succès'
-        });
-      }
-
-      this.saving = false;
-      this.documentDialog = false;
-      this.document = this.getEmptyDocument();
-      this.selectedFile = null;
-    }, 2000);
+    } else {
+      // Create new document
+      this.http.post(`${this.baseUrl}/Document`, this.document).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Document créé avec succès',
+          });
+          this.getAllDocs();
+          this.hideDialog()
+          this.saving = false;
+          this.documentDialog = false;
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Erreur lors de la création du document',
+          });
+        },
+      });
+    }
   }
 
   hideDialog() {
@@ -380,7 +386,7 @@ export class DocumentMangement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Import',
-      detail: `${files.length} fichier(s) importé(s)`
+      detail: `${files.length} fichier(s) importé(s)`,
     });
   }
 
@@ -388,36 +394,34 @@ export class DocumentMangement implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Export',
-      detail: 'Export des documents en cours...'
+      detail: 'Export des documents en cours...',
     });
   }
 
   // Utility methods
   getEmptyDocument(): DocumentDto {
-    return {
-    } as DocumentDto;
+    return {} as DocumentDto;
   }
 
   isDocumentValid(): boolean {
     return !!(
       this.document.name?.trim() &&
-      
       (this.document.id || this.selectedFile)
     );
   }
 
   getFileIcon(type: string): string {
     const typeMap: { [key: string]: string } = {
-      'PDF': 'pi pi-file-pdf text-red-500',
-      'DOC': 'pi pi-file-word text-blue-500',
-      'DOCX': 'pi pi-file-word text-blue-500',
-      'XLS': 'pi pi-file-excel text-green-500',
-      'XLSX': 'pi pi-file-excel text-green-500',
-      'JPG': 'pi pi-image text-purple-500',
-      'JPEG': 'pi pi-image text-purple-500',
-      'PNG': 'pi pi-image text-purple-500',
-      'TXT': 'pi pi-file text-gray-500',
-      'ZIP': 'pi pi-file text-yellow-500'
+      PDF: 'pi pi-file-pdf text-red-500',
+      DOC: 'pi pi-file-word text-blue-500',
+      DOCX: 'pi pi-file-word text-blue-500',
+      XLS: 'pi pi-file-excel text-green-500',
+      XLSX: 'pi pi-file-excel text-green-500',
+      JPG: 'pi pi-image text-purple-500',
+      JPEG: 'pi pi-image text-purple-500',
+      PNG: 'pi pi-image text-purple-500',
+      TXT: 'pi pi-file text-gray-500',
+      ZIP: 'pi pi-file text-yellow-500',
     };
     return typeMap[type?.toUpperCase()] || 'pi pi-file text-gray-500';
   }
@@ -437,7 +441,7 @@ export class DocumentMangement implements OnInit {
   getInitials(name: string): string {
     return name
       .split(' ')
-      .map(word => word.charAt(0))
+      .map((word) => word.charAt(0))
       .join('')
       .toUpperCase()
       .slice(0, 2);

@@ -99,63 +99,6 @@
     <!-- Quick Filters -->
     <div class="mb-4 grid grid-cols-12 gap-4">
       <div class="col-span-12 md:col-span-3">
-        <p-floatLabel>
-          <p-autocomplete
-            inputId="fRole"
-            [(ngModel)]="filter.role"
-            [suggestions]="roleFiltered"
-            (completeMethod)="completeRole($event)"
-            [forceSelection]="true"
-            [dropdown]="true"
-            optionLabel="label"
-            optionValue="value"
-            (onSelect)="applyFilters()"
-            (onClear)="clearRole()"
-            placeholder="Rôle"
-            showClear
-          />
-          <label for="fRole">Rôle</label>
-        </p-floatLabel>
-      </div>
-      <div class="col-span-12 md:col-span-3">
-        <p-floatLabel>
-          <p-autocomplete
-            inputId="fDept"
-            [(ngModel)]="filter.dept"
-            [suggestions]="departmentFiltered"
-            (completeMethod)="completeDepartment($event)"
-            [forceSelection]="true"
-            [dropdown]="true"
-            optionLabel="label"
-            optionValue="value"
-            (onSelect)="applyFilters()"
-            (onClear)="clearDept()"
-            placeholder="Département"
-            showClear
-          />
-          <label for="fDept">Département</label>
-        </p-floatLabel>
-      </div>
-      <div class="col-span-12 md:col-span-3">
-        <p-floatLabel>
-          <p-autocomplete
-            inputId="fStatus"
-            [(ngModel)]="filter.status"
-            [suggestions]="statusFiltered"
-            (completeMethod)="completeStatus($event)"
-            [forceSelection]="true"
-            [dropdown]="true"
-            optionLabel="label"
-            optionValue="value"
-            (onSelect)="applyFilters()"
-            (onClear)="clearStatus()"
-            placeholder="Statut"
-            showClear
-          />
-          <label for="fStatus">Statut</label>
-        </p-floatLabel>
-      </div>
-      <div class="col-span-12 md:col-span-3">
         <p-iconField iconPosition="left" class="w-full">
           <p-inputIcon class="pi pi-search" />
           <input

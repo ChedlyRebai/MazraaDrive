@@ -22,7 +22,7 @@ public class MappingProfile : Profile
         CreateMap<Department, DepartmentUserCountDTO>().ReverseMap();
 
         CreateMap<AppUser, UserDto>().ReverseMap();
-
+        
 
         CreateMap<CreateUserDto, AppUser>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -200,8 +200,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.RequesterId, opt => opt.Ignore())
             .ForMember(dest => dest.RequestedAt, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()).ReverseMap()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UpdateDocumentDto, Document>().ReverseMap();
 
     }
 
