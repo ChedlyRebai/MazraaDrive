@@ -183,15 +183,13 @@ namespace Api.Controllers
         {
             try
             {
-                var currentUserId = GetCurrentUserId();
-                var currentUserRoles = await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(currentUserId));
 
                 // Users can only update their own profile unless they're Admin
-                if (id.ToString() != currentUserId && !currentUserRoles.Contains("Admin"))
-                {
-                    return Forbid();
-                }
-
+                // if (id.ToString() != currentUserId && !currentUserRoles.Contains("Admin"))
+                // {
+                //     return Forbid();
+                // }
+                Console.WriteLine($"Received update for user Cin: {updateUserDto.Cin}");
                 if (updateUserDto == null)
                     return BadRequest(new { success = false, message = "Update data is required" });
 
@@ -200,6 +198,7 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "User not found" });
 
                 _mapper.Map(updateUserDto, existingUser);
+                 Console.WriteLine($"Received update for user Cin update: {updateUserDto.Cin}");
                 await _unitOfWork.UserRepository.UpdateAsync(existingUser);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -343,7 +342,7 @@ namespace Api.Controllers
             }
         }
 
-        
+
         private string GetCurrentUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0";

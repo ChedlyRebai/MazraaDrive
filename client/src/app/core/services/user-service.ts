@@ -62,5 +62,9 @@ export class UserService {
     return this.http.delete(`${this.baseUrl}/${userId}`);
   }
 
+  updateUser(userId: string, updatedUser: CreateUserDto) {
+    return this.http.put(`${this.baseUrl}/${userId}`, updatedUser);
+  }
+
 
 }

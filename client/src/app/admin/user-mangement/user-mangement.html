@@ -21,7 +21,7 @@
         <div>
           <div class="text-sm opacity-80">Total</div>
           <div class="text-2xl font-semibold">
-            {{ (userService.users$ | async)?.totalUsers ||0 }}
+            {{ (userService.users$ | async)?.totalUsers || 0 }}
           </div>
         </div>
         <i class="pi pi-users text-3xl opacity-70"></i>
@@ -34,7 +34,9 @@
       >
         <div>
           <div class="text-sm opacity-80">Actifs</div>
-          <div class="text-2xl font-semibold"> {{ (userService.users$ | async)?.activeUsers ||0 }}</div>
+          <div class="text-2xl font-semibold">
+            {{ (userService.users$ | async)?.activeUsers || 0 }}
+          </div>
         </div>
         <i class="pi pi-check-circle text-3xl opacity-70"></i>
       </div>
@@ -45,7 +47,9 @@
       >
         <div>
           <div class="text-sm opacity-80">Inactifs</div>
-          <div class="text-2xl font-semibold">{{ (userService.users$ | async)?.inactiveUsers || 0 }}</div>
+          <div class="text-2xl font-semibold">
+            {{ (userService.users$ | async)?.inactiveUsers || 0 }}
+          </div>
         </div>
         <i class="pi pi-ban text-3xl opacity-70"></i>
       </div>
@@ -73,7 +77,6 @@
             icon="pi pi-user-plus"
             (onClick)="openNew()"
           />
-         
         </div>
       </ng-template>
       <ng-template #end>
@@ -88,7 +91,6 @@
             icon="pi pi-refresh"
             [outlined]="true"
             (onClick)="loadUsers()"
-            
           />
         </div>
       </ng-template>
@@ -173,7 +175,6 @@
         [paginator]="true"
         [rows]="10"
         [rowsPerPageOptions]="[1, 10, 25, 50]"
-        
         (onLazyLoad)="onPageChange($event)"
         [rowHover]="true"
         dataKey="id"
@@ -190,14 +191,11 @@
         dataKey="id"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
         [showCurrentPageReport]="true"
-        
         [rowsPerPageOptions]="[1, 10, 25, 50]"
       >
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 3rem">
-              <p-tableHeaderCheckbox />
-            </th>
+            <th style="width: 3rem">Cin</th>
             <th pSortableColumn="fullName">
               Nom Complet
               <p-sortIcon field="fullName" />
@@ -219,13 +217,15 @@
               Créé le
               <p-sortIcon field="createdAt" />
             </th>
-            <th style="width: 4rem"></th>
+            <th style="width: 4rem">Actions</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-user>
           <tr>
-            <td><p-tableCheckbox [value]="user" /></td>
+            <td class="font-medium text-xl gap-2 mx-4">
+              {{ user.cin }} {{ "  " }}
+            </td>
             <td>
               <div class="flex items-center gap-2">
                 <p-avatar
@@ -265,7 +265,34 @@
                 {{ user.createdAt | date : "HH:mm" }}
               </div>
             </td>
-            <td class="text-center"></td>
+            <td>
+              <div class="flex gap-2">
+                <p-button
+                  icon="pi pi-eye"
+                  severity="info"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (click)="viewUser(user)"
+                  pTooltip="Voir"
+                />
+
+                <p-button
+                  icon="pi pi-pencil"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (click)="editUser(user)"
+                  pTooltip="Modifier"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (click)="deleteUser(user)"
+                  pTooltip="Supprimer"
+                />
+              </div>
+            </td>
           </tr>
         </ng-template>
 
@@ -405,7 +432,7 @@
                 >Requis.</small
               >
             </div>
-            <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
+            <div class="col-span-12 md:col-span-6" >
               <p-floatLabel>
                 <p-password
                   inputId="password"
@@ -419,7 +446,7 @@
                 >Requis.</small
               >
             </div>
-            <div class="col-span-12 md:col-span-6" *ngIf="!user.id">
+            <div class="col-span-12 md:col-span-6" >
               <p-floatLabel>
                 <p-password
                   inputId="confirmPassword"
@@ -475,16 +502,10 @@
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-4" *ngIf="selectedUser">
           <div class="flex items-center gap-4 pb-4 border-b">
-            <p-avatar
-              [image]="selectedUser!.profilePicture"
-              [label]="getInitials(selectedUser!.fullName)"
-              shape="circle"
-              size="xlarge"
-            />
             <div>
-              <h3 class="m-0">{{ selectedUser!.fullName }}</h3>
-              <p class="text-color-secondary m-0">{{ selectedUser!.email }}</p>
-              <p-tag [value]="selectedUser!.role" class="mt-2" />
+              <h3 class="m-0">{{ selectedUser!.userName }}</h3>
+              <p class="text-color-secondary m-0">{{ selectedUser!.cin }}</p>
+              <p-tag [value]="selectedUser!.roleName" class="mt-2" />
             </div>
           </div>
           <div class="grid grid-cols-12 gap-4 text-sm">
@@ -493,8 +514,12 @@
               <div>{{ selectedUser!.userName }}</div>
             </div>
             <div class="col-span-6">
+              <span class="font-semibold">Cin:</span>
+              <div>{{ selectedUser!.cin || "-" }}</div>
+            </div>
+            <div class="col-span-6">
               <span class="font-semibold">Département:</span>
-              <div>{{ selectedUser!.department }}</div>
+              <div>{{ selectedUser!.departmentName }}</div>
             </div>
             <div class="col-span-6">
               <span class="font-semibold">Téléphone:</span>
@@ -511,7 +536,7 @@
               <span class="font-semibold">Créé le:</span>
               <div>{{ selectedUser!.createdAt }}</div>
             </div>
-            <div class="col-span-6">
+            <!-- <div class="col-span-6">
               <span class="font-semibold">Dernière connexion:</span>
               <div>
                 {{
@@ -520,7 +545,7 @@
                     : "Jamais"
                 }}
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </ng-template>

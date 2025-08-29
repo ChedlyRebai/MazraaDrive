@@ -16,21 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { RoleService } from '../../core/services/role-service';
 import { DepartmentService } from '../../core/services/department-service';
-interface User {
-  id: string;
-  fullName: string;
-  userName: string;
-  email: string;
-  department: string;
-  role: string;
-  phoneNumber?: string;
-  isActive: boolean;
-  createdAt: string;
-  lastLoginAt?: string;
-  profilePicture?: string;
-}
 
-interface EditableUser extends Partial<User> {
+interface EditableUser extends Partial<UserDto> {
   password?: string;
 }
 
@@ -60,15 +47,17 @@ export class UserMangement implements OnInit {
   loading = false;
   saving = false;
 
-  users: User[] = [];
-  selectedUsers: User[] = [];
+  users: UserDto[] = [];
+  selectedUsers: UserDto[] = [];
 
   userDialog = false;
   userDetailsDialog = false;
   dialogTitle = 'Nouvel Utilisateur';
 
+  editMode = false;
+  saveMode = false;
   user: UserDto = {} as UserDto;
-  selectedUser: User | null = null;
+  selectedUser: UserDto | null = null;
   submitted = false;
 
   totalUsers = 0;
@@ -156,8 +145,6 @@ export class UserMangement implements OnInit {
     this.userService.getUsers();
   }
 
-  
-
   initRoleSearch() {
     // this.roleService.getSearchRoles(this.user.role).subscribe(
     //   (result) => {
@@ -217,31 +204,33 @@ export class UserMangement implements OnInit {
     }
     console.log(this.user);
   }
-  
-  onSelectRole(e:any){
-    console.log(e)
-  }
-completeDepartmentDialog(e: any) {
-  const q = (e.query || '').toLowerCase();
-  if (q.length > 0) {
-    this.departmentService.getSearchDepartments(q).subscribe(
-      (result) => {
-        // result should be [{id, name, description}, ...]
-        this.departmentFilteredDialog = result;
-        // Now departmentFilteredDialog contains raw department objects
-        console.log('departmentFilteredDialog:', this.departmentFilteredDialog);
-      },
-      (error) => {
-        console.error('Error fetching departments:', error);
-        this.departmentFilteredDialog = [];
-      }
-    );
-  } else {
-    this.departmentFilteredDialog = [];
-  }
-  console.log(this.user)
-}
 
+  onSelectRole(e: any) {
+    console.log(e);
+  }
+  completeDepartmentDialog(e: any) {
+    const q = (e.query || '').toLowerCase();
+    if (q.length > 0) {
+      this.departmentService.getSearchDepartments(q).subscribe(
+        (result) => {
+          // result should be [{id, name, description}, ...]
+          this.departmentFilteredDialog = result;
+          // Now departmentFilteredDialog contains raw department objects
+          console.log(
+            'departmentFilteredDialog:',
+            this.departmentFilteredDialog
+          );
+        },
+        (error) => {
+          console.error('Error fetching departments:', error);
+          this.departmentFilteredDialog = [];
+        }
+      );
+    } else {
+      this.departmentFilteredDialog = [];
+    }
+    console.log(this.user);
+  }
 
   applyFilters() {
     this.loadUsers();
@@ -263,43 +252,7 @@ completeDepartmentDialog(e: any) {
     // hook if server-side global search required
   }
 
-  loadUsers(): void {
-    this.loading = true;
-    setTimeout(() => {
-      const mock: User[] = [
-        {
-          id: '1',
-          fullName: 'John Doe',
-          userName: 'jdoe',
-          email: 'jdoe@example.com',
-          department: 'IT',
-          role: 'Admin',
-          isActive: true,
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          fullName: 'Jane Smith',
-          userName: 'jsmith',
-          email: 'jsmith@example.com',
-          department: 'Finance',
-          role: 'User',
-          isActive: false,
-          createdAt: new Date().toISOString(),
-        },
-      ];
-      let data = [...mock];
-      if (this.filter.role)
-        data = data.filter((u) => u.role === this.filter.role);
-      if (this.filter.dept)
-        data = data.filter((u) => u.department === this.filter.dept);
-      if (this.filter.status !== null)
-        data = data.filter((u) => u.isActive === this.filter.status);
-      this.users = data;
-      this.computeStats();
-      this.loading = false;
-    }, 300);
-  }
+  loadUsers(): void {}
 
   computeStats() {
     this.totalUsers = this.users.length;
@@ -308,22 +261,26 @@ completeDepartmentDialog(e: any) {
   }
 
   openNew() {
-     this.user = {} as UserDto;
-     this.dialogTitle = 'Nouvel Utilisateur';
-     this.submitted = false;
-     this.profilePictureFile = null;
-     this.userDialog = true;
+    this.user = {} as UserDto;
+    this.dialogTitle = 'Nouvel Utilisateur';
+    this.submitted = false;
+    this.editMode = false;
+    this.saveMode = true;
+    this.profilePictureFile = null;
+    this.userDialog = true;
   }
 
-  editUser(u: User) {
-    // this.user = { ...u };
-    // this.dialogTitle = 'Modifier Utilisateur';
-    // this.submitted = false;
-    // this.profilePictureFile = null;
-    // this.userDialog = true;
+  editUser(u: UserDto) {
+    this.user = { ...u };
+    this.dialogTitle = 'Modifier Utilisateur';
+    this.submitted = false;
+    this.editMode = true;
+    this.profilePictureFile = null;
+    this.userDialog = true;
+    this.saveMode = false;
   }
 
-  viewUser(u: User) {
+  viewUser(u: UserDto) {
     this.selectedUser = u;
     this.userDetailsDialog = true;
   }
@@ -343,90 +300,142 @@ completeDepartmentDialog(e: any) {
   //   "departmentId": 10
   // }
 
- 
   saveUser() {
-    console.log(this.user)
+    console.log(this.user);
     this.submitted = true;
-    if (
-      
-      !this.user.userName ||
-      
-      !this.user.departmentId ||
-      !this.user.roleId ||
-      !this.user.password ||
-      (!this.user.id && !this.user.password)
-    ) {
-      this.message.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Champs requis manquants.',
-      });
-      return;
-    }
-    console.log('Saving user:', this.user);
-    this.saving = true;
-    const isNew = !this.user.id;
+    if (this.saveMode) {
+      if (
+        !this.user.userName ||
+        !this.user.cin ||
+        !this.user.departmentId ||
+        !this.user.roleId ||
+        !this.user.password ||
+        (!this.user.id && !this.user.password)
+      ) {
+        this.message.add({
+          severity: 'warn',
+          summary: 'Validation',
+          detail: 'Champs requis manquants.',
+        });
+        return;
+      }
+      console.log('Saving user:', this.user);
+      this.saving = true;
+      const isNew = !this.user.id;
+      // {
+      //   "cin": "124551",
+      //   "confirmPassword": "wN*EKv}_9Uih7AP",
+      //   "departmentId": 2,
+      //   "departmentName": "IT",
+      //   "password": "wN*EKv}_9Uih7AP",
+      //   "phoneNumber": "1234567",
+      //   "roleId": 10,
+      //   "roleName": "Finance",
+      //   "userName": "hichem"
+      // }
+      this.newUser = {
+        cin: this.user.cin,
+        confirmPassword: this.user.confirmPassword,
+        departmentId: this.user.departmentId,
 
-//     {
-//   "cin": "124551",
-//   "confirmPassword": "wN*EKv}_9Uih7AP",
-//   "departmentId": 2,
-//   "departmentName": "IT",
-//   "password": "wN*EKv}_9Uih7AP",
-//   "phoneNumber": "1234567",
-//   "roleId": 10,
-//   "roleName": "Finance",
-//   "userName": "hichem"
-// }
+        password: this.user.password,
+        phoneNumber: this.user.phoneNumber,
+        roleId: this.user.roleId,
 
-    this.newUser = {
-      cin: this.user.cin,
-      confirmPassword: this.user.confirmPassword,
-      departmentId: this.user.departmentId,
-      
-      password: this.user.password,
-      phoneNumber: this.user.phoneNumber,
-      roleId: this.user.roleId,
-      
-      userName: this.user.userName
-    };
-    this.userService.createUser(this.newUser).subscribe({
-      next: (user: any) => {
-
+        userName: this.user.userName,
+      };
+      this.userService.createUser(this.newUser).subscribe({
+        next: (user: any) => {
           this.message.add({
-             severity: 'success',
-             summary: 'Créé',
-             detail: 'Utilisateur ajouté.',
-           });
-         
-         this.computeStats();
-         this.saving = false;
-         this.userDialog = false;
-       },
-       error: (err) => {
-         console.error('Error saving user:', err);
-         this.message.add({
-           severity: 'error',
-           summary: 'Erreur',
-           detail: "Échec de la sauvegarde de l'utilisateur.",
-         });
-         this.saving = false;
-       },
-     });
+            severity: 'success',
+            summary: 'Créé',
+            detail: 'Utilisateur ajouté.',
+          });
+
+          this.computeStats();
+          this.saving = false;
+          this.userDialog = false;
+          this.userService.getUsers();
+        },
+        error: (err) => {
+          console.error('Error saving user:', err);
+          this.message.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Échec de la sauvegarde de l'utilisateur.",
+          });
+          this.saving = false;
+        },
+      });
+    }
+    if (this.editMode) {
+      if (
+        !this.user.userName ||
+        !this.user.departmentId ||
+        !this.user.roleId ||
+        !this.user.id
+      ) {
+        this.message.add({
+          severity: 'warn',
+          summary: 'Validation',
+          detail: 'Champs requis manquants.',
+        });
+        return;
+      }
+      console.log('Editing user:', this.user);
+      this.saving = true;
+      console.log('Updating user:', this.user);
+      this.userService.updateUser(this.user.id, this.user).subscribe({
+        next: (user: any) => {
+          this.message.add({
+            severity: 'success',
+            summary: 'Modifié',
+            detail: 'Utilisateur modifié.',
+          });
+
+          this.computeStats();
+          this.saving = false;
+          this.userDialog = false;
+          this.userService.getUsers();
+        },
+        error: (err) => {
+          console.error('Error editing user:', err);
+          this.message.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Échec de la modification de l'utilisateur.",
+          });
+          this.saving = false;
+        },
+      });
+    }
   }
 
-  deleteUser(u: User) {
+  deleteUser(u: UserDto) {
     this.confirm.confirm({
-      message: `Supprimer l'utilisateur ${u.fullName} ?`,
+      message: `Supprimer l'utilisateur ${u.cin} ?`,
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter((x) => x.id !== u.id);
-        this.computeStats();
-        this.message.add({
-          severity: 'success',
-          summary: 'Supprimé',
-          detail: 'Utilisateur supprimé.',
+        this.userService.deleteUser(u.id).subscribe({
+          next: () => {
+            this.users = this.users.filter((x) => x.id !== u.id);
+            this.computeStats();
+            this.message.add({
+              severity: 'success',
+              summary: 'Supprimé',
+              detail: 'Utilisateur supprimé.',
+            });
+            this.userService.getUsers();
+          },
+          error: (err) => {
+            console.error('Error deleting user:', err);
+            this.message.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: "Échec de la suppression de l'utilisateur.",
+            });
+          },
         });
       },
     });
@@ -476,9 +485,7 @@ completeDepartmentDialog(e: any) {
     }
   }
 
-  onProfilePictureSelect(event: any) {
-   
-  }
+  onProfilePictureSelect(event: any) {}
 
   onImportUsers(event: any) {
     const file: File = event.files?.[0];

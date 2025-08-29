@@ -54,6 +54,7 @@ namespace Core.DTOs
     public class UpdateUserDto
     {
         public string? UserName { get; set; }
+        public long? Cin { get; set; }
         public string? Email { get; set; }
         public string? FullName { get; set; }
         public string? PhoneNumber { get; set; }
