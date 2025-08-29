@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CreateUserDto, UserPagedResult } from '../../shared/models/user';
+import { CreateUserDto, UserPagedResult, UserStatisticsDto } from '../../shared/models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -60,5 +60,9 @@ export class UserService {
 
   deleteUser(userId: string) {
     return this.http.delete(`${this.baseUrl}/${userId}`);
+  }
+
+  getUserStatistics() {
+    return this.http.get<UserStatisticsDto>(`${this.baseUrl}/stats`);
   }
 }

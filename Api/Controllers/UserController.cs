@@ -29,7 +29,7 @@ namespace Api.Controllers
             return "User API is working!";
         }
 
-        
+
 
         [HttpGet]
         public async Task<ActionResult<UserPagedResult>> GetUsers([FromQuery] UserFilterDto filter)
@@ -59,7 +59,7 @@ namespace Api.Controllers
 
                 };
                 //await _auditLogger.LogAsync("GetUsers", "Retrieved paged list of users", "10", "User");
-                return Ok(result );
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -171,7 +171,7 @@ namespace Api.Controllers
             {
                 var stats = await _unitOfWork.UserRepository.GetUserStatisticsAsync();
 
-                return Ok(  stats );
+                return Ok(stats);
             }
             catch (Exception ex)
             {
@@ -391,7 +391,7 @@ namespace Api.Controllers
                 Console.WriteLine("***********************************************");
                 Console.WriteLine($"User ID: {id}, User: {user?.UserName}");
                 Console.WriteLine(user?.CreatedFolders?.Count);
-                
+
                 foreach (var item in user?.CreatedFolders)
                 {
                     Console.WriteLine(item.Name);
