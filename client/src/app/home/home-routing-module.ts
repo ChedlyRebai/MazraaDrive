@@ -12,7 +12,7 @@ import { Access } from './access/access';
 const routes: Routes = [
   {
     path: '',
-    
+
     loadComponent() {
       return import('./home').then((m) => m.Home);
     },
@@ -23,8 +23,16 @@ const routes: Routes = [
           return import('./demandes/demandes').then((m) => m.Demandes);
         },
       },
-      { path: 'accueil', loadComponent() {
+      {
+        path: 'accueil',
+        loadComponent() {
           return import('./accueil/accueil').then((m) => m.Accueil);
+        },
+      },
+      {
+        path: 'chat',
+        loadComponent() {
+          return import('./chat-doc/chat-doc').then((m) => m.ChatDoc);
         },
       },
       {
@@ -41,15 +49,17 @@ const routes: Routes = [
       },
       {
         path: 'folder/:id',
-        loadComponent(){
-          return import('./folder-details/folder-details').then((m) => m.FolderDetails);
-        }
+        loadComponent() {
+          return import('./folder-details/folder-details').then(
+            (m) => m.FolderDetails
+          );
+        },
       },
       {
         path: 'file/:id',
-        loadComponent(){
+        loadComponent() {
           return import('./file-viewer/file-viewer').then((m) => m.FileViewer);
-        }
+        },
       },
       {
         path: 'document-search',
