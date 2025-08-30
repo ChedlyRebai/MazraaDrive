@@ -103,6 +103,7 @@ public class AccessRequestRepository : IAccessRequestRepository
     {
         var q = _ctx.AccessRequests
             .AsNoTracking()
+            
             .Include(a => a.Document)
             .Include(a => a.Requester)
             .Include(a => a.DecidedBy)
@@ -116,7 +117,10 @@ public class AccessRequestRepository : IAccessRequestRepository
         //     q = q.Where(x => x.RequesterId == p.RequesterId);
         // if (!string.IsNullOrEmpty(p.DecidedById))
         //     q = q.Where(x => x.DecidedById == p.DecidedById);
-
+        if (!string.IsNullOrEmpty(p.Search))
+        {
+            q = q.Where(x => x.Requester    .UserName.ToLower().Contains(p.Search.ToLower()));
+        }
         q = p.SortBy switch
         {
             "createdAsc" => q.OrderBy(x => x.CreatedAt),
@@ -187,7 +191,7 @@ public class AccessRequestRepository : IAccessRequestRepository
             DecisionAt = entity.DecisionAt,
             DecidedById = entity.DecidedById
         };
-
+        
         return Task.FromResult(dto);
     }
 
@@ -203,7 +207,11 @@ public class AccessRequestRepository : IAccessRequestRepository
         var q = _ctx.AccessRequests
             .Where(a => a.RequesterId == userId)
             .AsQueryable();
-
+        if (!string.IsNullOrEmpty(paginationParams.Search))
+        {
+            // q = q.Where(a => a.Document.Name.Contains(paginationParams.Search));
+            q = q.Where(a => a.Document.Name.ToLower().Contains(paginationParams.Search.ToLower()));
+        }
         var total = await q.CountAsync();
         var items = await q
             .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)

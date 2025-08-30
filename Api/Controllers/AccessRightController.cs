@@ -30,8 +30,18 @@ namespace Api.Controllers
             try
             {
                 var pagedAccessRights = await _unitOfWork.PermissionsRepository.GetPagedAsync(filter);
-                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
 
+                foreach (var item in pagedAccessRights.Data)
+                {
+                    // Perform any additional mapping or processing here
+                    Console.WriteLine($"accessright username: {item.User?.UserName}****************************");
+                }
+                var accessRightDtos = _mapper.Map<IEnumerable<AccessRightDto>>(pagedAccessRights.Data);
+                foreach (var item in accessRightDtos)
+                {
+                    // Perform any additional mapping or processing here
+                    Console.WriteLine($"accessright username: {item.UserName}****************************");
+                }
                 var result = accessRightDtos.ToPagedResult(
                     pagedAccessRights.PageNumber,
                     pagedAccessRights.PageSize,
@@ -41,7 +51,7 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
-               // //await _auditLogger.LogAsync("GetAccessRights", "Retrieved paged list of access rights", "10", "AccessRight");
+               ////await _auditLogger.LogAsync("GetAccessRights", "Retrieved paged list of access rights", "10", "AccessRight");
                 return Ok(result );
             }
             catch (Exception ex)

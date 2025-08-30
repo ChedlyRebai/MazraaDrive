@@ -12,6 +12,7 @@ public class AccessRightService : IAccessRightService
 
     public async Task GrantAsync(string userId, int documentId, bool read, bool write, bool delete)
     {
+        Console.WriteLine("access right is working________________________________________________");
         var existing = await _ctx.AccessRights
             .FirstOrDefaultAsync(r => r.UserId == userId && r.DocumentId == documentId);
         if (existing == null)

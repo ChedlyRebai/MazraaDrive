@@ -387,25 +387,27 @@ export class Pemission implements OnInit {
 
   submitEdit() {
     if (!this.selected) return;
-    // this.svc.update(this.selected.id, this.editModel).subscribe({
-    //   next: _ => {
-    //     this.toast.add({ severity: 'success', summary: 'Mis à jour' });
-    //     this.editDialog = false;
-    //     this.load();
-    //   }
-    // });
+     this.accessRightService.updateAccessRight(this.selected.id, this.editModel).subscribe({
+       next: _ => {
+         this.toast.add({ severity: 'success', summary: 'Mis à jour' });
+         this.editDialog = false;
+         this.load();
+         this.getAllPermissions();
+       }
+     });
   }
 
   confirmDelete(r: AccessRightDto) {
     this.confirm.confirm({
       message: 'Supprimer ce droit ?',
-      accept: () => {},
-      // this.svc.delete(r.id).subscribe({
-      //   next: _ => {
-      //     this.toast.add({ severity: 'success', summary: 'Supprimé' });
-      //     this.load();
-      //   }
-      // })
+      accept: () => {
+       this.accessRightService.deleteAccessRight(r.id).subscribe({
+         next: (res:any) => {
+           this.toast.add({ severity: 'success', summary: 'Supprimé' });
+           this.load();
+           this.getAllPermissions();
+         }
+       })}
     });
   }
 

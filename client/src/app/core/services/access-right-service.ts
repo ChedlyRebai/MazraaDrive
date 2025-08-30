@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {
   AccessRightDto,
   AccessRightPagedResult,
+  UpdateAccessRightDto,
 } from '../../shared/models/access-right';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -59,9 +60,9 @@ export class AccessRightService {
     return this.http.post<AccessRightDto>(this.baseUrl, accessRight);
   }
 
-  updateAccessRight(accessRight: AccessRightDto): Observable<AccessRightDto> {
+  updateAccessRight(id:string| number,accessRight: UpdateAccessRightDto): Observable<AccessRightDto> {
     return this.http.put<AccessRightDto>(
-      `${this.baseUrl}/${accessRight.id}`,
+      `${this.baseUrl}/${id}`,
       accessRight
     );
   }

@@ -46,7 +46,7 @@
           />
         </p-iconField>
 
-        <p-autoComplete
+        <!-- <p-autoComplete
           [(ngModel)]="statusFilter"
           [suggestions]="['Pending', 'Approved', 'Rejected']"
           (completeMethod)="(0)"
@@ -57,16 +57,16 @@
           (onSelect)="pageNumber = 1; load()"
           (ngModelChange)="pageNumber = 1; load()"
           class="w-48"
-        />
+        /> -->
       </div>
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <p-button
           icon="pi pi-filter-slash"
           [outlined]="true"
           pTooltip="Réinitialiser"
           (click)="clearFilters()"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 

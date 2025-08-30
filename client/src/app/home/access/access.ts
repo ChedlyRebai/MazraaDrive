@@ -198,6 +198,7 @@ export class Access implements OnInit {
     ).subscribe({
       next: (response: AccessRequestPagedResult) => {
         this.myAccessRequest = response;
+        console.log('Fetched access requests:', response);
       },error: (err) => {
         console.error('Error fetching access requests:', err);
       }
@@ -241,12 +242,16 @@ export class Access implements OnInit {
     this.statusFilter = null;
     this.searchTerm = '';
     this.pageNumber = 1;
-    this.load();
+   
   }
 
-  onSearch(_: Event) {
+  onSearch(event: any) {
     this.pageNumber = 1;
-    this.load();
+    console.log(event.target.value);
+    
+    this.searchTerm = event.target.value;
+    this.Search=event.target.value;
+    this.getAllMyAccessRequests();
   }
 
   isAccessFormValid(): boolean {
@@ -290,6 +295,7 @@ export class Access implements OnInit {
       documentId: this.newRequest.documentId!,
       requestRead: this.newRequest.requestRead,
       requestWrite: this.newRequest.requestWrite,
+      
       requestDelete: this.newRequest.requestDelete,
       message: this.newRequest.message || ''
     };
@@ -300,11 +306,13 @@ export class Access implements OnInit {
         this.creatingRequest = false;
         this.createDialog = false;
         this.load();
+        this.getAllMyAccessRequests();
       },error: (err:any)=>{
         console.log(err);
         console.log(err.error);
         console.log(err.message.message);
         //this.creatingRequest = false;
+        this.getAllMyAccessRequests();
         this.toast.add({ severity: 'error', summary: 'Erreur', detail: err.error });
       }
     })

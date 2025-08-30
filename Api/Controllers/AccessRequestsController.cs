@@ -80,6 +80,7 @@ public class AccessRequestsController : BaseController
         if (await _unitOfWork.AccessRequestRepository.ExistsPendingAsync(dto.DocumentId, userId))
             return Conflict("A pending request already exists for this document.");
 
+
         var entity = new AccessRequest
         {
 
@@ -89,6 +90,9 @@ public class AccessRequestsController : BaseController
             RequestRead = dto.RequestRead,
             RequestWrite = dto.RequestWrite,
             RequestDelete = dto.RequestDelete,
+            DecidedById = userId,
+            DecisionAt = System.DateTime.UtcNow,
+
             Status = "Pending"
         };
         await _unitOfWork.AccessRequestRepository.AddAsync(entity);
@@ -100,21 +104,47 @@ public class AccessRequestsController : BaseController
     // [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> Decide(int id, [FromBody] AccessRequestDecisionDto dto)
     {
+        var currentUserId = _currentUser.UserId;
         var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
         if (entity.Status != "Pending") return BadRequest("Already decided.");
 
         entity.Status = dto.Approve ? "Approved" : "Rejected";
         entity.DecisionAt = System.DateTime.UtcNow;
-        entity.DecidedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        entity.DecidedById = currentUserId;
 
+        // var updatedEntity = await _unitOfWork.AccessRequestRepository.UpdateAsync(entity);
+
+        // if (updatedEntity == null) return BadRequest("Update failed.");
+        var newReq = new AccessRequest
+        {
+            Id = entity.Id,
+            DocumentId = entity.DocumentId,
+            RequesterId = entity.RequesterId,
+            RequestRead = entity.RequestRead,
+            RequestWrite = entity.RequestWrite,
+            RequestDelete = entity.RequestDelete,
+            Status = entity.Status,
+            Message = "dd",
+            CreatedAt = entity.CreatedAt,
+            DecisionAt = entity.DecisionAt,
+            DecidedById = entity.DecidedById
+        };
+        var updatedEntity = await _unitOfWork.AccessRequestRepository.UpdateAsync(newReq);
+        Console.WriteLine("Updated Entity: *************************************************" + updatedEntity.Status);
+        Console.WriteLine("Updated Entity: *************************************************" + updatedEntity.Status);
         // Optional: grant rights if approved
         if (dto.Approve)
         {
-            await _accessRightService.GrantAsync(entity.RequesterId, entity.DocumentId,
-                read: entity.RequestRead, write: entity.RequestWrite, delete: entity.RequestDelete);
+            await
+             _accessRightService.GrantAsync(entity.RequesterId,
+             entity.DocumentId,
+            read: entity.RequestRead,
+            write: entity.RequestWrite,
+            delete: entity.RequestDelete);
         }
 
+        Console.WriteLine("Decision made: *************************************************" + dto);
         await _unitOfWork.SaveChangesAsync();
         return Ok(entity);
     }
@@ -122,6 +152,7 @@ public class AccessRequestsController : BaseController
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] AccessRequestCreateDto dto)
     {
+        var currentUserId = _currentUser.UserId;
         var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
         entity.DocumentId = dto.DocumentId;
@@ -129,7 +160,10 @@ public class AccessRequestsController : BaseController
         entity.RequestWrite = dto.RequestWrite;
         entity.RequestDelete = dto.RequestDelete;
         entity.Message = dto.Message;
-        await _unitOfWork.AccessRequestRepository.UpdateAsync(entity);
+        entity.DecidedById = currentUserId;
+        entity.DecisionAt = System.DateTime.UtcNow;
+
+        //await _unitOfWork.AccessRequestRepository.UpdateAsync(entity);
         await _unitOfWork.SaveChangesAsync();
         return Ok(entity);
     }

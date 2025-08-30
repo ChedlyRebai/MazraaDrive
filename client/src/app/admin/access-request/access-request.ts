@@ -198,7 +198,7 @@ export class AccessRequest implements OnInit {
      this.accessRequestService
        .getAccessRequests(
          this.PageSize,
-         this.Search,
+         this.searchTerm,
          this.PageNumber,
          this.SortBy,
          this.SortDirection
@@ -208,6 +208,9 @@ export class AccessRequest implements OnInit {
            this.PageNumber = response.pageNumber;
            this.PageSize = response.pageSize;
            this.requests = response.data;
+           this.pendingRequests = response.totalPending;
+           this.approvedRequests = response.totalApproved;
+           this.rejectedRequests = response.totalRejected;
            this.totalRecords = response.totalRecords;
            console.log(response)
          },
@@ -236,9 +239,10 @@ export class AccessRequest implements OnInit {
     this.load();
   }
 
-  onSearch(_: Event) {
-    this.pageNumber = 1;
-    this.load();
+  onSearch(event: any) {
+    console.log(event.target.value || event);
+    this.searchTerm = event.target.value || '';
+    this.getAllAccessReq();
   }
 
   isAccessFormValid(): boolean {
@@ -317,12 +321,14 @@ export class AccessRequest implements OnInit {
     this.confirm.confirm({
       message: 'Approuver cette demande ?',
       accept: () => {
-        // this.svc.decide(r.id, true).subscribe({
-        //   next: _ => {
-        //     this.toast.add({ severity: 'success', summary: 'Approuvée' });
-        //     this.load();
-        //   }
-        // });
+        console.log('Demande approuvée:', r);
+        this.accessRequestService.decide(r.id, true).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.toast.add({ severity: 'success', summary: 'Approuvée' });
+            this.accessRequestService.getAccessRequests();
+          }
+        });
       },
     });
   }
@@ -331,12 +337,14 @@ export class AccessRequest implements OnInit {
     this.confirm.confirm({
       message: 'Rejeter cette demande ?',
       accept: () => {
-        // this.svc.decide(r.id, false).subscribe({
-        //   next: _ => {
-        //     this.toast.add({ severity: 'info', summary: 'Rejetée' });
-        //     this.load();
-        //   }
-        // });
+        this.accessRequestService.decide(r.id, false).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            this.toast.add({ severity: 'success', summary: 'Rejetée' });
+           
+            this.accessRequestService.getAccessRequests();
+          }
+        });
       },
     });
   }

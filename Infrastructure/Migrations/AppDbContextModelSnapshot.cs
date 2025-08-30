@@ -76,13 +76,15 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Message")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("RequestDelete")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("RequestRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("RequestUpdate")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("RequestWrite")

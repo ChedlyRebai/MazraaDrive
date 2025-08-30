@@ -22,7 +22,7 @@ public class MappingProfile : Profile
         CreateMap<Department, DepartmentUserCountDTO>().ReverseMap();
 
         CreateMap<AppUser, UserDto>().ReverseMap();
-        
+
 
         CreateMap<CreateUserDto, AppUser>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -91,7 +91,18 @@ public class MappingProfile : Profile
         CreateMap<Document, DocumentUploadDto>().ReverseMap();
         CreateMap<Document, DocumentSummaryDto>().ReverseMap();
 
-        CreateMap<AccessRight, AccessRightDto>().ReverseMap();
+
+
+
+        CreateMap<AccessRight, AccessRightDto>()
+        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+        .ForMember(dest => dest.DocumentName, opt => opt.MapFrom(src => src.Document.Name))
+        .ForMember(dest => dest.FolderName, opt => opt.MapFrom(src => src.Folder.Name))
+        .ReverseMap();
+
+
+
+
         CreateMap<AccessRight, CreateAccessRightDto>()
             .ReverseMap();
         CreateMap<AccessRight, UpdateAccessRightDto>().ReverseMap();
@@ -203,6 +214,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()).ReverseMap()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<UpdateDocumentDto, Document>().ReverseMap();
+
+
 
     }
 

@@ -11,10 +11,11 @@ public class AccessRequest : BaseEntity<int>
     
     public bool RequestRead { get; set; }
     public bool RequestWrite { get; set; }
+    public bool? RequestUpdate { get; set; }
 
     public bool RequestDelete { get; set; }
 
-    public string Message { get; set; } = null;
+    public string? Message { get; set; } = null;
     public string Status { get; set; } = "Pending"; // Pending, Approved, Rejected
 
     public DateTime? DecisionAt { get; set; }

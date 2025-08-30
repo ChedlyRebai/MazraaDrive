@@ -66,7 +66,7 @@
           class="w-full"
         />
       </div>
-      <div class="col-span-6 md:col-span-2">
+      <!-- <div class="col-span-6 md:col-span-2">
         <span class="text-xs font-medium">Type</span>
         <p-autoComplete
           [(ngModel)]="acType"
@@ -138,11 +138,11 @@
       </div>
       <div class="col-span-6 md:col-span-2">
         <span class="text-xs font-medium">De</span>
-        <!-- <p-calendar [(ngModel)]="filter.createdFrom" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" /> -->
+        <p-calendar [(ngModel)]="filter.createdFrom" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" />
       </div>
       <div class="col-span-6 md:col-span-2">
         <span class="text-xs font-medium">À</span>
-        <!-- <p-calendar [(ngModel)]="filter.createdTo" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" /> -->
+         <p-calendar [(ngModel)]="filter.createdTo" dateFormat="yy-mm-dd" (onSelect)="filter.pageNumber=1; load()" class="w-full" /> 
       </div>
       <div class="col-span-12 flex gap-2 justify-end">
         <p-button
@@ -157,7 +157,7 @@
           [outlined]="true"
           (click)="clearFilters()"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -176,7 +176,6 @@
         [lazy]="true"
         (onLazyLoad)="onPageChange($event)"
         (onPage)="onPage($event)"
-        
         dataKey="id"
         responsiveLayout="scroll"
         styleClass="p-datatable-sm"
@@ -184,24 +183,20 @@
         selectionMode="multiple"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
         [showCurrentPageReport]="true"
-        
         [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
       >
         <ng-template pTemplate="header">
           <tr>
-         
             <th>Utilisateur</th>
             <th>Cible</th>
             <th>Type</th>
             <th>Permissions</th>
-            <th>Actif</th>
             <th>Créé</th>
             <th style="width: 7rem">Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-r>
           <tr>
-            
             <td>
               <div class="flex items-center gap-2">
                 <p-avatar
@@ -239,12 +234,12 @@
                 <p-tag *ngIf="r.canDelete" value="D" severity="danger"></p-tag>
               </div>
             </td>
-            <td>
+            <!-- <td>
               <p-tag
                 [value]="r.isActive ? 'Oui' : 'Non'"
                 [severity]="r.isActive ? 'success' : 'danger'"
               ></p-tag>
-            </td>
+            </td> -->
             <td>
               <div class="font-medium">
                 {{ r.createdAt | date : "dd/MM/yyyy" }}
@@ -438,14 +433,6 @@
           /><label for="ed">Delete</label>
         </div>
       </div>
-    </div>
-    <div class="flex items-center gap-2">
-      <p-checkbox
-        [(ngModel)]="editModel.isActive"
-        [binary]="true"
-        inputId="ea"
-      />
-      <label for="ea">Actif</label>
     </div>
   </div>
   <ng-template pTemplate="footer">

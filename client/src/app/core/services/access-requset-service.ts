@@ -33,6 +33,7 @@ export class AccessRequsetService {
     }
 
     if(Search){
+      console.log(Search,'lllllllllll');
       params = params.append('Search', Search.toString());
     }
 
@@ -68,6 +69,7 @@ export class AccessRequsetService {
     }
 
     if(Search){
+      console.log(Search,'lllllllllllfffffffffffffffffff');
       params = params.append('Search', Search.toString());
     }
 
@@ -78,13 +80,21 @@ export class AccessRequsetService {
     if(SortDirection){
       params = params.append('SortDirection', SortDirection);
     }
-    params.append('userId', "10");
-    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests?userId=10', { params,withCredentials: true })
+    
+    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests', { params,withCredentials: true })
   }
 
 
   deleteAccessRequest(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
+
+
+  decide(id: number, approve: boolean) {
+    const decision: any = {
+      "approve": approve
+    };
+    return this.http.post(`${this.baseUrl}/${id}/decision`, decision, { withCredentials: true });
   }
 
 }
