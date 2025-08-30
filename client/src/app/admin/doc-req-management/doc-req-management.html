@@ -98,39 +98,17 @@
             />
           </p-iconField>
 
-          <p-autoComplete
-            [(ngModel)]="statusFilter"
-            [suggestions]="statusFilterSuggestions"
-            (completeMethod)="searchStatusFilter($event)"
-            placeholder="Filtrer par statut"
-            field="label"
-            [showClear]="true"
-            (onSelect)="onStatusFilter($event)"
-            (onClear)="onStatusFilter(null)"
-            class="w-48"
-          />
-
-          <p-autoComplete
-            [(ngModel)]="priorityFilter"
-            [suggestions]="priorityFilterSuggestions"
-            (completeMethod)="searchPriorityFilter($event)"
-            placeholder="Filtrer par priorité"
-            field="label"
-            [showClear]="true"
-            (onSelect)="onPriorityFilter($event)"
-            (onClear)="onPriorityFilter(null)"
-            class="w-48"
-          />
+          
         </div>
 
         <div class="flex gap-2">
-          <p-button
+          <!-- <p-button
             icon="pi pi-filter-slash"
             severity="secondary"
             [outlined]="true"
             pTooltip="Effacer les filtres"
             (click)="clearFilters()"
-          />
+          /> -->
           <p-button
             icon="pi pi-download"
             severity="help"
