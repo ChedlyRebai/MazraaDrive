@@ -105,6 +105,7 @@ namespace Core.DTOs
 
     public class DocumentFilterDto : PaginationParams
     {
+
         public string? Name { get; set; }
         public string? FileType { get; set; }
         public int? FolderId { get; set; }
@@ -120,6 +121,7 @@ namespace Core.DTOs
     {
         public int TotalDocuments { get; set; }
         public long TotalFileSize { get; set; }
+        public int TotalFolders { get; set; }
 
         public int TotalUsers { get; set; }
     }

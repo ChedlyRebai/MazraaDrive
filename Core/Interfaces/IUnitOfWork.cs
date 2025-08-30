@@ -18,6 +18,7 @@ public interface IUnitOfWork
     public IDocRequestRepository DocRequestRepository { get; }
     public IDocument DocumentRepository { get; }
     public IHomeRepository HomeRepository { get; }
+    public IAuth Auth { get; }
     public IAccessRequestRepository AccessRequestRepository { get; }
     public IFolderRepository FolderRepository { get; }
     public IMessageRepository MessageRepository { get; }
@@ -26,9 +27,6 @@ public interface IUnitOfWork
     public IPermissionsRepository PermissionsRepository { get; }
     public IAuditLogRepository AuditLogRepository { get; }
     public IRoleRepository RoleRepository { get; }
-  
-
-    public IAuth Auth { get; }
 
     Task<int> SaveChangesAsync();
 

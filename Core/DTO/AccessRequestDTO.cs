@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using Core.DTO;
 
 namespace Core.DTOs.AccessRequests;
 
@@ -33,4 +34,12 @@ public class AccessRequestCreateDto
 public class AccessRequestDecisionDto
 {
     public bool Approve { get; set; }
+}
+
+public class AccessRequestPageResult : PagedResult<AccessRequestDto>
+{
+    public int TotalPending { get; set; }
+    public int TotalRejected { get; set; }
+    public int TotalApproved { get; set; }
+    
 }

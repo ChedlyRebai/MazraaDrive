@@ -131,6 +131,7 @@ export class RoleMangementComponent implements OnInit {
         this.message.add({ severity: 'success', summary: 'Succès', detail: 'Rôle créé avec succès' });
         this.loadRoles();
         this.roleDialog = false;
+        this.roleService.getRoles();
       },
       error: (error) => {
         this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors de la création du rôle' });
@@ -304,7 +305,15 @@ export class RoleMangementComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         // TODO: service.deleteRole(role.id)
-        this.roles = this.roles.filter(r => r.id !== role.id);
+        this.roleService.deleteRole(role.id).subscribe({
+          next: () => {
+            this.roleService.getRoles();
+          },
+          error: (err) => {
+            console.error('Error deleting role:', err);
+          }
+        });
+
         this.computeStatsFromCurrent();
         this.messageSuccess('Rôle supprimé.');
       }

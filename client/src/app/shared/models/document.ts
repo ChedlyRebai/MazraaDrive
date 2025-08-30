@@ -79,5 +79,7 @@ export interface DocumentFilterDto extends PaginationParams {
 
 export interface DocumentPagedResult extends PagedResult<DocumentDto> {
   totalDocuments: number;
+  totalFileSize: number;
+  totalFolders: number;
   totalUsers: number;
 }

@@ -65,14 +65,7 @@ export class RoleService {
 
 
   deleteRole(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`).subscribe(
-      () => {
-        console.log('Role deleted');
-      },
-      (error) => {
-        console.error('Error deleting role:', error);
-      }
-    );
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 
   createRole(role: CreateRoleDto) {

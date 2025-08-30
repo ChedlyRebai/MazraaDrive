@@ -209,10 +209,11 @@ export class AccessRequest implements OnInit {
            this.PageSize = response.pageSize;
            this.requests = response.data;
            this.totalRecords = response.totalRecords;
-           
-           
+           console.log(response)
          },
        });
+       
+       console.log(this.requests);
   }
 
  

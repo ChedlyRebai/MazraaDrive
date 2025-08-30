@@ -49,6 +49,7 @@ namespace Api.Controllers
             }
 
             var result = await _unitOfWork.Auth.LoginAsync(loginDTO);
+            
             if (result.StartsWith("please"))
             {
                 return BadRequest(new ResponseAPI(400, result));

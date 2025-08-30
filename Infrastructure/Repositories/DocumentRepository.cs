@@ -60,7 +60,7 @@ namespace Infrastructure.Repositories
 
             // Get total count before pagination
             var totalRecords = await query.CountAsync();
-
+            var totalSize = await query.SumAsync(d => d.FileSize);
             // Apply sorting
             query = ApplySorting(query, filter.SortBy, filter.SortDirection);
 
@@ -71,6 +71,7 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
 
             return documents.ToPagedResult(
+                
                 filter.PageNumber,
                 filter.PageSize,
                 totalRecords,
@@ -435,6 +436,11 @@ namespace Infrastructure.Repositories
                 // Handle exceptions
                 throw;
             }
+        }
+
+        public Task<int> GetTotalFoldersAsync()
+        {
+            return _context.Folders.CountAsync();
         }
     }
 }

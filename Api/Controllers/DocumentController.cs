@@ -56,6 +56,8 @@ namespace Api.Controllers
                 Console.WriteLine($"Total Records: {pagedDocuments.TotalRecords}, Page Size: {pagedDocuments.PageSize}, Page Number: {pagedDocuments.PageNumber}");
                 var result = new DocumentPagedResult
                 {
+                    TotalFileSize = await _unitOfWork.DocumentRepository.GetTotalFileSizeAsync(),
+                    TotalFolders = await _unitOfWork.DocumentRepository.GetTotalFoldersAsync(),
                     Data = documentDtos,
                     PageNumber = pagedDocuments.PageNumber,
                     PageSize = pagedDocuments.PageSize,
@@ -297,7 +299,7 @@ namespace Api.Controllers
                 var userId = _currentUser?.UserId;
                 var depId = _currentUser?.DepartmentId;
                 Console.WriteLine("UserId: " + userId);
-                 Console.WriteLine("depId: " + depId);
+                Console.WriteLine("depId: " + depId);
                 var stats = await _unitOfWork.DocumentRepository.MyDocumentAndFolderStats(userId);
                 Console.WriteLine($"Stats for user {userId}: {stats.DocumentCount} documents, {stats.FolderCount} folders");
                 return Ok(stats);
@@ -380,7 +382,7 @@ namespace Api.Controllers
                 // Log the document upload
                 //await _auditLogger.LogAsync("UploadDocument", "Uploaded new document", "10", "Document");
                 return CreatedAtAction(nameof(GetDocument), new { id = documentDto.Id },
-                    documentDto );
+                    documentDto);
             }
             catch (Exception ex)
             {
@@ -528,7 +530,7 @@ namespace Api.Controllers
         }
 
 
-        
+
         private string GetCurrentUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";

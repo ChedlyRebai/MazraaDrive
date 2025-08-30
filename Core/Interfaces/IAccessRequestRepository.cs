@@ -4,7 +4,7 @@ using Core.Entities;
 
 public interface IAccessRequestRepository
 {
-    Task<PagedResult<AccessRequestDto>> GetPagedAsync(PaginationParams @params);
+    Task<AccessRequestPageResult> GetPagedAsync(PaginationParams @params);
     Task<PagedResult<AccessRequestDto>> GetMyRequestsAsync(PaginationParams paginationParams);
     Task<PagedResult<AccessRequestDto>> GetRequestsByUserIdAsync(string userId, PaginationParams paginationParams);
     Task<AccessRequestDto?> GetByIdAsync(int id);
