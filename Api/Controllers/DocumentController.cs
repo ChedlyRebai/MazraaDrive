@@ -18,11 +18,10 @@ namespace Api.Controllers
         private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
         private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
 
-        public DocumentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, auditLogger)
+        public DocumentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DocumentController> logger, IWebHostEnvironment environment, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
             _environment = environment;
-            // _auditLogger = auditLogger;
         }
 
         [HttpGet("test")]

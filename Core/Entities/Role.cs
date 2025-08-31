@@ -1,8 +1,9 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Core.Entities;
 
-public class Role : BaseEntity<int>
+public class Role : IdentityUserRole<int>
 {
     public string Name { get; set; }
     public string Description { get; set; }

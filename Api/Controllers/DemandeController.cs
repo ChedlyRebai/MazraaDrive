@@ -8,12 +8,9 @@ namespace Api.Controllers
     //------------------------------------------------------------------------------
     public class DemandeController : BaseController
     {
-        public DemandeController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, auditLogger)
-        {
-        }
 
-        
+
+
 
         // [HttpPost("create")]
         // public async Task<IActionResult> createDemandeConrolle()
@@ -29,5 +26,8 @@ namespace Api.Controllers
         //         throw;
         //     }
         // }
+        public DemandeController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<BaseController> logger, IAuditLogRepository auditLogger = null) : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+        {
+        }
     }
 }

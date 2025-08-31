@@ -12,8 +12,9 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class RoleController : BaseController
     {
-        public RoleController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, auditLogger)
+        
+        public RoleController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleController> logger, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
         }
 

@@ -16,8 +16,10 @@ namespace Api.Controllers
         public readonly IAuditLogRepository _auditLogger;
         public readonly IHubContext<DepartmentHub> _hub;
 
-        public DepartmentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null) : base(currentUser, unitOfWork, mapper, auditLogger)
+        public DepartmentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DepartmentController> logger, IHubContext<DepartmentHub> hub, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
+            _hub = hub;
         }
 
         [HttpGet("test")]

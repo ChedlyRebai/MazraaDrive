@@ -12,8 +12,8 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class DocumentRequestController : BaseController
 {
-    public DocumentRequestController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
-        : base(currentUser, unitOfWork, mapper, auditLogger)
+    public DocumentRequestController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DocumentRequestController> logger, IAuditLogRepository auditLogger = null)
+        : base(currentUser, unitOfWork, mapper, logger, auditLogger)
     {
     }
 

@@ -14,8 +14,8 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class FolderController : BaseController
     {
-        public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, auditLogger)
+        public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<FolderController> logger, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
         }
 

@@ -75,7 +75,7 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Role.AnyAsync(r => r.Id == id);
+            return await _context.Role.AnyAsync(r => r.RoleId == id);
         }
 
         public async Task<bool> ExistsByNameAsync(string name)
@@ -129,11 +129,11 @@ namespace Infrastructure.Repositories
             if (filter.IsActive.HasValue)
                 query = query.Where(r => r.IsActive == filter.IsActive);
 
-            if (filter.CreatedFrom.HasValue)
-                query = query.Where(r => r.CreatedAt >= filter.CreatedFrom);
+            // if (filter.CreatedFrom.HasValue)
+            //     query = query.Where(r => r.CreatedAt >= filter.CreatedFrom);
 
-            if (filter.CreatedTo.HasValue)
-                query = query.Where(r => r.CreatedAt <= filter.CreatedTo);
+            // if (filter.CreatedTo.HasValue)
+            //     query = query.Where(r => r.CreatedAt <= filter.CreatedTo);
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
@@ -159,8 +159,8 @@ namespace Infrastructure.Repositories
                                        : query.OrderBy(r => r.Name),
                 "description" => isDescending ? query.OrderByDescending(r => r.Description)
                                               : query.OrderBy(r => r.Description),
-                "createdat" => isDescending ? query.OrderByDescending(r => r.CreatedAt)
-                                            : query.OrderBy(r => r.CreatedAt),
+                // "createdat" => isDescending ? query.OrderByDescending(r => r.CreatedAt)
+                //                             : query.OrderBy(r => r.CreatedAt),
                 "isactive" => isDescending ? query.OrderByDescending(r => r.IsActive)
                                            : query.OrderBy(r => r.IsActive),
                 _ => query.OrderBy(r => r.Name)

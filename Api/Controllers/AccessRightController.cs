@@ -13,7 +13,8 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class AccessRightController : BaseController
     {
-        public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, IAuditLogRepository auditLogger = null) : base(currentUser, unitOfWork, mapper, auditLogger)
+        public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRightController> logger, IAuditLogRepository auditLogger = null)
+            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
         }
 
