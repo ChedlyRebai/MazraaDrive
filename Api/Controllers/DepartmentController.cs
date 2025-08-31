@@ -9,11 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    
     public class DepartmentController : BaseController
     {
-        public readonly IAuditLogRepository _auditLogger;
+
         public readonly IHubContext<DepartmentHub> _hub;
 
         public DepartmentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DepartmentController> logger, IHubContext<DepartmentHub> hub, IAuditLogRepository auditLogger = null)

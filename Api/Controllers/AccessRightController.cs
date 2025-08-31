@@ -9,8 +9,7 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class AccessRightController : BaseController
     {
         public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRightController> logger, IAuditLogRepository auditLogger = null)

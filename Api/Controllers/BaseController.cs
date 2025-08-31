@@ -3,9 +3,9 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
-{   [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+{
     [ApiController]
+    [Route("api/[controller]")]
     public class BaseController : ControllerBase
     {
         protected readonly IUnitOfWork _unitOfWork;
@@ -17,7 +17,7 @@ namespace Api.Controllers
 
         protected readonly ILogger<BaseController> _logger;
         protected readonly ICurrentUserService _currentUser;
-        public BaseController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<BaseController> logger,IAuditLogRepository auditLogger = null)
+        public BaseController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<BaseController> logger, IAuditLogRepository auditLogger = null)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

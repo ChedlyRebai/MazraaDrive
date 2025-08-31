@@ -10,8 +10,7 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    
     public class FolderController : BaseController
     {
         public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<FolderController> logger, IAuditLogRepository auditLogger = null)

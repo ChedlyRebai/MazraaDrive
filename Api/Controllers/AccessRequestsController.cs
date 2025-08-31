@@ -13,8 +13,7 @@ using Api.Helper;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+
 // [Authorize]
 public class AccessRequestsController : BaseController
 {

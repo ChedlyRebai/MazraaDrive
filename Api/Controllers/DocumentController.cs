@@ -9,8 +9,7 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+   
     public class DocumentController : BaseController
     {
         //public readonly IAuditLogRepository _auditLogger;

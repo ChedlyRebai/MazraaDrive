@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+
 public class DocumentRequestController : BaseController
 {
     public DocumentRequestController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DocumentRequestController> logger, IAuditLogRepository auditLogger = null)

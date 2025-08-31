@@ -10,8 +10,7 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    
     //[Authorize]
     public class UserController : BaseController
     {

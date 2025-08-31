@@ -8,8 +8,7 @@ using Core.DTOs;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+
 // Require authentication for all audit log operations
 public class AuditLogController : ControllerBase
 {
