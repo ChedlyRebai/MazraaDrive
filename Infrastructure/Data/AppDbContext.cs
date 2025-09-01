@@ -31,11 +31,11 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<AppUser>(entity =>
-            {
-              entity.Property(r => r.Id)
-              .ValueGeneratedOnAdd();
-            });
+            // modelBuilder.Entity<AppUser>(entity =>
+            // {
+            //   entity.Property(r => r.Id)
+            //   .ValueGeneratedOnAdd();
+            // });
             modelBuilder.Entity<Role>(entity =>
            {
                entity.Property(r => r.Id)

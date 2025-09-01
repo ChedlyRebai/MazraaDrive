@@ -139,9 +139,9 @@ namespace Api.Controllers
                 var department = await _unitOfWork.DepartmentRepository.GetByIdAsync(createUserDto.DepartmentId);
                 if (department == null)
                     return BadRequest(new { success = false, message = "Department not found" });
-
+                
                 var user = _mapper.Map<AppUser>(createUserDto);
-
+                user.Id=Guid.NewGuid().ToString();
                 var result = await _userManager.CreateAsync(user, createUserDto.Password);
                 if (!result.Succeeded)
                 {
