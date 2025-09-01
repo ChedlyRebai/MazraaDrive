@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateea : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,6 +17,8 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -40,21 +42,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Role",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,9 +71,10 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", maxLength: 255, nullable: false),
+                    Cin = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true),
+                    RoleId = table.Column<string>(type: "text", nullable: true),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -107,37 +95,14 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_AspNetUsers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Role",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AccessRights",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    CanCreate = table.Column<bool>(type: "boolean", nullable: false),
-                    CanRead = table.Column<bool>(type: "boolean", nullable: false),
-                    CanUpdate = table.Column<bool>(type: "boolean", nullable: false),
-                    CanDelete = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccessRights", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AccessRights_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -151,7 +116,8 @@ namespace Infrastructure.Migrations
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Question = table.Column<string>(type: "text", nullable: false),
                     ResultSummary = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -256,10 +222,14 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
+                    ActionType = table.Column<string>(type: "text", nullable: false),
+                    UserAgent = table.Column<string>(type: "text", nullable: true),
+                    IPAddress = table.Column<string>(type: "text", nullable: true),
                     Action = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     TargetEntity = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    TargetId = table.Column<int>(type: "integer", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -281,8 +251,10 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     ParentFolderId = table.Column<int>(type: "integer", nullable: true),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -315,7 +287,8 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ParentFolderId = table.Column<int>(type: "integer", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -346,7 +319,9 @@ namespace Infrastructure.Migrations
                     IsRead = table.Column<bool>(type: "boolean", nullable: false),
                     SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     SenderId1 = table.Column<string>(type: "text", nullable: false),
-                    ReceiverId1 = table.Column<string>(type: "text", nullable: false)
+                    ReceiverId1 = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -374,11 +349,13 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     FileType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     FileSize = table.Column<long>(type: "bigint", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     StoragePath = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    FolderId = table.Column<int>(type: "integer", nullable: false),
+                    FolderId = table.Column<int>(type: "integer", nullable: true),
                     UploadedById = table.Column<string>(type: "text", nullable: false),
-                    Version = table.Column<int>(type: "integer", nullable: false),
-                    IsValidated = table.Column<bool>(type: "boolean", nullable: false),
+                    DepartmentId = table.Column<int>(type: "integer", nullable: false),
+                    Version = table.Column<int>(type: "integer", nullable: true),
+                    IsValidated = table.Column<bool>(type: "boolean", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -392,11 +369,16 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Documents_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Documents_Folder_FolderId",
                         column: x => x.FolderId,
                         principalTable: "Folder",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -406,7 +388,9 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MessageId = table.Column<int>(type: "integer", nullable: false),
-                    MailFolderId = table.Column<int>(type: "integer", nullable: false)
+                    MailFolderId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -426,42 +410,168 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccessRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DocumentId = table.Column<int>(type: "integer", nullable: false),
+                    RequesterId = table.Column<string>(type: "text", nullable: false),
+                    RequestRead = table.Column<bool>(type: "boolean", nullable: false),
+                    RequestWrite = table.Column<bool>(type: "boolean", nullable: false),
+                    RequestUpdate = table.Column<bool>(type: "boolean", nullable: true),
+                    RequestDelete = table.Column<bool>(type: "boolean", nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    DecisionAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DecidedById = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccessRequests_AspNetUsers_DecidedById",
+                        column: x => x.DecidedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AccessRequests_AspNetUsers_RequesterId",
+                        column: x => x.RequesterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccessRequests_Documents_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Documents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessRights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    DocumentId = table.Column<int>(type: "integer", nullable: true),
+                    FolderId = table.Column<int>(type: "integer", nullable: true),
+                    CanCreate = table.Column<bool>(type: "boolean", nullable: false),
+                    CanRead = table.Column<bool>(type: "boolean", nullable: false),
+                    CanUpdate = table.Column<bool>(type: "boolean", nullable: false),
+                    CanDelete = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessRights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccessRights_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccessRights_Documents_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Documents",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AccessRights_Folder_FolderId",
+                        column: x => x.FolderId,
+                        principalTable: "Folder",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DocumentRequests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RequesterId = table.Column<int>(type: "integer", nullable: false),
+                    RequesterId = table.Column<string>(type: "text", nullable: false),
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
-                    DocumentType = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Priority = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
+                    DocumentType = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Priority = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     ResponseDocumentId = table.Column<int>(type: "integer", nullable: true),
                     RequestedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RespondedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    RequesterId1 = table.Column<string>(type: "text", nullable: true)
+                    ResponseMessage = table.Column<string>(type: "text", nullable: true),
+                    ProcessedById = table.Column<string>(type: "text", nullable: true),
+                    DepartmentId1 = table.Column<int>(type: "integer", nullable: true),
+                    DocumentId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocumentRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocumentRequests_AspNetUsers_RequesterId1",
-                        column: x => x.RequesterId1,
+                        name: "FK_DocumentRequests_AspNetUsers_ProcessedById",
+                        column: x => x.ProcessedById,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocumentRequests_AspNetUsers_RequesterId",
+                        column: x => x.RequesterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DocumentRequests_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DocumentRequests_Departments_DepartmentId1",
+                        column: x => x.DepartmentId1,
+                        principalTable: "Departments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DocumentRequests_Documents_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Documents",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DocumentRequests_Documents_ResponseDocumentId",
                         column: x => x.ResponseDocumentId,
                         principalTable: "Documents",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessRequests_DecidedById",
+                table: "AccessRequests",
+                column: "DecidedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessRequests_DocumentId",
+                table: "AccessRequests",
+                column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessRequests_RequesterId",
+                table: "AccessRequests",
+                column: "RequesterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessRights_DocumentId",
+                table: "AccessRights",
+                column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessRights_FolderId",
+                table: "AccessRights",
+                column: "FolderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccessRights_UserId",
@@ -531,14 +641,34 @@ namespace Infrastructure.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocumentRequests_RequesterId1",
+                name: "IX_DocumentRequests_DepartmentId1",
                 table: "DocumentRequests",
-                column: "RequesterId1");
+                column: "DepartmentId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentRequests_DocumentId",
+                table: "DocumentRequests",
+                column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentRequests_ProcessedById",
+                table: "DocumentRequests",
+                column: "ProcessedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentRequests_RequesterId",
+                table: "DocumentRequests",
+                column: "RequesterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocumentRequests_ResponseDocumentId",
                 table: "DocumentRequests",
                 column: "ResponseDocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_DepartmentId",
+                table: "Documents",
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_FolderId",
@@ -600,6 +730,9 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccessRequests");
+
+            migrationBuilder.DropTable(
                 name: "AccessRights");
 
             migrationBuilder.DropTable(
@@ -630,9 +763,6 @@ namespace Infrastructure.Migrations
                 name: "MailMessageFolder");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
@@ -648,10 +778,10 @@ namespace Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Departments");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Departments");
         }
     }
 }

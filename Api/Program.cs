@@ -8,8 +8,10 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options=>{
-    options.AddPolicy("AllowAll",builder =>{
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
         builder.AllowAnyHeader().
         AllowAnyMethod().
         AllowCredentials().
@@ -27,7 +29,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "MazraaDrive API", Version = "v1" });
-    
+
     // Add JWT authentication to Swagger
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
@@ -36,7 +38,7 @@ builder.Services.AddSwaggerGen(c =>
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
     });
-    
+
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
         {
@@ -61,6 +63,12 @@ builder.Services.AddSwaggerGen(c =>
 // Add controllers
 builder.Services.AddControllers();
 
+
+builder.Services.AddIdentity<AppUser, Role>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<RoleManager<Role>>();
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
@@ -77,7 +85,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddResponseCompression();
 builder.Services.AddSignalR();
 builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
-    p.WithOrigins("http://localhost:4200","https://your-vercel-domain.vercel.app")
+    p.WithOrigins("http://localhost:4200", "https://your-vercel-domain.vercel.app")
      .AllowAnyHeader().AllowAnyMethod()
      .AllowCredentials()));
 var app = builder.Build();
@@ -111,7 +119,7 @@ if (!Directory.Exists(uploadsPath))
     Directory.CreateDirectory(uploadsPath);
 }
 
-app.UseCors("AllowAll");
+
 // After app.Build(), add:
 app.UseCors("AllowAll");
 //app.UseCors("CORSPolicy");
@@ -130,6 +138,7 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //     options.UseMySql(
 //         connectionString, ServerVersion.AutoDetect(connectionString)
 //     ));
+
 app.UseResponseCompression();
 app.UseResponseCaching();
 app.MapControllers();

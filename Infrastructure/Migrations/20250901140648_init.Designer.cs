@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250804000821_updatedocreq")]
-    partial class updatedocreq
+    [Migration("20250901140648_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,63 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AIQueryLogs");
+                });
+
+            modelBuilder.Entity("Core.Entities.AccessRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DecidedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DecisionAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("RequestDelete")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RequestRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("RequestUpdate")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RequestWrite")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RequesterId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DecidedById");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("AccessRequests");
                 });
 
             modelBuilder.Entity("Core.Entities.AccessRight", b =>
@@ -113,6 +170,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<long?>("Cin")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -157,8 +217,8 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -202,22 +262,30 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("text");
 
                     b.Property<string>("TargetEntity")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<int>("TargetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -273,6 +341,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
@@ -281,10 +352,10 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int>("FolderId")
+                    b.Property<int?>("FolderId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsValidated")
+                    b.Property<bool?>("IsValidated")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
@@ -304,7 +375,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Version")
+                    b.Property<int?>("Version")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -369,6 +440,9 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("ResponseDocumentId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ResponseMessage")
+                        .HasColumnType("text");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -411,6 +485,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -550,42 +627,19 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -721,6 +775,31 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Core.Entities.AccessRequest", b =>
+                {
+                    b.HasOne("Core.Entities.AppUser", "DecidedBy")
+                        .WithMany()
+                        .HasForeignKey("DecidedById");
+
+                    b.HasOne("Core.Entities.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.AppUser", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DecidedBy");
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Requester");
+                });
+
             modelBuilder.Entity("Core.Entities.AccessRight", b =>
                 {
                     b.HasOne("Core.Entities.Document", "Document")
@@ -782,9 +861,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Folder", "Folder")
                         .WithMany("Documents")
-                        .HasForeignKey("FolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FolderId");
 
                     b.HasOne("Core.Entities.AppUser", "UploadedBy")
                         .WithMany("UploadedDocuments")
@@ -922,7 +999,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -949,7 +1026,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

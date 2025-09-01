@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -10,10 +11,11 @@ namespace Infrastructure.Repositories
     public class UserRepository : GenericRepository<AppUser>, IUserRepository
     {
         private readonly AppDbContext _context;
-
-        public UserRepository(AppDbContext context) : base(context)
+        private readonly UserManager<AppUser> _userManager;
+        public UserRepository(AppDbContext context, UserManager<AppUser> userManager) : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<AppUser> AddAsync(AppUser user)
@@ -24,8 +26,9 @@ namespace Infrastructure.Repositories
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
 
-            var result = await _context.Users.AddAsync(user);
-            return result.Entity;
+           
+            var result = await _userManager.CreateAsync(user);
+            return result.Succeeded ? user : null;
         }
 
         public async Task DeleteAsync(string id)
@@ -86,7 +89,7 @@ namespace Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Department)
                 .Include(u => u.Role)
-                .Where(u => u.RoleId == roleId)
+                .Where(u => u.RoleId == roleId.ToString())
 
                 .ToListAsync();
         }
@@ -258,7 +261,7 @@ namespace Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Department)
                 .Include(u => u.Role)
-                .Where(u => u.RoleId == roleId)
+                .Where(u => u.RoleId == roleId.ToString())
                 .ToListAsync();
         }
 
@@ -323,7 +326,7 @@ namespace Infrastructure.Repositories
             // }
 
             if (filter.RoleId.HasValue)
-                query = query.Where(u => u.RoleId == filter.RoleId);
+                query = query.Where(u => u.RoleId == filter.RoleId.ToString());
 
             if (!string.IsNullOrEmpty(filter.RoleName))
                 query = query.Where(u => u.Role != null && u.Role.Name.Contains(filter.RoleName));

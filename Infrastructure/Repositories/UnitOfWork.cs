@@ -5,7 +5,6 @@ using Core.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories.Service;
 using Microsoft.AspNetCore.Identity;
-using StackExchange.Redis;
 
 namespace Infrastructure.Repositories;
 
@@ -14,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     //private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
-   // private readonly IEmailService? _emailService;
+    // private readonly IEmailService? _emailService;
 
     // private readonly IRoleRepository _roleRepository;
     // private readonly IUserRepository _userRepository;
@@ -28,7 +27,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IAuth Auth { get; }
 
-    public IAccessRequestRepository AccessRequestRepository { get; }    
+    public IAccessRequestRepository AccessRequestRepository { get; }
     public IDocRequestRepository DocRequestRepository { get; }
 
     public IDocument DocumentRepository { get; }
@@ -47,17 +46,19 @@ public class UnitOfWork : IUnitOfWork
     public IDepartmentRepository DepartmentRepository { get; }
 
     public IPermissionsRepository PermissionsRepository { get; }
-  
+
     public IRoleRepository RoleRepository { get; }
-    
+    private readonly RoleManager<Role> _roleManager;
     public IAuditLogRepository AuditLogRepository { get; }
 
     public UnitOfWork(
+        RoleManager<Role> roleManager,
         IAuth auth,
         AppDbContext context,
         IDepartmentRepository departmentRepository,
         // IDocRequestRepository docRequestRepository,
         IFolderRepository folderRepository,
+   
         IPermissionsRepository permissionsRepository,
         IRoleRepository roleRepository,
         IHomeRepository homeRepository,
@@ -71,7 +72,7 @@ public class UnitOfWork : IUnitOfWork
 
         )
     {
-
+        _roleManager = roleManager;
         _context = context;
         DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));

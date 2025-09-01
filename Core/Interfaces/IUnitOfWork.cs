@@ -26,6 +26,8 @@ public interface IUnitOfWork
     public IDepartmentRepository DepartmentRepository { get; }
     public IPermissionsRepository PermissionsRepository { get; }
     public IAuditLogRepository AuditLogRepository { get; }
+
+    
     public IRoleRepository RoleRepository { get; }
 
     Task<int> SaveChangesAsync();

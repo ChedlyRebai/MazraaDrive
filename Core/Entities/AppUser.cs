@@ -8,13 +8,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Core.Entities;
 
-public class AppUser : IdentityUser
+public class AppUser : IdentityUser<string>
 {
-
     [Required]
     [MaxLength(255)]
-
-
     public bool IsActive { get; set; } = true;
 
     public long? Cin { get; set; }
@@ -23,7 +20,7 @@ public class AppUser : IdentityUser
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     // Foreign Keys - FIXED TYPES
-    public int? RoleId { get; set; }  // Made nullable, points to Role table
+    public string? RoleId { get; set; }  // Made nullable, points to Role table
     // Made nullable
     [Required]
     public int DepartmentId { get; set; }  // Changed from Guid to int

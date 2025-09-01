@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -10,10 +11,11 @@ namespace Infrastructure.Repositories
     public class RoleRepository : IRoleRepository
     {
         private readonly AppDbContext _context;
-
-        public RoleRepository(AppDbContext context)
+        private readonly RoleManager<Role> _roleManager;
+        public RoleRepository(AppDbContext context, RoleManager<Role> roleManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         public async Task<string> testapi()
@@ -21,17 +23,22 @@ namespace Infrastructure.Repositories
             return "Role Repository - Test successful!";
         }
 
-        public async Task<IEnumerable<Role>> GetAllAsync()
+        public async Task<IEnumerable<IdentityRole<string>>> GetAllAsync()
         {
-            return await _context.Role
-                .Where(r => r.IsActive)
-                .OrderBy(r => r.Name)
+            return await _roleManager.Roles
+                .Select(r => new IdentityRole<string>
+                {
+                    Id = r.Id.ToString(),
+                    Name = r.Name,
+                    NormalizedName = r.NormalizedName,
+                    ConcurrencyStamp = r.ConcurrencyStamp
+                })
                 .ToListAsync();
         }
 
-        public async Task<Role?> GetByIdAsync(int id)
+        public async Task<Role?> GetByIdAsync(string id)
         {
-            return await _context.Role.FindAsync(id);
+            return await _roleManager.FindByIdAsync(id);
         }
 
         public async Task<Role?> GetByNameAsync(string name)
@@ -39,43 +46,46 @@ namespace Infrastructure.Repositories
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return await _context.Role
-                .FirstOrDefaultAsync(r => r.Name.ToLower() == name.ToLower());
+            return await _roleManager.FindByNameAsync(name);
         }
 
-        public async Task<Role> AddAsync(Role role)
+        public async Task<Role?> AddAsync(Role role)
         {
             if (role == null)
                 throw new ArgumentNullException(nameof(role));
 
-            // role.CreatedAt = DateTime.UtcNow;
-            // role.UpdatedAt = DateTime.UtcNow;
-
-            var result = await _context.Role.AddAsync(role);
-            return result.Entity;
+            var result = await _roleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                return role;
+            }
+            return null;
         }
 
-        public async Task UpdateAsync(Role role)
+        public async Task<bool> UpdateAsync(Role role)
         {
             if (role == null)
                 throw new ArgumentNullException(nameof(role));
 
-
-            _context.Role.Update(role);
+            var result = await _roleManager.UpdateAsync(role);
+            return result.Succeeded;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
-            var role = await _context.Role.FindAsync(id);
+            var role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
-                _context.Role.Remove(role);
+                var result = await _roleManager.DeleteAsync(role);
+                return result.Succeeded;
             }
+            return false;
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(string id)
         {
-            return await _context.Role.AnyAsync(r => r.RoleId == id);
+            var role = await _roleManager.FindByIdAsync(id);
+            return role != null;
         }
 
         public async Task<bool> ExistsByNameAsync(string name)
@@ -83,8 +93,8 @@ namespace Infrastructure.Repositories
             if (string.IsNullOrEmpty(name))
                 return false;
 
-            return await _context.Role
-                .AnyAsync(r => r.Name.ToLower() == name.ToLower());
+            var role = await _roleManager.FindByNameAsync(name);
+            return role != null;
         }
 
         Task<IReadOnlyList<Role>> IGenericRepository<Role>.GetAllAsync()
@@ -99,7 +109,7 @@ namespace Infrastructure.Repositories
 
         public async Task<PagedResult<Role>> GetPagedAsync(RoleFilterDto filter, PaginationParams paginationParams)
         {
-            var query = _context.Role.AsQueryable();
+            var query = _roleManager.Roles.AsQueryable();
 
             query = ApplyFilters(query, filter);
             var totalRecords = await query.CountAsync();
@@ -117,29 +127,17 @@ namespace Infrastructure.Repositories
                 filter.SortBy,
                 filter.SortDirection
             );
-
         }
-
 
         private IQueryable<Role> ApplyFilters(IQueryable<Role> query, RoleFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(r => r.Name.Contains(filter.Name));
 
-            if (filter.IsActive.HasValue)
-                query = query.Where(r => r.IsActive == filter.IsActive);
-
-            // if (filter.CreatedFrom.HasValue)
-            //     query = query.Where(r => r.CreatedAt >= filter.CreatedFrom);
-
-            // if (filter.CreatedTo.HasValue)
-            //     query = query.Where(r => r.CreatedAt <= filter.CreatedTo);
-
             if (!string.IsNullOrEmpty(filter.Search))
             {
                 query = query.Where(r =>
-                    r.Name.Contains(filter.Search) ||
-                    r.Description.Contains(filter.Search)
+                    r.Name.Contains(filter.Search)
                 );
             }
 
@@ -157,29 +155,36 @@ namespace Infrastructure.Repositories
             {
                 "name" => isDescending ? query.OrderByDescending(r => r.Name)
                                        : query.OrderBy(r => r.Name),
-                "description" => isDescending ? query.OrderByDescending(r => r.Description)
-                                              : query.OrderBy(r => r.Description),
-                // "createdat" => isDescending ? query.OrderByDescending(r => r.CreatedAt)
-                //                             : query.OrderBy(r => r.CreatedAt),
-                "isactive" => isDescending ? query.OrderByDescending(r => r.IsActive)
-                                           : query.OrderBy(r => r.IsActive),
                 _ => query.OrderBy(r => r.Name)
             };
         }
 
-        public Task<Role[]> SearchAsync(string searchTerm)
+        public async Task<Role[]> SearchAsync(string searchTerm)
         {
-            if (string.IsNullOrEmpty(searchTerm.ToLower()))
-                return _context.Role
+            if (string.IsNullOrEmpty(searchTerm))
+                return await _roleManager.Roles
+                    .OrderBy(r => r.Name)
+                    .ToArrayAsync();
+
+            return await _roleManager.Roles
+                .Where(r => r.Name.ToLower().Contains(searchTerm.ToLower()))
                 .OrderBy(r => r.Name)
                 .ToArrayAsync();
+        }
 
-            var roles = _context.Role
-                .Where(r => r.Name.ToLower().Contains(searchTerm.ToLower()) || r.Description.Contains(searchTerm.ToLower()))
-                .OrderBy(r => r.Name)
-                .ToArrayAsync();
+        public Task<Role> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-            return roles;
+        Task IGenericRepository<Role>.UpdateAsync(Role entity)
+        {
+            return UpdateAsync(entity);
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

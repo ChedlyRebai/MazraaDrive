@@ -65,7 +65,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RoleDto>> GetRole(int id)
+        public async Task<ActionResult<RoleDto>> GetRole(string id)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Api.Controllers
                 var roleDto = _mapper.Map<RoleDto>(createdRole);
 
                 //await _auditLogger.LogAsync("CreateRole", "Created new role", "10", "Role");
-                return CreatedAtAction(nameof(GetRole), new { id = roleDto.Id },
+                return CreatedAtAction(nameof(GetRole), new { id = roleDto.id },
                     new { success = true, data = roleDto });
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<RoleDto>> UpdateRole(int id, [FromBody] UpdateRoleDto updateRoleDto)
+        public async Task<ActionResult<RoleDto>> UpdateRole(string id, [FromBody] UpdateRoleDto updateRoleDto)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteRole(int id)
+        public async Task<ActionResult> DeleteRole(string id)
         {
             try
             {

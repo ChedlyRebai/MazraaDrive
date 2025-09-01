@@ -157,9 +157,9 @@ public static class InfrastructureRegistration
         //         policy.RequireAuthenticatedUser());
         // });
 
-        services.AddIdentity<AppUser, IdentityRole>()
-         .AddEntityFrameworkStores<AppDbContext>()
-         .AddDefaultTokenProviders();
+        // services.AddIdentity<AppUser, IdentityRole>()
+        //  .AddEntityFrameworkStores<AppDbContext>()
+        //  .AddDefaultTokenProviders();
 
         // Configure Identity cookie
         services.ConfigureApplicationCookie(options =>
