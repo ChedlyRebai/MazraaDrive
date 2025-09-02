@@ -15,8 +15,11 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.3.0",
           "Microsoft.AspNetCore.Mvc.Versioning": "5.1.0",
+          "Microsoft.AspNetCore.OpenApi": "9.0.8",
           "Microsoft.EntityFrameworkCore": "9.0.0",
           "Microsoft.EntityFrameworkCore.Design": "9.0.0",
+          "Scalar.AspNetCore": "2.7.2",
+          "Scaler": "1.0.0.2",
           "StackExchange.Redis": "2.8.37",
           "Swashbuckle.AspNetCore": "7.0.0"
         },
@@ -202,6 +205,17 @@
           "lib/net6.0/Microsoft.AspNetCore.Mvc.Versioning.dll": {
             "assemblyVersion": "5.1.0.0",
             "fileVersion": "5.1.8270.41513"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.OpenApi/9.0.8": {
+        "dependencies": {
+          "Microsoft.OpenApi": "1.6.22"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "assemblyVersion": "9.0.8.0",
+            "fileVersion": "9.0.825.36808"
           }
         }
       },
@@ -824,6 +838,30 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.7.2": {
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "2.7.2.0",
+            "fileVersion": "2.7.2.0"
+          }
+        }
+      },
+      "Scaler/1.0.0.2": {
+        "runtime": {
+          "lib/net48/AjaxPro.2.dll": {
+            "assemblyVersion": "9.2.17.1",
+            "fileVersion": "0.0.0.0"
+          },
+          "lib/net48/Scaler.dll": {
+            "assemblyVersion": "1.0.0.2",
+            "fileVersion": "1.0.0.2"
+          },
+          "lib/net48/VTemplate.Engine.dll": {
+            "assemblyVersion": "3.7.0.0",
+            "fileVersion": "3.7.0.0"
+          }
+        }
+      },
       "StackExchange.Redis/2.8.37": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
@@ -1190,6 +1228,13 @@
       "path": "microsoft.aspnetcore.mvc.versioning/5.1.0",
       "hashPath": "microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.OpenApi/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BwF9sQCKmvu93C/pmKxJjPhF5fFB23MEcgTsGL+7W3wKLYawS4lyFSL5/qh00IJzuADLf+1SmvxMaphbyZYqQQ==",
+      "path": "microsoft.aspnetcore.openapi/9.0.8",
+      "hashPath": "microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.WebUtilities/2.3.0": {
       "type": "package",
       "serviceable": true,
@@ -1553,6 +1598,20 @@
       "sha512": "sha512-zG2FApP5zxSx6OcdJQLbZDk2AVlN2BNQD6MorwIfV6gVj0RRxWPEp2LXAxqDGZqeNV1Zp0BNPcNaey/GXmTdvQ==",
       "path": "pipelines.sockets.unofficial/2.2.8",
       "hashPath": "pipelines.sockets.unofficial.2.2.8.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/2.7.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MtxRKvCqmzoH7LQe2GLfo2rAjYix+2G2GwTaKjLThySOPwU99vf0VefSWt5tOAEz/wS7qD87lm1Bu92oZyjr8w==",
+      "path": "scalar.aspnetcore/2.7.2",
+      "hashPath": "scalar.aspnetcore.2.7.2.nupkg.sha512"
+    },
+    "Scaler/1.0.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/PakIzhONalLl4oU3JR8MkYwi9bbnSMw9a4VEGVmSC721K+sP2EwCpASEvX6JhSFfjNjU3YfB2UoBlXNZ+FIYQ==",
+      "path": "scaler/1.0.0.2",
+      "hashPath": "scaler.1.0.0.2.nupkg.sha512"
     },
     "StackExchange.Redis/2.8.37": {
       "type": "package",

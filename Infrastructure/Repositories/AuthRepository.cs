@@ -4,21 +4,25 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Services;
 using Core.Shared;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity; // Ensure this using is present for SignInManager
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore; // Ensure this using is present for SignInManager
 
 namespace Infrastructure.Repositories;
 
 public class AuthRepository : IAuth
 {
     private readonly UserManager<AppUser> _userManager;
-   // private readonly IEmailService _emailService;
+    // private readonly IEmailService _emailService;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly AppDbContext _context;
     private readonly IGenerateToken generateToken;
-    public AuthRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IGenerateToken token)
+    public AuthRepository(AppDbContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IGenerateToken token)
     {
+        _context = context;
         _userManager = userManager;
-      //  _emailService = emailService;
+        //  _emailService = emailService;
         _signInManager = signInManager;
         generateToken = token;
     }
@@ -34,22 +38,22 @@ public class AuthRepository : IAuth
             return "this username is already exist";
         }
 
-        if (await _userManager.FindByEmailAsync(registerDTO.Email) is not null)
-        {
-            return "This Email is already exist";
-        }
+        // if (await _userManager.FindByEmailAsync(registerDTO.Email) is not null)
+        // {
+        //     return "This Email is already exist";
+        // }
 
         AppUser user = new AppUser()
-        {   
+        {
             DepartmentId = registerDTO.DepartmentId,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            
+
             EmailConfirmed = true,
             UserName = registerDTO.Username,
-            Email = registerDTO.Email,
-          //  DisplayName = registerDTO.Username // Assuming DisplayName is the same as Username
+            //Email = registerDTO.Email,
+            //  DisplayName = registerDTO.Username // Assuming DisplayName is the same as Username
         };
 
         var result = await _userManager.CreateAsync(user, registerDTO.Password);
@@ -61,7 +65,7 @@ public class AuthRepository : IAuth
         }
         string code = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
 
-       // await SendEMail(user.Email, code, "ACTIVE", "Active Email", "active your email");
+        // await SendEMail(user.Email, code, "ACTIVE", "Active Email", "active your email");
         return "done";
     }
     // Implement methods for authentication, registration, etc. using _userManager
@@ -71,39 +75,43 @@ public class AuthRepository : IAuth
     //     return await _userManager.CreateAsync(user, password);
     // }
 
-   /* public async Task SendEMail(string email, string code, string component, string subject, string message)
-    {
-        var result = new EmailDTO(email, "chedly.rebai123@gmail.com",
-        subject, EmailBody.send(email, code, component));
-        await _emailService.SendEmail(result);
+    /* public async Task SendEMail(string email, string code, string component, string subject, string message)
+     {
+         var result = new EmailDTO(email, "chedly.rebai123@gmail.com",
+         subject, EmailBody.send(email, code, component));
+         await _emailService.SendEmail(result);
 
-    }*/
+     }*/
 
     public async Task<string> LoginAsync(LoginDTO loginDTO)
     {
         if (loginDTO == null)
         {
+            Console.WriteLine("LoginDTO is null");
             return null;
-
         }
+        Console.WriteLine($"Login attempt - CIN: {loginDTO.Cin}, Password: {loginDTO.Password}");
+        // Use FirstOrDefaultAsync instead of FirstAsync to handle the case where no user is found
+        var cin = loginDTO.Cin;
+        var user = await _context.Users.Where(u => u.Cin == cin).FirstOrDefaultAsync();
 
-        var findUser = await _userManager.FindByEmailAsync(loginDTO.Email);
-        if (!findUser.EmailConfirmed)
+        // Check if user exists
+        if (user == null)
         {
-            string token = await _userManager.GenerateEmailConfirmationTokenAsync(findUser);
-           // await SendEMail(findUser.Email, token, "ACTIVE", "Active Email", "active your email");
-            return "Please confirm your email first";
+            Console.WriteLine($"No user found with CIN: {cin}");
+
+            return "Invalid CIN or password";
         }
 
-        var result = await _signInManager.CheckPasswordSignInAsync(findUser, loginDTO.Password, false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
 
         if (!result.Succeeded)
         {
-            return "Invalid email or password";
+            return "Invalid CIN or password";
         }
         else
         {
-            return generateToken.GetAndCreateToken(findUser).Result;
+            return await generateToken.GetAndCreateToken(user);
         }
     }
 
@@ -115,7 +123,7 @@ public class AuthRepository : IAuth
             return false;
         }
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-       // await SendEMail(user.Email, token, "FORGET_PASSWORD", "Reset Password", "Click here to reset your password");
+        // await SendEMail(user.Email, token, "FORGET_PASSWORD", "Reset Password", "Click here to reset your password");
         return true;
     }
 
@@ -140,7 +148,7 @@ public class AuthRepository : IAuth
 
     public async Task<string> ResetPassword(ResetPasswordDTO resetPasswordDTO)
     {
-        var findUser = await _userManager.FindByEmailAsync(resetPasswordDTO.Email);
+        var findUser = await _context.Users.Where(u => u.Cin == resetPasswordDTO.Cin).FirstAsync();
         if (findUser == null)
         {
             return "User not found";
@@ -160,26 +168,28 @@ public class AuthRepository : IAuth
 
     public async Task<bool> ActiveAccount(ActiveAccountDTO activeAccountDTO)
     {
-        var user = await _userManager.FindByEmailAsync(activeAccountDTO.Email);
+        // var user = await _userManager.FindByEmailAsync(activeAccountDTO.Email);
+        var findUser = await _context.Users.Where(u => u.Cin == activeAccountDTO.Cin).FirstAsync();
+
         Console.WriteLine("user: " + activeAccountDTO);
-        if (user is null)
+        if (findUser is null)
         {
             return false;
         }
 
-        var result = await _userManager.ConfirmEmailAsync(user, activeAccountDTO.Token);
-        if (result.Succeeded)
-        {
-            return true;
-        }
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        Console.WriteLine("Is confirmed: " + user.EmailConfirmed);
+        // var result = await _userManager.ConfirmEmailAsync(user, activeAccountDTO.Token);
+        // if (result.Succeeded)
+        // {
+        //     return true;
+        // }
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(findUser);
+        Console.WriteLine("Is confirmed: " + findUser.EmailConfirmed);
         Console.WriteLine("Token: " + token);
-        if (!string.IsNullOrEmpty(user.Email))
-        {
-            Console.WriteLine("Sending email to: " + user.Email);
-         //   await SendEMail(user.Email, token, "ACTIVE", "Active Email", "active your email");
-        }
+        // if (!string.IsNullOrEmpty(findUser.Email))
+        // {
+        //     Console.WriteLine("Sending email to: " + user.Email);
+        //  //   await SendEMail(user.Email, token, "ACTIVE", "Active Email", "active your email");
+        // }
         return false;
     }
 }

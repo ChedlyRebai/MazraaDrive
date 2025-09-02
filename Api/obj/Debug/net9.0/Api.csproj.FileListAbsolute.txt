@@ -144,3 +144,8 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/ref/Api.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scalar.AspNetCore.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AjaxPro.2.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scaler.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/VTemplate.Engine.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll

@@ -5,7 +5,8 @@ namespace Core.DTO;
 
 public record LoginDTO
 {
-    public string Email { get; set; }
+    // public string? Email { get; set; }
+    public long Cin { get; set; }
     public string Password { get; set; }
 }
 
@@ -22,6 +23,7 @@ public record RegisterDTO : LoginDTO
 
 public record ActiveAccountDTO
 {
-    public string Email { get; set; }
+   // public string Email { get; set; }
+    public long Cin { get; set; }
     public string Token { get; set; }
 }

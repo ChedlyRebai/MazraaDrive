@@ -392,6 +392,25 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Microsoft.AspNetCore.OpenApi/9.0.8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OpenApi": "1.6.17"
+        },
+        "compile": {
+          "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.WebUtilities/2.3.0": {
         "type": "package",
         "dependencies": {
@@ -1476,6 +1495,35 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.7.2": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "Scaler/1.0.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net48/AjaxPro.2.dll": {},
+          "lib/net48/Scaler.dll": {},
+          "lib/net48/VTemplate.Engine.dll": {}
+        },
+        "runtime": {
+          "lib/net48/AjaxPro.2.dll": {},
+          "lib/net48/Scaler.dll": {},
+          "lib/net48/VTemplate.Engine.dll": {}
+        }
+      },
       "StackExchange.Redis/2.8.37": {
         "type": "package",
         "dependencies": {
@@ -2351,6 +2399,22 @@
         "lib/netcoreapp3.1/Microsoft.AspNetCore.Mvc.Versioning.xml",
         "microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
         "microsoft.aspnetcore.mvc.versioning.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.OpenApi/9.0.8": {
+      "sha512": "BwF9sQCKmvu93C/pmKxJjPhF5fFB23MEcgTsGL+7W3wKLYawS4lyFSL5/qh00IJzuADLf+1SmvxMaphbyZYqQQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.openapi/9.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll",
+        "lib/net9.0/Microsoft.AspNetCore.OpenApi.xml",
+        "microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+        "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
     "Microsoft.AspNetCore.WebUtilities/2.3.0": {
@@ -4657,6 +4721,40 @@
         "pipelines.sockets.unofficial.nuspec"
       ]
     },
+    "Scalar.AspNetCore/2.7.2": {
+      "sha512": "MtxRKvCqmzoH7LQe2GLfo2rAjYix+2G2GwTaKjLThySOPwU99vf0VefSWt5tOAEz/wS7qD87lm1Bu92oZyjr8w==",
+      "type": "package",
+      "path": "scalar.aspnetcore/2.7.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/Scalar.AspNetCore.dll",
+        "lib/net10.0/Scalar.AspNetCore.xml",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.2.7.2.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
+    "Scaler/1.0.0.2": {
+      "sha512": "/PakIzhONalLl4oU3JR8MkYwi9bbnSMw9a4VEGVmSC721K+sP2EwCpASEvX6JhSFfjNjU3YfB2UoBlXNZ+FIYQ==",
+      "type": "package",
+      "path": "scaler/1.0.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ScalerIcon.png",
+        "lib/net48/AjaxPro.2.dll",
+        "lib/net48/Scaler.dll",
+        "lib/net48/VTemplate.Engine.dll",
+        "scaler.1.0.0.2.nupkg.sha512",
+        "scaler.nuspec"
+      ]
+    },
     "StackExchange.Redis/2.8.37": {
       "sha512": "ULscDAQR+z132IsLczXcM/PG+EyfQMNxhvqjG1Xd/h/J1O9prsUU4pG9d95xv77lUF8v3X6owpf/11Uh0uvZAQ==",
       "type": "package",
@@ -5444,8 +5542,11 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 9.0.0",
       "Microsoft.AspNetCore.Http.Abstractions >= 2.3.0",
       "Microsoft.AspNetCore.Mvc.Versioning >= 5.1.0",
+      "Microsoft.AspNetCore.OpenApi >= 9.0.8",
       "Microsoft.EntityFrameworkCore >= 9.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.0",
+      "Scalar.AspNetCore >= 2.7.2",
+      "Scaler >= 1.0.0.2",
       "StackExchange.Redis >= 2.8.37",
       "Swashbuckle.AspNetCore >= 7.0.0"
     ]
@@ -5521,6 +5622,10 @@
             "target": "Package",
             "version": "[5.1.0, )"
           },
+          "Microsoft.AspNetCore.OpenApi": {
+            "target": "Package",
+            "version": "[9.0.8, )"
+          },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[9.0.0, )"
@@ -5530,6 +5635,14 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[9.0.0, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[2.7.2, )"
+          },
+          "Scaler": {
+            "target": "Package",
+            "version": "[1.0.0.2, )"
           },
           "StackExchange.Redis": {
             "target": "Package",
@@ -5562,5 +5675,17 @@
         "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.108/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Scaler 1.0.0.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net9.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Scaler",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

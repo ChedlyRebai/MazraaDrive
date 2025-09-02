@@ -12,10 +12,10 @@ public interface IUserRepository
         Task<IReadOnlyList<AppUser>> GetAllAsync();
        
         Task<AppUser?> GetByIdAsync(string id);
-        Task UpdateAsync(AppUser user);
+        Task<UserDto?> UpdateAsync(UserDto user);
 
         Task<PagedResult<UserDto>> GetPagedAsync(UserFilterDto filter);
-        Task<AppUser?> GetByIdWithDetailsAsync(string id);
+        Task<UserDto?> GetByIdWithDetailsAsync(string id);
         Task<AppUser?> GetByEmailAsync(string email);
         
         Task<IReadOnlyList<AppUser>> GetUsersByDepartmentAsync(int departmentId);

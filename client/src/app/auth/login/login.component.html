@@ -60,20 +60,20 @@
         <form (ngSubmit)="onSubmit()" class="space-y-6">
           <div>
             <label
-              for="email"
+              for="cin"
               class="block text-sm font-medium leading-6 text-gray-900"
-              >Email address</label
+              >Cin</label
             >
             <div class="mt-2">
               <input
                 pInputText
-                id="email"
-                name="email"
-                type="email"
-                [(ngModel)]="email"
-                autocomplete="email"
+                id="cin"
+                name="cin"
+                type="text"
+                [(ngModel)]="cin"
+                autocomplete="cin"
                 required
-                placeholder="Enter your email"
+                placeholder="Enter your cin"
                 class="w-full"
               />
             </div>

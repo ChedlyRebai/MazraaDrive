@@ -55,18 +55,50 @@ namespace Infrastructure.Repositories
 
         public async Task<AppUser?> GetByIdAsync(string id)
         {
-            return await _context.Users.Include(u => u.Department)
+            
+
+
+            var user = await _context.Users.Include(u => u.Department)
                 // .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == id);
+
+                
+            return user;
         }
 
-        public async Task UpdateAsync(AppUser user)
+        public async Task<UserDto?> UpdateAsync(UserDto userDto)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            Console.WriteLine("userDto.RoleId::::::::::::::::::::::::::::::::::::::::::::::");
 
-            user.UpdatedAt = DateTime.UtcNow;
-            _context.Users.Update(user);
+            if (userDto == null)
+                throw new ArgumentNullException(nameof(userDto));
+
+            var existingUser = await _context.Users.FindAsync(userDto.Id);
+            if (existingUser == null)
+            {
+                throw new ArgumentException($"User with id {userDto.Id} not found");
+            }
+            Console.WriteLine("userDto.RoleId::::::::::::::::::::::::::::::::::::::::::::::");
+            Console.WriteLine(userDto.RoleId);
+            // Map updated fields from DTO to entity
+            _mapper.Map(userDto, existingUser);
+
+            existingUser.UpdatedAt = DateTime.UtcNow;
+
+            // Handle role update if RoleId is provided
+            if (userDto.RoleId != null)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(existingUser);
+                if (currentRoles.Any())
+                {
+                    await _userManager.RemoveFromRolesAsync(existingUser, currentRoles);
+                }
+                await _userManager.AddToRoleAsync(existingUser, userDto.RoleId.ToString());
+            }
+
+            _context.Users.Update(existingUser);
+            
+            return _mapper.Map<UserDto>(existingUser);
         }
 
 
@@ -240,15 +272,22 @@ namespace Infrastructure.Repositories
                 filter.SortDirection
             );
         }
-        public async Task<AppUser?> GetByIdWithDetailsAsync(string id)
+        public async Task<UserDto?> GetByIdWithDetailsAsync(string id)
         {
-            return await _context.Users
+
+
+            var user = await _context.Users
                 // .Include(u => u.Role)
                 .Include(u => u.Department)
                 .Include(u => u.UploadedDocuments)
                 .Include(u => u.CreatedFolders)
                 //.Include(u => u.CreatedFolders.OrderByDescending(f => f.CreatedAt).Take(5))
                 .FirstOrDefaultAsync(u => u.Id == id);
+            
+            var userDto=_mapper.Map<UserDto>(user);
+            var role = await _userManager.GetRolesAsync(user);
+            userDto.RoleName = role.FirstOrDefault();
+            return userDto;
         }
 
         public async Task<AppUser?> GetByEmailAsync(string email)

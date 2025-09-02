@@ -1,5 +1,6 @@
 export interface LoginDTO {
-  Email: string;
+ 
+  Cin:string;
   Password: string;
 }
 

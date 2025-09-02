@@ -21,15 +21,32 @@ public class GenerateToken : IGenerateToken
     {
         List<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.UserName ?? ""),
+            //new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
            // new Claim("RoleId", user.RoleId.ToString()),
-            new Claim("DepartmentId", user.DepartmentId.ToString())
-
+            //new Claim("DepartmentId", user.DepartmentId.ToString()),
+            
         };
 
+        if (!user.DepartmentId.Equals(Guid.Empty))
+        {
+            claims.Add(new Claim("DepartmentId", user.DepartmentId.ToString()));
+        }
+        if (!string.IsNullOrEmpty(user.Cin.ToString()))
+        {
+            claims.Add(new Claim("Cin", user.Cin.ToString()));
+        }
 
+        if (!string.IsNullOrEmpty(user.Email))
+        {
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+        }
+        Console.WriteLine("***********************************");
+        foreach (var claim in claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$: {claim.Value}");
+        }
 
         var Security = _configuration["Token:Secret"];
         var key = Encoding.ASCII.GetBytes(Security);

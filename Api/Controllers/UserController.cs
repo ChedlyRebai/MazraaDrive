@@ -124,16 +124,12 @@ namespace Api.Controllers
         {
             try
             {
-                Console.WriteLine("role::::::::::::::::::::::::::::::::::::::::::::::");
-                Console.WriteLine(createUserDto.RoleId);
                 if (createUserDto == null)
                     return BadRequest(new { success = false, message = "User data is required" });
-
+            
                 if (!ModelState.IsValid)
                     return BadRequest(new { success = false, message = "Invalid data", errors = ModelState });
-
-                // Check if email is already taken
-
+   
                 // Check if username is already taken
                 if (await _unitOfWork.UserRepository.IsUserNameTakenAsync(createUserDto.UserName))
                     return BadRequest(new { success = false, message = "Username is already taken" });
@@ -145,7 +141,7 @@ namespace Api.Controllers
 
 
                 var user = _mapper.Map<AppUser>(createUserDto);
-                user.Id= Guid.NewGuid().ToString();
+                user.Id = Guid.NewGuid().ToString();
                 // Create user first (do not set Id manually; UserManager will generate it)
                 var result = await _userManager.CreateAsync(user, createUserDto.Password);
                 if (!result.Succeeded)
@@ -215,7 +211,7 @@ namespace Api.Controllers
                 var currentCin = existingUser.Cin;
 
                 // Map DTO onto entity (this may set some properties to null/default)
-                _mapper.Map(updateUserDto, existingUser);
+                //_mapper.Map(updateUserDto, existingUser);
 
                 // If DepartmentId was provided, validate it; otherwise restore previous value
                 if (updateUserDto.DepartmentId.HasValue)
@@ -242,8 +238,8 @@ namespace Api.Controllers
                     // optional: validate CIN format/uniqueness here
                     // if (await _unitOfWork.UserRepository.IsCinTakenAsync(existingUser.Cin, existingUser.Id)) ...
                 }
-
-                await _unitOfWork.UserRepository.UpdateAsync(existingUser);
+                var newUser = _mapper.Map<AppUser>(existingUser);
+                //await _unitOfWork.UserRepository.UpdateAsync(newUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 var userDto = _mapper.Map<UserDto>(existingUser);
@@ -403,12 +399,12 @@ namespace Api.Controllers
                 var user = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
                 Console.WriteLine("***********************************************");
                 Console.WriteLine($"User ID: {id}, User: {user?.UserName}");
-                Console.WriteLine(user?.CreatedFolders?.Count);
+                //  Console.WriteLine(user?.CreatedFolders?.Count);
 
-                foreach (var item in user?.CreatedFolders)
-                {
-                    Console.WriteLine(item.Name);
-                }
+                // foreach (var item in user?.CreatedFolders)
+                // {
+                //     Console.WriteLine(item.Name);
+                // }
 
                 if (user == null)
                     return NotFound(new { success = false, message = "User not found" });

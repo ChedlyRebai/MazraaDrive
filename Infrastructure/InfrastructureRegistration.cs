@@ -50,7 +50,7 @@ public static class InfrastructureRegistration
         // .AddDefaultTokenProviders();
 
         // Register repositories and services
-       // services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        // services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDocRequestRepository, DocRequestRepository>();

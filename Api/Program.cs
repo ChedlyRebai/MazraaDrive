@@ -5,6 +5,7 @@ using Infrastructure.Data;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,6 +89,8 @@ builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
     p.WithOrigins("http://localhost:4200", "https://your-vercel-domain.vercel.app")
      .AllowAnyHeader().AllowAnyMethod()
      .AllowCredentials()));
+builder.Services.AddOpenApi();
+// builder.Services.AddScalarApiReference();
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
 // app.Use(async (context, next) =>
@@ -104,14 +107,18 @@ var app = builder.Build();
 //     // Log response details
 //     Console.WriteLine($"Response: {context.Response.StatusCode}");
 // });
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mazraa Drive Api v1");
-        c.RoutePrefix = string.Empty; // Set Swagger UI at the root (optional)
-    });
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+
+    // app.UseSwagger();
+    // app.UseSwaggerUI(c =>
+    // {
+    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mazraa Drive Api v1");
+    //     c.RoutePrefix = string.Empty; // Set Swagger UI at the root (optional)
+    // });
 }
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 if (!Directory.Exists(uploadsPath))
@@ -119,7 +126,7 @@ if (!Directory.Exists(uploadsPath))
     Directory.CreateDirectory(uploadsPath);
 }
 
-
+app.MapGet("/", () => "Hello world!");
 // After app.Build(), add:
 app.UseCors("AllowAll");
 //app.UseCors("CORSPolicy");

@@ -25,6 +25,7 @@ import { AuthService } from '../../core/services/auth-service';
 export class LoginComponent {
   email: string = '';
   password: string = '';
+  cin: string = '';
   rememberMe: boolean = false;
   constructor(
     private authService: AuthService,
@@ -32,7 +33,7 @@ export class LoginComponent {
   ) {}
   onSubmit() {
     this.authService
-      .login({ Email: this.email, Password: this.password })
+      .login({ Password: this.password, Cin: this.cin })
       .subscribe(
         (res: any) => {
           // To access cookies from response headers

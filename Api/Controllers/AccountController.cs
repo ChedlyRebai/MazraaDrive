@@ -43,14 +43,14 @@ namespace Api.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
 
-            if (loginDTO == null || string.IsNullOrEmpty(loginDTO.Email) || string.IsNullOrEmpty(loginDTO.Password))
+            if (loginDTO == null || loginDTO.Cin == null || loginDTO.Cin == 0 || string.IsNullOrEmpty(loginDTO.Password))
             {
-                return BadRequest(new ResponseAPI(400, "Email and Password are required"));
+                return BadRequest(new ResponseAPI(400, "Cin and Password are required"));
             }
 
             var result = await _unitOfWork.Auth.LoginAsync(loginDTO);
             
-            if (result.StartsWith("please"))
+            if (result.StartsWith("Invalid"))
             {
                 return BadRequest(new ResponseAPI(400, result));
             }
