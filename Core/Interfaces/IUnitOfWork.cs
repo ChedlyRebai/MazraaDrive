@@ -1,5 +1,6 @@
 using System;
 using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace Core.Interfaces;
@@ -27,7 +28,8 @@ public interface IUnitOfWork
     public IPermissionsRepository PermissionsRepository { get; }
     public IAuditLogRepository AuditLogRepository { get; }
 
-    
+    public UserManager<AppUser> UserManager { get; }
+    public RoleManager<Role> RoleManager { get; }
     public IRoleRepository RoleRepository { get; }
 
     Task<int> SaveChangesAsync();

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
@@ -11,11 +12,14 @@ namespace Infrastructure.Repositories
     public class UserRepository : GenericRepository<AppUser>, IUserRepository
     {
         private readonly AppDbContext _context;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
-        public UserRepository(AppDbContext context, UserManager<AppUser> userManager) : base(context)
+        public UserRepository(AppDbContext context, UserManager<AppUser> userManager, IMapper mapper) : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<AppUser> AddAsync(AppUser user)
@@ -26,7 +30,7 @@ namespace Infrastructure.Repositories
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
 
-           
+
             var result = await _userManager.CreateAsync(user);
             return result.Succeeded ? user : null;
         }
@@ -44,7 +48,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .ToListAsync();
         }
 
@@ -52,7 +56,7 @@ namespace Infrastructure.Repositories
         public async Task<AppUser?> GetByIdAsync(string id)
         {
             return await _context.Users.Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
@@ -70,7 +74,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
@@ -78,7 +82,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .Where(u => u.DepartmentId == departmentId)
 
                 .ToListAsync();
@@ -88,8 +92,8 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
-                .Where(u => u.RoleId == roleId.ToString())
+                // .Include(u => u.Role)
+                //.Where(u => u.RoleId == roleId.ToString())
 
                 .ToListAsync();
         }
@@ -98,7 +102,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .Where(u => u.IsActive)
 
                 .ToListAsync();
@@ -108,7 +112,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .Where(u => !u.IsActive)
 
                 .ToListAsync();
@@ -143,7 +147,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .Where(u =>
                            u.Email.Contains(searchTerm) ||
                            u.UserName!.Contains(searchTerm))
@@ -177,8 +181,8 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
-                .Where(u => u.RoleId != null)
+                // .Include(u => u.Role)
+                //  .Where(u => u.RoleId != null)
 
                 .ToListAsync();
         }
@@ -187,20 +191,19 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .OrderByDescending(u => u.CreatedAt)
                 .Take(count)
                 .ToListAsync();
         }
 
-        public async Task<PagedResult<AppUser>> GetPagedAsync(UserFilterDto filter)
+        // ...existing code...
+        public async Task<PagedResult<UserDto>> GetPagedAsync(UserFilterDto filter)
         {
             var query = _context.Users
-                .Include(u => u.Role)
                 .Include(u => u.Department)
                 .Include(u => u.UploadedDocuments)
-            //    .Include(u => u.Folders)
-                .AsQueryable();
+                .AsNoTracking();
 
             // Apply filters
             query = ApplyFilters(query, filter);
@@ -211,13 +214,24 @@ namespace Infrastructure.Repositories
             // Apply sorting
             query = ApplySorting(query, filter.SortBy, filter.SortDirection);
 
-            // Apply pagination
+            // Apply pagination and materialize the users FIRST
             var users = await query
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
 
-            return users.ToPagedResult(
+            // Get the first role for each user
+            var userDtos = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var userDto = _mapper.Map<UserDto>(user);
+                userDto.RoleName = roles.FirstOrDefault();  // Get first role only
+                userDtos.Add(userDto);
+            }
+
+            return userDtos.ToPagedResult(
                 filter.PageNumber,
                 filter.PageSize,
                 totalRecords,
@@ -226,14 +240,13 @@ namespace Infrastructure.Repositories
                 filter.SortDirection
             );
         }
-
         public async Task<AppUser?> GetByIdWithDetailsAsync(string id)
         {
             return await _context.Users
-                .Include(u => u.Role)
+                // .Include(u => u.Role)
                 .Include(u => u.Department)
                 .Include(u => u.UploadedDocuments)
-                .Include(u=> u.CreatedFolders)
+                .Include(u => u.CreatedFolders)
                 //.Include(u => u.CreatedFolders.OrderByDescending(f => f.CreatedAt).Take(5))
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
@@ -241,7 +254,7 @@ namespace Infrastructure.Repositories
         public async Task<AppUser?> GetByEmailAsync(string email)
         {
             return await _context.Users
-                .Include(u => u.Role)
+            //   //  .Include(u => u.Role)
                 .Include(u => u.Department)
                 .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
         }
@@ -249,19 +262,19 @@ namespace Infrastructure.Repositories
         public async Task<IReadOnlyList<AppUser>> GetUsersByDepartmentAsync(int departmentId)
         {
             return await _context.Users
-                .Include(u => u.Role)
+            //    // .Include(u => u.Role)
                 .Where(u => u.DepartmentId == departmentId)
                 .OrderBy(u => u.UserName)
                 .ToListAsync();
-                
+
         }
 
         public async Task<IReadOnlyList<AppUser>> GetUsersByRoleAsync(int roleId)
         {
             return await _context.Users
                 .Include(u => u.Department)
-                .Include(u => u.Role)
-                .Where(u => u.RoleId == roleId.ToString())
+                // //.Include(u => u.Role)
+                // .Where(u => u.RoleId == roleId.ToString())
                 .ToListAsync();
         }
 
@@ -290,7 +303,7 @@ namespace Infrastructure.Repositories
             return await _context.Users.CountAsync(u => u.EmailConfirmed);
         }
 
-        
+
 
 
         private IQueryable<AppUser> ApplyFilters(IQueryable<AppUser> query, UserFilterDto filter)
@@ -301,7 +314,7 @@ namespace Infrastructure.Repositories
             // if (!string.IsNullOrEmpty(filter.Email))
             //     query = query.Where(u => u.Email.Contains(filter.Email));
 
-          
+
             if (!string.IsNullOrEmpty(filter.PhoneNumber))
                 query = query.Where(u => u.PhoneNumber.Contains(filter.PhoneNumber));
 
@@ -325,11 +338,11 @@ namespace Infrastructure.Repositories
             //         query = query.Where(u => !u.LockoutEnd.HasValue || u.LockoutEnd <= DateTimeOffset.UtcNow);
             // }
 
-            if (filter.RoleId.HasValue)
-                query = query.Where(u => u.RoleId == filter.RoleId.ToString());
+            // if (filter.RoleId.HasValue)
+            //     query = query.Where(u => u.RoleId == filter.RoleId.ToString());
 
-            if (!string.IsNullOrEmpty(filter.RoleName))
-                query = query.Where(u => u.Role != null && u.Role.Name.Contains(filter.RoleName));
+            // if (!string.IsNullOrEmpty(filter.RoleName))
+            //     query = query.Where(u => u.Role != null && u.Role.Name.Contains(filter.RoleName));
 
             if (filter.DepartmentId.HasValue)
                 query = query.Where(u => u.DepartmentId == filter.DepartmentId);
@@ -385,7 +398,7 @@ namespace Infrastructure.Repositories
 
             if (!string.IsNullOrEmpty(filter.Search))
             {
-                query = query.Where(u => 
+                query = query.Where(u =>
                     u.UserName.Contains(filter.Search) ||
                     u.Email.Contains(filter.Search) ||
 
@@ -409,7 +422,7 @@ namespace Infrastructure.Repositories
                                            : query.OrderBy(u => u.UserName),
                 "email" => isDescending ? query.OrderByDescending(u => u.Email)
                                         : query.OrderBy(u => u.Email),
-              
+
                 "phonenumber" => isDescending ? query.OrderByDescending(u => u.PhoneNumber)
                                               : query.OrderBy(u => u.PhoneNumber),
                 "createdat" => isDescending ? query.OrderByDescending(u => u.CreatedAt)
@@ -418,8 +431,8 @@ namespace Infrastructure.Repositories
                                             : query.OrderBy(u => u.UpdatedAt),
                 "isactive" => isDescending ? query.OrderByDescending(u => u.IsActive)
                                            : query.OrderBy(u => u.IsActive),
-                "rolename" => isDescending ? query.OrderByDescending(u => u.Role != null ? u.Role.Name : "")
-                                           : query.OrderBy(u => u.Role != null ? u.Role.Name : ""),
+                // "rolename" => isDescending ? query.OrderByDescending(u => u.Role != null ? u.Role.Name : "")
+                //                            : query.OrderBy(u => u.Role != null ? u.Role.Name : ""),
                 "departmentname" => isDescending ? query.OrderByDescending(u => u.Department.Name)
                                                  : query.OrderBy(u => u.Department.Name),
                 "emailconfirmed" => isDescending ? query.OrderByDescending(u => u.EmailConfirmed)

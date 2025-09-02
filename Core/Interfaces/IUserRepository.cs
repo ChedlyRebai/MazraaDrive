@@ -14,7 +14,7 @@ public interface IUserRepository
         Task<AppUser?> GetByIdAsync(string id);
         Task UpdateAsync(AppUser user);
 
-        Task<PagedResult<AppUser>> GetPagedAsync(UserFilterDto filter);
+        Task<PagedResult<UserDto>> GetPagedAsync(UserFilterDto filter);
         Task<AppUser?> GetByIdWithDetailsAsync(string id);
         Task<AppUser?> GetByEmailAsync(string email);
         

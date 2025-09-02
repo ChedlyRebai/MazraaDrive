@@ -13,6 +13,8 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     //private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
+
+
     // private readonly IEmailService? _emailService;
 
     // private readonly IRoleRepository _roleRepository;
@@ -51,6 +53,10 @@ public class UnitOfWork : IUnitOfWork
     private readonly RoleManager<Role> _roleManager;
     public IAuditLogRepository AuditLogRepository { get; }
 
+    public UserManager<AppUser> UserManager => _userManager;
+
+    public RoleManager<Role> RoleManager => _roleManager;
+
     public UnitOfWork(
         RoleManager<Role> roleManager,
         IAuth auth,
@@ -58,7 +64,7 @@ public class UnitOfWork : IUnitOfWork
         IDepartmentRepository departmentRepository,
         // IDocRequestRepository docRequestRepository,
         IFolderRepository folderRepository,
-   
+        UserManager<AppUser> userManager,
         IPermissionsRepository permissionsRepository,
         IRoleRepository roleRepository,
         IHomeRepository homeRepository,
@@ -74,6 +80,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _roleManager = roleManager;
         _context = context;
+        _userManager = userManager;
         DocumentRepository = documentRepository ?? throw new ArgumentNullException(nameof(documentRepository));
         DepartmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
         FolderRepository = folderRepository ?? throw new ArgumentNullException(nameof(folderRepository));

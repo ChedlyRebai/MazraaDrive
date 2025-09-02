@@ -10,15 +10,16 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    
+
     //[Authorize]
     public class UserController : BaseController
     {
         private readonly UserManager<AppUser> _userManager;
-
-        public UserController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserController> logger, UserManager<AppUser> userManager, IAuditLogRepository auditLogger = null)
+        private readonly RoleManager<Role> _roleManager;
+        public UserController(RoleManager<Role> roleManager, ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserController> logger, UserManager<AppUser> userManager, IAuditLogRepository auditLogger = null)
             : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
         }
 
@@ -123,6 +124,8 @@ namespace Api.Controllers
         {
             try
             {
+                Console.WriteLine("role::::::::::::::::::::::::::::::::::::::::::::::");
+                Console.WriteLine(createUserDto.RoleId);
                 if (createUserDto == null)
                     return BadRequest(new { success = false, message = "User data is required" });
 
@@ -139,13 +142,29 @@ namespace Api.Controllers
                 var department = await _unitOfWork.DepartmentRepository.GetByIdAsync(createUserDto.DepartmentId);
                 if (department == null)
                     return BadRequest(new { success = false, message = "Department not found" });
-                
+
+
                 var user = _mapper.Map<AppUser>(createUserDto);
-                user.Id=Guid.NewGuid().ToString();
+                user.Id= Guid.NewGuid().ToString();
+                // Create user first (do not set Id manually; UserManager will generate it)
                 var result = await _userManager.CreateAsync(user, createUserDto.Password);
                 if (!result.Succeeded)
-                {
                     return BadRequest(new { success = false, message = "Failed to create user", errors = result.Errors });
+
+                // Assign role after user is persisted
+                if (!string.IsNullOrEmpty(createUserDto?.RoleId?.ToString()))
+                {
+                    var role = await _roleManager.FindByIdAsync(createUserDto.RoleId.ToString());
+                    if (role != null && !string.IsNullOrEmpty(role.Name))
+                    {
+                        var addRoleResult = await _userManager.AddToRoleAsync(user, role.Name);
+                        if (!addRoleResult.Succeeded)
+                        {
+                            // cleanup created user on failure to avoid partial state
+                            await _userManager.DeleteAsync(user);
+                            return BadRequest(new { success = false, message = "Failed to assign role", errors = addRoleResult.Errors });
+                        }
+                    }
                 }
 
                 await _unitOfWork.SaveChangesAsync();
@@ -177,7 +196,7 @@ namespace Api.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
-    
+
         // ...existing code...
         [HttpPut("{id}")]
         public async Task<ActionResult<UserDto>> UpdateUser(string id, [FromBody] UpdateUserDto updateUserDto)
@@ -235,7 +254,7 @@ namespace Api.Controllers
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
-// ...existing code...
+        // ...existing code...
         [HttpDelete("{id}")]
         // [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUser(string id)

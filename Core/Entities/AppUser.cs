@@ -20,14 +20,14 @@ public class AppUser : IdentityUser<string>
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     // Foreign Keys - FIXED TYPES
-    public string? RoleId { get; set; }  // Made nullable, points to Role table
+    //public string? RoleId { get; set; }  // Made nullable, points to Role table
     // Made nullable
     [Required]
     public int DepartmentId { get; set; }  // Changed from Guid to int
 
     // Navigation properties
-    [ForeignKey(nameof(RoleId))]
-    public virtual Role Role { get; set; }
+    // [ForeignKey(nameof(RoleId))]
+    // public virtual Role Role { get; set; }
 
     [ForeignKey(nameof(DepartmentId))]
     public virtual Department Department { get; set; }
