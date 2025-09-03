@@ -34,10 +34,10 @@ public class DocumentRequestDTO{
     }
 public class CreateDocumentRequestDTO
 {
-    public string RequesterId { get; set; }
+    public string? RequesterId { get; set; }
     public string? ProcessedById { get; set; }
     public string? ResponseMessage { get; set; }
-    public int DepartmentId { get; set; }
+    public int? DepartmentId { get; set; }
     public string DocumentType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Priority { get; set; } = "Normal";

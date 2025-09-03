@@ -478,7 +478,7 @@ export class DocReqManagement implements OnInit {
         console.log('File uploaded successfully:', response);
         this.selectedRequest.responseDocumentId = response.id;
       },
-      error: (error) => {
+      error: (error:any) => {
         console.error('Error uploading file:', error);
       },
     });
@@ -488,10 +488,10 @@ export class DocReqManagement implements OnInit {
     this.documentRequsetService
       .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
       .subscribe({
-        next: (response) => {
+        next: (response:any) => {
           console.log('Document request updated successfully:', response);
         },
-        error: (error) => {
+        error: (error:any) => {
           console.error('Error updating document request:', error);
         },
       });
@@ -548,7 +548,7 @@ export class DocReqManagement implements OnInit {
 
   if (upload$) {
     upload$.subscribe({
-      next: (uploadResponse) => {
+      next: (uploadResponse:any) => {
         console.log('Upload response:', uploadResponse);
 
         // Update selectedRequest fields
@@ -563,7 +563,7 @@ export class DocReqManagement implements OnInit {
         this.documentRequsetService
           .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
           .subscribe({
-            next: (response) => {
+            next: (response:any) => {
               console.log('Document request updated successfully:', response);
               this.messageService.add({
                 severity: 'success',
@@ -572,7 +572,7 @@ export class DocReqManagement implements OnInit {
               });
               this.responseDialog = false;
             },
-            error: (err) => {
+            error: (err:any) => {
               console.error('Error updating document request:', err);
             },
             complete: () => {
@@ -582,7 +582,7 @@ export class DocReqManagement implements OnInit {
             },
           });
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error('Error uploading file:', err);
         this.sendingResponse = false;
       },
@@ -595,7 +595,7 @@ export class DocReqManagement implements OnInit {
     this.documentRequsetService
       .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
       .subscribe({
-        next: (response) => {
+        next: (response:any) => {
           console.log('Document request updated successfully:', response);
           this.messageService.add({
             severity: 'success',
@@ -604,7 +604,7 @@ export class DocReqManagement implements OnInit {
           });
           this.responseDialog = false;
         },
-        error: (err) => {
+        error: (err:any) => {
           console.error('Error updating document request:', err);
         },
         complete: () => {

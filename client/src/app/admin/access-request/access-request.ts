@@ -113,42 +113,8 @@ export class AccessRequest implements OnInit {
   }
 
   load() {
-    this.loading = true;
-
-    this.requests = [
-      {
-        id: 1,
-        documentId: 0,
-        documentName: 'Finance',
-        message: 'ss',
-        requesterId: '1',
-        requesterName: 'Mohammed',
-        requestRead: true,
-        requestWrite: true,
-        requestDelete: true,
-        status: 'Pending',
-        createdAt: '2002-01-01',
-        decisionAt: '2002-01-01',
-        decidedById: 'null',
-        decidedByName: 'KARIM ',
-      },
-      {
-        id: 2,
-        documentId: 0,
-        documentName: 'file',
-        message: 'ss',
-        requesterId: '1',
-        requesterName: 'chedly',
-        requestRead: true,
-        requestWrite: true,
-        requestDelete: true,
-        status: 'Pending',
-        createdAt: '2002-01-01',
-        decisionAt: '2002-01-01',
-        decidedById: 'null',
-        decidedByName: 'KARIM ',
-      },
-    ];
+   
+    
     // this.svc
     //   .getPaged({
     //     pageNumber: this.pageNumber,

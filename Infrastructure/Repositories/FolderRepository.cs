@@ -336,6 +336,8 @@ namespace Infrastructure.Repositories
                     ParentFolderId = folderDto.ParentFolderId,
                     DepartmentId = folderDto.DepartmentId,
                     //CreatedById = folderDto.CreatedById,
+                    CreatedById= folderDto.CreatedById,
+                    Description = folderDto.Description,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };

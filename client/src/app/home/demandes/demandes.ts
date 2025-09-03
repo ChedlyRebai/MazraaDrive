@@ -44,6 +44,7 @@ import {
 } from '../../../../node_modules/primeng/tabs/index';
 import { DocumentService } from '../../core/services/document-service';
 import { DocumentDto } from '../../shared/models/document';
+import { DepartmentService } from '../../core/services/department-service';
 
 interface Department {
   id: number;
@@ -281,6 +282,7 @@ export class Demandes implements OnInit {
   constructor(
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
+    private depService: DepartmentService,
     private confirmationService: ConfirmationService,
     private http: HttpClient,
     public documentService: DocumentService,
@@ -503,22 +505,29 @@ export class Demandes implements OnInit {
     this.submitted = true;
 
     console.log(this.request);
-    if (!this.isRequestValid()) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Validation',
-        detail: 'Veuillez remplir tous les champs requis',
-      });
-      return;
-    }
+    // if (!this.isRequestValid()) {
+    //   this.messageService.add({
+    //     severity: 'warn',
+    //     summary: 'Validation',
+    //     detail: 'Veuillez remplir tous les champs requis',
+    //   });
+    //   return;
+    // }
 
     this.documentRequsetService.createDocumentRequest(this.request).subscribe({
       next: (response) => {
+        console.log(response);
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
           detail: 'Demande créée avec succès',
         });
+        this.submitted = false;
+        this.requestDialog = false;
+        this.documentRequsetService.getMyDepartmentDocumentRequests();
+        this.request = this.getEmptyRequest();
+        this.saving = false;
+        
       },
       error: (error) => {
         this.messageService.add({
@@ -528,7 +537,7 @@ export class Demandes implements OnInit {
         });
       },
     });
-    this.saving = true;
+    
     console.log(this.request);
     if (this.request.id) {
       this.updateRequest();
@@ -714,7 +723,7 @@ export class Demandes implements OnInit {
   // Utility methods
   getEmptyRequest(): any {
     return {
-      requesterId: '',
+      
       requesterName: '',
       departmentId: null,
       documentType: '',
@@ -815,11 +824,41 @@ export class Demandes implements OnInit {
     );
   }
 
-  searchDepartment(event: any) {
+  earchDepartment(event: any) {
     const query = event.query.toLowerCase();
+    console.log(query)
+    console.log(event)
     this.filteredDepartments = this.departments.filter((dept) =>
       dept.name.toLowerCase().includes(query)
     );
+    this.depService.getSearchDepartments(query).subscribe((depts) => {
+      console.log(depts);
+      this.filteredDepartments = depts;
+    });
+    console.log(this.filteredDepartments)
+  }
+  searchDepartment(e: any) {
+    const q = (e.query || '').toLowerCase();
+    if (q.length > 0) {
+      this.depService.getSearchDepartments(q).subscribe(
+        (result) => {
+          // result should be [{id, name, description}, ...]
+          this.filteredDepartments = result;
+          // Now filteredDepartments contains raw department objects
+          console.log(
+            'filteredDepartments:',
+            this.filteredDepartments
+          );
+        },
+        (error) => {
+          console.error('Error fetching departments:', error);
+          this.filteredDepartments = [];
+        }
+      );
+    } else {
+      this.filteredDepartments = [];
+    }
+   // console.log(this.user);
   }
 
   searchDocumentType(event: any) {

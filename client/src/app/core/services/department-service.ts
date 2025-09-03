@@ -2,7 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DepartmentDto } from './Hub/DepartmentRealtimeService';
 import { BehaviorSubject } from 'rxjs';
-import { DepartmentCreateDTO, DepartmentPagedResult } from '../../shared/models/department';
+import {
+  DepartmentCreateDTO,
+  DepartmentPagedResult,
+} from '../../shared/models/department';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -28,7 +31,7 @@ export class DepartmentService {
       console.log('PageSize in service:', PageSize);
       params = params.set('PageSize', PageSize.toString());
     }
-    
+
     if (Search) {
       params = params.set('Search', Search);
     }
@@ -37,7 +40,7 @@ export class DepartmentService {
       console.log('PageNNumber in service:', PageNNumber);
       params = params.set('PageNumber', PageNNumber.toString());
     }
-    
+
     if (SortBy) {
       params = params.set('SortBy', SortBy);
     }
@@ -45,8 +48,7 @@ export class DepartmentService {
       params = params.set('SortDirection', SortDirection);
     }
 
-    return this.http
-      .get<DepartmentPagedResult>(`${this.baseUrl}`, { params })
+    return this.http.get<DepartmentPagedResult>(`${this.baseUrl}`, { params });
   }
 
   getDepartmentById(id: number) {
@@ -59,17 +61,18 @@ export class DepartmentService {
       }
     );
   }
+  
+  
 
   createDepartment(department: DepartmentCreateDTO) {
-    return this.http
-      .post<DepartmentDto>(`${this.baseUrl}`, department)
-      
+    return this.http.post<DepartmentDto>(`${this.baseUrl}`, department);
   }
 
   updateDepartment(department: DepartmentDto) {
-    return this.http
-      .put<DepartmentDto>(`${this.baseUrl}/${department.id}`, department)
-      
+    return this.http.put<DepartmentDto>(
+      `${this.baseUrl}/${department.id}`,
+      department
+    );
   }
 
   deleteDepartment(id: number) {
@@ -95,7 +98,8 @@ export class DepartmentService {
   }
 
   getSearchDepartments(searchTerm: string) {
-    return this.http.get<DepartmentDto[]>(`${this.baseUrl}/search/${searchTerm}`)
+    return this.http.get<DepartmentDto[]>(
+      `${this.baseUrl}/search/${searchTerm}`
+    );
   }
-
 }

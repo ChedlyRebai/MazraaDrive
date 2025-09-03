@@ -161,6 +161,8 @@ export class UserMangement implements OnInit {
     const q = (e.query || '').toLowerCase();
     console.log('completeRole:', q);
   }
+  
+  
   completeDepartment(e: any) {
     const q = (e.query || '').toLowerCase();
     if (q.length > 0) {
@@ -178,6 +180,8 @@ export class UserMangement implements OnInit {
       this.roleFilteredDialog = [];
     }
   }
+
+
   completeStatus(e: any) {
     const q = (e.query || '').toLowerCase();
     this.statusFiltered = this.statusOptions.filter((o) =>

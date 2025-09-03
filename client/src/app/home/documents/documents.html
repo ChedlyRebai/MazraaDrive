@@ -15,7 +15,7 @@
           </p>
         </div>
         <div class="flex gap-3">
-          <p-button
+          <!-- <p-button
             label="Nouveau dossier"
             icon="pi pi-folder-plus"
             severity="secondary"
@@ -26,12 +26,12 @@
             label="Télécharger"
             icon="pi pi-upload"
             (click)="uploadFiles()"
-          />
+          /> -->
         </div>
       </div>
 
       <!-- Quick Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div
           class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white"
         >
@@ -54,7 +54,7 @@
             <i class="pi pi-folder text-3xl text-green-200"></i>
           </div>
         </div>
-        <div
+        <!-- <div
           class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white"
         >
           <div class="flex items-center justify-between">
@@ -64,7 +64,7 @@
             </div>
             <i class="pi pi-share-alt text-3xl text-orange-200"></i>
           </div>
-        </div>
+        </div> -->
         <div
           class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white"
         >
@@ -134,6 +134,11 @@
         </div> -->
 
         <div class="card">
+          <h3
+                    class="text-xl font-semibold text-surface-900 dark:text-surface-0"
+                  >
+                    Mes Documents et Fichiers Récents
+                  </h3>
           <p-tabs value="folders">
             <p-tablist>
               <p-tab value="folders">Folders</p-tab>
@@ -145,7 +150,7 @@
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
                   >
-                    Mes Documents et Fichiers Récents
+                    
                   </h3>
                   <div class="flex items-center gap-2">
                     <p-selectButton
@@ -382,7 +387,7 @@
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
                   >
-                    Mes Documents et Fichiers Récents
+                    
                   </h3>
                   <div class="flex items-center gap-2">
                     <p-selectButton

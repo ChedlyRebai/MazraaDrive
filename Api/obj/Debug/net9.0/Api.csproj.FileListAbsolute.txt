@@ -14,6 +14,7 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.Bcl.TimeProvider.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.Build.Locator.dll
@@ -40,6 +41,10 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Npgsql.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scalar.AspNetCore.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AjaxPro.2.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scaler.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/VTemplate.Engine.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/StackExchange.Redis.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -144,8 +149,3 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/ref/Api.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scalar.AspNetCore.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AjaxPro.2.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scaler.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/VTemplate.Engine.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll

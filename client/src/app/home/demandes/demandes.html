@@ -17,7 +17,9 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-blue-100 text-sm">Total Demandes</p>
-          <p class="text-2xl font-bold">{{ documentReqStat.totalDocumentsRequest }}</p>
+          <p class="text-2xl font-bold">
+            {{ documentReqStat.totalDocumentsRequest }}
+          </p>
         </div>
         <i class="pi pi-folder text-3xl text-blue-200"></i>
       </div>
@@ -28,7 +30,9 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-purple-100 text-sm">Demandes en Cours</p>
-          <p class="text-2xl font-bold">{{ documentReqStat.totalPendingRequests }}</p>
+          <p class="text-2xl font-bold">
+            {{ documentReqStat.totalPendingRequests }}
+          </p>
         </div>
         <i class="pi pi-file text-3xl text-purple-200"></i>
       </div>
@@ -39,7 +43,9 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-green-100 text-sm">Demandes Rejetées</p>
-          <p class="text-2xl font-bold">{{documentReqStat.totalRejectedRequests}}</p>
+          <p class="text-2xl font-bold">
+            {{ documentReqStat.totalRejectedRequests }}
+          </p>
         </div>
         <i class="pi pi-database text-3xl text-green-200"></i>
       </div>
@@ -50,7 +56,9 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-orange-100 text-sm">Demandes Traitées</p>
-          <p class="text-2xl font-bold">{{documentReqStat.totalProcessedRequests}}</p>
+          <p class="text-2xl font-bold">
+            {{ documentReqStat.totalProcessedRequests }}
+          </p>
         </div>
         <i class="pi pi-clock text-3xl text-orange-200"></i>
       </div>
@@ -67,7 +75,7 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="rec">
-        <p-toolbar class="mb-6">
+        <!-- <p-toolbar class="mb-6">
           <ng-template #start>
             <!-- <p-button label="Nouvelle Demande" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" /> -->
             <!-- <p-button
@@ -77,18 +85,18 @@
               [outlined]="true"
               (onClick)="deleteSelectedRequests()"
               [disabled]="!selectedRequests || !selectedRequests.length"
-            /> -->
+            /> 
           </ng-template>
 
           <ng-template #end>
-            <p-button
+            <!-- <p-button
               label="Exporter"
               icon="pi pi-download"
               severity="secondary"
               (onClick)="exportRequests()"
-            />
+            /> 
           </ng-template>
-        </p-toolbar>
+        </p-toolbar> -->
 
         <ng-container
           *ngIf="
@@ -98,7 +106,6 @@
           <p-table
             #dt
             [value]="documentrequest.data"
-          
             [rows]="PageSize"
             [paginator]="true"
             [lazy]="true"
@@ -110,7 +117,6 @@
             dataKey="id"
             currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
             [showCurrentPageReport]="true"
-            
             [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
           >
             <ng-template pTemplate="caption">
@@ -127,7 +133,7 @@
                       placeholder="Rechercher..."
                     />
                   </p-iconField>
-                  <div class="flex justify-center">
+                  <!-- <div class="flex justify-center">
                     <p-autocomplete
                       [(ngModel)]="selectedStatus"
                       [dropdown]="true"
@@ -152,7 +158,7 @@
                       (onClear)="onPriorityClear()"
                       [style]="{ minWidth: '150px' }"
                     />
-                  </div>
+                  </div> -->
                   <p-button
                     icon="pi pi-refresh"
                     [outlined]="true"
@@ -277,15 +283,14 @@
                       pTooltip="Modifier"
                     />
                     <p-button
-                    icon="pi pi-reply"
-                    severity="success"
-                    [text]="true"
-                       [rounded]="true"
-                    size="small"
-                    pTooltip="Répondre"
-                    
-                    (click)="respondToRequest(request)"
-                  />
+                      icon="pi pi-reply"
+                      severity="success"
+                      [text]="true"
+                      [rounded]="true"
+                      size="small"
+                      pTooltip="Répondre"
+                      (click)="respondToRequest(request)"
+                    />
                     <!-- <p-button
                       icon="pi pi-trash"
                       severity="danger"
@@ -338,14 +343,14 @@
             />
           </ng-template>
 
-          <ng-template #end>
+          <!-- <ng-template #end>
             <p-button
               label="Exporter"
               icon="pi pi-download"
               severity="secondary"
               (onClick)="exportRequests()"
             />
-          </ng-template>
+          </ng-template> -->
         </p-toolbar>
 
         <ng-container
@@ -356,7 +361,6 @@
           <p-table
             #dt
             [value]="documentrequest.data"
-            [loading]="loading"
             [rows]="PageSize"
             [paginator]="true"
             [lazy]="true"
@@ -368,7 +372,6 @@
             dataKey="id"
             currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
             [showCurrentPageReport]="true"
-            [loading]="loading"
             [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
           >
             <ng-template pTemplate="caption">
@@ -385,7 +388,7 @@
                       placeholder="Rechercher..."
                     />
                   </p-iconField>
-                  <div class="flex justify-center">
+                  <!-- <div class="flex justify-center">
                     <p-autocomplete
                       [(ngModel)]="selectedStatus"
                       [dropdown]="true"
@@ -410,22 +413,22 @@
                       (onClear)="onPriorityClear()"
                       [style]="{ minWidth: '150px' }"
                     />
-                  </div>
-                  <p-button
+                  </div> -->
+                  <!-- <p-button
                     icon="pi pi-refresh"
                     [outlined]="true"
                     (click)="loadDocumentRequests()"
                     [loading]="loading"
-                  />
+                  /> -->
                 </div>
               </div>
             </ng-template>
 
             <ng-template pTemplate="header">
               <tr>
-                <th style="width: 3rem">
+                <!-- <th style="width: 3rem">
                   <p-tableHeaderCheckbox />
-                </th>
+                </th> -->
                 <!-- <th pSortableColumn="id" style="min-width: 8rem">
             <div class="flex items-center gap-2">
               ID
@@ -474,9 +477,9 @@
 
             <ng-template pTemplate="body" let-request>
               <tr>
-                <td>
+                <!-- <td>
                   <p-tableCheckbox [value]="request" />
-                </td>
+                </td> -->
                 <!-- <td>
             <span class="font-mono text-sm">{{ request.id }}</span>
           </td> -->
@@ -636,6 +639,9 @@
                 placeholder="Sélectionner le type"
                 (onSelect)="onDocumentTypeSelect($event)"
                 fluid
+                optionLabel="label"
+                optionValue="name"
+                (onSelect)="request.documentType = $event.value.label"
               />
             </div>
             <small
@@ -644,7 +650,6 @@
               >Le type de document est requis.</small
             >
           </div>
-          
 
           <div class="col-span-12 md:col-span-6">
             <label for="departmentId" class="block font-bold mb-3"
@@ -658,8 +663,25 @@
                 (completeMethod)="searchDepartment($event)"
                 placeholder="Sélectionner le département"
                 (onSelect)="onDepartmentSelect($event)"
+                [dropdown]="true"
+                optionLabel="name"
+                optionValue="name"
+                showClear="true"
+                placeholder="Sélectionner un département"
+                [forceSelection]="true"
+                [minLength]="1"
                 fluid
-              />
+                (onSelect)="request.departmentId = $event.value.id"
+              >
+                <ng-template let-department pTemplate="item">
+                  <div class="flex flex-col">
+                    <span class="font-medium">{{ department.name }}</span>
+                    <small class="text-gray-500">{{
+                      department.description
+                    }}</small>
+                  </div>
+                </ng-template>
+              </p-autocomplete>
             </div>
             <small
               class="text-red-500"
@@ -667,7 +689,6 @@
               >Le type de document est requis.</small
             >
           </div>
-
 
           <!-- Priority -->
           <div class="col-span-12 md:col-span-6">

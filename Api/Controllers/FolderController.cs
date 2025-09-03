@@ -276,10 +276,11 @@ namespace Api.Controllers
                 // Check if name is already taken in the same parent and department
                 // if (await _unitOfWork.FolderRepository.IsNameTakenInParentAsync(createDto.Name, createDto.ParentFolderId, createDto.DepartmentId))
                 //     return BadRequest(new { success = false, message = "Folder name already exists in this location" });
-
+               var  userId = _currentUser.UserId ?? "10";
+               var depId = int.Parse(_currentUser.DepartmentId);
                 var folder = _mapper.Map<Folder>(createDto);
-                folder.CreatedById = "10";
-                folder.DepartmentId = 10;
+                folder.CreatedById = userId;
+                folder.DepartmentId = depId;
 
                 await _unitOfWork.FolderRepository.AddAsync(folder);
                 await _unitOfWork.SaveChangesAsync();
