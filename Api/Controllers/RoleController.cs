@@ -20,6 +20,7 @@ namespace Api.Controllers
         [HttpGet("test")]
         public async Task<string> TestApi()
         {
+            _logger.LogInformation("Testing API endpoint");
             return "CHEDLY - API is working!";
         }
 
@@ -54,12 +55,13 @@ namespace Api.Controllers
                     ActiveRoles = roleDtos.Count(r => r.IsActive),
                     InactiveRoles = roleDtos.Count(r => !r.IsActive)
                 };
-
+                _logger.LogInformation("Retrieved paged list of roles");
                 //await _auditLogger.LogAsync("GetRoles", "Retrieved paged list of roles", "10", "Role");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving paged list of roles");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -76,10 +78,12 @@ namespace Api.Controllers
                 var roleDto = _mapper.Map<RoleDto>(role);
 
                 //await _auditLogger.LogAsync("GetRole", "Retrieved role details", "10", "Role");
+                _logger.LogInformation("Retrieved role details for role {RoleId}", id);
                 return Ok(roleDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving role details for role {RoleId}", id);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -109,11 +113,13 @@ namespace Api.Controllers
                 var roleDto = _mapper.Map<RoleDto>(createdRole);
 
                 //await _auditLogger.LogAsync("CreateRole", "Created new role", "10", "Role");
+                _logger.LogInformation("Created new role with ID {RoleId}", roleDto.id);
                 return CreatedAtAction(nameof(GetRole), new { id = roleDto.id },
                     new { success = true, data = roleDto });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error creating new role");
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -142,12 +148,13 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var roleDto = _mapper.Map<RoleDto>(existingRole);
-
+                _logger.LogInformation("Updated role with ID {RoleId}", id);
                 //await _auditLogger.LogAsync("UpdateRole", "Updated role details", "10", "Role");
                 return Ok(roleDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating role with ID {RoleId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -168,10 +175,12 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 //await _auditLogger.LogAsync("DeleteRole", "Deleted role", "10", "Role");
+                _logger.LogInformation("Deleted role with ID {RoleId}", id);
                 return Ok(new ResponseAPI(200, "Role deleted successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting role with ID {RoleId}", id);   
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -186,11 +195,13 @@ namespace Api.Controllers
 
                 var roles = await _unitOfWork.RoleRepository.SearchAsync(searchTerm);
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
-
+                _logger.LogInformation("Searched roles with term {SearchTerm}", searchTerm);
+                //await _auditLogger.LogAsync("SearchRoles", "Searched roles", "10
                 return Ok(roleDtos);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error searching roles with term {SearchTerm}", searchTerm);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }

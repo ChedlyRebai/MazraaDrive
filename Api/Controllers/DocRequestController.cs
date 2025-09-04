@@ -41,11 +41,12 @@ public class DocumentRequestController : BaseController
             };
 
             //await _auditLogger.LogAsync("GetDocumentRequests", "Retrieved paged list of document requests", "10", "DocumentRequest");
-
+            _logger.LogInformation("Retrieved paged list of document requests");
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving paged list of document requests");
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -71,11 +72,13 @@ public class DocumentRequestController : BaseController
                 pagedRequests.TotalRecords
             );
 
+            _logger.LogInformation("Retrieved document requests for department ID {DepartmentId}", _currentUserDepId);
             //await _auditLogger.LogAsync("GetRequestsByDepartment", "Retrieved document requests by department", "10", "DocumentRequest");
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving document requests for department ID {DepartmentId}", _currentUserDepId);
             return BadRequest(new { success = false, message = ex.Message });
         }
 
@@ -92,10 +95,12 @@ public class DocumentRequestController : BaseController
 
             var requestDto = _mapper.Map<DocumentRequestDTO>(request);
             //await _auditLogger.LogAsync("GetDocumentRequest", "Retrieved document request details", "10", "DocumentRequest");
+            _logger.LogInformation("Retrieved document request details for request ID {RequestId}", id);
             return Ok(requestDto);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving document request details for request ID {RequestId}", id);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -130,11 +135,13 @@ public class DocumentRequestController : BaseController
             var createdRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(request.Id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(createdRequest);
 
+            _logger.LogInformation("Created new document request with ID {RequestId}", request.Id);
             //await _auditLogger.LogAsync("CreateDocumentRequest", "Created new document request", "10", "DocumentRequest");
             return CreatedAtAction(nameof(GetDocumentRequest), new { id = request.Id }, requestDto);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating new document request");
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -147,11 +154,13 @@ public class DocumentRequestController : BaseController
             {
                 var currentUserId = _currentUser.UserId;
                 var stats = await _unitOfWork.DocRequestRepository.GetDocumentStatisticsAsyncByUserId(currentUserId);
-                //await _auditLogger.LogAsync("GetDocumentStatistics", "Retrieved document statistics", "10", "Document");
+            //await _auditLogger.LogAsync("GetDocumentStatistics", "Retrieved document statistics", "10", "Document");
+            _logger.LogInformation("Retrieved document statistics for user ID {UserId}", currentUserId);
                 return Ok(stats);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving document statistics for user ID {UserId}", _currentUser?.UserId);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -187,11 +196,13 @@ public class DocumentRequestController : BaseController
 
             var updatedRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
+            _logger.LogInformation("Updated document request with ID {RequestId}", id);
             //await _auditLogger.LogAsync("UpdateDocumentRequest", "Updated document request details", "10", "DocumentRequest");
             return Ok(requestDto);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating document request with ID {RequestId}", id);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -207,12 +218,14 @@ public class DocumentRequestController : BaseController
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
 
+            _logger.LogInformation("Updated document request status with ID {RequestId}", id);
             // await _unitOfWork.CompleteAsync();
             //await _auditLogger.LogAsync("UpdateRequestStatus", "Updated document request status", currentUserId, "DocumentRequest");
             return Ok(new { success = true, message = "Status updated successfully" });
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error updating document request status with ID {RequestId}", id);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -228,13 +241,14 @@ public class DocumentRequestController : BaseController
 
             if (!success)
                 return NotFound(new { success = false, message = "Document request not found" });
-
+            _logger.LogInformation("Assigned response document to request ID {RequestId}", id);
             //  await _unitOfWork.CompleteAsync();
             //await _auditLogger.LogAsync("AssignResponseDocument", "Assigned response document to request", currentUserId, "DocumentRequest");
             return Ok(new { success = true, message = "Response document assigned successfully" });
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error assigning response document to request ID {RequestId}", id);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -248,12 +262,14 @@ public class DocumentRequestController : BaseController
             // if (!success)
             //     return NotFound(new { success = false, message = "Document request not found" });
 
+            _logger.LogInformation("Deleted document request with ID {RequestId}", id);
             // await _unitOfWork.CompleteAsync();
             //await _auditLogger.LogAsync("DeleteDocumentRequest", "Deleted document request", "10", "DocumentRequest");
             return Ok(new { success = true, message = "Document request deleted successfully" });
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error deleting document request with ID {RequestId}", id);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -272,11 +288,12 @@ public class DocumentRequestController : BaseController
                 pagedRequests.PageSize,
                 pagedRequests.TotalRecords
             );
-
+            _logger.LogInformation("Retrieved document requests for requester ID {RequesterId}", requesterId);
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving document requests for requester ID {RequesterId}", requesterId);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -295,12 +312,13 @@ public class DocumentRequestController : BaseController
                 pagedRequests.PageSize,
                 pagedRequests.TotalRecords
             );
-
+            _logger.LogInformation("Retrieved document requests for department ID {DepartmentId}", departmentId);
             //await _auditLogger.LogAsync("GetRequestsByDepartment", "Retrieved document requests by department", "10", "DocumentRequest");
             return Ok(result);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving document requests for department ID {DepartmentId}", departmentId);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -312,10 +330,12 @@ public class DocumentRequestController : BaseController
         {
             var statistics = await _unitOfWork.DocRequestRepository.GetRequestStatisticsAsync(departmentId);
             //await _auditLogger.LogAsync("GetRequestStatistics", "Retrieved document request statistics", "10", "DocumentRequest");
+            _logger.LogInformation("Retrieved document request statistics");
             return Ok(statistics);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving document request statistics");
             return BadRequest(new { success = false, message = ex.Message });
         }
     }

@@ -39,7 +39,7 @@ namespace Api.Controllers
                     TotalDepartments = 10,
                     TotalDocuments = 100
                 };
-
+                _logger.LogInformation("Retrieved home document folders");
                 return Ok(new { success = true, data = result });
             }
 

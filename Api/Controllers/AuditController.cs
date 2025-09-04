@@ -55,7 +55,7 @@ public class AuditLogController : ControllerBase
                 result.Search,
                 result.SortBy,
                 result.SortDirection);
-
+            _logger.LogInformation("Retrieved paged list of audit logs");
             return Ok(pagedResult);
         }
         catch (Exception ex)
@@ -103,7 +103,7 @@ public class AuditLogController : ControllerBase
                 result.Search,
                 result.SortBy,
                 result.SortDirection);
-
+            _logger.LogInformation("Retrieved filtered list of audit logs");
             return Ok(pagedResult);
         }
         catch (Exception ex)
@@ -142,7 +142,7 @@ public class AuditLogController : ControllerBase
                 UserAgent = auditLog.UserAgent,
                 CreatedAt = auditLog.CreatedAt
             };
-
+            _logger.LogInformation("Retrieved audit log with ID {Id}", id);
             return Ok(auditLogDto);
         }
         catch (Exception ex)
@@ -190,7 +190,7 @@ public class AuditLogController : ControllerBase
                 result.Search,
                 result.SortBy,
                 result.SortDirection);
-
+            _logger.LogInformation("Retrieved audit logs for user {UserId}", userId);
             return Ok(pagedResult);
         }
         catch (Exception ex)
@@ -235,6 +235,7 @@ public class AuditLogController : ControllerBase
                 result.SortBy,
                 result.SortDirection);
 
+            _logger.LogInformation("Retrieved audit logs for user {UserId}", userId);
             return Ok(pagedResult);
         }
         catch (Exception ex)
@@ -284,7 +285,7 @@ public class AuditLogController : ControllerBase
                 result.Search,
                 result.SortBy,
                 result.SortDirection);
-
+            _logger.LogInformation("Retrieved audit logs from {StartDate} to {EndDate}", startDate, endDate);
             return Ok(pagedResult);
         }
         catch (Exception ex)
@@ -336,6 +337,7 @@ public class AuditLogController : ControllerBase
                 CreatedAt = createdAuditLog.CreatedAt
             };
 
+            _logger.LogInformation("Created audit log with ID {Id}", auditLogDto.Id);
             return CreatedAtAction(nameof(GetAuditLog), new { id = auditLogDto.Id }, auditLogDto);
         }
         catch (Exception ex)
@@ -384,7 +386,7 @@ public class AuditLogController : ControllerBase
                 UserAgent = updatedAuditLog.UserAgent,
                 CreatedAt = updatedAuditLog.CreatedAt
             };
-
+            _logger.LogInformation("Updated audit log with ID {Id}", id);
             return Ok(auditLogDto);
         }
         catch (Exception ex)

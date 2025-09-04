@@ -26,6 +26,7 @@ namespace Api.Controllers
         [HttpGet("test")]
         public string TestApi()
         {
+            _logger.LogInformation("Testing Document API endpoint");
             return "Document API is working!";
         }
 
@@ -36,10 +37,13 @@ namespace Api.Controllers
             try
             {
                 var documents = await _unitOfWork.DocumentRepository.getDocumentByName(name);
+                
+                _logger.LogInformation("Searched documents with name containing {DocumentName}", name);
                 return Ok(documents);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error searching documents with name containing {DocumentName}", name);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -75,10 +79,13 @@ namespace Api.Controllers
                 //await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 ////await _auditLogger.LogAsync("GetDocuments", "Retrieved paged list of documents", "10", "Document");
                 Console.WriteLine(result.Data);
+
+                _logger.LogInformation("Retrieved paged list of documents");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving paged list of documents");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -106,11 +113,13 @@ namespace Api.Controllers
                     pagedDocuments.SortDirection
                 );
 
+                _logger.LogInformation("Retrieved documents for user ID {UserId}", userId);
                 //await _auditLogger.LogAsync("GetDocumentsByUser", "Retrieved document by user", "10", "Document");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving documents for user");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -125,10 +134,13 @@ namespace Api.Controllers
 
                 var documentDto = _mapper.Map<DocumentDto>(document);
                 //await _auditLogger.LogAsync("GetDocument", "Retrieved document details", "10", "Document");
+
+                _logger.LogInformation("Retrieved document with ID {DocumentId}", id);
                 return Ok(new { success = true, data = documentDto });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving document with ID {DocumentId}", id);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -151,12 +163,13 @@ namespace Api.Controllers
                     pagedDocuments.SortBy,
                     pagedDocuments.SortDirection
                 );
-
+                _logger.LogInformation("Retrieved documents for folder ID {FolderId}", folderId);
                 //await _auditLogger.LogAsync("GetDocumentsByFolder", "Retrieved document by folder", "10", "Document");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving documents for folder ID {FolderId}", folderId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -263,10 +276,12 @@ namespace Api.Controllers
                 var documents = await _unitOfWork.DocumentRepository.GetValidatedDocumentsAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
                 //await _auditLogger.LogAsync("GetValidatedDocuments", "Retrieved validated documents", "10", "Document");
+                _logger.LogInformation("Retrieved validated documents");
                 return Ok(documentDtos);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving validated documents");
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -279,10 +294,12 @@ namespace Api.Controllers
                 var documents = await _unitOfWork.DocumentRepository.GetPendingValidationAsync();
                 var documentDtos = _mapper.Map<IEnumerable<DocumentDto>>(documents);
                 //await _auditLogger.LogAsync("GetPendingValidation", "Retrieved documents pending validation", "10", "Document");
+                _logger.LogInformation("Retrieved documents pending validation");
                 return Ok(documentDtos);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving documents pending validation");
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -300,10 +317,12 @@ namespace Api.Controllers
                 Console.WriteLine("depId: " + depId);
                 var stats = await _unitOfWork.DocumentRepository.MyDocumentAndFolderStats(userId);
                 Console.WriteLine($"Stats for user {userId}: {stats.DocumentCount} documents, {stats.FolderCount} folders");
+               _logger.LogInformation("Retrieved document and folder stats for user ID {UserId}", userId);
                 return Ok(stats);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving document and folder stats for user ID {UserId}", _currentUser?.UserId);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -377,13 +396,14 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var documentDto = _mapper.Map<DocumentDto>(createdDocument);
-                // Log the document upload
                 //await _auditLogger.LogAsync("UploadDocument", "Uploaded new document", "10", "Document");
+                _logger.LogInformation("Uploaded new document with ID {DocumentId}", documentDto.Id);
                 return CreatedAtAction(nameof(GetDocument), new { id = documentDto.Id },
                     documentDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error uploading document");
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -413,12 +433,13 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var documentDto = _mapper.Map<DocumentDto>(existingDocument);
-
+                _logger.LogInformation("Updated document with ID {DocumentId}", id);
                 //await _auditLogger.LogAsync("UpdateDocument", "Updated document details", "10", "Document");
                 return Ok(documentDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating document with ID {DocumentId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -433,11 +454,13 @@ namespace Api.Controllers
                     return NotFound(new { success = false, message = "Document not found" });
 
                 await _unitOfWork.SaveChangesAsync();
+                _logger.LogInformation("Document with ID {DocumentId} has been {Action}", id, isValid ? "validated" : "rejected");
                 //await _auditLogger.LogAsync("ValidateDocument", "Validated document", "10", "Document");
                 return Ok(new { success = true, message = $"Document {(isValid ? "validated" : "rejected")} successfully" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error validating document with ID {DocumentId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -459,12 +482,13 @@ namespace Api.Controllers
 
                 await _unitOfWork.DocumentRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-
+                _logger.LogInformation("Deleted document with ID {DocumentId}", id);
                 //await _auditLogger.LogAsync("DeleteDocument", "Deleted document", "10", "Document");
                 return Ok(new ResponseAPI(200, "Document deleted successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting document with ID {DocumentId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -490,12 +514,13 @@ namespace Api.Controllers
 
                 var contentType = GetContentType(document.FileType);
                 var fileName = $"{document.Name}.{document.FileType}";
-
+                _logger.LogInformation("Downloaded document with ID {DocumentId}", id);
                 //await _auditLogger.LogAsync("DownloadDocument", "Downloaded document", "10", "Document");
                 return File(memory, contentType, fileName);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error downloading document with ID {DocumentId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -518,11 +543,13 @@ namespace Api.Controllers
                     TotalFileSize = totalSize,
                     TotalFileSizeFormatted = FormatFileSize(totalSize)
                 };
+                _logger.LogInformation("Retrieved document statistics");
                 //await _auditLogger.LogAsync("GetDocumentStats", "Retrieved document statistics", "10", "Document");
                 return Ok(stats);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving document statistics");
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -531,6 +558,7 @@ namespace Api.Controllers
 
         private string GetCurrentUserId()
         {
+
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";
         }
 

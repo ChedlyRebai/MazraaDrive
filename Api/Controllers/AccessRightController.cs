@@ -20,6 +20,7 @@ namespace Api.Controllers
         [HttpGet("test")]
         public string TestApi()
         {
+            _logger.LogInformation("Testing API endpoint");
             return "AccessRight API is working!";
         }
 
@@ -50,12 +51,12 @@ namespace Api.Controllers
                     pagedAccessRights.SortBy,
                     pagedAccessRights.SortDirection
                 );
-
-               ////await _auditLogger.LogAsync("GetAccessRights", "Retrieved paged list of access rights", "10", "AccessRight");
-                return Ok(result );
+                _logger.LogInformation("Retrieved paged list of access rights");
+                return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving paged list of access rights");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -88,11 +89,13 @@ namespace Api.Controllers
                     pagedAccessRights.SortDirection
                 );
 
+                _logger.LogInformation("Retrieved user access rights for user {UserId}", userId);
                 //await _auditLogger.LogAsync("GetUserAccessRights", "Retrieved user access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving user access rights for user {UserId}", userId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -120,12 +123,13 @@ namespace Api.Controllers
                     pagedAccessRights.SortBy,
                     pagedAccessRights.SortDirection
                 );
-
+                _logger.LogInformation("Retrieved document access rights for document {DocumentId}", documentId);
                 //await _auditLogger.LogAsync("GetDocumentAccessRights", "Retrieved document access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving document access rights for document {DocumentId}", documentId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -151,12 +155,13 @@ namespace Api.Controllers
                     pagedAccessRights.SortBy,
                     pagedAccessRights.SortDirection
                 );
-
+                _logger.LogInformation("Retrieved folder access rights for folder {FolderId}", folderId);
                 //await _auditLogger.LogAsync("GetFolderAccessRights", "Retrieved folder access rights", "10", "AccessRight");
                 return Ok(new { success = true, data = result });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folder access rights for folder {FolderId}", folderId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -172,10 +177,12 @@ namespace Api.Controllers
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(accessRight);
                 //await _auditLogger.LogAsync("GetAccessRight", "Retrieved access right details", "10", "AccessRight");
+                _logger.LogInformation("Retrieved access right details for access right {AccessRightId}", id);
                 return Ok(accessRightDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving access right details for access right {AccessRightId}", id);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -210,12 +217,13 @@ namespace Api.Controllers
 
                 await _unitOfWork.PermissionsRepository.BulkCreateAsync(accessRights);
                 await _unitOfWork.SaveChangesAsync();
-
+                _logger.LogInformation("Created {Count} access rights successfully", accessRights.Count);
                 //await _auditLogger.LogAsync("CreateBulkAccessRights", "Created bulk access rights", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, $"Created {accessRights.Count} access rights successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error creating bulk access rights");
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -237,11 +245,13 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var accessRightDto = _mapper.Map<AccessRightDto>(existingAccessRight);
+                _logger.LogInformation("Updated access right with ID {AccessRightId}", id);
                 //await _auditLogger.LogAsync("UpdateAccessRight", "Updated access right", "10", "AccessRight");
                 return Ok(accessRightDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating access right with ID {AccessRightId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -257,12 +267,13 @@ namespace Api.Controllers
 
                 await _unitOfWork.PermissionsRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-
+                _logger.LogInformation("Deleted access right with ID {AccessRightId}", id);
                 //await _auditLogger.LogAsync("DeleteAccessRight", "Deleted access right", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, "Access right deleted successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting access right with ID {AccessRightId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -274,10 +285,12 @@ namespace Api.Controllers
             {
                 var hasPermission = await _unitOfWork.PermissionsRepository.HasPermissionAsync(userId, documentId, folderId, permission);
                 //await _auditLogger.LogAsync("CheckUserPermissions", "Checked user permissions", "10", "AccessRight");
+                _logger.LogInformation("Checked permissions for user {UserId}", userId);
                 return Ok(new ResponseAPI(200, hasPermission ? "User has permission" : "User does not have permission"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error checking user permissions for user {UserId}", userId);
                 return BadRequest(new ResponseAPI(400, ex.Message));
             }
         }
@@ -289,12 +302,13 @@ namespace Api.Controllers
             {
                 await _unitOfWork.PermissionsRepository.RemoveUserAccessAsync(userId, documentId, folderId);
                 await _unitOfWork.SaveChangesAsync();
-
+                _logger.LogInformation("Removed access for user {UserId}", userId);
                 //await _auditLogger.LogAsync("RemoveUserAccess", "Removed user access", "10", "AccessRight");
                 return Ok(new ResponseAPI(200, "User access removed successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error removing access for user {UserId}", userId);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }

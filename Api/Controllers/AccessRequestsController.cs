@@ -30,7 +30,7 @@ public class AccessRequestsController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetPaged([FromQuery] PaginationParams p)
     {
-
+        _logger.LogInformation("Retrieving paged access requests");
         var result = await _unitOfWork.AccessRequestRepository.GetPagedAsync(p);
         return Ok(result);
     }
@@ -44,11 +44,13 @@ public class AccessRequestsController : BaseController
         {
             var userId = _currentUser.UserId;
             var result = await _unitOfWork.AccessRequestRepository.GetRequestsByUserIdAsync(userId, pagination);
+            _logger.LogInformation("Retrieved access requests for user {UserId}", userId);
             return Ok(result);
 
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving access requests for user {UserId}", _currentUser.UserId);
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
@@ -56,6 +58,7 @@ public class AccessRequestsController : BaseController
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
+        _logger.LogInformation("Retrieving access request with ID {Id}", id);
         var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         return entity == null ? NotFound() : Ok(entity);
     }
@@ -64,8 +67,10 @@ public class AccessRequestsController : BaseController
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
+
         await _unitOfWork.AccessRequestRepository.DeleteAsync(id);
         await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Deleted access request with ID {Id}", id);
         return Ok(new ResponseAPI(200, "Access request deleted successfully."));
     }
 
@@ -96,6 +101,7 @@ public class AccessRequestsController : BaseController
         };
         await _unitOfWork.AccessRequestRepository.AddAsync(entity);
         await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Created new access request with ID {Id}", entity.Id);
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
     }
 
@@ -144,6 +150,8 @@ public class AccessRequestsController : BaseController
         }
 
         Console.WriteLine("Decision made: *************************************************" + dto);
+
+        _logger.LogInformation("Access request with ID {Id} has been {Status} by user {UserId}", id, entity.Status, currentUserId);
         await _unitOfWork.SaveChangesAsync();
         return Ok(entity);
     }
@@ -164,6 +172,7 @@ public class AccessRequestsController : BaseController
 
         //await _unitOfWork.AccessRequestRepository.UpdateAsync(entity);
         await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation("Updated access request with ID {Id}", id);
         return Ok(entity);
     }
 

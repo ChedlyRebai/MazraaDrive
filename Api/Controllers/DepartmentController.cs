@@ -39,10 +39,12 @@ namespace Api.Controllers
                     return BadRequest("Search term cannot be empty");
 
                 var results = await _unitOfWork.DepartmentRepository.SearchAsync(searchTerm);
+                _logger.LogInformation("Searched departments with term {SearchTerm}", searchTerm);
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while searching for departments");
                 return BadRequest("An error occurred while searching for departments.");
             }   
         }
@@ -83,11 +85,12 @@ namespace Api.Controllers
                 };
                 // Log the action
                 //await _auditLogger.LogAsync("GetDepartments", "Retrieved paged list of departments", "10","Department");
-
+                _logger.LogInformation("Retrieved paged list of departments");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while retrieving paged list of departments");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -103,10 +106,12 @@ namespace Api.Controllers
 
                 var departmentDto = _mapper.Map<DepartmentDto>(department);
                 //await _auditLogger.LogAsync("GetDepartment", "Retrieved department details", "10", "Department");
+                _logger.LogInformation("Retrieved details for department ID {DepartmentId}", id);
                 return Ok(departmentDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while retrieving details for department ID {DepartmentId}", id);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -118,10 +123,12 @@ namespace Api.Controllers
             {
                 var departments = await _unitOfWork.DepartmentRepository.GetWithUserCountAsync();
                 var summaryDtos = _mapper.Map<IEnumerable<DepartmentUserCountDTO>>(departments);
+                _logger.LogInformation("Retrieved department summary with user counts");
                 return Ok(summaryDtos);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while retrieving department summary");
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -149,11 +156,14 @@ namespace Api.Controllers
                 var departmentDto = _mapper.Map<DepartmentDto>(createdDepartment);
                 await _hub.Clients.All.SendAsync("DepartmentCreated", departmentDto);
                 //await _auditLogger.LogAsync("CreateDepartment", "Created new department", "10", "Department");
+
+                _logger.LogInformation("Created new department with ID {DepartmentId}", departmentDto.Id);
                 return CreatedAtAction(nameof(GetDepartment), new { id = departmentDto.Id },
                     new { success = true, data = departmentDto });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while creating a new department");
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -186,10 +196,12 @@ namespace Api.Controllers
                 var departmentDto = _mapper.Map<DepartmentDto>(existingDepartment);
                 await _hub.Clients.All.SendAsync("DepartmentUpdated", departmentDto);
                 //await _auditLogger.LogAsync("UpdateDepartment", "Updated department details", "10", "Department");
+                _logger.LogInformation("Updated department with ID {DepartmentId}", id);
                 return Ok(departmentDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while updating department with ID {DepartmentId}", id);
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
@@ -211,10 +223,12 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
                 //await _auditLogger.LogAsync("DeleteDepartment", "Deleted department", "10", "Department");
                 await _hub.Clients.All.SendAsync("DepartmentDeleted", id);
+                _logger.LogInformation("Deleted department with ID {DepartmentId}", id);
                 return Ok(new ResponseAPI(200, "Department deleted successfully"));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while deleting department with ID {DepartmentId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -237,12 +251,14 @@ namespace Api.Controllers
                     u.IsActive
                 }).ToList();
 
+                _logger.LogInformation("Retrieved users for department ID {DepartmentId}", id);
                 //await _auditLogger.LogAsync("GetDepartmentUsers", "Retrieved users for department", "10", "Department");
                 return Ok(users);
 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while retrieving users for department ID {DepartmentId}", id);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -263,11 +279,13 @@ namespace Api.Controllers
                     DocumentRequestCount = department.DocumentRequests?.Count ?? 0,
                     ActiveUsers = department.Users?.Count(u => u.IsActive) ?? 0
                 };
+                _logger.LogInformation("Retrieved statistics for department ID {DepartmentId}", id);
                 //await _auditLogger.LogAsync("GetDepartmentStats", "Retrieved department statistics", "10", "Department");
                 return Ok(stats);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while retrieving statistics for department ID {DepartmentId}", id);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }

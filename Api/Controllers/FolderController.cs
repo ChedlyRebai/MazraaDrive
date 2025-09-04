@@ -48,11 +48,13 @@ namespace Api.Controllers
                     TotalDepartments = 10,
                     TotalDocuments = 100
                 };
+                _logger.LogInformation("Retrieved paged list of folders");
                 //await _auditLogger.LogAsync("GetFolders", "Retrieved paged list of folders", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving paged list of folders");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -86,11 +88,13 @@ namespace Api.Controllers
                     TotalDocuments = 100
                 };
 
+                _logger.LogInformation("Retrieved user's folders");
                 //await _auditLogger.LogAsync("GetUserFolders", "Retrieved user's folders", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving user's folders");
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -120,11 +124,13 @@ namespace Api.Controllers
                     TotalDepartments = 10,
                     TotalDocuments = pagedFolders.Data.Sum(f => f.Documents.Count)
                 };
+                _logger.LogInformation("Retrieved folder by ID {FolderId}", id);
                 //await _auditLogger.LogAsync("GetFolderById", "Retrieved folder by ID", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folder by ID {FolderId}", id);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -150,10 +156,12 @@ namespace Api.Controllers
                 }
 
                 //await _auditLogger.LogAsync("GetFolder", "Retrieved folder details", "10", "Folder");
+                _logger.LogInformation("Retrieved folder details for folder ID {FolderId}", id);
                 return Ok(folderDto);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folder details for folder ID {FolderId}", id);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -176,12 +184,13 @@ namespace Api.Controllers
                     pagedFolders.SortBy,
                     pagedFolders.SortDirection
                 );
-
+                _logger.LogInformation("Retrieved folders by department ID {DepartmentId}", departmentId);
                 //await _auditLogger.LogAsync("GetFoldersByDepartment", "Retrieved folders by department", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folders by department ID {DepartmentId}", departmentId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -205,11 +214,13 @@ namespace Api.Controllers
                     pagedFolders.SortDirection
                 );
 
+                _logger.LogInformation("Retrieved folders by parent folder ID {ParentFolderId}", parentFolderId);
                 //await _auditLogger.LogAsync("GetFoldersByParent", "Retrieved folders by parent", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folders by parent folder ID {ParentFolderId}", parentFolderId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -239,12 +250,13 @@ namespace Api.Controllers
                     pagedFolders.SortBy,
                     pagedFolders.SortDirection
                 );
-
+                _logger.LogInformation("Retrieved folders by user ID {UserId}", userId);
                 //await _auditLogger.LogAsync("GetFoldersByUser", "Retrieved folders by user", "10", "Folder");
                 return Ok(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folders by user ID {UserId}", userId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -256,10 +268,12 @@ namespace Api.Controllers
             {
                 var folderTree = await _unitOfWork.FolderRepository.GetFolderTreeAsync(parentFolderId ?? 0);
                 //await _auditLogger.LogAsync("GetFolderTree", "Retrieved folder tree", "10", "Folder");
+                _logger.LogInformation("Retrieved folder tree starting from parent folder ID {ParentFolderId}", parentFolderId);
                 return Ok(new { success = true, data = folderTree });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folder tree starting from parent folder ID {ParentFolderId}", parentFolderId);
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
@@ -288,11 +302,13 @@ namespace Api.Controllers
                 var folderDto = _mapper.Map<FolderDTO>(folder);
 
                 //await _auditLogger.LogAsync("CreateFolder", "Created new folder", "10", "Folder");
+                _logger.LogInformation("Created new folder with ID {FolderId}", folderDto.Id);
                 return CreatedAtAction(nameof(GetFolder), new { id = folderDto.Id },
                     new { success = true, data = folderDto });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error creating new folder");
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
@@ -352,10 +368,12 @@ namespace Api.Controllers
                 var folders = await _unitOfWork.FolderRepository.GetRootFoldersAsync(departmentId);
                 var folderDtos = _mapper.Map<IEnumerable<FolderDTO>>(folders);
                 //await _auditLogger.LogAsync("GetRootFolders", "Retrieved root folders", "10", "Folder");
+                _logger.LogInformation("Retrieved root folders for department ID {DepartmentId}", departmentId);
                 return Ok(new { success = true, data = folderDtos });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving root folders for department ID {DepartmentId}", departmentId);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -367,12 +385,13 @@ namespace Api.Controllers
             {
                 var folders = await _unitOfWork.FolderRepository.GetSubFoldersAsync(id);
                 var folderDtos = _mapper.Map<IEnumerable<FolderDTO>>(folders);
-
+                _logger.LogInformation("Retrieved subfolders for folder ID {FolderId}", id);
                 //await _auditLogger.LogAsync("GetSubFolders", "Retrieved subfolders", "10", "Folder");
                 return Ok(new { success = true, data = folderDtos });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving subfolders for folder ID {FolderId}", id);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -384,12 +403,13 @@ namespace Api.Controllers
             {
                 var folders = await _unitOfWork.FolderRepository.GetFolderTreeAsync(departmentId);
                 var treeDtos = BuildFolderTree(folders.ToList());
-
+                _logger.LogInformation("Retrieved folder tree for department ID {DepartmentId}", departmentId);                     
                 //await _auditLogger.LogAsync("GetFolderTree", "Retrieved folder tree", "10", "Folder");
                 return Ok(new { success = true, data = treeDtos });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving folder tree for department ID {DepartmentId}", departmentId);
                 return BadRequest(new ResponseAPI(500, ex.Message));
             }
         }
@@ -457,12 +477,13 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 var folderDto = _mapper.Map<FolderDTO>(existingFolder);
-
+                _logger.LogInformation("Updated folder with ID {FolderId}", id);
                 //await _auditLogger.LogAsync("UpdateFolder", "Updated folder details", "10", "Folder");
                 return Ok(new { success = true, data = folderDto });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating folder with ID {FolderId}", id);
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
@@ -488,18 +509,20 @@ namespace Api.Controllers
 
                 await _unitOfWork.FolderRepository.DeleteAsync(id);
                 await _unitOfWork.SaveChangesAsync();
-
+                _logger.LogInformation("Deleted folder with ID {FolderId}", id);
                 //await _auditLogger.LogAsync("DeleteFolder", "Deleted folder", "10", "Folder");
                 return Ok(new { success = true, message = "Folder deleted successfully" });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error deleting folder with ID {FolderId}", id);
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
 
         private string GetCurrentUserId()
-        {
+        {   
+            
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";
         }
 
