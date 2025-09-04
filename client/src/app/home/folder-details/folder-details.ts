@@ -202,40 +202,7 @@ export class FolderDetails implements OnInit {
       { label: 'Wireless' },
     ];
 
-    this.folders.data = [
-      {
-        id: 1,
-        name: 'Folder 1',
-        description: 'Description for Folder 1',
-        createdById: 'user1',
-        departmentId: 10,
-        isActive: true,
-        parentFolderId: null,
-        parentFolderName: null,
-        departmentName: '',
-        createdByName: '',
-        createdAt: '',
-        updatedAt: null,
-        subFolderCount: 0,
-        subFolders: [
-          {
-            id: 2,
-            name: 'Subfolder 1',
-
-            createdById: 'user2',
-
-            isActive: true,
-            parentFolderId: 1,
-
-            createdAt: '',
-            createdBy: {} as UserDto,
-          },
-        ],
-        documents: [],
-        documentCount: 0,
-        parentFolder: {} as FolderDTO,
-      },
-    ];
+    
 
     this.home = { icon: 'pi pi-home', routerLink: '/' };
     this.id = this.activatedRoute.snapshot.paramMap.get('id') || '';
@@ -710,6 +677,8 @@ export class FolderDetails implements OnInit {
         this.saving = true;
 
         this.documentDialog = false;
+        this.getDocuments();
+        this.documentService.getFolderDocuments(parseInt(this.id));
       },
       error: (error: Error) => {
         this.messageService.add({

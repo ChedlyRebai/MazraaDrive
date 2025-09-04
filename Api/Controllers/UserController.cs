@@ -16,9 +16,11 @@ namespace Api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly ILogger<UserController> _logger;
         public UserController(RoleManager<Role> roleManager, ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserController> logger, UserManager<AppUser> userManager, IAuditLogRepository auditLogger = null)
             : base(currentUser, unitOfWork, mapper, logger, auditLogger)
         {
+            _logger = logger;
             _roleManager = roleManager;
             _userManager = userManager;
         }
@@ -26,6 +28,10 @@ namespace Api.Controllers
         [HttpGet("test")]
         public string TestApi()
         {
+            _logger.LogInformation("Getting all users");
+            // Structured logging with properties
+            _logger.LogInformation("User {UserId} accessed {Endpoint} at {Timestamp}", 
+                123, "api/users", DateTime.UtcNow);
             return "User API is working!";
         }
 

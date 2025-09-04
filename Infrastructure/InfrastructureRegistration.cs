@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Core.Services;
 using Infrastructure.Data;
 
+using Serilog;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,12 +14,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Infrastructure.Services;
 using Infrastructure.Repositories; // Add this for ApiVersioning
+
+
 namespace Infrastructure;
 
 public static class InfrastructureRegistration
 {
     public static IServiceCollection infrastructureRegistration(this IServiceCollection services, IConfiguration configuration)
     {
+        
         // Database context
         services.AddDbContext<AppDbContext>(options =>
         {
@@ -51,6 +55,7 @@ public static class InfrastructureRegistration
 
         // Register repositories and services
         // services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IDocRequestRepository, DocRequestRepository>();

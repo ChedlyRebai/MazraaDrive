@@ -6,7 +6,13 @@ using Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Scalar.AspNetCore;
-
+using Serilog;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+using Serilog.Configuration;
+using Serilog.Settings.Configuration;
+using Serilog.Sinks.Elasticsearch;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -19,6 +25,26 @@ builder.Services.AddCors(options =>
         WithOrigins("http://localhost:4200");
     });
 });
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .WriteTo.Console()
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+    {
+        AutoRegisterTemplate = true,
+        IndexFormat = "serilog-logs-{0:yyyy.MM.dd}",
+        NumberOfShards = 2,
+        NumberOfReplicas = 1,
+        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+        ModifyConnectionSettings = x => x.ServerCertificateValidationCallback(
+            (o, certificate, arg3, arg4) => true)
+    })
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+// builder.Host.UseSerilog((context, configuration) =>
+//     configuration.ReadFrom.Configuration(context.Configuration));
 
 
 builder.Services.AddMemoryCache();
@@ -107,6 +133,10 @@ var app = builder.Build();
 //     // Log response details
 //     Console.WriteLine($"Response: {context.Response.StatusCode}");
 // });
+
+
+
+
 
 if (app.Environment.IsDevelopment())
 {

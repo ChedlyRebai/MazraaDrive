@@ -21,6 +21,9 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
     public async Task<PagedResult<Department>> GetPageAsync(DepartmentFilterDto filter)
     {
         var query = _context.Departments
+        // .Include(u => u.Users.Count())
+        // .Include(u => u.Folders.Count())
+        //.Include(u => u.DocumentRequests.Count())
         .AsQueryable();
 
         // Apply filters
@@ -35,6 +38,8 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
         // Apply pagination
         var departments = await query
             .Include(d => d.Users)
+            .Include(d => d.Folders)
+            .Include(d => d.DocumentRequests)
             .Skip((filter.PageNumber - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .ToListAsync();

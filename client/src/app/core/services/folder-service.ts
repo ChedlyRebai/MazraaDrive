@@ -96,6 +96,7 @@ export class FolderService {
   }
 
   CreateFolder(newFolder :any){
+    newFolder.isActive = true;
     return this.http.post<FolderDTO>(`${this.baseUrl}`, newFolder)
   }
 

@@ -417,7 +417,7 @@ export class UserMangement implements OnInit {
 
   deleteUser(u: UserDto) {
     this.confirm.confirm({
-      message: `Supprimer l'utilisateur ${u.cin} ?`,
+      message: `Supprimer l'utilisateur ${u.userName} ?`,
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

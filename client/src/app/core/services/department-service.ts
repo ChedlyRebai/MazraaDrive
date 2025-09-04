@@ -47,12 +47,12 @@ export class DepartmentService {
     if (SortDirection) {
       params = params.set('SortDirection', SortDirection);
     }
-
-    return this.http.get<DepartmentPagedResult>(`${this.baseUrl}`, { params });
+    
+    return this.http.get<DepartmentPagedResult>(`${this.baseUrl}`, { params ,withCredentials:true});
   }
 
   getDepartmentById(id: number) {
-    return this.http.get<DepartmentDto>(`${this.baseUrl}/${id}`).subscribe(
+    return this.http.get<DepartmentDto>(`${this.baseUrl}/${id}`,{withCredentials:true}).subscribe(
       (result) => {
         console.log('Department fetched:', result);
       },

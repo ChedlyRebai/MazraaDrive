@@ -337,6 +337,7 @@ namespace Infrastructure.Repositories
                     DepartmentId = folderDto.DepartmentId,
                     //CreatedById = folderDto.CreatedById,
                     CreatedById= folderDto.CreatedById,
+                   
                     Description = folderDto.Description,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow

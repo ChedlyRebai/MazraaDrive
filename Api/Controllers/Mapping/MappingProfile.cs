@@ -15,7 +15,11 @@ public class MappingProfile : Profile
         CreateMap<Role, UpdateRoleDto>().ReverseMap();
 
 
-        CreateMap<Department, DepartmentDto>().ReverseMap();
+        CreateMap<Department, DepartmentDto>()
+        .ForMember(dest => dest.UserCount, opt => opt.MapFrom(src => src.Users != null ? src.Users.Count : 0))
+        .ForMember(dest => dest.FolderCount, opt => opt.MapFrom(src => src.Folders != null ? src.Folders.Count : 0))
+        .ForMember(dest => dest.DocumentRequestCount, opt => opt.MapFrom(src => src.DocumentRequests != null ? src.DocumentRequests.Count : 0))
+        .ReverseMap();
         CreateMap<Department, DepartmentCreateDTO>().ReverseMap();
         CreateMap<Department, DepartmentUpdateDTO>().ReverseMap();
         CreateMap<Department, DepartmentDeleteDTO>().ReverseMap();

@@ -1,0 +1,273 @@
+using Api.Middleware;
+using Infrastructure;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
+using Scalar.AspNetCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
+using Serilog.Sinks.File;
+using Serilog.Formatting.Json;
+using System.Diagnostics;
+using Infrastructure.Data;
+using Serilog.Context;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog FIRST
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithEnvironmentName()
+    .Enrich.WithThreadId()
+    .Enrich.WithProperty("Application", "MazraaDriveAPI")
+    .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
+    .WriteTo.File(
+        path: "./logs/serilog-.log",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}",
+        retainedFileCountLimit: 7
+    )
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+    {
+        AutoRegisterTemplate = true,
+        IndexFormat = "mazraa-logs-{0:yyyy.MM.dd}",
+        NumberOfShards = 1,
+        NumberOfReplicas = 0,
+        ModifyConnectionSettings = x => x.ServerCertificateValidationCallback(
+            (o, certificate, arg3, arg4) => { return true; }),
+        EmitEventFailure = EmitEventFailureHandling.WriteToSelfLog |
+                           EmitEventFailureHandling.RaiseCallback,
+        FailureCallback = (logEvent, exception) => Console.WriteLine($"ELASTICSEARCH SINK ERROR: {exception}"),
+        BufferBaseFilename = "./elastic-buffer",
+        BufferLogShippingInterval = TimeSpan.FromSeconds(5),
+        QueueSizeLimit = 1000,
+        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+        TypeName = null
+    })
+    .CreateLogger();
+
+builder.WebHost.UseSerilog();
+
+// Add services to the container
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials()
+               .WithOrigins("http://localhost:4200");
+    });
+});
+
+builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+builder.Services.AddEndpointsApiExplorer();
+
+// Swagger configuration
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "MazraaDrive API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+// Identity services
+builder.Services.AddIdentity<AppUser, Role>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<RoleManager<Role>>();
+
+// Infrastructure services
+builder.Services.infrastructureRegistration(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+
+// AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// Response compression and SignalR
+builder.Services.AddResponseCompression();
+builder.Services.AddSignalR();
+
+// Additional CORS
+builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
+    p.WithOrigins("http://localhost:4200", "https://your-vercel-domain.vercel.app")
+     .AllowAnyHeader()
+     .AllowAnyMethod()
+     .AllowCredentials()));
+
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
+// TEST ELASTICSEARCH CONNECTION ON STARTUP
+try
+{
+    Log.Information("🚀 Application starting - testing Elasticsearch connection");
+    Log.Error("🔴 Test ERROR message for Elasticsearch");
+    Log.Warning("🟡 Test WARNING message for Elasticsearch");
+    Log.Information("🔵 Test INFORMATION message for Elasticsearch");
+
+    // Force immediate log flush
+    await Task.Delay(1000);
+    Log.Information("✅ Initial test logs completed");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ Failed to test logs: {ex.Message}");
+}
+
+// Debug endpoint to check Elasticsearch status
+app.MapGet("/debug/elasticsearch", async () =>
+{
+    try
+    {
+        using var client = new HttpClient();
+        var response = await client.GetAsync("http://localhost:9200/");
+        var content = await response.Content.ReadAsStringAsync();
+
+        var indicesResponse = await client.GetAsync("http://localhost:9200/_cat/indices?v");
+        var indicesContent = await indicesResponse.Content.ReadAsStringAsync();
+
+        return Results.Ok(new
+        {
+            Status = "Elasticsearch connected",
+            ElasticsearchResponse = content,
+            Indices = indicesContent,
+            Timestamp = DateTime.UtcNow
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Elasticsearch connection failed: {ex.Message}");
+    }
+});
+
+// Middleware configuration
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+    app.UseDeveloperExceptionPage();
+}
+
+// Create uploads directory
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+    Log.Information("Created uploads directory: {UploadsPath}", uploadsPath);
+}
+
+// HTTP request logging middleware
+app.Use(async (context, next) =>
+{
+    var stopwatch = Stopwatch.StartNew();
+    var correlationId = Guid.NewGuid().ToString();
+
+    using (LogContext.PushProperty("CorrelationId", correlationId))
+    using (LogContext.PushProperty("RequestPath", context.Request.Path))
+    using (LogContext.PushProperty("RequestMethod", context.Request.Method))
+    {
+        Log.Information("➡️ HTTP {Method} {Path} started", context.Request.Method, context.Request.Path);
+
+        await next();
+
+        stopwatch.Stop();
+        Log.Information("✅ HTTP {Method} {Path} completed in {ElapsedMs}ms with status {StatusCode}",
+            context.Request.Method, context.Request.Path, stopwatch.ElapsedMilliseconds, context.Response.StatusCode);
+    }
+});
+
+app.UseCors("AllowAll");
+
+// Static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/api/uploads"
+});
+
+// Application middleware
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+app.UseResponseCompression();
+app.UseResponseCaching();
+
+// API endpoints
+app.MapControllers();
+app.MapHub<Api.Hubs.DepartmentHub>("/hubs/departments");
+
+// Health check endpoint
+app.MapGet("/health", () =>
+{
+    Log.Information("Health check endpoint called");
+    return Results.Ok(new
+    {
+        Status = "Healthy",
+        Timestamp = DateTime.UtcNow,
+        Environment = app.Environment.EnvironmentName
+    });
+});
+
+// Global exception handler for logging
+app.UseExceptionHandler(exceptionHandlerApp =>
+{
+    exceptionHandlerApp.Run(async context =>
+    {
+        var exceptionHandler = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        if (exceptionHandler != null)
+        {
+            Log.Error(exceptionHandler.Error, "Unhandled exception occurred: {ErrorMessage}", exceptionHandler.Error.Message);
+        }
+    });
+});
+
+Log.Information("🎯 Application configured and starting on {Environment}", app.Environment.EnvironmentName);
+
+try
+{
+
+    Log.Information("🛑 Application stopped gracefully");
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "💥 Application terminated unexpectedly");
+    throw;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+
+app.Run();

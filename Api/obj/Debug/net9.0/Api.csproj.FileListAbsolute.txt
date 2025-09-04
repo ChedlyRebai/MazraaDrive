@@ -9,6 +9,7 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AutoMapper.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Elasticsearch.Net.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Humanizer.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/MailKit.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -42,9 +43,19 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scalar.AspNetCore.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/AjaxPro.2.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Scaler.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/VTemplate.Engine.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.AspNetCore.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.AspnetcoreHttpcontext.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.Environment.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.Thread.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Formatting.Elasticsearch.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Async.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Elasticsearch.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.File.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.PeriodicBatching.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/StackExchange.Redis.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -149,3 +160,6 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/ref/Api.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Debug.dll

@@ -90,9 +90,37 @@
               "target": "Package",
               "version": "[2.7.2, )"
             },
-            "Scaler": {
+            "Serilog": {
               "target": "Package",
-              "version": "[1.0.0.2, )"
+              "version": "[4.3.0, )"
+            },
+            "Serilog.Enrichers.AspnetcoreHttpcontext": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Serilog.Enrichers.Thread": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Serilog.Formatting.Elasticsearch": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Serilog.Sinks.Async": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Serilog.Sinks.Elasticsearch": {
+              "target": "Package",
+              "version": "[10.0.0, )"
             },
             "StackExchange.Redis": {
               "target": "Package",
@@ -312,6 +340,10 @@
               "version": "[4.8.0, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[9.0.0, )"
             },

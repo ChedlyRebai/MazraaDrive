@@ -37,6 +37,7 @@ interface Folder {
   visibility: 'private' | 'shared';
   category?: string;
   parentId?: string;
+  isActive?: boolean;
 }
 
 @Component({
@@ -104,6 +105,7 @@ export class Accueil implements OnInit {
 
   // Forms
   newFolder: Partial<Folder> = {
+    isActive: true,
     visibility: 'private',
   };
 

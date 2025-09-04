@@ -168,6 +168,7 @@ export class DepartmentMangement implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
+          console.log('Departments fetched:', response);
           this.PageNumber = response.pageNumber;
           this.PageSize = response.pageSize;
           this.departments = response.data;
@@ -179,6 +180,8 @@ export class DepartmentMangement implements OnInit {
           );
         },
       });
+
+      
   }
 
  
