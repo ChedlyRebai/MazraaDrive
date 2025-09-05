@@ -23,7 +23,7 @@ public static class InfrastructureRegistration
 {
     public static IServiceCollection infrastructureRegistration(this IServiceCollection services, IConfiguration configuration)
     {
-        
+
         // Database context
         services.AddDbContext<AppDbContext>(options =>
         {
@@ -66,6 +66,9 @@ public static class InfrastructureRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         //services.AddScoped<ICurrentUserService, CurrentUserService>();
         //services.AddScoped<IAuditLogger, AuditLogger>();
+        services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
+        // Register services
+        services.AddScoped<IDocumentAccessService, DocumentAccessService>();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
@@ -74,17 +77,17 @@ public static class InfrastructureRegistration
         services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
-        services.AddMemoryCache();
         services.AddScoped<IDocumentAccessService, DocumentAccessService>();
         services.AddScoped<IAccessRightService, AccessRightService>();
+        services.AddScoped(typeof(Core.Interfaces.IGenericRepository<>), typeof(Infrastructure.Repositories.GenericRepository<>));
         services.AddSingleton<IFileProvider>(provider =>
-    new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")));
-        services.AddApiVersioning(options =>
-        {
-            options.AssumeDefaultVersionWhenUnspecified = true;
-            options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-            options.ReportApiVersions = true;
-        });
+        new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")));
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
         // services.AddScoped<IEmailService, EmailService>();
 
         // Register UnitOfWork

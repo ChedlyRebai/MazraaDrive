@@ -17,8 +17,8 @@ namespace Api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ILogger<UserController> _logger;
-        public UserController(RoleManager<Role> roleManager, ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserController> logger, UserManager<AppUser> userManager, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+        public UserController(RoleManager<Role> roleManager, ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserController> logger, UserManager<AppUser> userManager)
+            : base(currentUser, unitOfWork, mapper, logger)
         {
             _logger = logger;
             _roleManager = roleManager;

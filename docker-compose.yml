@@ -35,7 +35,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
+      
   kib01:
     image: docker.elastic.co/kibana/kibana:8.11.0
     container_name: kibana

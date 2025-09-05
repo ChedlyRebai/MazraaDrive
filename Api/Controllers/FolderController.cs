@@ -13,8 +13,8 @@ namespace Api.Controllers
     
     public class FolderController : BaseController
     {
-        public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<FolderController> logger, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+        public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<FolderController> logger)
+            : base(currentUser, unitOfWork, mapper, logger)
         {
         }
 

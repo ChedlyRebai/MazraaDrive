@@ -24,8 +24,8 @@ namespace API.Controllers
             IMapper mapper,
             IDocumentAccessService accessService,
             IGenericRepository<AccessRequest> accessRequestRepository,
-            ILogger<BaseController> logger,
-            IAuditLogRepository auditLogger = null) : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+            ILogger<BaseController> logger
+           ) : base(currentUser, unitOfWork, mapper, logger)
         {
 
             _accessService = accessService;

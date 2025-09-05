@@ -21,8 +21,8 @@ public class AccessRequestsController : BaseController
 
     private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
 
-    public AccessRequestsController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRequestsController> logger, IAccessRightService accessRightService, IAuditLogRepository auditLogger = null)
-        : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+    public AccessRequestsController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRequestsController> logger, IAccessRightService accessRightService)
+        : base(currentUser, unitOfWork, mapper, logger)
     {
         _accessRightService = accessRightService;
     }

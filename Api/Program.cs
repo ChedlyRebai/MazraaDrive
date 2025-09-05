@@ -13,6 +13,9 @@ using Serilog.Formatting.Compact;
 using Serilog.Configuration;
 using Serilog.Settings.Configuration;
 using Serilog.Sinks.Elasticsearch;
+using Infrastructure.Repositories;
+using Core.Interfaces;
+using Infrastructure.Repositories.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>

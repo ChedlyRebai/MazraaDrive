@@ -1,0 +1,107 @@
+2025-09-05 18:15:16.054 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-05 18:15:16.168 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-05 18:15:16.308 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:15:16.309 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:15:16.309 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:16:58.400 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-05 18:16:58.582 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-05 18:16:58.587 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-05 18:16:58.587 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-05 18:16:58.588 +01:00 [INF] Hosting environment: Development
+2025-09-05 18:16:58.588 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-05 18:16:59.538 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-05 18:16:59.607 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-05 18:16:59.615 +01:00 [INF] No cached response available for this request.
+2025-09-05 18:16:59.618 +01:00 [INF] Executing endpoint 'API.Controllers.AuditLogController.GetAuditLog (Api)'
+2025-09-05 18:16:59.639 +01:00 [INF] Route matched with {action = "GetAuditLog", controller = "AuditLog"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.AuditLogDto]] GetAuditLog(Int32) on controller API.Controllers.AuditLogController (Api).
+2025-09-05 18:17:00.086 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-05 18:17:00.131 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-05 18:17:00.299 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:17:00.301 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:17:00.301 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-05 18:17:01.105 +01:00 [ERR] Failed executing DbCommand (52ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Action", a."ActionType", a."CreatedAt", a."Description", a."IPAddress", a."TargetEntity", a."UpdatedAt", a."UserAgent", a."UserId", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM "AuditLogs" AS a
+INNER JOIN "AspNetUsers" AS a0 ON a."UserId" = a0."Id"
+WHERE a."Id" = @__id_0
+LIMIT 1
+2025-09-05 18:17:01.129 +01:00 [ERR] An exception occurred while iterating over the results of a query for context type 'Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "AuditLogs" does not exist
+
+POSITION: 527
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AuditLogs" does not exist
+    Position: 527
+    File: parse_relation.c
+    Line: 1392
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "AuditLogs" does not exist
+
+POSITION: 527
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AuditLogs" does not exist
+    Position: 527
+    File: parse_relation.c
+    Line: 1392
+    Routine: parserOpenTable
+2025-09-05 18:17:01.134 +01:00 [ERR] Error retrieving audit log with ID 0
+Npgsql.PostgresException (0x80004005): 42P01: relation "AuditLogs" does not exist
+
+POSITION: 527
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Infrastructure.Repositories.AuditLogRepository.GetByIdAsync(Int32 id) in /home/ubuntu/Bureau/github/MazraaDrive/Infrastructure/Repositories/AuditLogRepository.cs:line 54
+   at API.Controllers.AuditLogController.GetAuditLog(Int32 id) in /home/ubuntu/Bureau/github/MazraaDrive/Api/Controllers/AuditController.cs:line 125
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AuditLogs" does not exist
+    Position: 527
+    File: parse_relation.c
+    Line: 1392
+    Routine: parserOpenTable
+2025-09-05 18:17:01.159 +01:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2025-09-05 18:17:01.182 +01:00 [INF] Executed action API.Controllers.AuditLogController.GetAuditLog (Api) in 1538.1535ms
+2025-09-05 18:17:01.190 +01:00 [INF] Executed endpoint 'API.Controllers.AuditLogController.GetAuditLog (Api)'
+2025-09-05 18:17:01.191 +01:00 [INF] The response could not be cached for this request.
+2025-09-05 18:17:01.208 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 500 null text/plain; charset=utf-8 1671.3129ms

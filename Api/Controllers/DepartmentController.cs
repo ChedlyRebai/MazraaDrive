@@ -15,8 +15,9 @@ namespace Api.Controllers
 
         public readonly IHubContext<DepartmentHub> _hub;
 
-        public DepartmentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DepartmentController> logger, IHubContext<DepartmentHub> hub, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+  
+        public DepartmentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DepartmentController> logger, IHubContext<DepartmentHub> hub)
+            : base(currentUser, unitOfWork, mapper, logger)
         {
             _hub = hub;
         }

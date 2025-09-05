@@ -14,9 +14,9 @@ namespace Infrastructure.Repositories.Service
     {
         private readonly IMemoryCache _cache;
         private readonly IConfiguration _configuration;
-        private readonly IGenericRepository<AccessRequest>  _accessRequestRepository;
+        private readonly IGenericRepository<AccessRequest> _accessRequestRepository;
 
-        public DocumentAccessService(IMemoryCache cache, IConfiguration configuration, 
+        public DocumentAccessService(IMemoryCache cache, IConfiguration configuration,
                                    IGenericRepository<AccessRequest> accessRequestRepository)
         {
             _cache = cache;
@@ -24,8 +24,8 @@ namespace Infrastructure.Repositories.Service
             _accessRequestRepository = accessRequestRepository;
         }
 
-        public async Task<string> GenerateAccessLink(int documentId, string userId, 
-                                                   TimeSpan validityDuration, 
+        public async Task<string> GenerateAccessLink(int documentId, string userId,
+                                                   TimeSpan validityDuration,
                                                    bool canRead, bool canUpdate, bool canDelete)
         {
             // Generate secure token
@@ -49,7 +49,7 @@ namespace Infrastructure.Repositories.Service
             _cache.Set(cacheKey, accessLink, expiresAt);
 
             // Also store in database for audit purposes (optional)
-            await LogAccessLinkGeneration(documentId, userId, token, expiresAt, 
+            await LogAccessLinkGeneration(documentId, userId, token, expiresAt,
                                         canRead, canUpdate, canDelete);
 
             // Generate the actual URL
@@ -60,7 +60,7 @@ namespace Infrastructure.Repositories.Service
         public async Task<DocumentAccessLink?> ValidateAccessLink(string token)
         {
             var cacheKey = $"doc_access_{token}";
-            
+
             if (_cache.TryGetValue(cacheKey, out DocumentAccessLink accessLink))
             {
                 // Check if token is expired
@@ -92,7 +92,7 @@ namespace Infrastructure.Repositories.Service
         {
             var cacheKey = $"doc_access_{token}";
             _cache.Remove(cacheKey);
-            
+
             // Also update database record if you're storing them
             await UpdateAccessLinkStatus(token, "Revoked");
         }
@@ -108,8 +108,8 @@ namespace Infrastructure.Repositories.Service
                          .Replace("=", "");
         }
 
-        private async Task LogAccessLinkGeneration(int documentId, string userId, string token, 
-                                                 DateTime expiresAt, bool canRead, 
+        private async Task LogAccessLinkGeneration(int documentId, string userId, string token,
+                                                 DateTime expiresAt, bool canRead,
                                                  bool canUpdate, bool canDelete)
         {
             // Implement database logging if needed

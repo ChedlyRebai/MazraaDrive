@@ -35,7 +35,7 @@ public class UnitOfWork : IUnitOfWork
     public RoleManager<Role> RoleManager => _roleManager;
 
     public UnitOfWork(
-
+        IDocumentAccessService documentAccessService,
         RoleManager<Role> roleManager,
         IAuth auth,
         AppDbContext context,
@@ -54,7 +54,7 @@ public class UnitOfWork : IUnitOfWork
         ICurrentUserService currentUserService,
         IGenerateToken token
         // IRepository<AccessRequest> accessRequestRepository
-        
+
 
         )
     {
@@ -74,6 +74,7 @@ public class UnitOfWork : IUnitOfWork
         AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         this.token = token;
         CurrentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+        DocumentAccessService = documentAccessService ?? throw new ArgumentNullException(nameof(documentAccessService));
     }
 
     public async Task<int> SaveChangesAsync()
