@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Identity;
 
 using Microsoft.Extensions.FileProviders;
 using Infrastructure.Services;
-using Infrastructure.Repositories; // Add this for ApiVersioning
+using Infrastructure.Repositories;
+using Infrastructure.Repositories.Service; // Add this for ApiVersioning
 
 
 namespace Infrastructure;
@@ -73,6 +74,8 @@ public static class InfrastructureRegistration
         services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
+        services.AddMemoryCache();
+        services.AddScoped<IDocumentAccessService, DocumentAccessService>();
         services.AddScoped<IAccessRightService, AccessRightService>();
         services.AddSingleton<IFileProvider>(provider =>
     new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")));

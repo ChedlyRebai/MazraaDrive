@@ -13,51 +13,29 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     //private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
-
-
-    // private readonly IEmailService? _emailService;
-
-    // private readonly IRoleRepository _roleRepository;
-    // private readonly IUserRepository _userRepository;
-    // private readonly IAuditLogRepository _auditLogRepository;
-    // private readonly IMessageRepository _messageRepository;
-    // private readonly IGenericRepository<AuditLog> _auditLogGenericRepository;
-    // private readonly IDocument _documentRepository;
-    // private readonly IFolderRepository _folderRepository;
-    // private readonly SignInManager<AppUser> _signInManager;
-    // private readonly IGenerateToken? _token;
-
     public IAuth Auth { get; }
-
     public IAccessRequestRepository AccessRequestRepository { get; }
     public IDocRequestRepository DocRequestRepository { get; }
-
     public IDocument DocumentRepository { get; }
-
     public IFolderRepository FolderRepository { get; }
-
     public IHomeRepository HomeRepository { get; }
-
     public IMessageRepository MessageRepository { get; }
-
     public ICurrentUserService CurrentUserService { get; }
     public IUserRepository UserRepository { get; }
-
-
     private readonly IGenerateToken token;
     public IDepartmentRepository DepartmentRepository { get; }
 
     public IPermissionsRepository PermissionsRepository { get; }
-
     public IRoleRepository RoleRepository { get; }
     private readonly RoleManager<Role> _roleManager;
+    
+    public IDocumentAccessService DocumentAccessService { get; }
     public IAuditLogRepository AuditLogRepository { get; }
-
     public UserManager<AppUser> UserManager => _userManager;
-
     public RoleManager<Role> RoleManager => _roleManager;
 
     public UnitOfWork(
+
         RoleManager<Role> roleManager,
         IAuth auth,
         AppDbContext context,
@@ -75,6 +53,8 @@ public class UnitOfWork : IUnitOfWork
         IAuditLogRepository auditLogRepository,
         ICurrentUserService currentUserService,
         IGenerateToken token
+        // IRepository<AccessRequest> accessRequestRepository
+        
 
         )
     {
