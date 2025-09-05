@@ -4,7 +4,7 @@ using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
 
-namespace Infrastructure.Services;
+namespace Infrastructure.Repositories.Service;
 public class AccessRightService : IAccessRightService
 {
     private readonly AppDbContext _ctx;
