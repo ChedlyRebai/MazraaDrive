@@ -282,17 +282,18 @@ export class AccessRequest implements OnInit {
     this.selectedRequest = r;
     this.detailsDialog = true;
   }
-
+  validityDuration: number | string = 24;
   approve(r: AccessRequestDto) {
     this.confirm.confirm({
       message: 'Approuver cette demande ?',
       accept: () => {
         console.log('Demande approuvée:', r);
-        this.accessRequestService.decide(r.id, true).subscribe({
+        this.accessRequestService.approuved(r.id, this.validityDuration).subscribe({
           next: (res: any) => {
             console.log(res);
             this.toast.add({ severity: 'success', summary: 'Approuvée' });
             this.accessRequestService.getAccessRequests();
+            this.detailsDialog = false;
           }
         });
       },

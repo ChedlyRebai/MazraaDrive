@@ -96,21 +96,22 @@
   <div class="card h-full">
     <ngx-doc-viewer
       [url]="fileurl"
-      [viewer]="'url'"
+      
+      [viewer]="'google'"
       style="width: 100%; height: 90vh"
     ></ngx-doc-viewer>
    
-    <!-- <div *ngIf="file.fileType === 'pdf'">
+     <div *ngIf="file.fileType === 'pdf'">
       <pdf-viewer
         [src]="fileurl"
         [render-text]="true"
         style="display: block"
       ></pdf-viewer>
-    </div> -->
+    </div>
 
-    <!-- <div *ngIf="file.fileType.startsWith('image')">
+     <div *ngIf="file.fileType.startsWith('image')">
       <img [src]="fileurl" class="img-fluid" />
-    </div> -->
+    </div> 
 
     <div *ngIf="file.fileType === 'txt'">
       <iframe [src]="fileurl" width="100%" height="600px"></iframe>

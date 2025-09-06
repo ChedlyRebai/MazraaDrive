@@ -14,8 +14,18 @@
       </p>
     </div>
     <div class="flex gap-2">
-      <p-button label="Actualiser" icon="pi pi-refresh" [outlined]="true" severity="secondary" (click)="refreshRequests()" />
-      <p-button label="Nouvelle Demande" icon="pi pi-plus" (click)="showCreateDialog()" />
+      <p-button
+        label="Actualiser"
+        icon="pi pi-refresh"
+        [outlined]="true"
+        severity="secondary"
+        (click)="refreshRequests()"
+      />
+      <p-button
+        label="Nouvelle Demande"
+        icon="pi pi-plus"
+        (click)="showCreateDialog()"
+      />
     </div>
   </div>
 
@@ -51,12 +61,20 @@
   </div>
 
   <div class="card mb-6">
-    <div class="flex flex-col md:flex-row gap-4 md:items-center justify-between">
+    <div
+      class="flex flex-col md:flex-row gap-4 md:items-center justify-between"
+    >
       <div class="flex flex-wrap gap-4 items-center">
         <p-iconField iconPosition="left">
           <p-inputIcon class="pi pi-search" />
-          <input pInputText type="text" class="w-72" placeholder="Rechercher..."
-                 [(ngModel)]="searchTerm" (input)="onSearch($event)" />
+          <input
+            pInputText
+            type="text"
+            class="w-72"
+            placeholder="Rechercher..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearch($event)"
+          />
         </p-iconField>
 
         <!-- <p-autoComplete
@@ -73,49 +91,52 @@
         /> -->
       </div>
       <div class="flex gap-2">
-        <p-button icon="pi pi-filter-slash" [outlined]="true" pTooltip="Réinitialiser" (click)="clearFilters()" />
+        <p-button
+          icon="pi pi-filter-slash"
+          [outlined]="true"
+          pTooltip="Réinitialiser"
+          (click)="clearFilters()"
+        />
       </div>
     </div>
   </div>
 
   <div class="card">
-
-
     <p-table
       [value]="requests"
       [paginator]="true"
       [rows]="PageSize"
-      
       [paginator]="true"
       [lazy]="true"
       [totalRecords]="totalRecords"
       (onLazyLoad)="onPageChange($event)"
       [globalFilterFields]="['name', 'description']"
       [tableStyle]="{ 'min-width': '75rem' }"
-     
       [rowHover]="true"
       dataKey="id"
       currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
       [showCurrentPageReport]="true"
-      
-      [rowsPerPageOptions]="[1,2,5,10, 25, 50]"
+      [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width:12rem">Demandeur</th>
-          <th style="min-width:14rem">Document</th>
-            <th style="min-width:10rem">Permissions</th>
-          <th style="min-width:8rem">Statut</th>
-          <th style="min-width:10rem">Créé</th>
-          <th style="min-width:8rem">Décision</th>
-          <th style="width:8rem">Actions</th>
+          <th style="min-width: 12rem">Demandeur</th>
+          <th style="min-width: 14rem">Document</th>
+          <th style="min-width: 10rem">Permissions</th>
+          <th style="min-width: 8rem">Statut</th>
+          <th style="min-width: 10rem">Créé</th>
+          <th style="min-width: 8rem">Décision</th>
+          <th style="width: 8rem">Actions</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-r>
         <tr>
           <td>
             <div class="flex items-center gap-2">
-              <p-avatar [label]="getInitials(r.requesterName)" shape="circle"></p-avatar>
+              <p-avatar
+                [label]="getInitials(r.requesterName)"
+                shape="circle"
+              ></p-avatar>
               <span class="font-medium">{{ r.requesterName }}</span>
             </div>
           </td>
@@ -129,22 +150,53 @@
           <td>
             <div class="flex gap-1">
               <p-tag *ngIf="r.requestRead" value="R" severity="info"></p-tag>
-              <p-tag *ngIf="r.requestWrite" value="W" severity="warning"></p-tag>
-              <p-tag *ngIf="r.requestDelete" value="D" severity="danger"></p-tag>
+              <p-tag
+                *ngIf="r.requestWrite"
+                value="W"
+                severity="warning"
+              ></p-tag>
+              <p-tag
+                *ngIf="r.requestDelete"
+                value="D"
+                severity="danger"
+              ></p-tag>
             </div>
           </td>
           <td>
-            <p-tag [value]="r.status" [severity]="statusSeverity(r.status)"></p-tag>
+            <p-tag
+              [value]="r.status"
+              [severity]="statusSeverity(r.status)"
+            ></p-tag>
           </td>
-          <td>{{ r.createdAt | date:'short' }}</td>
-          <td>{{ r.decisionAt ? (r.decisionAt | date:'short') : '—' }}</td>
+          <td>{{ r.createdAt | date : "short" }}</td>
+          <td>{{ r.decisionAt ? (r.decisionAt | date : "short") : "—" }}</td>
           <td class="text-right">
             <div class="flex gap-1 justify-end">
-              <p-button icon="pi pi-eye" [rounded]="true" [outlined]="true" (click)="view(r)" pTooltip="Détails"></p-button>
-              <p-button icon="pi pi-check" severity="success" [rounded]="true" [outlined]="true"
-                        *ngIf="r.status==='Pending'" (click)="approve(r)" pTooltip="Approuver"></p-button>
-              <p-button icon="pi pi-times" severity="danger" [rounded]="true" [outlined]="true"
-                        *ngIf="r.status==='Pending'" (click)="reject(r)" pTooltip="Rejeter"></p-button>
+              <p-button
+                icon="pi pi-eye"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="view(r)"
+                pTooltip="Détails"
+              ></p-button>
+              <p-button
+                icon="pi pi-check"
+                severity="success"
+                [rounded]="true"
+                [outlined]="true"
+                *ngIf="r.status === 'Pending'"
+                (click)="approve(r)"
+                pTooltip="Approuver"
+              ></p-button>
+              <p-button
+                icon="pi pi-times"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                *ngIf="r.status === 'Pending'"
+                (click)="reject(r)"
+                pTooltip="Rejeter"
+              ></p-button>
             </div>
           </td>
         </tr>
@@ -157,12 +209,16 @@
         </tr>
       </ng-template>
     </p-table>
-   
   </div>
 </div>
 
 <!-- Create Dialog -->
-<p-dialog [(visible)]="createDialog" [modal]="true" [style]="{width:'40rem'}" header="Nouvelle Demande">
+<p-dialog
+  [(visible)]="createDialog"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  header="Nouvelle Demande"
+>
   <div class="flex flex-col gap-5">
     <div>
       <label class="block text-sm font-medium mb-1">Document *</label>
@@ -180,60 +236,117 @@
     <div>
       <label class="block text-sm font-medium mb-1">Permissions *</label>
       <div class="flex flex-wrap gap-4">
-        <p-checkbox inputId="permR" [(ngModel)]="newRequest.requestRead" [binary]="true"></p-checkbox>
+        <p-checkbox
+          inputId="permR"
+          [(ngModel)]="newRequest.requestRead"
+          [binary]="true"
+        ></p-checkbox>
         <label for="permR">Lecture</label>
-        <p-checkbox inputId="permW" [(ngModel)]="newRequest.requestWrite" [binary]="true"></p-checkbox>
+        <p-checkbox
+          inputId="permW"
+          [(ngModel)]="newRequest.requestWrite"
+          [binary]="true"
+        ></p-checkbox>
         <label for="permW">Écriture</label>
-        <p-checkbox inputId="permD" [(ngModel)]="newRequest.requestDelete" [binary]="true"></p-checkbox>
+        <p-checkbox
+          inputId="permD"
+          [(ngModel)]="newRequest.requestDelete"
+          [binary]="true"
+        ></p-checkbox>
         <label for="permD">Suppression</label>
       </div>
     </div>
 
     <div>
       <label class="block text-sm font-medium mb-1">Message</label>
-      <textarea pInputText [(ngModel)]="newRequest.message" rows="4"
-                class="w-full p-2 border rounded-md"></textarea>
+      <textarea
+        pInputText
+        [(ngModel)]="newRequest.message"
+        rows="4"
+        class="w-full p-2 border rounded-md"
+      ></textarea>
     </div>
 
-    <div *ngIf="validationErrors.length" class="p-3 rounded bg-red-50 border border-red-200">
+    <div
+      *ngIf="validationErrors.length"
+      class="p-3 rounded bg-red-50 border border-red-200"
+    >
       <ul class="text-sm text-red-700 list-disc list-inside">
         <li *ngFor="let e of validationErrors">{{ e }}</li>
       </ul>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button label="Annuler" [text]="true" icon="pi pi-times" (click)="cancelCreate()"></p-button>
-    <p-button label="Envoyer" icon="pi pi-check" (click)="createAccessRequest()"
-              [disabled]="!isAccessFormValid()" [loading]="creatingRequest"></p-button>
+    <p-button
+      label="Annuler"
+      [text]="true"
+      icon="pi pi-times"
+      (click)="cancelCreate()"
+    ></p-button>
+    <p-button
+      label="Envoyer"
+      icon="pi pi-check"
+      (click)="createAccessRequest()"
+      [disabled]="!isAccessFormValid()"
+      [loading]="creatingRequest"
+    ></p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Details Dialog -->
-<p-dialog [(visible)]="detailsDialog" [modal]="true" [style]="{width:'36rem'}" header="Détails"
-          (onHide)="selectedRequest=null">
+<p-dialog
+  [(visible)]="detailsDialog"
+  [modal]="true"
+  [style]="{ width: '36rem' }"
+  header="Détails"
+  (onHide)="selectedRequest = null"
+>
   <ng-container *ngIf="selectedRequest as s">
     <div class="space-y-3 text-sm">
       <div class="flex items-center gap-3">
-        <p-avatar [label]="getInitials(s.requesterName)" shape="circle"></p-avatar>
+        <p-avatar
+          [label]="getInitials(s.requesterName)"
+          shape="circle"
+        ></p-avatar>
         <div>
           <div class="font-semibold">{{ s.requesterName }}</div>
           <div class="text-xs opacity-70">#{{ s.requesterId }}</div>
         </div>
       </div>
-      <div><strong>Document:</strong> {{ s.documentName }} (#{{ s.documentId }})</div>
+      <div>
+        <strong>Document:</strong> {{ s.documentName }} (#{{ s.documentId }})
+      </div>
       <div><strong>Permissions:</strong> {{ permissionLabels(s) }}</div>
       <div><strong>Statut:</strong> {{ s.status }}</div>
-      <div><strong>Créé:</strong> {{ s.createdAt | date:'short' }}</div>
-      <div><strong>Décision:</strong> {{ s.decisionAt ? (s.decisionAt | date:'short') : '—' }}</div>
-      <div><strong>Décidé par:</strong> {{ s.decidedByName || '—' }}</div>
-      <div><strong>Message:</strong> {{ s.message || '—' }}</div>
+      <div><strong>Créé:</strong> {{ s.createdAt | date : "short" }}</div>
+      <div>
+        <strong>Décision:</strong>
+        {{ s.decisionAt ? (s.decisionAt | date : "short") : "—" }}
+      </div>
+      <div><strong>Décidé par:</strong> {{ s.decidedByName || "—" }}</div>
+      <div><strong>Message:</strong> {{ s.message || "—" }}</div>
     </div>
   </ng-container>
   <ng-template pTemplate="footer">
-    <p-button label="Fermer" [text]="true" icon="pi pi-times" (click)="detailsDialog=false"></p-button>
-    <p-button label="Approuver" icon="pi pi-check" severity="success" *ngIf="selectedRequest?.status==='Pending'"
-              (click)="approve(selectedRequest!)"></p-button>
-    <p-button label="Rejeter" icon="pi pi-times" severity="danger" *ngIf="selectedRequest?.status==='Pending'"
-              (click)="reject(selectedRequest!)"></p-button>
+    <p-button
+      label="Fermer"
+      [text]="true"
+      icon="pi pi-times"
+      (click)="detailsDialog = false"
+    ></p-button>
+    <p-button
+      label="Approuver"
+      icon="pi pi-check"
+      severity="success"
+      *ngIf="selectedRequest?.status === 'Pending'"
+      (click)="approve(selectedRequest!)"
+    ></p-button>
+    <p-button
+      label="Rejeter"
+      icon="pi pi-times"
+      severity="danger"
+      *ngIf="selectedRequest?.status === 'Pending'"
+      (click)="reject(selectedRequest!)"
+    ></p-button>
   </ng-template>
 </p-dialog>

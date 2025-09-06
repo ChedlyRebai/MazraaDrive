@@ -90,6 +90,11 @@ export class AccessRequsetService {
   }
 
 
+  approuved(id: number | string, validityDuration: number | string) {
+    return this.http.post<AccessRequestDto>(`http://localhost:5108/api/DocumentAccess/approve/${id}`, { params: { validityDuration }, withCredentials: true });
+  }
+
+
   decide(id: number, approve: boolean) {
     const decision: any = {
       "approve": approve
