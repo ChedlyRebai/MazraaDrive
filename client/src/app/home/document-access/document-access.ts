@@ -7,6 +7,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AccessRequest } from '../../admin/access-request/access-request';
 import { AccessRequestCreateDto } from '../../shared/models/access-req';
+import { DocumentDto } from '../../shared/models/document';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { DocumentService } from '../../core/services/document-service';
 
 export interface AccessApproval {
   requestId: number;
@@ -21,7 +25,14 @@ export interface AccessLinkResponse {
 
 @Component({
   selector: 'app-document-access',
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    NgxDocViewerModule,
+    FormsModule,
+    HttpClientModule,
+    NgxDocViewerModule,
+    PdfViewerModule,
+  ],
   templateUrl: './document-access.html',
   styleUrl: './document-access.css',
 })
@@ -59,7 +70,14 @@ export class DocumentAccess implements OnInit {
       });
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private documentService: DocumentService
+  ) {
+    //console.log('DocumentAccess component initialized',this.documentInfo.);
+    
+  }
 
   requestAccess(
     requestData: AccessRequestCreateDto
@@ -102,6 +120,13 @@ export class DocumentAccess implements OnInit {
     }
 
     this.validateAccess();
+
+    this.fileurl =
+      'http://localhost:5108/api/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf';
+  
+  this.loadFile();
+    
+    
   }
 
   getTokenAccessDDoc() {
@@ -132,6 +157,7 @@ export class DocumentAccess implements OnInit {
         this.isLoading = false;
         this.hasAccess = true;
         this.documentInfo = response;
+        this.getFileUrl(this.documentInfo.documentId);
       },
       error: (error: any) => {
         this.isLoading = false;
@@ -204,5 +230,57 @@ export class DocumentAccess implements OnInit {
   parseAction(url: string): string {
     const urlObj = new URL(url);
     return urlObj.searchParams.get('action') || 'read';
+  }
+
+  file: DocumentDto = {} as DocumentDto;
+  fileurl = '';
+  getGoogleViewerUrl(fileUrl: string): string {
+    return `https://docs.google.com/gview?url=${fileUrl}&embedded=true`;
+  }
+
+  loadFile() {
+    this.http
+      .get<any>(
+        `http://localhost:5108/api/Document/${this.documentInfo.documentId}`
+      )
+      .subscribe({
+        next: (response: any) => {
+          
+          this.file = response.data as DocumentDto;
+          console.log('File fetched successfully:', this.file);
+          // this.folders = response as DocumentDto;
+          this.fileurl = `${this.baseUrl}/uploads/${response.data.storagePath}`;
+          console.log('File URL:', this.fileurl);
+          this.fileurl =
+            'http://localhost:5108/api/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf';
+          console.log('File fetched successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error fetching file:', error);
+        },
+      });
+    this.fileurl = `${this.baseUrl}/uploads/${this.documentInfo.documentId}`;
+  }
+
+  getFileUrl(id:any) {
+    console.log('Document ID:', id);
+    this.documentService
+      .getDocumentById(id)
+      .subscribe({
+        next: (response: any) => {
+          console.log('Response from getDocumentById:', response);
+          this.file = response.data as DocumentDto;
+          console.log('File fetched successfully:', this.file);
+          // this.folders = response as DocumentDto;
+          this.fileurl = `${environment.apiUrl}/uploads/${response.data.storagePath}`;
+          console.log('File URL:', this.fileurl);
+          
+          console.log('File fetched successfully:', response);
+        },
+        error: (error: any) => {
+          console.error('Error fetching file:', error);
+        },
+      });
+    this.fileurl = `${environment.apiUrl}/uploads/${this.documentInfo.documentId}`;
   }
 }

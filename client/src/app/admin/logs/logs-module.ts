@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LogsRoutingModule } from './logs-routing-module';
 import { AiLogs } from './ai-logs/ai-logs';
-import { ActionLogs } from './action-logs/action-logs';
+
 import { RouterModule } from '@angular/router';
 
 
@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     AiLogs,
-    ActionLogs,
+
     CommonModule,
     RouterModule,
     LogsRoutingModule

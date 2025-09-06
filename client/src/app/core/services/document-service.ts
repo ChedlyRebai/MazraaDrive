@@ -63,6 +63,9 @@ export class DocumentService {
       );
   }
 
+  getDocumentById(documentId: number) {
+    return this.http.get<DocumentDto>(`${this.baseUrl}/${documentId}`,{withCredentials: true});
+  }
   getFolderDocuments(folderId: number) {
     return this.http.get<DocumentPagedResult>(
       `${this.baseUrl}/folder/${folderId}`,{withCredentials: true}
