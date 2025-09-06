@@ -4,6 +4,7 @@ using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -16,10 +17,11 @@ namespace Api.Controllers
         private readonly IWebHostEnvironment _environment;
         private const long MaxFileSize = 100 * 1024 * 1024; // 100MB
         private readonly string[] AllowedFileTypes = { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
-
-        public DocumentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DocumentController> logger, IWebHostEnvironment environment)
+        private readonly UserManager<AppUser> _userManager;
+        public DocumentController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<DocumentController> logger, UserManager<AppUser> userManager,IWebHostEnvironment environment)
             : base(currentUser, unitOfWork, mapper, logger)
         {
+            _userManager = userManager;
             _environment = environment;
         }
 
@@ -373,7 +375,14 @@ namespace Api.Controllers
                 }
 
                 var currentUserId = _currentUser?.UserId ?? "10";
-                var currentDepId = _unitOfWork.UserRepository.GetByIdAsync(currentUserId).Result.DepartmentId;
+                Console.WriteLine("CurrentUserId***************************************************************************************: " + currentUserId);
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                Console.WriteLine("UserId***************************************************************************************: " + userId);
+
+                var uid= _userManager.GetUserId(User);
+                Console.WriteLine("uid***************************************************************************************: " + uid);
+                var currentDepId = _currentUser?.DepartmentId ?? "10";
                 // Create document entity
                 var document = new Document
                 {
@@ -385,7 +394,7 @@ namespace Api.Controllers
                     FileSize = uploadDto.File.Length,
                     StoragePath = fileName,
                     FolderId = uploadDto.FolderId,
-                    DepartmentId = currentDepId,
+                    DepartmentId = int.Parse(currentDepId),
                     UploadedById = currentUserId,
                     Version = 1,
                     IsValidated = false,

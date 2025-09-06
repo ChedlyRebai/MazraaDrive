@@ -99,9 +99,10 @@ builder.Services.AddIdentity<AppUser, Role>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<RoleManager<Role>>();
+builder.Services.AddHttpContextAccessor();
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
+
 //  builder.Services.AddIdentity<AppUser, AppRole>()
 //      .AddEntityFrameworkStores<AppDbContext>()
 //      .AddDefaultTokenProviders();

@@ -73,11 +73,11 @@ public static class InfrastructureRegistration
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
-        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        
         services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();
-        services.AddScoped<IDocumentAccessService, DocumentAccessService>();
+        
         services.AddScoped<IAccessRightService, AccessRightService>();
         services.AddScoped(typeof(Core.Interfaces.IGenericRepository<>), typeof(Infrastructure.Repositories.GenericRepository<>));
         services.AddSingleton<IFileProvider>(provider =>
@@ -193,8 +193,10 @@ public static class InfrastructureRegistration
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["Token:Secret"])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["Token:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = configuration["Token:Audience"],
                     ClockSkew = TimeSpan.Zero
                 };
                 options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents

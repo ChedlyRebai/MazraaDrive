@@ -38,7 +38,6 @@ public class AppUser : IdentityUser<string>
     public ICollection<DocumentRequest> RequestedDocuments { get; set; } = new List<DocumentRequest>();
     public ICollection<DocumentRequest> ProcessedDocuments { get; set; } = new List<DocumentRequest>();
     public virtual ICollection<AIQueryLog> AIQueryLogs { get; set; }
-    public virtual ICollection<AuditLog> AuditLogs { get; set; }
     //public virtual ICollection<Message> SentMessages { get; set; }
     // public virtual ICollection<Message> ReceivedMessages { get; set; }
     public virtual ICollection<MailFolder> MailFolders { get; set; }

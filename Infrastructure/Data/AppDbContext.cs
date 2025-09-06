@@ -20,7 +20,7 @@ namespace Infrastructure.Data
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<DocumentRequest> DocumentRequests { get; set; }
         public virtual DbSet<AIQueryLog> AIQueryLogs { get; set; }
-        public virtual DbSet<AuditLog> AuditLogs { get; set; }
+        //public virtual DbSet<AuditLog> AuditLogs { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public DbSet<Folder> Folder { get; set; }
         public virtual DbSet<AppUser> User { get; set; }

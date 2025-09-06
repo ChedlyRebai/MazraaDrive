@@ -8,8 +8,8 @@ namespace Api.Controllers
 
     public class MessageController : BaseController
     {
-        public MessageController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<MessageController> logger, IAuditLogRepository auditLogger = null)
-            : base(currentUser, unitOfWork, mapper, logger, auditLogger)
+        public MessageController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<MessageController> logger)
+            : base(currentUser, unitOfWork, mapper, logger )
         {
         }
     }

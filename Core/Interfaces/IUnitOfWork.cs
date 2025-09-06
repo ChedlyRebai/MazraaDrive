@@ -26,7 +26,6 @@ public interface IUnitOfWork
     public IUserRepository UserRepository { get; }
     public IDepartmentRepository DepartmentRepository { get; }
     public IPermissionsRepository PermissionsRepository { get; }
-    public IAuditLogRepository AuditLogRepository { get; }
     public IDocumentAccessService DocumentAccessService { get; }
     public UserManager<AppUser> UserManager { get; }
     public RoleManager<Role> RoleManager { get; }

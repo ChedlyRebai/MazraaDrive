@@ -49,6 +49,7 @@ public class GenerateToken : IGenerateToken
         }
 
         var Security = _configuration["Token:Secret"];
+
         var key = Encoding.ASCII.GetBytes(Security);
 
         SigningCredentials credentials = new SigningCredentials(
@@ -59,6 +60,8 @@ public class GenerateToken : IGenerateToken
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(7),
             Issuer = _configuration["Token:Issuer"],
+            Audience = _configuration["Token:Audience"],
+            
             SigningCredentials = credentials,
             NotBefore = DateTime.Now
         };

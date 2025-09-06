@@ -48,11 +48,14 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.AspnetcoreHttpcontext.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.Environment.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Enrichers.Thread.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Formatting.Elasticsearch.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Async.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Elasticsearch.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.File.dll
 /home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.PeriodicBatching.dll
@@ -160,6 +163,3 @@
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.pdb
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/ubuntu/Bureau/github/MazraaDrive/Api/obj/Debug/net9.0/ref/Api.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
-/home/ubuntu/Bureau/github/MazraaDrive/Api/bin/Debug/net9.0/Serilog.Sinks.Debug.dll

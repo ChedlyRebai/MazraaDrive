@@ -30,7 +30,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly RoleManager<Role> _roleManager;
     
     public IDocumentAccessService DocumentAccessService { get; }
-    public IAuditLogRepository AuditLogRepository { get; }
+    
     public UserManager<AppUser> UserManager => _userManager;
     public RoleManager<Role> RoleManager => _roleManager;
 
@@ -50,7 +50,7 @@ public class UnitOfWork : IUnitOfWork
         IDocument documentRepository,
         IUserRepository userRepository,
         IDocRequestRepository docRequestRepository,
-        IAuditLogRepository auditLogRepository,
+       
         ICurrentUserService currentUserService,
         IGenerateToken token
         // IRepository<AccessRequest> accessRequestRepository
@@ -71,7 +71,6 @@ public class UnitOfWork : IUnitOfWork
         HomeRepository = homeRepository ?? throw new ArgumentNullException(nameof(homeRepository));
         DocRequestRepository = docRequestRepository ?? throw new ArgumentNullException(nameof(docRequestRepository));
         AccessRequestRepository = accessRequestRepository ?? throw new ArgumentNullException(nameof(accessRequestRepository));
-        AuditLogRepository = auditLogRepository ?? throw new ArgumentNullException(nameof(auditLogRepository));
         this.token = token;
         CurrentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
         DocumentAccessService = documentAccessService ?? throw new ArgumentNullException(nameof(documentAccessService));

@@ -241,55 +241,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Core.Entities.AuditLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<string>("ActionType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TargetEntity")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AuditLogs");
-                });
-
             modelBuilder.Entity("Core.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -824,17 +775,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Core.Entities.AuditLog", b =>
-                {
-                    b.HasOne("Core.Entities.AppUser", "User")
-                        .WithMany("AuditLogs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Core.Entities.Document", b =>
                 {
                     b.HasOne("Core.Entities.Department", "Department")
@@ -1037,8 +977,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("AIQueryLogs");
 
                     b.Navigation("AccessRights");
-
-                    b.Navigation("AuditLogs");
 
                     b.Navigation("CreatedFolders");
 

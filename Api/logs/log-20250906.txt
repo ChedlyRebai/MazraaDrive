@@ -1,0 +1,14 @@
+2025-09-06 12:50:25.667 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-06 12:50:25.756 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-06 12:50:25.758 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-06 12:50:25.758 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-06 12:50:25.758 +01:00 [INF] Hosting environment: Development
+2025-09-06 12:50:25.759 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-06 12:50:28.242 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-06 12:50:28.304 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-06 12:50:28.308 +01:00 [INF] No cached response available for this request.
+2025-09-06 12:50:28.309 +01:00 [INF] The response could not be cached for this request.
+2025-09-06 12:50:28.315 +01:00 [INF] No cached response available for this request.
+2025-09-06 12:50:28.315 +01:00 [INF] The response could not be cached for this request.
+2025-09-06 12:50:28.319 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 77.5876ms
+2025-09-06 12:50:28.328 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
