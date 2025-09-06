@@ -87,10 +87,11 @@ namespace API.Controllers
             accessRequest.DecidedById = approverId;
             accessRequest.DecisionAt = DateTime.UtcNow;
             accessRequest.Message = $"Approved. Access Link: {accessLink}";
-
+            
             await _accessRequestRepository.UpdateAsync(accessRequest);
             await _unitOfWork.SaveChangesAsync();
 
+            
             return Ok(new
             {
                 Message = "Access request approved",

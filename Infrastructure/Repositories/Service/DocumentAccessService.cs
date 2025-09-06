@@ -50,13 +50,17 @@ namespace Infrastructure.Repositories.Service
             var cacheKey = $"doc_access_{token}";
             _cache.Set(cacheKey, accessLink, expiresAt);
 
+            
             // Also store in database for audit purposes (optional)
             await LogAccessLinkGeneration(documentId, userId, token, expiresAt,
                                         canRead, canUpdate, canDelete);
 
+
+
             // Generate the actual URL
-            var baseUrl = _configuration["AppSettings:BaseUrl"] ?? "https://yourapp.com";
-            return $"{baseUrl}/api/documents/access/{token}";
+            var baseUrl = _configuration["AppSettings:BaseUrl"] ?? "http://localhost:4200/home/doc-access";
+
+            return $"{baseUrl}/{token}";
         }
 
         public async Task<DocumentAccessLink?> ValidateAccessLink(string token)

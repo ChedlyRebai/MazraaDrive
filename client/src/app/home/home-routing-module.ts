@@ -62,12 +62,14 @@ const routes: Routes = [
         loadComponent() {
           return import('./file-viewer/file-viewer').then((m) => m.FileViewer);
         },
-      },  
+      },
 
       {
         path: 'doc-access/:token',
         loadComponent() {
-          return import('./document-access/document-access').then((m) => m.DocumentAccess);
+          return import('./document-access/document-access').then(
+            (m) => m.DocumentAccess
+          );
         },
       },
       {

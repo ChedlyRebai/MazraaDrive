@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@microsoft/signalr';
-
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AccessRequest } from '../../admin/access-request/access-request';
+import { AccessRequestCreateDto } from '../../shared/models/access-req';
 
 export interface AccessApproval {
   requestId: number;
@@ -16,21 +21,188 @@ export interface AccessLinkResponse {
 
 @Component({
   selector: 'app-document-access',
-  imports: [],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './document-access.html',
-  styleUrl: './document-access.css'
+  styleUrl: './document-access.css',
 })
+export class DocumentAccess implements OnInit {
+  private baseUrl = environment.apiUrl + '/DocumentAccess'; // Replace with your API URL
 
-export class DocumentAccess {
+  token: string = '';
+  accessLinkResponse: AccessLinkResponse | null = null;
 
-  private baseUrl = environment.apiUrl+'/documentaccess'; // Replace with your API URL
+  errorMessage: string | null = null;
+  isLoading: boolean = false;
+  approval: AccessApproval = { requestId: 0, validityDuration: 'PT24H' };
 
-  constructor(private http: HttpClient) {
+  generateAccessLink() {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.accessLinkResponse = null;
+    const params = new HttpParams()
+      .set('requestId', this.approval.requestId.toString())
+      .set('validityDuration', this.approval.validityDuration);
 
+    this.http
+      .post<AccessLinkResponse>(`${this.baseUrl}/generate`, null, { params })
+      .subscribe({
+        next: (response) => {
+          this.accessLinkResponse = response;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.errorMessage =
+            error.error?.message ||
+            'An error occurred while generating the access link.';
+          this.isLoading = false;
+        },
+      });
   }
 
-  // requestAccess(approval: AccessApproval): Observable<AccessLinkResponse> {
-  //   return this.http.post<AccessLinkResponse>(`${this.baseUrl}/access`, approval);
-  // }
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
+  requestAccess(
+    requestData: AccessRequestCreateDto
+  ): Observable<AccessRequestCreateDto> {
+    return this.http.post<AccessRequestCreateDto>(
+      `${this.baseUrl}/request/${requestData.documentId}`,
+      requestData
+    );
+  }
+
+  // Approve access request (admin/manager only)
+  approveAccess(
+    requestId: number,
+    validityDuration: string
+  ): Observable<AccessLinkResponse> {
+    const approveData: AccessApproval = {
+      requestId,
+      validityDuration,
+    };
+
+    return this.http.post<AccessLinkResponse>(
+      `${this.baseUrl}/approve/${requestId}`,
+      approveData
+    );
+  }
+
+  ngOnInit(): void {
+    this.token = this.route.snapshot.paramMap.get('token') || '';
+    this.getTokenAccessDDoc();
+    console.log('Token from route:', this.token);
+
+    const currentUrl = window.location.href;
+    this.token = this.parseAccessToken(currentUrl) || '';
+    this.action = this.parseAction(currentUrl);
+
+    if (!this.token) {
+      this.errorMessage = 'Invalid access link. Please check the URL.';
+      this.isLoading = false;
+      return;
+    }
+
+    this.validateAccess();
+  }
+
+  getTokenAccessDDoc() {
+    this.http
+      .get<AccessLinkResponse>(`${this.baseUrl}/access/${this.token}`)
+      .subscribe({
+        next: (response) => {
+          console.log('Fetched access link:', response);
+          this.accessLinkResponse = response;
+        },
+        error: (error) => {
+          this.errorMessage =
+            error.error?.message ||
+            'An error occurred while fetching the access link.';
+        },
+      });
+  }
+
+  action!: string;
+
+  hasAccess = false;
+
+  documentInfo: any;
+
+  validateAccess(): void {
+    this.accessDocument(this.token, this.action).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        this.hasAccess = true;
+        this.documentInfo = response;
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        this.hasAccess = false;
+        this.errorMessage =
+          error.error?.message || 'Access denied or link expired';
+        console.error('Access error:', error);
+      },
+    });
+  }
+
+  performAction(): void {
+    // Implement the actual document action based on permissions
+    switch (this.action) {
+      case 'read':
+        this.viewDocument();
+        break;
+      case 'update':
+        this.editDocument();
+        break;
+      case 'delete':
+        this.deleteDocument();
+        break;
+    }
+  }
+
+  private viewDocument(): void {
+    // Implement document viewing logic
+    console.log('Viewing document with token:', this.token);
+  }
+
+  private editDocument(): void {
+    // Implement document editing logic
+    console.log('Editing document with token:', this.token);
+  }
+
+  private deleteDocument(): void {
+    // Implement document deletion logic
+    console.log('Deleting document with token:', this.token);
+  }
+
+  getPendingRequests(): Observable<AccessRequest[]> {
+    return this.http.get<AccessRequest[]>(`${this.baseUrl}/pending`);
+  }
+
+  // Get user's own access requests
+  getUserRequests(): Observable<AccessRequest[]> {
+    return this.http.get<AccessRequest[]>(`${this.baseUrl}/my-requests`);
+  }
+
+  // Access document using token
+  accessDocument(token: string, action: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/access/${token}`, {
+      params: { action },
+    });
+  }
+
+  // Helper to convert hours to ISO duration format
+  hoursToDuration(hours: number): string {
+    return `PT${hours}H`;
+  }
+
+  // Helper to parse access token from URL
+  parseAccessToken(url: string): string | null {
+    const match = url.match(/access\/([^\/?]+)/);
+    return match ? match[1] : null;
+  }
+
+  // Helper to get action from URL
+  parseAction(url: string): string {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get('action') || 'read';
+  }
 }
