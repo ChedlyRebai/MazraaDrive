@@ -332,6 +332,52 @@ namespace Infrastructure.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("Core.Entities.DocumentAccessLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("CanRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("CanUpdate")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("DocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DocumentAccessLinks");
+                });
+
             modelBuilder.Entity("Core.Entities.DocumentRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -798,6 +844,23 @@ namespace Infrastructure.Migrations
                     b.Navigation("Folder");
 
                     b.Navigation("UploadedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.DocumentAccessLink", b =>
+                {
+                    b.HasOne("Core.Entities.Document", "Document")
+                        .WithMany()
+                        .HasForeignKey("DocumentId");
+
+                    b.HasOne("Core.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Entities.DocumentRequest", b =>

@@ -26,7 +26,8 @@ namespace Infrastructure.Repositories.Service
 
         public async Task<string> GenerateAccessLink(int documentId, string userId,
                                                    TimeSpan validityDuration,
-                                                   bool canRead, bool canUpdate, bool canDelete)
+                                                   bool canRead, bool canUpdate, bool canDelete
+                                                   )
         {
             // Generate secure token
             var token = GenerateSecureToken();
@@ -41,7 +42,8 @@ namespace Infrastructure.Repositories.Service
                 CanRead = canRead,
                 CanUpdate = canUpdate,
                 CanDelete = canDelete,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+              
             };
 
             // Store in cache with expiration

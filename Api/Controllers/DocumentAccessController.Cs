@@ -69,8 +69,8 @@ namespace API.Controllers
             if (accessRequest == null)
                 return NotFound("Access request not found");
 
-            var approverId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
+            // var approverId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var approverId = _currentUser.UserId;
             // Generate access link
             var accessLink = await _accessService.GenerateAccessLink(
                 accessRequest.DocumentId,
@@ -79,12 +79,14 @@ namespace API.Controllers
                 accessRequest.RequestRead,
                 accessRequest.RequestUpdate ?? false,
                 accessRequest.RequestDelete
+
             );
 
             // Update access request status
             accessRequest.Status = "Approved";
             accessRequest.DecidedById = approverId;
             accessRequest.DecisionAt = DateTime.UtcNow;
+            accessRequest.Message = $"Approved. Access Link: {accessLink}";
 
             await _accessRequestRepository.UpdateAsync(accessRequest);
             await _unitOfWork.SaveChangesAsync();
@@ -111,6 +113,7 @@ namespace API.Controllers
             // Get document and serve based on action
             return Ok(new
             {
+                Action = action,
                 Message = $"Access granted for {action} action",
                 DocumentId = accessLink.DocumentId,
                 ValidUntil = accessLink.ExpiresAt

@@ -18,6 +18,7 @@ namespace Infrastructure.Data
         public virtual DbSet<AccessRight> AccessRights { get; set; }
         public virtual DbSet<Folder> Folders { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<DocumentAccessLink> DocumentAccessLinks { get; set; }
         public virtual DbSet<DocumentRequest> DocumentRequests { get; set; }
         public virtual DbSet<AIQueryLog> AIQueryLogs { get; set; }
         //public virtual DbSet<AuditLog> AuditLogs { get; set; }

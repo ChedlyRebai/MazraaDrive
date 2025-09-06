@@ -1,3 +1,4 @@
+import { DocumentAccess } from './document-access/document-access';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Demandes } from './demandes/demandes';
@@ -31,8 +32,9 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadComponent() {
-          return import('./chat-doc/chat-doc').then((m) => m.ChatDoc);
+        async loadComponent() {
+          const m = await import('./chat-doc/chat-doc');
+          return m.ChatDoc;
         },
       },
       {
@@ -59,6 +61,13 @@ const routes: Routes = [
         path: 'file/:id',
         loadComponent() {
           return import('./file-viewer/file-viewer').then((m) => m.FileViewer);
+        },
+      },  
+
+      {
+        path: 'doc-access/:token',
+        loadComponent() {
+          return import('./document-access/document-access').then((m) => m.DocumentAccess);
         },
       },
       {
