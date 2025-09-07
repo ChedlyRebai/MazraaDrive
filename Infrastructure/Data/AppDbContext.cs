@@ -13,6 +13,7 @@ namespace Infrastructure.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        public DbSet<DocumentChunk> DocumentChunks { get; set; }
         public virtual DbSet<AccessRequest> AccessRequests { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<AccessRight> AccessRights { get; set; }
@@ -26,6 +27,7 @@ namespace Infrastructure.Data
         public DbSet<Folder> Folder { get; set; }
         public virtual DbSet<AppUser> User { get; set; }
 
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

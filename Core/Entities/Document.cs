@@ -22,7 +22,7 @@ public class Document : BaseEntity<int>
     [MaxLength(500)]
     public string StoragePath { get; set; }
 
-    
+
     public int? FolderId { get; set; }  // FIXED: Changed from Guid to int
 
     [Required]
@@ -39,9 +39,14 @@ public class Document : BaseEntity<int>
     // Navigation properties
     [ForeignKey(nameof(FolderId))]
     public virtual Folder? Folder { get; set; }
-    
+
     [ForeignKey(nameof(UploadedById))]
     public virtual AppUser UploadedBy { get; set; }
-    
+
     public virtual ICollection<DocumentRequest> DocumentRequests { get; set; }
+
+
+    public virtual ICollection<DocumentChunk> Chunks { get; set; } = new List<DocumentChunk>();
+    public bool IsIndexed { get; set; } = false;
+    public DateTime? IndexedAt { get; set; }
 }

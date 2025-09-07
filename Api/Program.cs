@@ -103,14 +103,6 @@ builder.Services.AddHttpContextAccessor();
 // Register infrastructure services
 builder.Services.infrastructureRegistration(builder.Configuration);
 
-//  builder.Services.AddIdentity<AppUser, AppRole>()
-//      .AddEntityFrameworkStores<AppDbContext>()
-//      .AddDefaultTokenProviders();
-
-// Add Identity services
-// builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
-//     .AddEntityFrameworkStores<AppDbContext>()
-//     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddResponseCompression();
@@ -123,20 +115,7 @@ builder.Services.AddOpenApi();
 // builder.Services.AddScalarApiReference();
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
-// app.Use(async (context, next) =>
-// {
-//     // Log request details
-//     Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
 
-//     var ipAddress = context?.Connection?.Re  moteIpAddress?.ToString();
-//     var userAgent = context?.Request?.Headers["User-Agent"].ToString();
-//     Console.WriteLine($"Request IP: {ipAddress}");
-//     Console.WriteLine($"Request User-Agent: {userAgent}");
-//     await next();
-
-//     // Log response details
-//     Console.WriteLine($"Response: {context.Response.StatusCode}");
-// });
 
 
 
@@ -180,31 +159,53 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //         connectionString, ServerVersion.AutoDetect(connectionString)
 //     ));
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<Core.Entities.Role>>();
+    await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    // seed roles (optional)
+    try
+    {
+        var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
+        if (roleManager != null)
+        {
+            await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+        }
+    }
+    catch
+    {
+        // log or ignore
+    }
+
+    // seed departments
+    try
+    {
+        var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
+        await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
+    }
+    catch
+    {
+        // log or ignore
+    }
+}
+// ...existing code...
+
+
+
+
+
+
+
 app.UseResponseCompression();
 app.UseResponseCaching();
 app.MapControllers();
 app.MapHub<Api.Hubs.DepartmentHub>("/hubs/departments");
 app.Run();
-
-
-
-// public class GlobalAuditMiddleware
-// {
-//     private readonly RequestDelegate _next;
-//     public GlobalAuditMiddleware(RequestDelegate next)
-//     {
-//         _next = next;
-//     }
-//     public async Task InvokeAsync(HttpContext context, IAuditLogger auditLogger)
-//     {
-//         // Continue request
-//         await _next(context);
-
-//         // Example: log access to restricted endpoint
-//         if (context.Response.StatusCode == 403)
-//         {
-//             await auditLogger.LogAsync("AccessDenied",
-//                 $"Access denied to {context.Request.Path}");
-//         }
-//     }
-// }

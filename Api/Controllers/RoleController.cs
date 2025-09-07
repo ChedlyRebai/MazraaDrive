@@ -4,23 +4,30 @@ using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
-    
     public class RoleController : BaseController
     {
-        
-        public RoleController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleController> logger)
+
+        private readonly RoleManager<Role> roleManager;
+        public RoleController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleController> logger, RoleManager<Role> roleManager)
             : base(currentUser, unitOfWork, mapper, logger)
         {
+            this.roleManager = roleManager;
         }
 
+
         [HttpGet("test")]
+        [Authorize]
         public async Task<string> TestApi()
         {
             _logger.LogInformation("Testing API endpoint");
+
             return "CHEDLY - API is working!";
         }
 
@@ -180,7 +187,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting role with ID {RoleId}", id);   
+                _logger.LogError(ex, "Error deleting role with ID {RoleId}", id);
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
@@ -205,6 +212,6 @@ namespace Api.Controllers
                 return StatusCode(500, new ResponseAPI(500, ex.Message));
             }
         }
-        
+
     }
 }
