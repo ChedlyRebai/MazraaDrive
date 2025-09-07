@@ -94,14 +94,7 @@ public static class InfrastructureRegistration
         // Register UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddAuthorization(op =>
-        {
-            op.AddPolicy("ReuireManagerRole",
-            policy => policy.RequireRole("Manager", "Admin", "SuperAdmin", "AuditManager",
-            "FinanceManager", "ProductionManager", "HRManager", "LogisticsManager", "ITManager", "LegalManager",
-            "QualityManager", "SalesManager", "MarketingManager"
-            ));
-        });
+        
 
         // Configure Identity cookie
         services.ConfigureApplicationCookie(options =>

@@ -23,7 +23,7 @@ namespace Api.Controllers
 
 
         [HttpGet("test")]
-        [Authorize]
+        [Authorize(Policy = "requireManagerRole")]
         public async Task<string> TestApi()
         {
             _logger.LogInformation("Testing API endpoint");

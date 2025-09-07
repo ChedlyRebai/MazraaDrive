@@ -113,6 +113,15 @@ builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
      .AllowCredentials()));
 builder.Services.AddOpenApi();
 // builder.Services.AddScalarApiReference();
+
+builder.Services.AddAuthorization(op =>
+        {
+            op.AddPolicy("RequireManagerRole",
+            policy => policy.RequireRole("Manager", "Admin", "SuperAdmin", "AuditManager",
+            "FinanceManager", "ProductionManager", "HRManager", "LogisticsManager", "ITManager", "LegalManager",
+            "QualityManager", "SalesManager", "MarketingManager"
+            ));
+        });
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
 
@@ -163,9 +172,10 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var roleManager = services.GetRequiredService<RoleManager<Core.Entities.Role>>();
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
     await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
 }
+
 
 using (var scope = app.Services.CreateScope())
 {

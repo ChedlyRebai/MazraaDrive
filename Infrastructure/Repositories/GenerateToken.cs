@@ -17,7 +17,7 @@ public class GenerateToken : IGenerateToken
     {
         _configuration = configuration;
     }
-    public Task<string> GetAndCreateToken(AppUser user)
+    public Task<string> GetAndCreateToken(AppUser user,IList<string> roles,string departmentId = null)
     {
         List<Claim> claims = new List<Claim>
         {
@@ -38,10 +38,21 @@ public class GenerateToken : IGenerateToken
             claims.Add(new Claim("Cin", user.Cin.ToString()));
         }
 
+         if (!string.IsNullOrEmpty(departmentId))
+            {
+                claims.Add(new Claim("DepartmentId", departmentId));
+            }
+
         if (!string.IsNullOrEmpty(user.Email))
         {
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
         }
+
+
+         foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
         Console.WriteLine("***********************************");
         foreach (var claim in claims)
         {

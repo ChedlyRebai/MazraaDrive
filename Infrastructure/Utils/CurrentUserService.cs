@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Interfaces;
 using Infrastructure.Utils;
+using System.Security.Claims;
 
 namespace Infrastructure.Services
 {
@@ -17,6 +18,7 @@ namespace Infrastructure.Services
         private string? _userName;
         private string? _departmentId;
         private string? _roleId;
+         private List<string> _userRoles;
         private bool _initialized;
 
         public CurrentUserService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
@@ -33,8 +35,11 @@ namespace Infrastructure.Services
                 ValidateAudience = !string.IsNullOrEmpty(configuration["Token:Audience"]),
                 ValidAudience = configuration["Token:Audience"],
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.FromMinutes(2)
+                ClockSkew = TimeSpan.FromMinutes(2),
+                RoleClaimType = ClaimTypes.Role
             };
+
+             _userRoles = new List<string>();
         }
 
         private void EnsureInitialized()
@@ -59,7 +64,10 @@ namespace Infrastructure.Services
                 Console.WriteLine("departmenid****************************************************************************", principal.FindFirst("DepartmentId")?.Value);
                 _departmentId = principal.FindFirst("DepartmentId")?.Value;
 
-
+                _userRoles = principal.Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
                 // Extract RoleId (custom claim)
                 _roleId = principal.FindFirst("RoleId")?.Value;
 
@@ -69,7 +77,7 @@ namespace Infrastructure.Services
                 _userName = principal.Identity?.Name ?? principal.FindFirst("name")?.Value;
                 // _departmentId=principal.Identity?.
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Token validation failed: " + ex.Message);
                 // invalid token => no current user
@@ -77,6 +85,8 @@ namespace Infrastructure.Services
                 _departmentId = null;
                 _userId = null;
                 _userName = null;
+                _userRoles = new List<string>();
+
             }
         }
 
@@ -85,10 +95,29 @@ namespace Infrastructure.Services
         public string? UserId { get { EnsureInitialized(); return _userId; } }
         public string? UserName { get { EnsureInitialized(); return _userName; } }
         public bool IsAuthenticated { get { EnsureInitialized(); return !string.IsNullOrEmpty(_userId); } }
-
+        public List<string> UserRoles { get { EnsureInitialized(); return _userRoles; } }
         public string? DepartmentId { get { EnsureInitialized(); return _departmentId; } }
 
         public string? RoleId { get { EnsureInitialized(); return _roleId; } }
+        
+
+        public bool IsInRole(string role)
+        {
+            EnsureInitialized();
+            return _userRoles.Contains(role);
+        }
+
+        public bool IsInAnyRole(params string[] roles)
+        {
+            EnsureInitialized();
+            return roles.Any(role => _userRoles.Contains(role));
+        }
+
+        public bool IsInAllRoles(params string[] roles)
+        {
+            EnsureInitialized();
+            return roles.All(role => _userRoles.Contains(role));
+        }
     }
 
 

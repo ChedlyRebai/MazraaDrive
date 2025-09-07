@@ -3128,3 +3128,523 @@ RETURNING "Id";
 2025-09-07 13:08:06.607 +01:00 [INF] The response could not be cached for this request.
 2025-09-07 13:08:06.612 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 83.3674ms
 2025-09-07 13:08:06.622 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-07 13:29:07.863 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-07 13:29:07.966 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-07 13:29:08.148 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:29:08.150 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:29:08.150 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:29:08.665 +01:00 [INF] Executed DbCommand (34ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.744 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.746 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.747 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.748 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.748 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.749 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.750 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.750 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.751 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.752 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.752 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.754 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.754 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.755 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.756 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.757 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.758 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.759 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.760 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.762 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.763 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:29:08.779 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-07 13:29:08.877 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-07 13:30:07.688 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-07 13:30:07.791 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-07 13:30:07.974 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:30:07.976 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:30:07.976 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-07 13:30:08.474 +01:00 [INF] Executed DbCommand (37ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.557 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.560 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.561 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.562 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.563 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.564 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.565 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.566 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.567 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.567 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.568 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.569 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.570 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.571 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.572 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.572 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.573 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.574 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.575 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.577 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.578 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.664 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.665 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.666 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.667 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.668 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.669 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.670 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.671 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.672 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.673 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.674 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.675 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.676 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.677 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.679 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.680 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.681 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.682 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.683 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.684 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.685 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.686 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Description", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-09-07 13:30:08.716 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-07 13:30:08.902 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.905 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.906 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.906 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.907 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.907 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.908 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.908 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.909 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.909 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.910 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.910 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.911 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.911 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.912 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:08.913 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__name_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."Name" = @__name_0)
+2025-09-07 13:30:09.055 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-07 13:30:09.148 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-07 13:30:09.152 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-07 13:30:09.153 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-07 13:30:09.153 +01:00 [INF] Hosting environment: Development
+2025-09-07 13:30:09.153 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-07 13:30:10.467 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-07 13:30:10.535 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:30:10.543 +01:00 [INF] No cached response available for this request.
+2025-09-07 13:30:10.544 +01:00 [INF] The response could not be cached for this request.
+2025-09-07 13:30:10.552 +01:00 [INF] No cached response available for this request.
+2025-09-07 13:30:10.553 +01:00 [INF] The response could not be cached for this request.
+2025-09-07 13:30:10.558 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 92.3602ms
+2025-09-07 13:30:10.568 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-07 13:35:45.805 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:35:45.812 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:35:45.814 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:35:45.817 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:35:45.818 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 13.0035ms
+2025-09-07 13:36:11.427 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:36:11.429 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:36:11.430 +01:00 [INF] No cached response available for this request.
+2025-09-07 13:36:11.430 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-07 13:36:11.440 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-07 13:36:11.630 +01:00 [INF] Testing API endpoint
+2025-09-07 13:36:11.636 +01:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2025-09-07 13:36:11.653 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 210.1682ms
+2025-09-07 13:36:11.654 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-07 13:36:11.654 +01:00 [INF] The response could not be cached for this request.
+2025-09-07 13:36:11.656 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 200 null text/plain; charset=utf-8 228.0774ms
+2025-09-07 13:37:09.336 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:37:09.337 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:37:09.338 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:37:09.338 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:37:09.338 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 1.9413ms
+2025-09-07 13:37:29.958 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:37:29.960 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:37:29.961 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:37:29.961 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:37:29.961 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 3.7546ms
+2025-09-07 13:37:30.764 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:37:30.765 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:37:30.765 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:37:30.765 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:37:30.765 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 0.8905ms
+2025-09-07 13:38:50.990 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:38:50.991 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:38:50.991 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:38:50.991 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:38:50.991 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 1.0528ms
+2025-09-07 13:39:24.597 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:39:24.597 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:39:24.598 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:39:24.598 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:39:24.598 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 1.1302ms
+2025-09-07 13:39:25.143 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:39:25.145 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:39:25.145 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:39:25.145 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:39:25.146 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 2.4885ms
+2025-09-07 13:43:28.109 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:43:28.110 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:43:28.110 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:43:28.110 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:43:28.110 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 0.7407ms
+2025-09-07 13:44:22.832 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:44:22.832 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:44:22.832 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:44:22.833 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:44:22.833 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 0.8333ms
+2025-09-07 13:45:03.076 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:45:03.076 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:45:03.076 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:45:03.076 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:45:03.076 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 0.5753ms
+2025-09-07 13:45:03.894 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Role/test - null null
+2025-09-07 13:45:03.894 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-07 13:45:03.894 +01:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Manager|Admin|SuperAdmin|AuditManager|FinanceManager|ProductionManager|HRManager|LogisticsManager|ITManager|LegalManager|QualityManager|SalesManager|MarketingManager)
+2025-09-07 13:45:03.894 +01:00 [INF] AuthenticationScheme: Identity.Application was challenged.
+2025-09-07 13:45:03.894 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Role/test - 401 0 null 0.6087ms
