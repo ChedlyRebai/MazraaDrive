@@ -1,0 +1,11 @@
+export const AdminsRoles = ['Admin', 'SuperAdmin',  'ITAdmin'];
+export const ManagersRoles = ['Manager', 'HR', 'FinanceManager', 'ITAdmin', 'LogisticsManager', 'SalesManager', 'MarketingManager', 'SupportManager', 'ProductionManager',"QualityManager","SalesAdmin"];
+export const HRRoles = ['HR', 'Manager', 'SuperAdmin', 'Admin'];
+export const FinanceRoles = ['FinanceManager', 'Manager', 'SuperAdmin', 'Admin'];
+export const ITRoles = ['ITAdmin', 'Manager', 'SuperAdmin', 'Admin'];
+export const LogisticsRoles = ['LogisticsManager', 'Manager', 'SuperAdmin', 'Admin'];
+export const SalesRoles = ['SalesManager', 'SalesAdmin', 'Manager', 'SuperAdmin', 'Admin'];
+export const MarketingRoles = ['MarketingManager', 'Manager', 'SuperAdmin', 'Admin'];
+export const SupportRoles = ['SupportManager', 'Manager', 'SuperAdmin', 'Admin'];
+export const ProductionRoles = ['ProductionManager', 'QualityManager', 'Manager', 'SuperAdmin', 'Admin'];
+export const QualityRoles = ['QualityManager', 'ProductionManager', 'Manager', 'SuperAdmin', 'Admin'];  

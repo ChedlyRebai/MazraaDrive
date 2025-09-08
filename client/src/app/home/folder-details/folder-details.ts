@@ -557,8 +557,8 @@ export class FolderDetails implements OnInit {
         icon: 'pi pi-download',
       },
       {
-        label: 'Partager',
-        icon: 'pi pi-share-alt',
+        label: 'Copier',
+        icon: 'pi pi-copy',
       },
       {
         separator: true,

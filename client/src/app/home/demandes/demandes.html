@@ -70,6 +70,7 @@
   <p-toast />
   <p-tabs value="rec">
     <p-tablist>
+      @if (userService.currentUser.role === '') {}
       <p-tab value="rec">Recevoir</p-tab>
       <p-tab value="env">Envoyer</p-tab>
     </p-tablist>

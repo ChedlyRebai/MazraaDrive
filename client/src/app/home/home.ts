@@ -16,7 +16,7 @@ import { UserService } from '../core/services/user-service';
 })
 export class Home implements OnInit {
   //configService: AppConfigService = inject(AppConfigService);
-  constructor(private userService: UserService) {}
+  constructor(public userService: UserService) {}
   primeng: PrimeNG = inject(PrimeNG);
 
   //isNewsActive = computed(() => this.configService.newsActive());
@@ -33,7 +33,7 @@ export class Home implements OnInit {
   });
 
   ngOnInit(): void {
-    this.getCurrentUser();
+    this.userService.getCurrentUser();
   }
   hideMenu() {
     //this.configService.hideMenu();
@@ -41,13 +41,7 @@ export class Home implements OnInit {
   }
   mobileMenuOpen = false;
   pageTitle = 'Accueil';
-  currentUser = {
-    id: "",
-    departmentId: 0,
-    role: "",
-    name: "",
-    avatar: "/assets/avatar.png"
-  };
+  
   navLinks: {
     label: string;
     path: string;
@@ -61,18 +55,7 @@ export class Home implements OnInit {
     { label: 'Admin', path: '/admin', icon: 'pi pi-cog' },
   ];
 
-  getCurrentUser() {
-    this.userService.getCurrentUser().subscribe((user: any) => {
-      console.log("current user:",user);
-      this.currentUser = {
-        id: user.id,
-        departmentId: user.departmentId,
-        name: user.name,
-        role: user.role,
-        avatar: user.avatar || '/assets/avatar.png',
-      };
-    });
-  }
+  
 
 
    getInitials(name: string) {
@@ -85,4 +68,11 @@ export class Home implements OnInit {
   }
 
   logout() {}
+  currentUser = {
+    id: "",
+    departmentId: 0,
+    role: "",
+    name: "",
+    avatar: "/assets/avatar.png"
+  };
 }

@@ -1,3 +1,4 @@
+import { UserService } from './../../core/services/user-service';
 import { JwtService } from './../../core/services/jwt-service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -280,6 +281,7 @@ export class Demandes implements OnInit {
 
   documentReqStat: DocumentRequestStatsDto = {} as DocumentRequestStatsDto;
   constructor(
+    public userService: UserService,
     public documentRequsetService: DocumentRequsetService,
     private messageService: MessageService,
     private depService: DepartmentService,
@@ -294,6 +296,7 @@ export class Demandes implements OnInit {
     this.getMyallDocReq();
     this.documentRequsetService.getMyDepartmentDocumentRequests();
     this.getStats();
+    this.userService.getCurrentUser();
   }
 
 

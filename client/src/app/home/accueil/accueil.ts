@@ -141,8 +141,8 @@ export class Accueil implements OnInit {
       command: () => this.editFolder(this.selectedFolder!),
     },
     {
-      label: 'Partager',
-      icon: 'pi pi-share-alt',
+      label: 'Copier',
+      icon: 'pi pi-copy',
       command: () => this.shareFolder(this.selectedFolder!),
     },
     { separator: true },

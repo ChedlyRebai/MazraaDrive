@@ -10,6 +10,15 @@ import { environment } from '../../../environments/environment';
 export class UserService {
   constructor(private http: HttpClient) {}
 
+
+  currentUser = {
+    id: "",
+    departmentId: 0,
+    role: "",
+    name: "",
+    avatar: "/assets/avatar.png"
+  };
+
   baseUrl = environment.apiUrl + '/User';
   private users = new BehaviorSubject<UserPagedResult>({} as UserPagedResult);
   users$ = this.users.asObservable();
@@ -67,6 +76,16 @@ export class UserService {
   }
 
   getCurrentUser() {
-    return this.http.get(`http://localhost:5108/api/Account/me`, { withCredentials: true });
+    return this.http.get(`http://localhost:5108/api/Account/me`, { withCredentials: true }).subscribe((user: any) => {
+      console.log("current user:",user);
+      this.currentUser = {
+        id: user.id,
+        departmentId: user.departmentId,
+        name: user.name,
+        role: user.role,
+        avatar: user.avatar || '/assets/avatar.png',
+      };
+    }
+    );
   }
 }

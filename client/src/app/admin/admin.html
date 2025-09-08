@@ -1,94 +1,161 @@
 <!-- Admin Layout -->
 <div class="min-h-screen" [class.overflow-hidden]="mobileMenuOpen">
   <!-- Mobile Sidebar (Overlay) -->
-  <div *ngIf="mobileMenuOpen" class="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 bg-black/50" (click)="mobileMenuOpen=false"></div>
-    <div class="fixed inset-y-0 left-0 w-72 bg-gray-900 flex flex-col shadow-xl">
+  <div
+    *ngIf="mobileMenuOpen"
+    class="fixed inset-0 z-50 lg:hidden"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="fixed inset-0 bg-black/50"
+      (click)="mobileMenuOpen = false"
+    ></div>
+    <div
+      class="fixed inset-y-0 left-0 w-72 bg-gray-900 flex flex-col shadow-xl"
+    >
       <div class="flex items-center justify-between h-16 px-5">
-        <img src="/logo-elmazraa.webp" class="h-12" alt="Logo"/>
-        <button pButton icon="pi pi-times" class="p-button-text p-button-rounded text-gray-300"
-                (click)="mobileMenuOpen=false" aria-label="Fermer"></button>
+        <img src="/logo-elmazraa.webp" class="h-12" alt="Logo" />
+        <button
+          pButton
+          icon="pi pi-times"
+          class="p-button-text p-button-rounded text-gray-300"
+          (click)="mobileMenuOpen = false"
+          aria-label="Fermer"
+        ></button>
       </div>
       <nav class="flex-1 overflow-y-auto px-3 pb-4">
         <ul class="space-y-1">
           <li *ngFor="let l of navLinks">
-            <a [routerLink]="l.path"
-               routerLinkActive="!text-white bg-gray-800"
-               [routerLinkActiveOptions]="{exact:true}"
-               (click)="mobileMenuOpen=false"
-               class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition">
-              <i class="{{ l.icon }} text-lg text-gray-500 group-hover:text-gray-300"></i>
+            <a
+              [routerLink]="l.path"
+              routerLinkActive="!text-white bg-gray-800"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="mobileMenuOpen = false"
+              class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition"
+            >
+              <i
+                class="{{
+                  l.icon
+                }} text-lg text-gray-500 group-hover:text-gray-300"
+              ></i>
               <span>{{ l.label }}</span>
-              <p-tag *ngIf="l.badge" [value]="l.badge !== undefined ? l.badge.toString() : ''" severity="info" class="ml-auto"/>
+              <p-tag
+                *ngIf="l.badge"
+                [value]="l.badge !== undefined ? l.badge.toString() : ''"
+                severity="info"
+                class="ml-auto"
+              />
             </a>
           </li>
         </ul>
       </nav>
       <div class="border-t border-gray-800 p-4 flex items-center gap-3">
         <p-avatar
-          [image]="currentUser.avatar"
-          [label]="getInitials(currentUser.name)"
+          [image]="userService.currentUser.avatar"
+          [label]="getInitials(userService.currentUser.name)"
           shape="circle"
           size="normal"
         />
         <div class="text-sm text-gray-300 leading-tight">
           <div class="font-medium">
-            {{ currentUser!.name || "Utilisateur" }}
+            {{ userService.currentUser!.name || "Utilisateur" }}
           </div>
-          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
+          <div class="text-xs text-gray-500">
+            {{ userService.currentUser!.role }}
+          </div>
         </div>
-        <button pButton icon="pi pi-sign-out" class="ml-auto p-button-text p-button-sm"
-                (click)="logout()" aria-label="Déconnexion"></button>
+        <button
+          pButton
+          icon="pi pi-sign-out"
+          class="ml-auto p-button-text p-button-sm"
+          (click)="logout()"
+          aria-label="Déconnexion"
+        ></button>
       </div>
     </div>
   </div>
 
   <!-- Desktop Sidebar -->
-  <aside class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col bg-gray-900">
+  <aside
+    class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col bg-gray-900"
+  >
     <div class="flex flex-col flex-1 overflow-y-auto">
       <div class="h-16 flex items-center justify-center px-4">
-        <img src="/logo-elmazraa.webp" class="h-14" alt="Logo"/>
+        <img src="/logo-elmazraa.webp" class="h-14" alt="Logo" />
       </div>
       <nav class="flex-1 px-4 pb-4">
         <ul class="space-y-1">
           <li class="mt-2" *ngFor="let l of navLinks">
-            <a [routerLink]="l.path"
-               routerLinkActive="bg-gray-800 text-white"
-               [routerLinkActiveOptions]="{exact:true}"
-               class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition">
-              <i class="{{ l.icon }} text-lg text-gray-500 group-hover:text-gray-300"></i>
+            <a
+              [routerLink]="l.path"
+              routerLinkActive="bg-gray-800 text-white"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition"
+            >
+              <i
+                class="{{
+                  l.icon
+                }} text-lg text-gray-500 group-hover:text-gray-300"
+              ></i>
               <span class="truncate">{{ l.label }}</span>
-              <p-tag *ngIf="l.badge" [value]="l.badge !== undefined ? l.badge.toString() : ''" severity="info" class="ml-auto"/>
+              <p-tag
+                *ngIf="l.badge"
+                [value]="l.badge !== undefined ? l.badge.toString() : ''"
+                severity="info"
+                class="ml-auto"
+              />
             </a>
           </li>
         </ul>
       </nav>
       <div class="mt-auto border-t border-gray-800 p-4 flex items-center gap-3">
         <p-avatar
-          [image]="currentUser.avatar"
-          [label]="getInitials(currentUser.name)"
+          [image]="userService.currentUser.avatar"
+          [label]="getInitials(userService.currentUser.name)"
           shape="circle"
           size="normal"
         />
         <div class="text-sm text-gray-300 leading-tight">
           <div class="font-medium">
-            {{ currentUser!.name || "Utilisateur" }}
+            {{ userService.currentUser!.name || "Utilisateur" }}
           </div>
-          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
+          <div class="text-xs text-gray-500">
+            {{ userService.currentUser!.role }}
+          </div>
         </div>
-        <button pButton icon="pi pi-sign-out" class="ml-auto p-button-text p-button-sm"
-                (click)="logout()" aria-label="Déconnexion"></button>
+        <button
+          pButton
+          icon="pi pi-sign-out"
+          class="ml-auto p-button-text p-button-sm"
+          (click)="logout()"
+          aria-label="Déconnexion"
+        ></button>
       </div>
     </div>
   </aside>
 
   <!-- Top Bar (Mobile) -->
-  <header class="sticky top-0 z-30 flex items-center gap-4 bg-gray-900 px-4 py-3 shadow-sm lg:hidden">
-    <button pButton icon="pi pi-bars" class="p-button-text p-button-rounded text-gray-300"
-            (click)="mobileMenuOpen=true" aria-label="Ouvrir le menu"></button>
-    <div class="font-semibold text-white text-sm flex-1">{{ pageTitle || 'Administration' }}</div>
-    <button pButton icon="pi pi-user" class="p-button-text p-button-rounded text-gray-300"
-            (click)="mobileMenuOpen=true" aria-label="Profil"></button>
+  <header
+    class="sticky top-0 z-30 flex items-center gap-4 bg-gray-900 px-4 py-3 shadow-sm lg:hidden"
+  >
+    <button
+      pButton
+      icon="pi pi-bars"
+      class="p-button-text p-button-rounded text-gray-300"
+      (click)="mobileMenuOpen = true"
+      aria-label="Ouvrir le menu"
+    ></button>
+    <div class="font-semibold text-white text-sm flex-1">
+      {{ pageTitle || "Administration" }}
+    </div>
+    <button
+      pButton
+      icon="pi pi-user"
+      class="p-button-text p-button-rounded text-gray-300"
+      (click)="mobileMenuOpen = true"
+      aria-label="Profil"
+    ></button>
   </header>
 
   <!-- Main Content -->

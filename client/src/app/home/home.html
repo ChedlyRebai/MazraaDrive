@@ -53,16 +53,16 @@
       <div class="border-t border-gray-800 p-4 flex items-center gap-3">
         <!-- <p-avatar image="/assets/avatar.png" shape="circle" size="large"></p-avatar> -->
         <p-avatar
-          [image]="currentUser.avatar"
-          [label]="getInitials(currentUser.name)"
+          [image]="userService.currentUser.avatar"
+          [label]="getInitials(userService.currentUser.name)"
           shape="circle"
           size="normal"
         />
         <div class="text-sm text-gray-300 leading-tight">
           <div class="font-medium">
-            {{ currentUser!.name || "Utilisateur" }}
+            {{ userService.currentUser!.name || "Utilisateur" }}
           </div>
-          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
+          <div class="text-xs text-gray-500">{{ userService.currentUser!.role }}</div>
         </div>
         <button
           pButton
@@ -110,16 +110,16 @@
       </nav>
       <div class="mt-auto border-t border-gray-800 p-4 flex items-center gap-3">
         <p-avatar
-          [image]="currentUser.avatar"
-          [label]="getInitials(currentUser.name)"
+          [image]="userService.currentUser.avatar"
+          [label]="getInitials(userService.currentUser.name)"
           shape="circle"
           size="normal"
         />
         <div class="text-sm text-gray-300 leading-tight">
           <div class="font-medium">
-            {{ currentUser!.name || "Utilisateur" }}
+            {{ userService.currentUser!.name || "Utilisateur" }}
           </div>
-          <div class="text-xs text-gray-500">{{ currentUser!.role }}</div>
+          <div class="text-xs text-gray-500">{{ userService.currentUser!.role }}</div>
         </div>
         <button
           pButton

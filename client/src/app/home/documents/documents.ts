@@ -544,8 +544,8 @@ export class Documents implements OnInit {
         command: () => this.downloadSelectedItem(),
       },
       {
-        label: 'Partager',
-        icon: 'pi pi-share-alt',
+        label: 'Copier',
+        icon: 'pi pi-copy',
         command: () => this.shareSelectedItem(),
       },
       {

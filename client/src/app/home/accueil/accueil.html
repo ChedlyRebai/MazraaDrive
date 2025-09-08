@@ -310,7 +310,7 @@
                       icon="pi pi-share-alt" 
                       size="small"
                       [outlined]="true"
-                      pTooltip="Partager"
+                      pTooltip="Copier"
                     />
                   </div>
                 </div>
@@ -402,10 +402,10 @@
                         (click)="editFolder(folder); $event.stopPropagation()"
                       />
                       <p-button
-                        icon="pi pi-share-alt"
+                        icon="pi pi-copy"
                         size="small"
                         [outlined]="true"
-                        pTooltip="Partager"
+                        pTooltip="Copier"
                         (click)="shareFolder(folder); $event.stopPropagation()"
                       />
                     </div>
@@ -516,10 +516,10 @@
                           (click)="editFolder(folder); $event.stopPropagation()"
                         />
                         <p-button
-                          icon="pi pi-share-alt"
+                          icon="pi pi-copy"
                           [text]="true"
                           size="small"
-                          pTooltip="Partager"
+                          pTooltip="Copier"
                           (click)="
                             shareFolder(folder); $event.stopPropagation()
                           "
