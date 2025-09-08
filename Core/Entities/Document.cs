@@ -46,7 +46,7 @@ public class Document : BaseEntity<int>
     public virtual ICollection<DocumentRequest> DocumentRequests { get; set; }
 
 
-    public virtual ICollection<DocumentChunk> Chunks { get; set; } = new List<DocumentChunk>();
-    public bool IsIndexed { get; set; } = false;
-    public DateTime? IndexedAt { get; set; }
+    // public virtual ICollection<DocumentChunk> Chunks { get; set; } = new List<DocumentChunk>();
+    // public bool IsIndexed { get; set; } = false;
+    // public DateTime? IndexedAt { get; set; }
 }
