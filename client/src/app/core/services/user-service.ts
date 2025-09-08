@@ -66,8 +66,7 @@ export class UserService {
     return this.http.put(`${this.baseUrl}/${userId}`, updatedUser);
   }
 
-  getCurrentUser(){
+  getCurrentUser() {
     return this.http.get(`${this.baseUrl}/me`, { withCredentials: true });
   }
-
 }

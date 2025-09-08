@@ -3702,3 +3702,12 @@ WHERE a."UserId" = @__userId_0
 2025-09-08 21:16:40.615 +01:00 [INF] Executed action Api.Controllers.AccountController.ValidateToken (Api) in 0.446ms
 2025-09-08 21:16:40.615 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
 2025-09-08 21:16:40.615 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - 200 null application/json; charset=utf-8 1.2429ms
+2025-09-08 21:16:56.633 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - text/plain 429
+2025-09-08 21:16:56.634 +01:00 [INF] CORS policy execution successful.
+2025-09-08 21:16:56.634 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-08 21:16:56.634 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-08 21:16:56.634 +01:00 [INF] Route matched with {action = "ValidateToken", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ValidateToken() on controller Api.Controllers.AccountController (Api).
+2025-09-08 21:16:56.634 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-08 21:16:56.634 +01:00 [INF] Executed action Api.Controllers.AccountController.ValidateToken (Api) in 0.4609ms
+2025-09-08 21:16:56.635 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-08 21:16:56.635 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - 200 null application/json; charset=utf-8 1.1914ms
