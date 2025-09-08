@@ -70,7 +70,7 @@
   <p-toast />
   <p-tabs value="rec">
     <p-tablist>
-      @if (userService.currentUser.role === '') {}
+     
       <p-tab value="rec">Recevoir</p-tab>
       <p-tab value="env">Envoyer</p-tab>
     </p-tablist>
@@ -160,12 +160,12 @@
                       [style]="{ minWidth: '150px' }"
                     />
                   </div> -->
-                  <p-button
+                  <!-- <p-button
                     icon="pi pi-refresh"
                     [outlined]="true"
                     (click)="loadDocumentRequests()"
                     [loading]="loading"
-                  />
+                  /> -->
                 </div>
               </div>
             </ng-template>

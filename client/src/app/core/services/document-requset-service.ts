@@ -126,7 +126,7 @@ export class DocumentRequsetService {
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
     // Replace with actual requester ID from authenticated user
-    documentRequest.departmentId = 10;
+    //documentRequest.departmentId = 10;
     // documentRequest.documentType = "Certificat de Travail";
     // documentRequest.description = "string";
     // documentRequest.priority = "Normal";

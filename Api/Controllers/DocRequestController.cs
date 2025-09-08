@@ -119,7 +119,7 @@ public class DocumentRequestController : BaseController
             var request = _mapper.Map<DocumentRequest>(createDto);
             request.RequestedAt = DateTime.UtcNow;
             request.RequesterId = currentUserId; // Replace with actual requester ID from authenticated user
-            request.DepartmentId = currentDepId;
+            request.DepartmentId = createDto.DepartmentId ?? currentDepId; // Replace with actual department ID
             request.CreatedAt = DateTime.UtcNow;
             request.DocumentType = createDto.DocumentType ?? string.Empty;
             request.Priority = createDto.Priority ?? string.Empty;
