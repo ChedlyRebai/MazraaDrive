@@ -13,7 +13,6 @@ export const routes: Routes = [
     loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule)
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'logs', loadChildren: () => import('./admin/logs/logs-module').then(m => m.LogsModule) },
  
 ];
 
