@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Core.Entities;
 using Core.Interfaces;
-using Core.Interfaces;
+
 using Infrastructure.Utils;
 using System.Security.Claims;
 
@@ -17,6 +17,7 @@ namespace Infrastructure.Services
         private string? _userId;
         private string? _userName;
         private string? _departmentId;
+        private string? _roleName;
         private string? _roleId;
          private List<string> _userRoles;
         private bool _initialized;
@@ -63,18 +64,23 @@ namespace Infrastructure.Services
                 Console.WriteLine("roleid", principal.FindFirst("RoleId")?.Value);
                 Console.WriteLine("departmenid****************************************************************************", principal.FindFirst("DepartmentId")?.Value);
                 _departmentId = principal.FindFirst("DepartmentId")?.Value;
+                Console.WriteLine("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr", principal.FindFirst("role"));
+                Console.WriteLine("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr", principal.FindFirst(ClaimTypes.Role)?.Value);
 
+                Console.WriteLine("All Claims:");
+                
                 _userRoles = principal.Claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList();
+                _roleName=  principal.FindFirst("Role")?.Value;
                 // Extract RoleId (custom claim)
                 _roleId = principal.FindFirst("RoleId")?.Value;
 
                 _userId = principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                           ?? principal.FindFirst("id")?.Value
                           ?? principal.FindFirst("sub")?.Value;
-                _userName = principal.Identity?.Name ?? principal.FindFirst("name")?.Value;
+                _userName = principal.Identity?.Name ?? principal.FindFirst("unique_name")?.Value;
                 // _departmentId=principal.Identity?.
             }
             catch (Exception ex)
@@ -86,7 +92,7 @@ namespace Infrastructure.Services
                 _userId = null;
                 _userName = null;
                 _userRoles = new List<string>();
-
+                _roleName = null;
             }
         }
 
@@ -98,6 +104,7 @@ namespace Infrastructure.Services
         public List<string> UserRoles { get { EnsureInitialized(); return _userRoles; } }
         public string? DepartmentId { get { EnsureInitialized(); return _departmentId; } }
 
+        public string? RoleName { get { EnsureInitialized(); return _roleName; } }
         public string? RoleId { get { EnsureInitialized(); return _roleId; } }
         
 

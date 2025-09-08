@@ -4,6 +4,8 @@ using AutoMapper;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
+using Infrastructure.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,7 @@ namespace Api.Controllers
 
 
         [HttpGet("test")]
-        [Authorize(Policy = "requireManagerRole")]
+        [AuthorizeRoles("Manager,Admin,SuperAdmin")]
         public async Task<string> TestApi()
         {
             _logger.LogInformation("Testing API endpoint");

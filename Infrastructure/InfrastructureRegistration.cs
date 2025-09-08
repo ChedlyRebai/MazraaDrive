@@ -15,7 +15,8 @@ using Microsoft.Extensions.FileProviders;
 using Infrastructure.Services;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Service;
-using Google.Protobuf.WellKnownTypes; // Add this for ApiVersioning
+
+using System.Security.Claims; // Add this for ApiVersioning
 
 
 namespace Infrastructure;
@@ -97,18 +98,18 @@ public static class InfrastructureRegistration
         
 
         // Configure Identity cookie
-        services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.Name = "token";
-            options.Events.OnRedirectToLogin = context =>
-            {
-                context.Response.StatusCode = 401;
-                return Task.CompletedTask;
-            };
-        });
+         services.ConfigureApplicationCookie(options =>
+         {
+             options.Cookie.Name = "token";
+             options.Events.OnRedirectToLogin = context =>
+             {
+                 context.Response.StatusCode = 401;
+                 return Task.CompletedTask;
+             };
+         });
 
 
-        
+
         // JWT Bearer authentication
         services.AddAuthentication()
             .AddJwtBearer(options =>
@@ -123,17 +124,30 @@ public static class InfrastructureRegistration
                     ValidIssuer = configuration["Token:Issuer"],
                     ValidateAudience = true,
                     ValidAudience = configuration["Token:Audience"],
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
+                    RoleClaimType = ClaimTypes.Role,
+                    NameClaimType = ClaimTypes.Name
                 };
                 options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
                 {
                     OnMessageReceived = context =>
+           {
+               // Try to get token from cookie if not in header
+               if (string.IsNullOrEmpty(context.Token))
+               {
+                   context.Token = context.Request.Cookies["token"];
+               }
+               return Task.CompletedTask;
+           },
+                    OnAuthenticationFailed = context =>
                     {
-                        context.Token = context.Request.Cookies["token"];
+                        Console.WriteLine("Authentication failed: " + context.Exception.Message);
                         return Task.CompletedTask;
                     }
                 };
             });
+
+        services.AddAuthorization();
 
         return services;
     }

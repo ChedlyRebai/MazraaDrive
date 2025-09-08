@@ -17,6 +17,7 @@ public class AuthRepository : IAuth
     // private readonly IEmailService _emailService;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly AppDbContext _context;
+
     private readonly IGenerateToken generateToken;
     public AuthRepository(AppDbContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IGenerateToken token)
     {
@@ -94,7 +95,12 @@ public class AuthRepository : IAuth
         // Use FirstOrDefaultAsync instead of FirstAsync to handle the case where no user is found
         var cin = loginDTO.Cin;
         var user = await _context.Users.Where(u => u.Cin == cin).FirstOrDefaultAsync();
-
+        var roles = await _userManager.GetRolesAsync(user);
+       
+        foreach (var item in roles)
+        {
+            Console.WriteLine($"User with CIN: {cin} has role: {item}MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+        }
         // Check if user exists
         if (user == null)
         {
@@ -111,7 +117,7 @@ public class AuthRepository : IAuth
         }
         else
         {
-            return await generateToken.GetAndCreateToken(user);
+            return await generateToken.GetAndCreateToken(user, roles[0]);
         }
     }
 

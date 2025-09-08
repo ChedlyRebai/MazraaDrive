@@ -17,7 +17,7 @@ public class GenerateToken : IGenerateToken
     {
         _configuration = configuration;
     }
-    public Task<string> GetAndCreateToken(AppUser user,IList<string> roles,string departmentId = null)
+    public Task<string> GetAndCreateToken(AppUser user, string role, string departmentId = null)
     {
         List<Claim> claims = new List<Claim>
         {
@@ -25,8 +25,7 @@ public class GenerateToken : IGenerateToken
             //new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
            // new Claim("RoleId", user.RoleId.ToString()),
-            //new Claim("DepartmentId", user.DepartmentId.ToString()),
-            
+            //new Claim("DepartmentId", user.DepartmentId.ToString()),            
         };
 
         if (!user.DepartmentId.Equals(Guid.Empty))
@@ -38,10 +37,21 @@ public class GenerateToken : IGenerateToken
             claims.Add(new Claim("Cin", user.Cin.ToString()));
         }
 
-         if (!string.IsNullOrEmpty(departmentId))
-            {
-                claims.Add(new Claim("DepartmentId", departmentId));
-            }
+
+    
+
+        if (!string.IsNullOrEmpty(role))
+        {
+            claims.Add(new Claim("Role", role));
+        }
+
+        
+
+       
+        if (!string.IsNullOrEmpty(departmentId))
+        {
+            claims.Add(new Claim("DepartmentId", departmentId));
+        }
 
         if (!string.IsNullOrEmpty(user.Email))
         {
@@ -49,10 +59,11 @@ public class GenerateToken : IGenerateToken
         }
 
 
-         foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+       if (!string.IsNullOrEmpty(role))
+       {
+           claims.Add(new Claim(ClaimTypes.Role, role));
+       }
+
         Console.WriteLine("***********************************");
         foreach (var claim in claims)
         {
@@ -72,7 +83,7 @@ public class GenerateToken : IGenerateToken
             Expires = DateTime.Now.AddDays(7),
             Issuer = _configuration["Token:Issuer"],
             Audience = _configuration["Token:Audience"],
-            
+
             SigningCredentials = credentials,
             NotBefore = DateTime.Now
         };

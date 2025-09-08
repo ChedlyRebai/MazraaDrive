@@ -86,6 +86,14 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "Microsoft.IdentityModel.JsonWebTokens": {
+              "target": "Package",
+              "version": "[8.2.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.2.0, )"
+            },
             "Microsoft.ML": {
               "target": "Package",
               "version": "[4.0.2, )"
@@ -145,6 +153,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.2.0, )"
             }
           },
           "imports": [
@@ -347,6 +359,10 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "Microsoft.IdentityModel.JsonWebTokens": {
+              "target": "Package",
+              "version": "[8.2.0, )"
+            },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[8.2.0, )"
@@ -371,10 +387,6 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
-            "Qdrant.Client": {
-              "target": "Package",
-              "version": "[1.15.1, )"
-            },
             "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -382,6 +394,10 @@
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.8.37, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.2.0, )"
             }
           },
           "imports": [

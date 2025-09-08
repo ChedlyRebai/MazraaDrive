@@ -1,11 +1,14 @@
 using AutoMapper;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
     public class BaseController : ControllerBase
     {
         protected readonly IUnitOfWork _unitOfWork;
@@ -20,7 +23,7 @@ namespace Api.Controllers
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-           
+
             _currentUser = currentUser;
             _logger = logger;
             //_auditLogger = auditLogger ?? throw new ArgumentNullException(nameof(auditLogger));

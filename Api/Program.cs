@@ -7,15 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Scalar.AspNetCore;
 using Serilog;
-using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
-using Serilog.Configuration;
-using Serilog.Settings.Configuration;
 using Serilog.Sinks.Elasticsearch;
 using Infrastructure.Repositories;
 using Core.Interfaces;
-using Infrastructure.Repositories.Service;
+using Microsoft.AspNetCore.DataProtection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -114,14 +109,11 @@ builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
 builder.Services.AddOpenApi();
 // builder.Services.AddScalarApiReference();
 
-builder.Services.AddAuthorization(op =>
-        {
-            op.AddPolicy("RequireManagerRole",
-            policy => policy.RequireRole("Manager", "Admin", "SuperAdmin", "AuditManager",
-            "FinanceManager", "ProductionManager", "HRManager", "LogisticsManager", "ITManager", "LegalManager",
-            "QualityManager", "SalesManager", "MarketingManager"
-            ));
-        });
+// persist keys to disk (Program.cs)
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/"))
+    .SetApplicationName("MazraaDrive");
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
 
@@ -169,44 +161,44 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //     ));
 
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var roleManager = services.GetRequiredService<RoleManager<Role>>();
-    await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var roleManager = services.GetRequiredService<RoleManager<Role>>();
+//     await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+// }
 
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
 
-    // seed roles (optional)
-    try
-    {
-        var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
-        if (roleManager != null)
-        {
-            await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
-        }
-    }
-    catch
-    {
-        // log or ignore
-    }
+//     // seed roles (optional)
+//     try
+//     {
+//         var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
+//         if (roleManager != null)
+//         {
+//             await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+//         }
+//     }
+//     catch
+//     {
+//         // log or ignore
+//     }
 
-    // seed departments
-    try
-    {
-        var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
-        await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
-    }
-    catch
-    {
-        // log or ignore
-    }
-}
-// ...existing code...
+//     // seed departments
+//     try
+//     {
+//         var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
+//         await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
+//     }
+//     catch
+//     {
+//         // log or ignore
+//     }
+// }
+// // ...existing code...
 
 
 

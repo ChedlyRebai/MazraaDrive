@@ -49,7 +49,7 @@ namespace Api.Controllers
             }
 
             var result = await _unitOfWork.Auth.LoginAsync(loginDTO);
-            
+
             if (result.StartsWith("Invalid"))
             {
                 return BadRequest(new ResponseAPI(400, result));
@@ -82,7 +82,14 @@ namespace Api.Controllers
         public IActionResult Me()
         {
             if (!_currentUser.IsAuthenticated) return Unauthorized();
-            return Ok(new { id = _currentUser.UserId, name = _currentUser.UserName });
+            return Ok(new
+            {
+                id = _currentUser.UserId,
+                departmentId = _currentUser.DepartmentId ?? "No Department",
+                role = _currentUser.RoleName ?? "No Role",
+                name = _currentUser.UserName ?? "No Name",
+               // departmentName = _unitOfWork.DepartmentRepository.GetByNameAsync(_currentUser.DepartmentId)?.Result.Name ?? "No Department",
+            });
         }
         [HttpPost("validate-token")]
         public IActionResult ValidateToken()

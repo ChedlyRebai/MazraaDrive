@@ -8,8 +8,12 @@ namespace Core.Interfaces
         string? DepartmentId { get; }
 
         string? RoleId { get; }
-        
+        string? RoleName { get; }
+
         string? UserName { get; }
         bool IsAuthenticated { get; }
+
+        bool IsInAllRoles(params string[] roles);
+        bool IsInAnyRole(params string[] roles);
     }
 }

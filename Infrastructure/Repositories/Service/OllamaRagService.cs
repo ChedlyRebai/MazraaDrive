@@ -7,8 +7,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Embeddings;
 using Microsoft.SemanticKernel.Text;
-using Qdrant.Client;
-using Qdrant.Client.Grpc;
+
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
@@ -19,7 +18,7 @@ namespace Core.Services
     public class OllamaRagService : IRagService
     {
         private readonly Kernel _kernel;
-        private readonly QdrantClient _qdrantClient;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         private readonly AppDbContext _context;
         private readonly ITextEmbeddingGenerationService _embeddingService;
         private const string CollectionName = "document_chunks";
