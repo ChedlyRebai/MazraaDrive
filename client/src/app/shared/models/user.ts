@@ -117,4 +117,9 @@ export interface UserFolderDto {
   documentsCount: number;
 }
 
-
+export interface CurrentUser {
+  departmentId: string;
+  id: string;
+  name: string;
+  role: string;
+}

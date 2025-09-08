@@ -67,6 +67,6 @@ export class UserService {
   }
 
   getCurrentUser() {
-    return this.http.get(`${this.baseUrl}/me`, { withCredentials: true });
+    return this.http.get(`http://localhost:5108/api/Account/me`, { withCredentials: true });
   }
 }

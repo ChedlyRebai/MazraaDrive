@@ -108,6 +108,7 @@ public static class InfrastructureRegistration
              };
          });
 
+       
 
 
         // JWT Bearer authentication

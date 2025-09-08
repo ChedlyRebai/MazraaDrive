@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { SharedModule } from "../shared/shared.module";
 import { Avatar } from "primeng/avatar";
+import { UserService } from '../core/services/user-service';
 
 @Component({
   selector: 'app-admin',
@@ -12,11 +13,11 @@ import { Avatar } from "primeng/avatar";
   templateUrl: './admin.html',
   styleUrl: './admin.css'
 })
-export class Admin {
+export class Admin implements OnInit {
+  constructor(private userService: UserService) {}
 // ...existing code...
 mobileMenuOpen = false;
 pageTitle = 'Dashboard';
-currentUser = { fullName: 'Tom Cook', role: 'Admin' };
 
 navLinks: { label: string; path: string; icon: string; badge?: string | number; }[] = [
   {label:'Home' , path:'/home/accueil', icon:'pi pi-home'},
@@ -31,7 +32,39 @@ navLinks: { label: string; path: string; icon: string; badge?: string | number; 
   { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' }
 ];
 
+ngOnInit(): void {
+  this.getCurrentUser();
+}
+ currentUser = {
+    id: "",
+    departmentId: 0,
+    role: "",
+    name: "",
+    avatar: "/assets/avatar.png"
+  };
 
+  getCurrentUser() {
+    this.userService.getCurrentUser().subscribe((user: any) => {
+      console.log("current user:",user);
+      this.currentUser = {
+        id: user.id,
+        departmentId: user.departmentId,
+        name: user.name,
+        role: user.role,
+        avatar: user.avatar || '/assets/avatar.png',
+      };
+    });
+  }
+
+
+   getInitials(name: string) {
+    return (name || '')
+      .split(' ')
+      .filter((p) => p)
+      .slice(0, 2)
+      .map((p) => p[0]?.toUpperCase())
+      .join('');
+  }
 logout() {
   window.location.href = '/login';
 }

@@ -45,7 +45,7 @@ namespace Core.DTOs
         [Phone(ErrorMessage = "Invalid phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        public int? RoleId { get; set; }
+        public string? RoleId { get; set; }
 
         [Required(ErrorMessage = "Department is required")]
         public int DepartmentId { get; set; }

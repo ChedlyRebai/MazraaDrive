@@ -89,7 +89,12 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers();
 
 
-builder.Services.AddIdentity<AppUser, Role>()
+
+builder.Services.AddIdentity<AppUser, Role>(op =>
+{
+    op.User.AllowedUserNameCharacters =
+       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+})
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
