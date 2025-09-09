@@ -8,7 +8,7 @@
           <h1
             class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2"
           >
-            Bienvenue, {{ currentUser!.name || "Utilisateur" }} 👋
+            Bienvenue, {{ userService.currentUser.name || "" }} 👋
           </h1>
           <p class="text-surface-600 dark:text-surface-300">
             Gérez vos documents et collaborez efficacement avec votre équipe
@@ -135,10 +135,10 @@
 
         <div class="card">
           <h3
-                    class="text-xl font-semibold text-surface-900 dark:text-surface-0"
-                  >
-                    Mes Documents et Fichiers Récents
-                  </h3>
+            class="text-xl font-semibold text-surface-900 dark:text-surface-0"
+          >
+            Mes Documents et Fichiers Récents
+          </h3>
           <p-tabs value="folders">
             <p-tablist>
               <p-tab value="folders">Folders</p-tab>
@@ -149,9 +149,7 @@
                 <div class="flex items-center justify-between mb-6">
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
-                  >
-                    
-                  </h3>
+                  ></h3>
                   <div class="flex items-center gap-2">
                     <p-selectButton
                       [(ngModel)]="viewMode"
@@ -177,7 +175,6 @@
                 >
                   <div
                     *ngFor="let item of myFolders.data"
-                    (click)="viewFolder(item)"
                     class="file-card bg-surface-0 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all duration-200"
                   >
                     <div class="flex items-start justify-between mb-3">
@@ -199,10 +196,15 @@
                         >
                           {{ item.createdByName }}
                         </span>
+                        <!-- (click)="viewFolder(item)" -->
                         <p-button
                           icon="pi pi-ellipsis-v"
                           [text]="true"
                           size="small"
+                          (click)="
+                            showContextMenu($event, item);
+                            $event.stopPropagation()
+                          "
                         />
                       </div>
                     </div>
@@ -222,6 +224,9 @@
                         <!-- <p class="text-xs">Par: {{ item.createdByName }}</p> -->
                       </div>
                     </div>
+
+                    <!-- Hover Actions -->
+                    <!-- Hover Actions -->
 
                     <div class="flex items-center justify-between">
                       <p-tag
@@ -297,7 +302,7 @@
                                 class="text-sm text-surface-600"
                                 *ngIf="folder.isShared"
                               >
-                                <i class="pi pi-users text-xs mr-1"></i>Partagé
+                                <i class="pi pi-users text-xs mr-1"></i>
                               </div>
                             </div>
                           </div>
@@ -312,7 +317,7 @@
                         [label]="getInitials(folder.owner)"
                         shape="circle"
                       /> -->
-                            {{ formatFileSize(folder.size) }}
+                            {{ formatFileSize(folder.size) }}s
                           </div>
                         </td>
                         <td>
@@ -325,14 +330,6 @@
                               pTooltip="Aperçu"
                               (click)="viewFolder(folder)"
                             />
-                            <!-- <p-button
-                        icon="pi pi-download"
-                        severity="success"
-                        [text]="true"
-                        size="small"
-                        pTooltip="Télécharger"
-                        (click)="downloadItem(folder); $event.stopPropagation()"
-                      /> -->
                             <p-button
                               icon="pi pi-copy"
                               [text]="true"
@@ -348,7 +345,9 @@
                               [text]="true"
                               size="small"
                               pTooltip="Supprimer"
-                              (click)="deleteFolder(folder); $event.stopPropagation()"
+                              (click)="
+                                deleteFolder(folder); $event.stopPropagation()
+                              "
                             />
                           </div>
                         </td>
@@ -386,9 +385,7 @@
                 <div class="flex items-center justify-between mb-6">
                   <h3
                     class="text-xl font-semibold text-surface-900 dark:text-surface-0"
-                  >
-                    
-                  </h3>
+                  ></h3>
                   <div class="flex items-center gap-2">
                     <p-selectButton
                       [(ngModel)]="viewMode"
@@ -459,6 +456,7 @@
                         <p class="text-xs">Par: {{ item.uploadedByName }}</p>
                       </div>
                     </div>
+                    <!-- Hover Actions -->
 
                     <div class="flex items-center justify-between">
                       <p-tag
@@ -534,7 +532,7 @@
                                 class="text-sm text-surface-600"
                                 *ngIf="doc.isShared"
                               >
-                                <i class="pi pi-users text-xs mr-1"></i>Partagé
+                                <i class="pi pi-users text-xs mr-1"></i>
                               </div>
                             </div>
                           </div>
@@ -575,7 +573,6 @@
                               pTooltip="Copier"
                               (click)="shareDoc(doc); $event.stopPropagation()"
                             />
-                            
                           </div>
                         </td>
                       </tr>
@@ -841,78 +838,66 @@
             label="Télécharger"
           />
         </div>
-        test(1).doc
       </div>
-      <iframe
-        style="width: 100%; height: 50vh"
-        src="http://localhost:5108/api/uploads/f75211e0-d03b-4074-8b82-e9e82a639a70.doc"
-        frameborder="0"
-      >
-      </iframe>
+      <!-- <iframe
+          style="width: 100%; height: 50vh"
+          src="http://localhost:5108/api/uploads/f75211e0-d03b-4074-8b82-e9e82a639a70.doc"
+          frameborder="0"
+        >
+        </iframe> -->
       <ng-container [ngSwitch]="selectedDocument.fileType">
         <!-- PDF Preview -->
-        <iframe
-          *ngSwitchCase="'pdf'"
-          [src]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
-          "
-          style="width: 100%; height: 50vh"
-          frameborder="0"
-        ></iframe>
 
-        <!-- Image Preview -->
-        <img
-          *ngSwitchCase="'jpg'"
-          [src]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
+        <ngx-doc-viewer
+          [url]="
+            selectedDocument
+              ? 'http://localhost:5108/api/uploads/' +
+                selectedDocument.storagePath
+              : ''
           "
-          style="
-            max-width: 100%;
-            max-height: 50vh;
-            display: block;
-            margin: auto;
-          "
-          alt="Aperçu de l'image"
-        />
-        <img
-          *ngSwitchCase="'png'"
-          [src]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
-          "
-          style="
-            max-width: 100%;
-            max-height: 50vh;
-            display: block;
-            margin: auto;
-          "
-          alt="Aperçu de l'image"
-        />
+          [viewer]="'google'"
+          style="width: 100%; height: 90vh"
+        ></ngx-doc-viewer>
 
-        <!-- Office/Doc Preview -->
-        <ngx-doc-viewer
-          *ngSwitchCase="'doc'"
-          [url]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
-          "
-          viewer="mammoth"
-          style="width: 100%; height: 50vh"
-        ></ngx-doc-viewer>
-        <ngx-doc-viewer
-          *ngSwitchCase="'docx'"
-          [url]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
-          "
-          viewer="mammoth"
-          style="width: 100%; height: 50vh"
-        ></ngx-doc-viewer>
-        <ngx-doc-viewer
-          *ngSwitchCase="'txt'"
-          [url]="
-            'http://localhost:5108/api/uploads/' + selectedDocument.storagePath
-          "
-          viewer="mammoth"
-          style="width: 100%; height: 50vh"
-        ></ngx-doc-viewer>
+        <div *ngIf="selectedDocument.fileType === 'pdf'">
+          <pdf-viewer
+            [src]="
+              selectedDocument
+                ? 'http://localhost:5108/api/uploads/' +
+                  selectedDocument.storagePath
+                : ''
+            "
+            [render-text]="true"
+            style="display: block"
+          ></pdf-viewer>
+        </div>
+
+        <div class="card h-full">
+          <ngx-doc-viewer
+            [url]="
+              'http://localhost:5108/api/uploads/' +
+              selectedDocument.storagePath
+            "
+            [viewer]="'url'"
+            style="width: 100%; height: 90vh"
+          ></ngx-doc-viewer>
+
+          <!-- <div *ngIf="selectedDocument.fileType.startsWith('image')">
+            <img [src]="fileurl" class="img-fluid" />
+          </div>
+
+          <div *ngIf="selectedDocument.fileType === 'txt'">
+            <iframe [src]="fileurl" width="100%" height="600px"></iframe>
+          </div>
+
+          <div *ngIf="selectedDocument.fileType === 'doc' || selectedDocument.fileType === 'docx'">
+            <iframe
+              [src]="getGoogleViewerUrl(fileurl)"
+              width="100%"
+              height="600px"
+            ></iframe>
+          </div> -->
+        </div>
 
         <!-- Fallback for unsupported types -->
         <div *ngSwitchDefault class="flex-1 bg-gray-50 rounded border p-4">
@@ -952,3 +937,172 @@
   </ng-template>
 </p-dialog>
 <p-toast />
+
+<p-dialog
+  [(visible)]="folderDialog"
+  [style]="{ width: '500px' }"
+  [header]="editMode ? 'Modifier le Dossier' : 'Nouveau Dossier'"
+  [modal]="true"
+  [closable]="true"
+>
+  <ng-template #content>
+    <div class="flex flex-col gap-6">
+      <!-- Header Info -->
+      <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-folder-plus text-3xl text-blue-500"></i>
+          <div>
+            <h4 class="text-lg font-semibold m-0">
+              {{
+                editMode
+                  ? "Modification du dossier"
+                  : "Création d'un nouveau dossier"
+              }}
+            </h4>
+            <p class="text-sm text-surface-600 dark:text-surface-300 m-0">
+              {{
+                editMode
+                  ? "Modifiez les informations du dossier"
+                  : "Saisissez les informations pour créer un nouveau dossier"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="space-y-4">
+        <div>
+          <label for="folderName" class="block text-sm font-medium mb-2">
+            <i class="pi pi-tag mr-2"></i>
+            Nom du dossier *
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="folderName"
+            [(ngModel)]="newFolder.name"
+            placeholder="Saisir le nom du dossier..."
+            required
+            autofocus
+            fluid
+            class="w-full"
+          />
+          <small class="text-red-500" *ngIf="submitted && !newFolder.name">
+            Le nom du dossier est requis.
+          </small>
+        </div>
+
+        <div>
+          <label for="folderDescription" class="block text-sm font-medium mb-2">
+            <i class="pi pi-align-left mr-2"></i>
+            Description
+          </label>
+          <textarea
+            id="folderDescription"
+            [(ngModel)]="newFolder.description"
+            placeholder="Description optionnelle du dossier..."
+            rows="4"
+            cols="20"
+            fluid
+            class="w-full p-3 border border-surface-300 rounded-md resize-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:border-surface-600 dark:bg-surface-700 dark:text-surface-0"
+            maxlength="200"
+          >
+          </textarea>
+          <div class="flex justify-between items-center mt-1">
+            <small class="text-surface-500">
+              Description optionnelle pour identifier le contenu
+            </small>
+            <small class="text-surface-400">
+              {{ (newFolder.description || "").length }}/200
+            </small>
+          </div>
+        </div>
+
+        <!-- Permissions (if needed) -->
+        <!-- <div>
+          <label class="block text-sm font-medium mb-2">
+            <i class="pi pi-lock mr-2"></i>
+            Permissions
+          </label>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center">
+              <p-radioButton 
+                inputId="private" 
+                value="private" 
+                [(ngModel)]="newFolder.visibility"
+              />
+              <label for="private" class="ml-2 text-sm">Privé</label>
+            </div>
+            <div class="flex items-center">
+              <p-radioButton 
+                inputId="shared" 
+                value="shared" 
+                [(ngModel)]="newFolder.visibility"
+              />
+              <label for="shared" class="ml-2 text-sm">Partagé</label>
+            </div>
+          </div>
+          <small class="text-surface-500">
+            Choisissez qui peut accéder à ce dossier
+          </small>
+        </div> -->
+      </div>
+
+      <!-- Preview -->
+      <div class="bg-surface-50 dark:bg-surface-800 rounded-lg p-4">
+        <h5 class="font-semibold mb-3 flex items-center gap-2">
+          <i class="pi pi-eye text-purple-500"></i>
+          Aperçu
+        </h5>
+        <div class="flex items-start gap-3">
+          <div class="bg-amber-100 dark:bg-amber-900/30 p-2 rounded-lg">
+            <i class="pi pi-folder text-2xl text-amber-500"></i>
+          </div>
+          <div>
+            <h6 class="font-medium">
+              {{ newFolder.name || "Nom du dossier" }}
+            </h6>
+            <p class="text-sm text-surface-600 dark:text-surface-300">
+              {{ newFolder.description || "Aucune description" }}
+            </p>
+            <div class="flex items-center gap-2 text-xs text-surface-500 mt-1">
+              <!-- <i
+                class="pi pi-lock"
+                *ngIf="newFolder.visibility === 'private'"
+              ></i>
+              <i
+                class="pi pi-users"
+                *ngIf="newFolder.visibility === 'shared'"
+              ></i>
+              <span>{{
+                newFolder.visibility === "private" ? "Privé" : "Partagé"
+              }}</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #footer>
+    <div class="flex justify-between items-center w-full">
+      <small class="text-surface-500"> * Champs obligatoires </small>
+      <div class="flex gap-2">
+        <p-button
+          label="Annuler"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (click)="hideDialog()"
+        />
+        <p-button
+          [label]="editMode ? 'Modifier' : 'Créer'"
+          [icon]="editMode ? 'pi pi-check' : 'pi pi-plus'"
+          [loading]="saving"
+          (click)="saveFolder()"
+        />
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

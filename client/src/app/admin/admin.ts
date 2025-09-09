@@ -37,7 +37,7 @@ export class Admin implements OnInit {
       icon: 'pi pi-inbox',
     },
     { label: 'Permissions', path: '/admin/permissions', icon: 'pi pi-lock' },
-    { label: 'Logs', path: '/admin/logs/action-logs', icon: 'pi pi-history' },
+    
     { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' },
   ];
 

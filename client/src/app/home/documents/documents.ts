@@ -1,3 +1,4 @@
+import { UserService } from './../../core/services/user-service';
 import { FolderService } from './../../core/services/folder-service';
 import { DocumentService } from './../../core/services/document-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -30,6 +31,7 @@ import { FolderDTO, FolderPagedResult } from '../../shared/models/folder';
 import { Router } from '@angular/router';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PdfViewerModule } from "ng2-pdf-viewer";
 
 interface Document {
   id?: number;
@@ -68,6 +70,21 @@ interface StorageData {
   usedSpace: string;
 }
 
+interface Folder {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  createdByName: string;
+  createdById: string;
+  fileCount?: number;
+  size?: string;
+  visibility: 'private' | 'shared';
+  category?: string;
+  parentId?: string;
+  isActive?: boolean;
+}
+
 interface FileCategory {
   name: string;
   type: string;
@@ -99,7 +116,8 @@ interface FileCategory {
     ThemeSwitcher,
     TabsModule,
     NgxDocViewerModule,
-  ],
+    PdfViewerModule
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './documents.html',
   styleUrls: ['./documents.css'],
@@ -108,7 +126,7 @@ export class Documents implements OnInit {
   @ViewChild('contextMenu') contextMenu: any;
 
   // User and stats data
-  currentUser = { name: 'Chedly Rebai', email: 'jean.dupont@company.com' };
+
   totalFiles = 718;
   totalFolders = 45;
   sharedFiles = 156;
@@ -127,8 +145,42 @@ export class Documents implements OnInit {
   loading = false;
   saving = false;
 
-  // View settings
+  folders: Folder[] = [];
+  filteredFolders: Folder[] = [];
+  selectedFolder: Folder | null = null;
+
+  // Statistics
+
+  totalDocuments = 0;
+  totalSize = '0 MB';
+  recentFiles = 0;
+  documentCount = 0;
+  imageCount = 0;
+  videoCount = 0;
+
+  // UI State
+
+  showSidebar = true;
   viewMode = 'grid';
+
+  // Dialog States
+  folderDialog = false;
+  importDialog = false;
+  editMode = false;
+
+  // Search and Filter
+  searchTerm = '';
+  sortBy = '';
+  currentCategory = '';
+
+  // Forms
+  newFolder: Partial<Folder> = {
+    isActive: true,
+    visibility: 'private',
+  };
+
+  // View settings
+
   viewOptions = [
     { label: 'Grille', value: 'grid', icon: 'pi pi-th-large' },
     { label: 'Liste', value: 'list', icon: 'pi pi-list' },
@@ -276,8 +328,8 @@ export class Documents implements OnInit {
   stats: DocFolderStats = {} as DocFolderStats;
   constructor(
     private router: Router,
-   
-     private messageService: MessageService,
+    public userService: UserService,
+    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public documentService: DocumentService,
     public folderService: FolderService
@@ -412,7 +464,7 @@ export class Documents implements OnInit {
       detail: `Copie lien du document: ${document.name}`,
     });
   }
-  shareFolder(folder: FolderDTO) {
+  shareFolder(folder: FolderDTO | any) {
     const link = `https://example.com/folder/${folder.id}`;
 
     navigator.clipboard
@@ -462,7 +514,7 @@ export class Documents implements OnInit {
     ];
   }
 
-  deleteFolder(folder: FolderDTO) {
+  deleteFolder(folder: FolderDTO | any) {
     this.confirmationService.confirm({
       message: `Êtes-vous sûr de vouloir supprimer le dossier "${folder.name}" ?`,
       header: 'Confirmer la suppression',
@@ -496,7 +548,6 @@ export class Documents implements OnInit {
       },
     });
   }
-
 
   fileCategories: FileCategory[] = [
     {
@@ -532,36 +583,51 @@ export class Documents implements OnInit {
   initializeCharts() {}
 
   setupContextMenu() {
+    // Context Menu
     this.contextMenuItems = [
       {
         label: 'Ouvrir',
-        icon: 'pi pi-eye',
-        command: () => this.openSelectedItem(),
+        icon: 'pi pi-folder-open',
+        command: () => this.openFolder(this.selectedFolder!),
       },
       {
-        label: 'Télécharger',
-        icon: 'pi pi-download',
-        command: () => this.downloadSelectedItem(),
+        label: 'Modifier',
+        icon: 'pi pi-pencil',
+        command: () => this.editFolder(this.selectedFolder!),
       },
       {
         label: 'Copier',
         icon: 'pi pi-copy',
-        command: () => this.shareSelectedItem(),
+        command: () => this.shareFolder(this.selectedFolder!),
       },
-      {
-        separator: true,
-      },
-      {
-        label: 'Renommer',
-        icon: 'pi pi-pencil',
-        command: () => this.renameSelectedItem(),
-      },
+      { separator: true },
       {
         label: 'Supprimer',
         icon: 'pi pi-trash',
-        command: () => this.deleteSelectedItem(),
+        command: () => this.deleteFolder(this.selectedFolder!),
       },
     ];
+  }
+
+  openFolder(folder: Folder | any) {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Navigation',
+      detail: `Ouverture du dossier: ${folder.name}`,
+    });
+
+    this.router.navigate([`/home/folder/${folder.id}`]);
+
+    // Navigate to folder content - implement navigation logic here
+    // this.router.navigate(['/folder', folder.id]);
+  }
+
+  editFolder(folder: Folder | any) {
+    console.log('Editing folder:', folder);
+    this.newFolder = { ...folder };
+    this.editMode = true;
+    this.submitted = false;
+    this.folderDialog = true;
   }
 
   // File operations
@@ -609,9 +675,13 @@ export class Documents implements OnInit {
   }
 
   // Context menu actions
-  showContextMenu(event: any, item: FolderDTO) {
+  showContextMenu(event: any, folder: Folder | null | any) {
     event.preventDefault();
-    this.contextMenu.show(event);
+    console.log(event);
+    if (folder) {
+      this.selectedFolder = folder;
+      this.contextMenu.show(event);
+    }
   }
 
   showItemMenu(event: any, item: FolderDTO) {
@@ -926,4 +996,62 @@ export class Documents implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
+
+  saveFolder() {
+    this.submitted = true;
+
+    if (!this.newFolder.name?.trim()) {
+      return;
+    }
+
+    this.saving = true;
+
+    if (this.editMode) {
+      // Call update service
+      this.folderService
+        .UpdateFolder(this.newFolder as any)
+        .subscribe((res) => {
+          next: this.folderService.getFolders();
+          this.saving = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Dossier modifié avec succès',
+          });
+          this.getmyDocs();
+          this.getMyFolders();
+          this.initializeCharts();
+          this.setupContextMenu();
+          this.initializeStats();
+        });
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Dossier modifié avec succès',
+      });
+    }
+
+    console.log('editmode:', this.editMode);
+    if (this.editMode == false) {
+      this.folderService
+        .CreateFolder(this.newFolder as any)
+        .subscribe((res) => {
+          this.folderService.getFolders();
+          this.saving = false;
+        });
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Dossier créé avec succès',
+      });
+    }
+
+    this.folderDialog = false;
+  }
+
+
+
+  
 }

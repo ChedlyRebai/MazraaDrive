@@ -202,7 +202,7 @@
                       <span
                         class="text-xs text-surface-500 dark:text-surface-400"
                       >
-                        15 fichiers
+                        {{ formatFileSize(file.size || 0) }}
                       </span>
                       <p-button
                         icon="pi pi-ellipsis-v"
@@ -263,7 +263,7 @@
                 </div>
                 <div class="flex items-center gap-1">
                   <span class="text-xs text-surface-500 dark:text-surface-400">
-                    {{ item.size }}
+                    {{  formatFileSize(  item.size)  }}
                   </span>
                   <p-button
                     icon="pi pi-ellipsis-v"
