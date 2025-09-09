@@ -139,7 +139,7 @@ export class AccessRequest implements OnInit {
   computeStats() {
     this.totalRequests = this.totalRecords;
     this.pendingRequests = this.requests.filter(
-      (r) => r.status === 'Pending'
+      (r) => r.status === 'En Attente'
     ).length;
     this.approvedRequests = this.requests.filter(
       (r) => r.status === 'Approved'

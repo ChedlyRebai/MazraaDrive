@@ -26,7 +26,7 @@ public class DocumentRequest : BaseEntity<int>
     
     [Required]
     [MaxLength(20)]
-    public string Status { get; set; } = "Pending";
+    public string Status { get; set; } = "En Attente";
 
     public int? ResponseDocumentId { get; set; }
 

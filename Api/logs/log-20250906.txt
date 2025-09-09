@@ -90,7 +90,7 @@ LIMIT 1
 2025-09-06 14:07:01.395 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 14:07:01.399 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -244,7 +244,7 @@ WHERE d."RequesterId" = @__userId_0
 2025-09-06 14:07:18.190 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 14:07:18.190 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -496,7 +496,7 @@ LIMIT 1
 2025-09-06 14:07:57.898 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 14:07:57.899 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -706,7 +706,7 @@ LIMIT 1
 2025-09-06 14:08:05.987 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 14:08:05.988 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -1204,7 +1204,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 14:08:20.408 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 14:08:20.410 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -1262,7 +1262,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 14:27:52.458 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 14:27:52.461 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -1301,7 +1301,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 14:28:45.627 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 14:28:45.628 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -1340,7 +1340,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 14:28:57.861 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 14:28:57.862 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -1907,7 +1907,7 @@ WHERE d."Name" LIKE @__name_0_contains
 SELECT EXISTS (
     SELECT 1
     FROM "AccessRequests" AS a
-    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'Pending')
+    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'En Attente')
 2025-09-06 15:03:24.793 +01:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?', @p10='?', @p11='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "AccessRequests" ("CreatedAt", "DecidedById", "DecisionAt", "DocumentId", "Message", "RequestDelete", "RequestRead", "RequestUpdate", "RequestWrite", "RequesterId", "Status", "UpdatedAt")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
@@ -2447,7 +2447,7 @@ LIMIT 1
 2025-09-06 18:24:19.753 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 18:24:19.756 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -2974,7 +2974,7 @@ WHERE d."RequesterId" = @__userId_0
 2025-09-06 18:32:14.712 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 18:32:14.713 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -3300,7 +3300,7 @@ WHERE d."Name" LIKE @__name_0_contains
 SELECT EXISTS (
     SELECT 1
     FROM "AccessRequests" AS a
-    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'Pending')
+    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'En Attente')
 2025-09-06 18:36:34.815 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?', @p10='?', @p11='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "AccessRequests" ("CreatedAt", "DecidedById", "DecisionAt", "DocumentId", "Message", "RequestDelete", "RequestRead", "RequestUpdate", "RequestWrite", "RequesterId", "Status", "UpdatedAt")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
@@ -3522,7 +3522,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:36:47.922 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:36:47.924 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -3708,7 +3708,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:36:53.392 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:36:53.393 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -3778,7 +3778,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:37:11.481 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:37:11.481 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -4149,7 +4149,7 @@ LIMIT 1
 2025-09-06 18:38:36.325 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 18:38:36.325 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -4524,7 +4524,7 @@ WHERE d."Name" LIKE @__name_0_contains
 SELECT EXISTS (
     SELECT 1
     FROM "AccessRequests" AS a
-    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'Pending')
+    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'En Attente')
 2025-09-06 18:41:20.937 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?', @p10='?', @p11='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "AccessRequests" ("CreatedAt", "DecidedById", "DecisionAt", "DocumentId", "Message", "RequestDelete", "RequestRead", "RequestUpdate", "RequestWrite", "RequesterId", "Status", "UpdatedAt")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
@@ -4638,7 +4638,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:41:27.393 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:41:27.393 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -4778,7 +4778,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:41:42.630 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:41:42.631 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -4869,7 +4869,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 18:42:39.773 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 18:42:39.773 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -5188,7 +5188,7 @@ WHERE d."RequesterId" = @__userId_0
 2025-09-06 18:42:42.614 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 18:42:42.615 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -7615,7 +7615,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 19:31:53.862 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 19:31:53.862 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -10084,7 +10084,7 @@ WHERE d."RequesterId" = @__userId_0
 2025-09-06 19:53:17.972 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 19:53:17.973 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -10434,7 +10434,7 @@ LIMIT 1
 2025-09-06 19:53:20.737 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 19:53:20.737 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -10679,7 +10679,7 @@ LIMIT 1
 2025-09-06 19:53:24.175 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 19:53:24.175 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -10944,7 +10944,7 @@ WHERE d."DepartmentId" = @__departmentId_0
 2025-09-06 19:53:26.418 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 19:53:26.418 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -11434,7 +11434,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 19:56:28.869 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 19:56:28.869 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -11525,7 +11525,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 19:56:30.882 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 19:56:30.882 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -11627,7 +11627,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:03:53.650 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:03:53.650 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -11729,7 +11729,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:09:28.824 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:09:28.825 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -11831,7 +11831,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:10:02.673 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:10:02.673 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -11933,7 +11933,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:10:51.055 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:10:51.055 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12066,7 +12066,7 @@ WHERE d."Name" LIKE @__name_0_contains
 SELECT EXISTS (
     SELECT 1
     FROM "AccessRequests" AS a
-    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'Pending')
+    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'En Attente')
 2025-09-06 20:11:11.713 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?', @p10='?', @p11='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "AccessRequests" ("CreatedAt", "DecidedById", "DecisionAt", "DocumentId", "Message", "RequestDelete", "RequestRead", "RequestUpdate", "RequestWrite", "RequesterId", "Status", "UpdatedAt")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)
@@ -12156,7 +12156,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:11:19.442 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:11:19.442 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12206,7 +12206,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:12:34.337 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:12:34.337 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12319,7 +12319,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:12:50.906 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:12:50.907 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12440,7 +12440,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:13:36.078 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:13:36.079 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12712,7 +12712,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:15:25.252 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:15:25.252 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -12910,7 +12910,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:16:17.728 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:16:17.728 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -13072,7 +13072,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:16:53.949 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:16:53.949 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -13240,7 +13240,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:17:39.105 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:17:39.105 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -13428,7 +13428,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-06 20:18:15.224 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-06 20:18:15.225 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
@@ -13622,7 +13622,7 @@ WHERE d."DepartmentId" = @__departmentId_0
 2025-09-06 20:18:28.388 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 20:18:28.389 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -14737,7 +14737,7 @@ LIMIT 1
 2025-09-06 20:20:14.222 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-06 20:20:14.223 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d

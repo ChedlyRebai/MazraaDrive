@@ -60,7 +60,7 @@ public class AccessRequestRepository : IAccessRequestRepository
         await _ctx.AccessRequests.AnyAsync(r =>
             r.DocumentId == documentId &&
             r.RequesterId == requesterId &&
-            r.Status == "Pending");
+            r.Status == "En Attente");
 
     public async Task<PagedResult<AccessRequestDto>> GetMyRequestsAsync(PaginationParams paginationParams)
     {
@@ -159,7 +159,7 @@ public class AccessRequestRepository : IAccessRequestRepository
         {   
             HasNextPage= total > p.PageSize * p.PageNumber,
             HasPreviousPage= p.PageNumber > 1,
-            TotalPending = await _ctx.AccessRequests.CountAsync(r => r.Status == "Pending"),
+            TotalPending = await _ctx.AccessRequests.CountAsync(r => r.Status == "En Attente"),
             TotalRejected = await _ctx.AccessRequests.CountAsync(r => r.Status == "Rejected"),
             TotalApproved = await _ctx.AccessRequests.CountAsync(r => r.Status == "Approved"),
             Data = items,

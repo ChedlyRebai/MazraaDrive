@@ -208,7 +208,7 @@ LIMIT 1
 2025-09-07 10:58:47.873 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
-WHERE d."Status" = 'Pending' AND d."RequesterId" = @__userId_0
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
 2025-09-07 10:58:47.878 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "DocumentRequests" AS d
@@ -1296,7 +1296,7 @@ ORDER BY a0."CreatedAt" DESC
 2025-09-07 10:58:54.969 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a
-WHERE a."Status" = 'Pending'
+WHERE a."Status" = 'En Attente'
 2025-09-07 10:58:54.973 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT count(*)::int
 FROM "AccessRequests" AS a

@@ -143,7 +143,7 @@ export class DocReqManagement implements OnInit {
   ];
 
   statusFilterOptions = [
-    { label: 'En attente', value: 'Pending' },
+    { label: 'En attente', value: 'En Attente' },
     { label: 'Approuvé', value: 'Approved' },
     { label: 'Rejeté', value: 'Rejected' },
     { label: 'En cours', value: 'In Progress' },
@@ -190,7 +190,7 @@ export class DocReqManagement implements OnInit {
           departmentId: '2',
           documentType: 'Certificat de travail',
           priority: 'haute',
-          status: 'Pending',
+          status: 'En Attente',
           description:
             "J'ai besoin d'un certificat de travail pour ma demande de prêt bancaire.",
           requestedAt: new Date('2024-12-06T10:30:00'),
@@ -257,7 +257,7 @@ export class DocReqManagement implements OnInit {
   updateStats() {
     this.totalRequests = this.requests.length;
     this.pendingRequests = this.requests.filter(
-      (r) => r.status === 'Pending'
+      (r) => r.status === 'En Attente'
     ).length;
     this.approvedRequests = this.requests.filter(
       (r) => r.status === 'Approved'
@@ -400,7 +400,7 @@ export class DocReqManagement implements OnInit {
         departmentId: this.getSelectedValue(this.newRequest.departmentId)!,
         documentType: this.getDisplayValue(this.newRequest.documentType)!,
         priority: this.getSelectedValue(this.newRequest.priority)!,
-        status: 'Pending',
+        status: 'En Attente',
         description: this.newRequest.description!,
         requestedAt: new Date(),
         createdAt: new Date(),
@@ -478,20 +478,19 @@ export class DocReqManagement implements OnInit {
         console.log('File uploaded successfully:', response);
         this.selectedRequest.responseDocumentId = response.id;
       },
-      error: (error:any) => {
+      error: (error: any) => {
         console.error('Error uploading file:', error);
       },
     });
 
-
-    console.log("id:", this.selectedRequest.id);
+    console.log('id:', this.selectedRequest.id);
     this.documentRequsetService
       .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
       .subscribe({
-        next: (response:any) => {
+        next: (response: any) => {
           console.log('Document request updated successfully:', response);
         },
-        error: (error:any) => {
+        error: (error: any) => {
           console.error('Error updating document request:', error);
         },
       });
@@ -521,101 +520,107 @@ export class DocReqManagement implements OnInit {
     // }, 1500);
   }
 
-  onResponseMessageChange(){
+  onResponseMessageChange() {
     console.log(this.selectedRequest.responseMessage);
   }
   sendRespnse() {
-  if (!this.selectedRequest) {
-    console.error("No request selected!");
-    return;
-  }
+    if (!this.selectedRequest) {
+      console.error('No request selected!');
+      return;
+    }
 
-  this.sendingResponse = true;
-  console.log('Sending response:', this.responseForm);
-  console.log('Selected request:', this.selectedRequest);
-  console.log('Selected file:', this.selectedFile);
+    this.sendingResponse = true;
+    console.log('Sending response:', this.responseForm);
+    console.log('Selected request:', this.selectedRequest);
+    console.log('Selected file:', this.selectedFile);
 
-  let upload$;
+    let upload$;
 
-  if (this.selectedFile) {
-    const formData = new FormData();
-    formData.append('File', this.selectedFile);
-    formData.append('Name', this.selectedFile.name);
-    formData.append('FolderId', '10'); // example folderId
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('File', this.selectedFile);
+      formData.append('Name', this.selectedFile.name);
+      formData.append('FolderId', '10'); // example folderId
 
-    upload$ = this.documentService.uploadDocument(formData);
-  } 
+      upload$ = this.documentService.uploadDocument(formData);
+    }
 
-  if (upload$) {
-    upload$.subscribe({
-      next: (uploadResponse:any) => {
-        console.log('Upload response:', uploadResponse);
+    if (upload$) {
+      upload$.subscribe({
+        next: (uploadResponse: any) => {
+          console.log('Upload response:', uploadResponse);
 
-        // Update selectedRequest fields
-        this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
-        // this.selectedRequest.createdAt = new Date();
-        this.selectedRequest.processedByName = 'Admin Courant';
+          // Update selectedRequest fields
+          this.selectedRequest.status = this.getSelectedValue(
+            this.responseForm.status
+          );
+          // this.selectedRequest.createdAt = new Date();
+          this.selectedRequest.processedByName = 'Admin Courant';
 
-        if (this.selectedFile) {
-          this.selectedRequest.responseDocumentName = this.selectedFile.name;
-        }
+          if (this.selectedFile) {
+            this.selectedRequest.responseDocumentName = this.selectedFile.name;
+          }
 
-        this.documentRequsetService
-          .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
-          .subscribe({
-            next: (response:any) => {
-              console.log('Document request updated successfully:', response);
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Réponse envoyée',
-                detail: 'La réponse a été envoyée avec succès',
-              });
-              this.responseDialog = false;
-            },
-            error: (err:any) => {
-              console.error('Error updating document request:', err);
-            },
-            complete: () => {
-              this.sendingResponse = false;
-              this.applyFilters();
-              this.updateStats();
-            },
-          });
-      },
-      error: (err:any) => {
-        console.error('Error uploading file:', err);
-        this.sendingResponse = false;
-      },
-    });
-  } else {
-    // No file to upload, just update the request
-    this.selectedRequest.status = this.getSelectedValue(this.responseForm.status);
-    this.selectedRequest.processedByName = 'Admin Courant';
-
-    this.documentRequsetService
-      .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
-      .subscribe({
-        next: (response:any) => {
-          console.log('Document request updated successfully:', response);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Réponse envoyée',
-            detail: 'La réponse a été envoyée avec succès',
-          });
-          this.responseDialog = false;
+          this.documentRequsetService
+            .updateDocumentRequest(
+              this.selectedRequest,
+              this.selectedRequest.id
+            )
+            .subscribe({
+              next: (response: any) => {
+                console.log('Document request updated successfully:', response);
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Réponse envoyée',
+                  detail: 'La réponse a été envoyée avec succès',
+                });
+                this.responseDialog = false;
+              },
+              error: (err: any) => {
+                console.error('Error updating document request:', err);
+              },
+              complete: () => {
+                this.sendingResponse = false;
+                this.applyFilters();
+                this.updateStats();
+              },
+            });
         },
-        error: (err:any) => {
-          console.error('Error updating document request:', err);
-        },
-        complete: () => {
+        error: (err: any) => {
+          console.error('Error uploading file:', err);
           this.sendingResponse = false;
-          this.applyFilters();
-          this.updateStats();
         },
       });
-  }
-}
+    } else {
+      // No file to upload, just update the request
+      this.selectedRequest.status = this.getSelectedValue(
+        this.responseForm.status
+      );
+      this.selectedRequest.processedByName = 'Admin Courant';
 
+      this.documentRequsetService
+        .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
+        .subscribe({
+          next: (response: any) => {
+            console.log('Document request updated successfully:', response);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Réponse envoyée',
+              detail: 'La réponse a été envoyée avec succès',
+            });
+            this.responseDialog = false;
+          },
+          error: (err: any) => {
+            console.error('Error updating document request:', err);
+          },
+          complete: () => {
+            this.sendingResponse = false;
+            this.applyFilters();
+            this.updateStats();
+          },
+        });
+    }
+  }
 
   // Utility methods
   getInitials(name: string): string {
@@ -628,7 +633,7 @@ export class DocReqManagement implements OnInit {
 
   getStatusSeverity(status: string): string {
     const severityMap: { [key: string]: string } = {
-      Pending: 'warning',
+      'En Attente': 'warning',
       Approved: 'success',
       Rejected: 'danger',
       'In Progress': 'info',
@@ -638,7 +643,7 @@ export class DocReqManagement implements OnInit {
 
   getStatusIcon(status: string): string {
     const iconMap: { [key: string]: string } = {
-      Pending: 'pi-clock',
+      'En Attente': 'pi-clock',
       Approved: 'pi-check',
       Rejected: 'pi-times',
       'In Progress': 'pi-spinner',
@@ -650,7 +655,7 @@ export class DocReqManagement implements OnInit {
     const severityMap: { [key: string]: string } = {
       urgent: 'danger',
       haute: 'warning',
-      normale: 'info',
+      Normale: 'info',
       basse: 'secondary',
     };
     return severityMap[priority] || 'secondary';
@@ -660,9 +665,10 @@ export class DocReqManagement implements OnInit {
     const iconMap: { [key: string]: string } = {
       urgent: 'pi-exclamation-triangle',
       haute: 'pi-flag',
-      normale: 'pi-minus',
+      Normale: 'pi-minus',
       basse: 'pi-arrow-down',
     };
+    console.log('priority:', priority);
     return iconMap[priority] || 'pi-flag';
   }
 

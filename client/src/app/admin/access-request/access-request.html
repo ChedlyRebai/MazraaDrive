@@ -79,7 +79,7 @@
 
         <!-- <p-autoComplete
           [(ngModel)]="statusFilter"
-          [suggestions]="['Pending','Approved','Rejected']"
+          [suggestions]="['En Attente','Approved','Rejected']"
           (completeMethod)="0"
           placeholder="Statut"
           [forceSelection]="false"
@@ -184,7 +184,7 @@
                 severity="success"
                 [rounded]="true"
                 [outlined]="true"
-                *ngIf="r.status === 'Pending'"
+                *ngIf="r.status === 'En Attente'"
                 (click)="approve(r)"
                 pTooltip="Approuver"
               ></p-button>
@@ -193,7 +193,7 @@
                 severity="danger"
                 [rounded]="true"
                 [outlined]="true"
-                *ngIf="r.status === 'Pending'"
+                *ngIf="r.status === 'En Attente'"
                 (click)="reject(r)"
                 pTooltip="Rejeter"
               ></p-button>
@@ -338,14 +338,14 @@
       label="Approuver"
       icon="pi pi-check"
       severity="success"
-      *ngIf="selectedRequest?.status === 'Pending'"
+      *ngIf="selectedRequest?.status === 'En Attente'"
       (click)="approve(selectedRequest!)"
     ></p-button>
     <p-button
       label="Rejeter"
       icon="pi pi-times"
       severity="danger"
-      *ngIf="selectedRequest?.status === 'Pending'"
+      *ngIf="selectedRequest?.status === 'En Attente'"
       (click)="reject(selectedRequest!)"
     ></p-button>
   </ng-template>

@@ -48,7 +48,7 @@
 
         <!-- <p-autoComplete
           [(ngModel)]="statusFilter"
-          [suggestions]="['Pending', 'Approved', 'Rejected']"
+          [suggestions]="['En Attente', 'Approved', 'Rejected']"
           (completeMethod)="(0)"
           placeholder="Statut"
           [forceSelection]="false"
@@ -150,7 +150,7 @@
                 
                 [rounded]="true"
                 [outlined]="true"
-                *ngIf="r.status === 'Pending'"
+                *ngIf="r.status === 'En Attente'"
                 (click)="reject(r)"
                 pTooltip="Rejeter"
               ></p-button>

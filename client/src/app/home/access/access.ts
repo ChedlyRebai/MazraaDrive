@@ -137,7 +137,7 @@ export class Access implements OnInit {
         requestRead: true,
         requestWrite: true,
         requestDelete: true,
-        status: 'Pending',
+        status: 'En Attente',
         createdAt: '2002-01-01',
         decisionAt: '2002-01-01' ,
         decidedById: 'null',
@@ -154,7 +154,7 @@ export class Access implements OnInit {
         requestRead: true,
         requestWrite: true,
         requestDelete: true,
-        status: 'Pending',
+        status: 'En Attente',
         createdAt: '2002-01-01',
         decisionAt: '2002-01-01' ,
         decidedById: 'null',
@@ -222,7 +222,7 @@ export class Access implements OnInit {
 
   computeStats() {
     this.totalRequests = this.totalRecords;
-    this.pendingRequests = this.requests.filter(r => r.status === 'Pending').length;
+    this.pendingRequests = this.requests.filter(r => r.status === 'En Attente').length;
     this.approvedRequests = this.requests.filter(r => r.status === 'Approved').length;
     this.rejectedRequests = this.requests.filter(r => r.status === 'Rejected').length;
   }

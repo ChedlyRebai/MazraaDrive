@@ -273,7 +273,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
         try
         {
             var totalRequests = await _context.DocumentRequests.CountAsync();
-            var pendingRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Pending");
+            var pendingRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "En Attente");
             var completedRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Completed");
             var rejectedRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Rejected");
 
@@ -297,7 +297,7 @@ public class DocRequestRepository : GenericRepository<DocumentRequest>, IDocRequ
         try
         {
             var totalRequests = await _context.DocumentRequests.CountAsync(dr => dr.RequesterId == userId);
-            var pendingRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Pending" && dr.RequesterId == userId);
+            var pendingRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "En Attente" && dr.RequesterId == userId);
             var completedRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Completed" && dr.RequesterId == userId);
             var rejectedRequests = await _context.DocumentRequests.CountAsync(dr => dr.Status == "Rejected" && dr.RequesterId == userId);
 

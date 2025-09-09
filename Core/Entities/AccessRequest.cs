@@ -16,7 +16,7 @@ public class AccessRequest : BaseEntity<int>
     public bool RequestDelete { get; set; }
 
     public string? Message { get; set; } = null;
-    public string Status { get; set; } = "Pending"; // Pending, Approved, Rejected
+    public string Status { get; set; } = "En Attente"; // En Attente, Approved, Rejected
 
     public DateTime? DecisionAt { get; set; }
     public string? DecidedById { get; set; }

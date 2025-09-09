@@ -93,20 +93,10 @@ export class DocumentRequsetService {
     if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
-    return this.http
-      .get<DocumentRequestPagedResult>(
-        `${this.baseUrl}/GetMyDepartmentDocumentRequests`,
-        { params, withCredentials: true }
-      )
-      .subscribe(
-        (result) => {
-          console.log('Document requests fetched:', result);
-          this.documentRequest.next(result);
-        },
-        (error) => {
-          console.error('Error fetching document requests:', error);
-        }
-      );
+    return this.http.get<DocumentRequestPagedResult>(
+      `${this.baseUrl}/GetMyDepartmentDocumentRequests`,
+      { params, withCredentials: true }
+    );
   }
 
   getDocumentRequestById(id: number) {
@@ -125,26 +115,12 @@ export class DocumentRequsetService {
   }
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
-    // Replace with actual requester ID from authenticated user
-    //documentRequest.departmentId = 10;
-    // documentRequest.documentType = "Certificat de Travail";
-    // documentRequest.description = "string";
-    // documentRequest.priority = "Normal";
-
     return this.http.post<DocumentRequestDTO>(
       `http://localhost:5108/api/DocumentRequest`,
       documentRequest,
       { withCredentials: true }
     );
   }
-
-  //   "priority": "string"
-  // }
-  // return this.http
-  //   .post<DocumentRequestDTO>(
-  //     `http://localhost:5108/api/DocumentRequest`,
-  //     documentRequest
-  //   )
 
   updateDocumentRequest(documentRequest: DocumentRequestDTO, id: number) {
     return this.http.put<UpdateDocumentRequestDTO>(
@@ -155,15 +131,47 @@ export class DocumentRequsetService {
   }
 
   deleteDocumentRequest(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`)
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
-
   getMyDocumentRequestStats() {
-    return this.http
-      .get<DocumentRequestStatsDto>(`${this.baseUrl}/document-req-stats`, {
+    return this.http.get<DocumentRequestStatsDto>(
+      `${this.baseUrl}/document-req-stats`,
+      {
         withCredentials: true,
-      })
-      
+      }
+    );
+  }
+
+  getMyDocumentRequests(
+    PageSize?: number,
+    Search?: string,
+    PageNumber?: number,
+    SortBy?: string,
+    SortDirection?: string
+  ) {
+    let params = new HttpParams();
+
+    if (PageSize) {
+      params = params.append('PageSize', PageSize.toString());
+      console.log('PageSize:', PageSize);
+    }
+    if (PageNumber) {
+      params = params.append('PageNumber', PageNumber.toString());
+      console.log('PageNumber:', PageNumber);
+    }
+    if (Search) {
+      params = params.append('Search', Search.toString());
+    }
+    if (SortBy) {
+      params = params.append('SortBy', SortBy);
+    }
+    if (SortDirection) {
+      params = params.append('SortDirection', SortDirection);
+    }
+    return this.http.get<DocumentRequestPagedResult>(
+      `${this.baseUrl}/my-requests`,
+      { params, withCredentials: true }
+    );
   }
 }

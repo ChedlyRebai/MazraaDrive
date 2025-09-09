@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Api.Controllers
 {
-    
+
     public class FolderController : BaseController
     {
         public FolderController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<FolderController> logger)
@@ -290,8 +290,8 @@ namespace Api.Controllers
                 // Check if name is already taken in the same parent and department
                 // if (await _unitOfWork.FolderRepository.IsNameTakenInParentAsync(createDto.Name, createDto.ParentFolderId, createDto.DepartmentId))
                 //     return BadRequest(new { success = false, message = "Folder name already exists in this location" });
-               var  userId = _currentUser.UserId ?? "10";
-               var depId = int.Parse(_currentUser.DepartmentId);
+                var userId = _currentUser.UserId ?? "10";
+                var depId = int.Parse(_currentUser.DepartmentId);
                 var folder = _mapper.Map<Folder>(createDto);
                 folder.CreatedById = userId;
                 folder.DepartmentId = depId;
@@ -403,7 +403,7 @@ namespace Api.Controllers
             {
                 var folders = await _unitOfWork.FolderRepository.GetFolderTreeAsync(departmentId);
                 var treeDtos = BuildFolderTree(folders.ToList());
-                _logger.LogInformation("Retrieved folder tree for department ID {DepartmentId}", departmentId);                     
+                _logger.LogInformation("Retrieved folder tree for department ID {DepartmentId}", departmentId);
                 //await _auditLogger.LogAsync("GetFolderTree", "Retrieved folder tree", "10", "Folder");
                 return Ok(new { success = true, data = treeDtos });
             }
@@ -521,8 +521,8 @@ namespace Api.Controllers
         }
 
         private string GetCurrentUserId()
-        {   
-            
+        {
+
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "system";
         }
 

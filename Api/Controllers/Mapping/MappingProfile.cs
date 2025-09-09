@@ -204,7 +204,7 @@ public class MappingProfile : Profile
 
         CreateMap<CreateDocumentRequestDTO, DocumentRequest>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Pending"))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "En Attente"))
             .ForMember(dest => dest.RequestedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());

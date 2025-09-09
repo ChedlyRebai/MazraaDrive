@@ -101,16 +101,16 @@
 
         <ng-container
           *ngIf="
-            documentRequsetService.documentRequests$ | async as documentrequest
+            ReceivedDocumentRequest
           "
         >
           <p-table
             #dt
-            [value]="documentrequest.data"
+            [value]="ReceivedDocumentRequest.data"
             [rows]="PageSize"
             [paginator]="true"
             [lazy]="true"
-            [totalRecords]="documentrequest.totalRecords"
+            [totalRecords]="ReceivedDocumentRequest.totalRecords"
             (onLazyLoad)="onPageChange($event)"
             [globalFilterFields]="['name', 'description']"
             [tableStyle]="{ 'min-width': '75rem' }"
@@ -182,12 +182,12 @@
                     <p-sortIcon field="requesterName" />
                   </div>
                 </th>
-                <th pSortableColumn="departmentName" style="min-width: 12rem">
+                <!-- <th pSortableColumn="departmentName" style="min-width: 12rem">
                   <div class="flex items-center gap-2">
                     Département
                     <p-sortIcon field="departmentName" />
                   </div>
-                </th>
+                </th> -->
                 <th pSortableColumn="documentType" style="min-width: 14rem">
                   <div class="flex items-center gap-2">
                     Type de Document
@@ -231,9 +231,9 @@
                     <span class="font-medium">{{ request.requesterName }}</span>
                   </div>
                 </td>
-                <td>
+                <!-- <td>
                   <p-tag [value]="request.departmentName" severity="info" />
-                </td>
+                </td> -->
                 <td>
                   <div class="flex items-center gap-2">
                     <i
@@ -276,19 +276,20 @@
                             pTooltip="Traiter"
                             *ngIf="request.status === 'En Attente'"
                         /> -->
-                    <p-button
+                    <!-- <p-button
                       icon="pi pi-pencil"
                       [rounded]="true"
                       [outlined]="true"
                       (click)="editRequest(request)"
                       pTooltip="Modifier"
-                    />
+                    /> -->
                     <p-button
                       icon="pi pi-reply"
                       severity="success"
-                      [text]="true"
+                      [outlined]="true"
+                      
                       [rounded]="true"
-                      size="small"
+                      
                       pTooltip="Répondre"
                       (click)="respondToRequest(request)"
                     />
@@ -356,16 +357,16 @@
 
         <ng-container
           *ngIf="
-            documentRequsetService.documentRequests$ | async as documentrequest
+            SendedDocumentRequest
           "
         >
           <p-table
             #dt
-            [value]="documentrequest.data"
+            [value]="SendedDocumentRequest.data"
             [rows]="PageSize"
             [paginator]="true"
             [lazy]="true"
-            [totalRecords]="documentrequest.totalRecords"
+            [totalRecords]="SendedDocumentRequest.totalRecords"
             (onLazyLoad)="onPageChange($event)"
             [globalFilterFields]="['name', 'description']"
             [tableStyle]="{ 'min-width': '75rem' }"

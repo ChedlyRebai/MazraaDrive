@@ -51,7 +51,7 @@ namespace API.Controllers
                 RequestUpdate = requestDto.RequestUpdate,
                 RequestDelete = requestDto.RequestDelete,
                 Message = requestDto.Message,
-                Status = "Pending"
+                Status = "En Attente"
             };
 
             await _accessRequestRepository.AddAsync(accessRequest);

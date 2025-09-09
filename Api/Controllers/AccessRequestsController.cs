@@ -97,7 +97,7 @@ public class AccessRequestsController : BaseController
             DecidedById = userId,
             DecisionAt = System.DateTime.UtcNow,
 
-            Status = "Pending"
+            Status = "En Attente"
         };
         await _unitOfWork.AccessRequestRepository.AddAsync(entity);
         await _unitOfWork.SaveChangesAsync();
@@ -112,7 +112,7 @@ public class AccessRequestsController : BaseController
         var currentUserId = _currentUser.UserId;
         var entity = await _unitOfWork.AccessRequestRepository.GetByIdAsync(id);
         if (entity == null) return NotFound();
-        if (entity.Status != "Pending") return BadRequest("Already decided.");
+        if (entity.Status != "En Attente") return BadRequest("Already decided.");
 
         entity.Status = dto.Approve ? "Approved" : "Rejected";
         entity.DecisionAt = System.DateTime.UtcNow;

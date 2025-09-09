@@ -5554,7 +5554,7 @@ WHERE d."Name" LIKE @__name_0_contains
 SELECT EXISTS (
     SELECT 1
     FROM "AccessRequests" AS a
-    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'Pending')
+    WHERE a."DocumentId" = @__documentId_0 AND a."RequesterId" = @__requesterId_1 AND a."Status" = 'En Attente')
 2025-09-05 21:34:10.549 +01:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?', @p10='?', @p11='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "AccessRequests" ("CreatedAt", "DecidedById", "DecisionAt", "DocumentId", "Message", "RequestDelete", "RequestRead", "RequestUpdate", "RequestWrite", "RequesterId", "Status", "UpdatedAt")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)

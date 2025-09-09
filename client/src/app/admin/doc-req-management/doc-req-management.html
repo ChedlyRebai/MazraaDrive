@@ -246,7 +246,7 @@
                     [text]="true"
                     size="small"
                     pTooltip="Répondre"
-                    [disabled]="request.status !== 'Pending'"
+                    [disabled]="request.status !== 'En Attente'"
                     (click)="respondToRequest(request)"
                   />
                   <p-button
@@ -255,7 +255,7 @@
                     [text]="true"
                     size="small"
                     pTooltip="Modifier"
-                    [disabled]="request.status !== 'Pending'"
+                    [disabled]="request.status !== 'En Attente'"
                     (click)="editRequest(request)"
                   />
                   <p-button
@@ -676,7 +676,7 @@
     <div class="flex justify-between items-center pt-4 border-t">
       <div class="flex gap-2">
         <p-button
-          *ngIf="selectedRequest.status === 'Pending'"
+          *ngIf="selectedRequest.status === 'En Attente'"
           label="Répondre"
           icon="pi pi-reply"
           severity="success"
@@ -697,7 +697,7 @@
           label="Modifier"
           icon="pi pi-pencil"
           [outlined]="true"
-          [disabled]="selectedRequest.status !== 'Pending'"
+          [disabled]="selectedRequest.status !== 'En Attente'"
           (click)="editRequest(selectedRequest); detailsDialog = false"
         />
         <p-button

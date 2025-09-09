@@ -172,7 +172,7 @@ export class Demandes implements OnInit {
   ];
 
   statusFilterOptions = [
-    { label: 'En attente', value: 'Pending' },
+    { label: 'En attente', value: 'En Attente' },
     { label: 'Approuvé', value: 'Approved' },
     { label: 'Rejeté', value: 'Rejected' },
     { label: 'En cours', value: 'In Progress' },
@@ -297,15 +297,60 @@ export class Demandes implements OnInit {
     this.documentRequsetService.getMyDepartmentDocumentRequests();
     this.getStats();
     this.userService.getCurrentUser();
+    this.getReceivedDocumentRequests();
+    this.getSendedDocumentRequests();
   }
 
+  ReceivedDocumentRequest: DocumentRequestPagedResult =
+    {} as DocumentRequestPagedResult;
+  SendedDocumentRequest: DocumentRequestPagedResult =
+    {} as DocumentRequestPagedResult;
 
-  getStats(){
+  getReceivedDocumentRequests() {
+    this.documentRequsetService
+      .getMyDepartmentDocumentRequests(
+        this.PageSize,
+        this.Search,
+        this.PageNumber,
+        this.SortBy,
+        this.SortDirection
+      )
+      .subscribe(
+        (response: any) => {
+          console.log('Received Document Requests:', response);
+          this.ReceivedDocumentRequest = response;
+        },
+        (error: any) => {
+          console.error('Error fetching received document requests:', error);
+        }
+      );
+  }
+
+  getSendedDocumentRequests() {
+    this.documentRequsetService
+      .getMyDocumentRequests(
+        this.PageSize,
+        this.Search,
+        this.PageNumber,
+        this.SortBy,
+        this.SortDirection
+      )
+      .subscribe(
+        (response: any) => {
+          console.log('Sended Document Requests:', response);
+          this.SendedDocumentRequest = response;
+        },
+        (error: any) => {
+          console.error('Error fetching sended document requests:', error);
+        }
+      );
+  }
+
+  getStats() {
     this.documentRequsetService.getMyDocumentRequestStats().subscribe(
       (result) => {
         console.log('Document request stats fetched:', result);
         this.documentReqStat = result;
-       
       },
       (error) => {
         console.error('Error fetching document request stats:', error);
@@ -442,23 +487,26 @@ export class Demandes implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         //this.performDeleteRequest(request.id);
-        this.documentRequsetService.deleteDocumentRequest(request.id).subscribe({
-          next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Succès',
-              detail: 'Demande supprimée avec succès',
-            });
-            this.documentRequsetService.getDocumentRequests();
-          },
-          error: (error) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erreur',
-              detail: 'Une erreur est survenue lors de la suppression de la demande',
-            });
-          },
-        });
+        this.documentRequsetService
+          .deleteDocumentRequest(request.id)
+          .subscribe({
+            next: () => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Demande supprimée avec succès',
+              });
+              this.documentRequsetService.getDocumentRequests();
+            },
+            error: (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail:
+                  'Une erreur est survenue lors de la suppression de la demande',
+              });
+            },
+          });
       },
     });
   }
@@ -508,15 +556,6 @@ export class Demandes implements OnInit {
     this.submitted = true;
 
     console.log(this.request);
-    // if (!this.isRequestValid()) {
-    //   this.messageService.add({
-    //     severity: 'warn',
-    //     summary: 'Validation',
-    //     detail: 'Veuillez remplir tous les champs requis',
-    //   });
-    //   return;
-    // }
-
     this.documentRequsetService.createDocumentRequest(this.request).subscribe({
       next: (response) => {
         console.log(response);
@@ -530,7 +569,6 @@ export class Demandes implements OnInit {
         this.documentRequsetService.getMyDepartmentDocumentRequests();
         this.request = this.getEmptyRequest();
         this.saving = false;
-        
       },
       error: (error) => {
         this.messageService.add({
@@ -540,7 +578,7 @@ export class Demandes implements OnInit {
         });
       },
     });
-    
+
     console.log(this.request);
     if (this.request.id) {
       this.updateRequest();
@@ -726,7 +764,6 @@ export class Demandes implements OnInit {
   // Utility methods
   getEmptyRequest(): any {
     return {
-      
       requesterName: '',
       departmentId: null,
       documentType: '',
@@ -829,8 +866,8 @@ export class Demandes implements OnInit {
 
   earchDepartment(event: any) {
     const query = event.query.toLowerCase();
-    console.log(query)
-    console.log(event)
+    console.log(query);
+    console.log(event);
     this.filteredDepartments = this.departments.filter((dept) =>
       dept.name.toLowerCase().includes(query)
     );
@@ -838,7 +875,7 @@ export class Demandes implements OnInit {
       console.log(depts);
       this.filteredDepartments = depts;
     });
-    console.log(this.filteredDepartments)
+    console.log(this.filteredDepartments);
   }
   searchDepartment(e: any) {
     const q = (e.query || '').toLowerCase();
@@ -848,10 +885,7 @@ export class Demandes implements OnInit {
           // result should be [{id, name, description}, ...]
           this.filteredDepartments = result;
           // Now filteredDepartments contains raw department objects
-          console.log(
-            'filteredDepartments:',
-            this.filteredDepartments
-          );
+          console.log('filteredDepartments:', this.filteredDepartments);
         },
         (error) => {
           console.error('Error fetching departments:', error);
@@ -861,14 +895,14 @@ export class Demandes implements OnInit {
     } else {
       this.filteredDepartments = [];
     }
-   // console.log(this.user);
+    // console.log(this.user);
   }
 
   searchDocumentType(event: any) {
     const query = event.query.toLowerCase();
-     this.filteredDocumentTypes = this.documentTypes.filter((type) =>
-       type.label.toLowerCase().includes(query)
-     );
+    this.filteredDocumentTypes = this.documentTypes.filter((type) =>
+      type.label.toLowerCase().includes(query)
+    );
   }
 
   searchRequestPriority(event: any) {
@@ -933,7 +967,7 @@ export class Demandes implements OnInit {
   updateStats() {
     this.totalRequests = this.requests.length;
     this.pendingRequests = this.requests.filter(
-      (r: any) => r.status === 'Pending'
+      (r: any) => r.status === 'En Attente'
     ).length;
     this.approvedRequests = this.requests.filter(
       (r: any) => r.status === 'Approved'
@@ -1022,36 +1056,39 @@ export class Demandes implements OnInit {
     formData.append('FolderId', '10');
 
     // Example folderId
-    if(this.selectedFile){
+    if (this.selectedFile) {
       this.documentService.uploadDocument(formData).subscribe({
-      next: (response: DocumentDto) => {
-        console.log('File uploaded successfully:', response);
-        this.selectedRequest.responseDocumentId = response.id;
-        console.log('responseDocumentId:', response.id);
-        console.log('id:', this.selectedRequest.id);
-        this.documentRequsetService
-          .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
-          .subscribe({
-            next: (response) => {
-              console.log('Document request updated successfully:', response);
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Réponse envoyée',
-                detail: 'La réponse a été envoyée avec succès',
-              });
-              this.responseDialog = false;
-              this.sendingResponse = false;
-            },
-            error: (error) => {
-              console.error('Error updating document request:', error);
-            },
-          });
-      },
-      error: (error) => {
-        console.error('Error uploading file:', error);
-      },
-    });
-    }else{
+        next: (response: DocumentDto) => {
+          console.log('File uploaded successfully:', response);
+          this.selectedRequest.responseDocumentId = response.id;
+          console.log('responseDocumentId:', response.id);
+          console.log('id:', this.selectedRequest.id);
+          this.documentRequsetService
+            .updateDocumentRequest(
+              this.selectedRequest,
+              this.selectedRequest.id
+            )
+            .subscribe({
+              next: (response) => {
+                console.log('Document request updated successfully:', response);
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Réponse envoyée',
+                  detail: 'La réponse a été envoyée avec succès',
+                });
+                this.responseDialog = false;
+                this.sendingResponse = false;
+              },
+              error: (error) => {
+                console.error('Error updating document request:', error);
+              },
+            });
+        },
+        error: (error) => {
+          console.error('Error uploading file:', error);
+        },
+      });
+    } else {
       this.documentRequsetService
         .updateDocumentRequest(this.selectedRequest, this.selectedRequest.id)
         .subscribe({
@@ -1070,7 +1107,6 @@ export class Demandes implements OnInit {
           },
         });
     }
-    
   }
 
   applyFilters() {

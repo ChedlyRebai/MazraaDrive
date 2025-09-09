@@ -19,7 +19,8 @@ public class DocumentRequestController : BaseController
     [HttpGet]
     public async Task<ActionResult<DocumentRequestPagedResult>> GetDocumentRequests([FromQuery] DocumentRequestFilterDTO filter)
     {
-        try{
+        try
+        {
             var pagedRequests = await _unitOfWork.DocRequestRepository.GetPagedAsync(filter);
             var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
 
@@ -35,7 +36,7 @@ public class DocumentRequestController : BaseController
                 Search = pagedRequests.Search,
                 SortBy = pagedRequests.SortBy,
                 SortDirection = pagedRequests.SortDirection,
-                TotalPendingRequests = requestDtos.Count(r => r.Status == "Pending"),
+                TotalPendingRequests = requestDtos.Count(r => r.Status == "En Attente"),
                 TotalProcessedRequests = requestDtos.Count(r => r.Status == "Completed"),
                 TotalRejectedRequests = requestDtos.Count(r => r.Status == "Rejected")
             };
@@ -57,8 +58,8 @@ public class DocumentRequestController : BaseController
     {
 
         var _currentUseriD = _currentUser.UserId;
-        var _currentUserDepId= _unitOfWork.UserRepository.GetByIdAsync(_currentUseriD).Result.DepartmentId;
-       // var _currentUserRoleId = _currentUser.RoleId;
+        var _currentUserDepId = int.Parse(_currentUser.DepartmentId);
+        // var _currentUserRoleId = _currentUser.RoleId;
         Console.WriteLine("Current User Department ID: " + _currentUserDepId);
         try
 
@@ -79,6 +80,36 @@ public class DocumentRequestController : BaseController
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving document requests for department ID {DepartmentId}", _currentUserDepId);
+            return BadRequest(new { success = false, message = ex.Message });
+        }
+
+    }
+
+
+    [HttpGet("my-requests")]
+    public async Task<ActionResult<DocumentRequestPagedResult>> GetMyRequests([FromQuery] PaginationParams pagination)
+    {
+
+        var _currentUseriD = _currentUser.UserId;
+        var _currentUserDepId = int.Parse(_currentUser.DepartmentId);
+        // var _currentUserRoleId = _currentUser.RoleId;
+        Console.WriteLine("Current User Department ID: " + _currentUserDepId);
+        try
+        {
+            var pagedRequests = await _unitOfWork.DocRequestRepository.GetByRequesterPagedAsync(_currentUseriD, pagination);
+            var requestDtos = _mapper.Map<IEnumerable<DocumentRequestDTO>>(pagedRequests.Data);
+
+            var result = requestDtos.ToPagedResult(
+                pagedRequests.PageNumber,
+                pagedRequests.PageSize,
+                pagedRequests.TotalRecords
+            );
+            _logger.LogInformation("Retrieved document requests for requester ID {RequesterId}", _currentUseriD);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving document requests for requester ID {RequesterId}", _currentUseriD);
             return BadRequest(new { success = false, message = ex.Message });
         }
 
@@ -124,7 +155,7 @@ public class DocumentRequestController : BaseController
             request.DocumentType = createDto.DocumentType ?? string.Empty;
             request.Priority = createDto.Priority ?? string.Empty;
             request.Description = createDto.Description ?? string.Empty;
-            request.Status = "Pending";
+            request.Status = "En Attente";
 
             await _unitOfWork.DocRequestRepository.AddAsync(request);
             // if (!success)
@@ -148,30 +179,31 @@ public class DocumentRequestController : BaseController
 
 
     [HttpGet("document-req-stats")]
-        public async Task<ActionResult<DocumentRequestStatsDto>> GetDocumentStatistics()
+    public async Task<ActionResult<DocumentRequestStatsDto>> GetDocumentStatistics()
+    {
+        try
         {
-            try
-            {
-                var currentUserId = _currentUser.UserId;
-                var stats = await _unitOfWork.DocRequestRepository.GetDocumentStatisticsAsyncByUserId(currentUserId);
+            var currentUserId = _currentUser.UserId;
+            var stats = await _unitOfWork.DocRequestRepository.GetDocumentStatisticsAsyncByUserId(currentUserId);
             //await _auditLogger.LogAsync("GetDocumentStatistics", "Retrieved document statistics", "10", "Document");
             _logger.LogInformation("Retrieved document statistics for user ID {UserId}", currentUserId);
-                return Ok(stats);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving document statistics for user ID {UserId}", _currentUser?.UserId);
-                return BadRequest(new ResponseAPI(500, ex.Message));
-            }
+            return Ok(stats);
         }
-    
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving document statistics for user ID {UserId}", _currentUser?.UserId);
+            return BadRequest(new ResponseAPI(500, ex.Message));
+        }
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult<DocumentRequestDTO>> UpdateDocumentRequest(int id, [FromBody] UpdateDocumentRequestDTO updateDto)
     {
-        try{
+        try
+        {
 
-        var currentUserId = _currentUser.UserId;
-        var currentDepId = _unitOfWork.UserRepository.GetByIdAsync(currentUserId).Result.DepartmentId;
+            var currentUserId = _currentUser.UserId;
+            var currentDepId = _unitOfWork.UserRepository.GetByIdAsync(currentUserId).Result.DepartmentId;
             Console.WriteLine("Updating document request ID: " + id + " with data: " + updateDto);
             Console.WriteLine("Updating document request ID: " + id + " with data: " + updateDto);
             Console.WriteLine("Current User ID: " + currentUserId);
