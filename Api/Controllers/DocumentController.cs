@@ -254,6 +254,8 @@ namespace Api.Controllers
 
                 // Validate file type
                 var fileExtension = Path.GetExtension(uploadDto.File.FileName).ToLower();
+               
+                
                 if (!AllowedFileTypes.Contains(fileExtension))
                     return BadRequest(new { success = false, message = "File type not allowed" });
 
@@ -276,6 +278,7 @@ namespace Api.Controllers
                 var fileName = $"{Guid.NewGuid()}{fileExtension}";
                 var filePath = Path.Combine(uploadsPath, fileName);
 
+                
                 // Save file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
