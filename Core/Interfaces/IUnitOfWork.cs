@@ -24,6 +24,7 @@ public interface IUnitOfWork
     public IFolderRepository FolderRepository { get; }
     public IMessageRepository MessageRepository { get; }
     public IUserRepository UserRepository { get; }
+    public INotificationRepository NotificationRepository { get; }
     public IDepartmentRepository DepartmentRepository { get; }
     public IPermissionsRepository PermissionsRepository { get; }
     public IDocumentAccessService DocumentAccessService { get; }

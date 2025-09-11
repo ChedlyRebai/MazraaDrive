@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
     //private readonly IConnectionMultiplexer _redis;
     private readonly UserManager<AppUser> _userManager;
     public IAuth Auth { get; }
+    public INotificationRepository NotificationRepository { get; }
     public IAccessRequestRepository AccessRequestRepository { get; }
     public IDocRequestRepository DocRequestRepository { get; }
     public IDocument DocumentRepository { get; }
@@ -28,9 +29,9 @@ public class UnitOfWork : IUnitOfWork
     public IPermissionsRepository PermissionsRepository { get; }
     public IRoleRepository RoleRepository { get; }
     private readonly RoleManager<Role> _roleManager;
-    
+
     public IDocumentAccessService DocumentAccessService { get; }
-    
+
     public UserManager<AppUser> UserManager => _userManager;
     public RoleManager<Role> RoleManager => _roleManager;
 
@@ -50,7 +51,7 @@ public class UnitOfWork : IUnitOfWork
         IDocument documentRepository,
         IUserRepository userRepository,
         IDocRequestRepository docRequestRepository,
-       
+        INotificationRepository notificationRepository,
         ICurrentUserService currentUserService,
         IGenerateToken token
         // IRepository<AccessRequest> accessRequestRepository
@@ -58,6 +59,7 @@ public class UnitOfWork : IUnitOfWork
 
         )
     {
+        NotificationRepository = notificationRepository ?? throw new ArgumentNullException(nameof(notificationRepository));
         _roleManager = roleManager;
         _context = context;
         _userManager = userManager;
