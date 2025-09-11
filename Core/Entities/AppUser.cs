@@ -41,4 +41,7 @@ public class AppUser : IdentityUser<string>
     //public virtual ICollection<Message> SentMessages { get; set; }
     // public virtual ICollection<Message> ReceivedMessages { get; set; }
     public virtual ICollection<MailFolder> MailFolders { get; set; }
+
+    public virtual ICollection<Notification> Notifications { get; set; }
+    
 }

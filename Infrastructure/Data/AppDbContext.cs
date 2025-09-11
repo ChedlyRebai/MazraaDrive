@@ -17,6 +17,7 @@ namespace Infrastructure.Data
         public virtual DbSet<AccessRequest> AccessRequests { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<AccessRight> AccessRights { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Folder> Folders { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<DocumentAccessLink> DocumentAccessLinks { get; set; }
