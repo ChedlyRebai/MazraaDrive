@@ -1310,3 +1310,8 @@ WHERE FALSE
 2025-09-11 23:31:07.879 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api)'
 2025-09-11 23:31:07.879 +01:00 [INF] The response could not be cached for this request.
 2025-09-11 23:31:07.879 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document/MyDocumentAndFolderstat - 200 null application/json; charset=utf-8 3.7158ms
+2025-09-11 23:56:19.584 +01:00 [INF] Application is shutting down...
+2025-09-11 23:59:23.779 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-11 23:59:23.855 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-11 23:59:59.698 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-11 23:59:59.772 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.

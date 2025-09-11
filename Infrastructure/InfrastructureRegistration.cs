@@ -75,7 +75,7 @@ public static class InfrastructureRegistration
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAccessRequestRepository, AccessRequestRepository>();
         services.AddScoped<IPermissionsRepository, PermissionsRepository>();
-
+        services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IGenerateToken, GenerateToken>();
         services.AddScoped<IAuth, AuthRepository>();
         services.AddScoped<IHomeRepository, HomeRepository>();

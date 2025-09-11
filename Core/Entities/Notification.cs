@@ -20,7 +20,7 @@ public class Notification:BaseEntity<int>
 
     public string? ActionUrl { get; set; } // URL for the notification action
 
-    public int? SenderId { get; set; } // ID of the user who triggered the notification
+    public string? SenderId { get; set; } // ID of the user who triggered the notification
 
     // Navigation properties
     [ForeignKey(nameof(UserId))]
