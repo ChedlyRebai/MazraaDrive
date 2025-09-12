@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DocumentRecherche } from './document-recherche/document-recherche';
-import { Access } from './access/access';
+
 
 const routes: Routes = [
   {
