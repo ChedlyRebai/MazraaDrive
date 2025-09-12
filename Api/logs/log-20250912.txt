@@ -1406,3 +1406,19 @@ ORDER BY d0."RequestedAt" DESC
 2025-09-12 08:40:39.243 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
 2025-09-12 08:40:39.243 +01:00 [INF] The response could not be cached for this request.
 2025-09-12 08:40:39.244 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 4.0195ms
+2025-09-12 08:41:47.261 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-12 08:41:47.262 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.8743ms
+2025-09-12 08:41:47.264 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-12 08:41:47.265 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.625ms
+2025-09-12 08:41:47.292 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-12 08:41:47.292 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-12 08:41:47.292 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.4837ms
+2025-09-12 08:41:47.293 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.7978ms
+2025-09-12 08:41:47.295 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-12 08:41:47.295 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1752ms
+2025-09-12 08:41:47.317 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-12 08:41:47.318 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.7249ms
+2025-09-12 08:41:47.494 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-12 08:41:47.558 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-12 08:41:47.591 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 97.7338ms
+2025-09-12 08:41:47.646 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 87.7149ms
