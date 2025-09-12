@@ -16,14 +16,15 @@ public class NotificationDTO
     public bool IsRead { get; set; } = false;
     public string? Link { get; set; }
 
-    public string? Type { get; set; } 
+    public string? Type { get; set; }
 
     public string? ActionUrl { get; set; } // URL for the notification action
 
     public string? SenderId { get; set; } // ID of the user who triggered the notification
 
+    public DateTime CreatedAt { get; set; }
     // Navigation properties
-   
+
 }
 
 

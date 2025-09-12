@@ -1,1 +1,290 @@
-<p>notifications works!</p>
+<theme-switcher />
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-2">
+        Notifications
+      </h1>
+      <!-- <p class="text-surface-600 dark:text-surface-300">
+        Organisez et gérez vos documents en toute simplicité
+      </p> -->
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div
+      class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-lg text-white"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-blue-100 text-sm">Total Dossiers</p>
+          <p class="text-2xl font-bold">
+            {{ (DocumentService.documentRequests$ | async)?.totalFolders }}
+          </p>
+        </div>
+        <i class="pi pi-folder text-3xl text-blue-200"></i>
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-lg text-white"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-purple-100 text-sm">Documents</p>
+          <p class="text-2xl font-bold">
+            {{ (DocumentService.documentRequests$ | async)?.totalRecords }}
+          </p>
+        </div>
+        <i class="pi pi-file text-3xl text-purple-200"></i>
+      </div>
+    </div>
+    <div
+      class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-lg text-white"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-green-100 text-sm">Taille Totale</p>
+          <p class="text-2xl font-bold">
+            {{
+              formatFileSize(
+                (DocumentService.documentRequests$ | async)?.totalFileSize || 0
+              )
+            }}
+          </p>
+        </div>
+        <i class="pi pi-database text-3xl text-green-200"></i>
+      </div>
+    </div>
+    <!-- <div
+      class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-lg text-white"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-orange-100 text-sm">Récents</p>
+          <p class="text-2xl font-bold">12</p>
+        </div>
+        <i class="pi pi-clock text-3xl text-orange-200"></i>
+      </div>
+    </div> -->
+  </div>
+</div>
+<div class="card">
+  <p-toast />
+
+  <ng-container *ngIf="myNotification">
+    <p-table
+      #dt
+      [value]="myNotification.data"
+      [rows]="PageSize"
+      [paginator]="true"
+      [lazy]="true"
+      [totalRecords]="myNotification.totalRecords"
+      (onLazyLoad)="onPageChange($event)"
+      [globalFilterFields]="['name', 'description']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} départements"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[1, 2, 5, 10, 25, 50]"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between">
+          <h5 class="m-0"></h5>
+          <div class="flex gap-2">
+            <p-iconField iconPosition="left">
+              <p-inputIcon class="pi pi-search" />
+              <input pInputText type="text" placeholder="Rechercher..." />
+            </p-iconField>
+            <p-button
+              icon="pi pi-refresh"
+              [outlined]="true"
+              (click)="loadDocuments()"
+            />
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="min-width: 16rem">
+            <div class="flex items-center gap-2">
+              TItre
+              <p-sortIcon field="name" />
+            </div>
+          </th>
+          <!-- <th pSortableColumn="category" style="min-width: 12rem">
+          <div class="flex items-center gap-2">
+            Catégorie
+            <p-sortIcon field="category" />
+          </div>
+        </th> -->
+          <th pSortableColumn="type" style="min-width: 10rem">
+            <div class="flex items-center gap-2">
+              Message
+              <p-sortIcon field="type" />
+            </div>
+          </th>
+          <th pSortableColumn="size" style="min-width: 8rem">
+            <div class="flex items-center gap-2">
+              Type
+              <p-sortIcon field="size" />
+            </div>
+          </th>
+          <th pSortableColumn="uploadedBy" style="min-width: 12rem">
+            <div class="flex items-center gap-2">
+              Date de notification
+              <p-sortIcon field="uploadedBy" />
+            </div>
+          </th>
+          <!-- <th pSortableColumn="uploadedAt" style="min-width: 12rem">
+            <div class="flex items-center gap-2">
+              vu
+              <p-sortIcon field="uploadedAt" />
+            </div>
+          </th> -->
+
+          <th style="min-width: 12rem">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-notification>
+        <tr>
+          <td>
+            <div class="flex items-center gap-2">
+              <i
+                [class]="getFileIcon(notification.fileType)"
+                style="font-size: 1.5rem"
+              ></i>
+              <span class="font-medium">{{ notification.title }}</span>
+            </div>
+          </td>
+          <!-- <td>
+          <p-tag [value]="document.category" severity="info" />
+        </td> -->
+          <td>{{ notification.message }}</td>
+          <td>{{ notification.type }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span>{{
+                notification.createdAt | date : "dd/MM/yyyy : HH:mm"
+              }}</span>
+            </div>
+          </td>
+          <!-- <td>
+            <div class="font-medium">
+              {{ document.createdAt | date : "dd/MM/yyyy" }}
+            </div>
+            <div class="text-sm text-surface-600">
+              {{ document.createdAt | date : "HH:mm" }}
+            </div>
+          </td> -->
+
+          <!-- <td>
+            <p-tag
+              [value]="document.status"
+              [severity]="getStatusSeverity(document.status)"
+            />
+          </td> -->
+          <td>
+            <div class="flex gap-2">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="viewNotification(notification)"
+                pTooltip="Voir"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center py-4">
+            <div class="flex flex-col items-center gap-2">
+              <i
+                class="pi pi-file"
+                style="font-size: 2rem; color: var(--text-color-secondary)"
+              ></i>
+              <span>Aucun document trouvé.</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+
+  <!-- Document Preview Dialog -->
+  <!-- Notification Preview Dialog -->
+  <p-dialog
+    [(visible)]="previewDialog"
+    [style]="{ width: '40rem', maxWidth: '95vw' }"
+    header="Détail de la Notification"
+    [modal]="true"
+  >
+    <ng-template pTemplate="content">
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3 mb-2">
+          <i class="pi pi-bell text-primary" style="font-size: 2rem"></i>
+          <div>
+            <h5 class="m-0 font-bold">{{ selectedNotification?.title }}</h5>
+            <span class="text-sm text-muted" *ngIf="selectedNotification?.type">
+              Type: {{ selectedNotification?.type }}
+            </span>
+          </div>
+        </div>
+        <div class="mb-2">
+          <span class="font-semibold">Message:</span>
+          <div class="mt-1">{{ selectedNotification?.message }}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <!-- <div>
+          <span class="font-semibold">Expéditeur:</span>
+          <span class="ml-1">{{ selectedNotification?.senderId || '—' }}</span>
+        </div> -->
+          <!-- <div>
+          <span class="font-semibold">Utilisateur:</span>
+          <span class="ml-1">{{ selectedNotification?.userId || '—' }}</span>
+        </div> -->
+        </div>
+        <div>
+          <span class="font-semibold">Statut:</span>
+          <span class="ml-1">
+            <p-tag
+              [value]="selectedNotification?.isRead ? 'Lu' : 'Non lu'"
+              [severity]="selectedNotification?.isRead ? 'success' : 'warning'"
+            />
+          </span>
+        </div>
+        <div *ngIf="selectedNotification?.link" class="mt-2">
+          <span class="font-semibold">Lien associé:</span>
+          <a
+            [href]="selectedNotification?.link"
+            target="_blank"
+            class="ml-2 text-primary underline"
+            >Ouvrir le lien</a
+          >
+        </div>
+        <div *ngIf="selectedNotification?.actionUrl" class="mt-2">
+          <span class="font-semibold">Action:</span>
+          <a
+            [href]="selectedNotification?.actionUrl"
+            target="_blank"
+            class="ml-2 btn btn-sm btn-outline-primary"
+            >Effectuer l'action</a
+          >
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Fermer"
+        icon="pi pi-times"
+        [text]="true"
+        (click)="previewDialog = false"
+      />
+    </ng-template>
+  </p-dialog>
+</div>

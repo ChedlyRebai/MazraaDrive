@@ -25,7 +25,7 @@ namespace Api.Controllers
             return Ok(new NotificationPagedResult
             {
                 Data = notificationDtos,
-                TotalNotifications = notifications.Data.Count(n=> true),
+                TotalNotifications = notifications.Data.Count(n => true),
 
                 UnreadNotifications = notifications.Data.Count(n => !n.IsRead)
             });
@@ -42,23 +42,32 @@ namespace Api.Controllers
             return Ok(notificationDto);
         }
 
-          
 
+
+        // ...existing code...
         [HttpGet("my-notification")]
-        public async Task<ActionResult<NotificationPagedResult>> GetUserNotifications(string userId)
+        public async Task<ActionResult<NotificationPagedResult>> GetUserNotifications(
+            [FromQuery] int? PageSize,
+            [FromQuery] int? PageNumber,
+            [FromQuery] string? Search,
+            [FromQuery] string? SortBy,
+            [FromQuery] string? SortDirection
+        )
         {
-            
             var _currentUserId = _currentUser.UserId;
-            var notifications = await _unitOfWork.NotificationRepository.GetByUserIdAsync(userId);
-            var notificationDtos = _mapper.Map<IReadOnlyList<NotificationDTO>>(notifications);
+            var notifications = await _unitOfWork.NotificationRepository.GetByUserIdAsync(_currentUserId);
+
+            // FIX: map notifications.Data, not notifications
+            var notificationDtos = _mapper.Map<IEnumerable<NotificationDTO>>(notifications.Data);
+
             return Ok(new NotificationPagedResult
             {
                 Data = notificationDtos,
-                TotalNotifications = notifications.Data.Count(n=> true),
-
+                TotalNotifications = notifications.Data.Count(n => true),
                 UnreadNotifications = notifications.Data.Count(n => !n.IsRead)
             });
         }
+        // ...existing code...
 
         [HttpGet("user/{userId}/unread")]
         public async Task<ActionResult<IReadOnlyList<Notification>>> GetUserUnreadNotifications(string userId)
