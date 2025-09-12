@@ -28,7 +28,7 @@ public class NotificationRepository:INotificationRepository
             return await _context.Notifications
                 .Include(n => n.User)
                 .Include(n => n.Sender)
-                .OrderByDescending(n => n.Date)
+                .OrderByDescending(n => n.CreatedAt)
                 .ToListAsync();
         }
 
@@ -38,7 +38,7 @@ public class NotificationRepository:INotificationRepository
                 .Include(n => n.User)
                 .Include(n => n.Sender)
                 .Where(n => n.UserId == userId)
-                .OrderByDescending(n => n.Date)
+                .OrderByDescending(n => n.CreatedAt)
                 .ToListAsync();
         }
 
@@ -48,7 +48,7 @@ public class NotificationRepository:INotificationRepository
                 .Include(n => n.User)
                 .Include(n => n.Sender)
                 .Where(n => n.UserId == userId && !n.IsRead)
-                .OrderByDescending(n => n.Date)
+                .OrderByDescending(n => n.CreatedAt)
                 .ToListAsync();
         }
 
@@ -60,7 +60,7 @@ public class NotificationRepository:INotificationRepository
 
         public async Task<Notification> AddAsync(Notification notification)
         {
-            notification.Date = DateTime.Now; // Ensure date is set
+            notification.CreatedAt = DateTime.Now; // Ensure date is set
             await _context.Notifications.AddAsync(notification);
             await _context.SaveChangesAsync();
             return notification;

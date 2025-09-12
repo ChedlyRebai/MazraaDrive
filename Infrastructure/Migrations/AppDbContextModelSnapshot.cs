@@ -661,10 +661,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ActionUrl")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsRead")
@@ -697,7 +697,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Date");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("IsRead");
 
@@ -1091,6 +1091,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Notification", b =>
                 {
+                    b.HasOne("Core.Entities.AppUser", null)
+                        .WithMany("SentNotifications")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("Core.Entities.AppUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
@@ -1173,6 +1177,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("ProcessedDocuments");
 
                     b.Navigation("RequestedDocuments");
+
+                    b.Navigation("SentNotifications");
 
                     b.Navigation("UploadedDocuments");
                 });

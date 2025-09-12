@@ -43,5 +43,7 @@ public class AppUser : IdentityUser<string>
     public virtual ICollection<MailFolder> MailFolders { get; set; }
 
     public virtual ICollection<Notification> Notifications { get; set; }
+
+    public virtual ICollection<Notification> SentNotifications { get; set; } = new List<Notification>();
     
 }

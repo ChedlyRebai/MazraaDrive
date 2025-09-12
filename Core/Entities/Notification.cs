@@ -12,7 +12,7 @@ public class Notification:BaseEntity<int>
     public string UserId { get; set; }
     [Required]
     public string Message { get; set; }
-    public DateTime Date { get; set; } = DateTime.Now;
+   
     public bool IsRead { get; set; } = false;
     public string? Link { get; set; }
 

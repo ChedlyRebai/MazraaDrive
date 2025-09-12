@@ -95,21 +95,19 @@ namespace Infrastructure.Data
 
                 entity.HasIndex(n => n.UserId);
                 entity.HasIndex(n => n.IsRead);
-                entity.HasIndex(n => n.Date);
+
             });
 
 
 
 
             modelBuilder.Entity<AppUser>(entity =>
-    {
-        // Other AppUser configurations...
-
-        entity.HasMany(u => u.Notifications)
-            .WithOne(n => n.User)
-            .HasForeignKey(n => n.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-    });
+            {
+                entity.HasMany(u => u.Notifications)
+                    .WithOne(n => n.User)
+                    .HasForeignKey(n => n.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
         }
     }

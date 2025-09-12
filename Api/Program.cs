@@ -108,7 +108,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddResponseCompression();
 builder.Services.AddSignalR();
 builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
-    p.WithOrigins("http://localhost:4200", "https://your-vercel-domain.vercel.app")
+    p.WithOrigins("http://localhost:4200", "http://localhost:5108")
      .AllowAnyHeader().AllowAnyMethod()
      .AllowCredentials()));
 builder.Services.AddOpenApi();
@@ -116,9 +116,9 @@ builder.Services.AddOpenApi();
 
 // persist keys to disk (Program.cs)
 
-builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/"))
-    .SetApplicationName("MazraaDrive");
+// builder.Services.AddDataProtection()
+//     .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/"))
+//     .SetApplicationName("MazraaDrive");
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
 
@@ -129,15 +129,21 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MazraaDrive API v1");
+        c.RoutePrefix = "swagger"; // Keep swagger at /swagger
+    });
+    
+    // Enable OpenAPI endpoint for Scalar
     app.MapOpenApi();
-    app.MapScalarApiReference();
+}
 
-    // app.UseSwagger();
-    // app.UseSwaggerUI(c =>
-    // {
-    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mazraa Drive Api v1");
-    //     c.RoutePrefix = string.Empty; // Set Swagger UI at the root (optional)
-    // });
+// For production, you might want to conditionally enable this
+if (!app.Environment.IsDevelopment())
+{
+    app.MapOpenApi(); // Enable in all environments if needed
 }
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 if (!Directory.Exists(uploadsPath))

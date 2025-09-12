@@ -82,3 +82,386 @@ CREATE INDEX "IX_Notifications_UserId" ON "Notifications" ("UserId");
 2025-09-12 00:06:33.578 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
 VALUES ('20250911230543_updateENtityh', '9.0.8');
+2025-09-12 00:50:39.355 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-12 00:50:39.451 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-12 00:50:39.604 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:39.605 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:39.606 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:52.131 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-12 00:50:52.206 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-12 00:50:52.338 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:52.339 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:52.339 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:50:52.525 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-12 00:50:52.723 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-09-12 00:50:52.728 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-12 00:50:52.729 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-09-12 00:50:52.730 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-12 00:50:52.734 +01:00 [INF] Applying migration '20250911235040_updateENtityappdb'.
+2025-09-12 00:50:52.760 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP INDEX "IX_Notifications_Date";
+2025-09-12 00:50:52.761 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Notifications" DROP COLUMN "Date";
+2025-09-12 00:50:52.761 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Notifications" ADD "AppUserId" text;
+2025-09-12 00:50:52.770 +01:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Notifications_AppUserId" ON "Notifications" ("AppUserId");
+2025-09-12 00:50:52.773 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Notifications" ADD CONSTRAINT "FK_Notifications_AspNetUsers_AppUserId" FOREIGN KEY ("AppUserId") REFERENCES "AspNetUsers" ("Id");
+2025-09-12 00:50:52.774 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250911235040_updateENtityappdb', '9.0.8');
+2025-09-12 00:52:26.440 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-12 00:52:26.513 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-12 00:52:26.650 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:52:26.652 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:52:26.652 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-12 00:52:26.843 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-12 00:52:27.072 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-09-12 00:52:27.076 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-12 00:52:27.077 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-09-12 00:52:27.078 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-12 00:52:27.082 +01:00 [INF] No migrations were applied. The database is already up to date.
+2025-09-12 00:52:45.859 +01:00 [ERR] An error occurred while reading the key ring.
+System.UnauthorizedAccessException: Access to the path '/var/keys/' is denied.
+ ---> System.IO.IOException: Permission denied
+   --- End of inner exception stack trace ---
+   at System.IO.FileSystem.CreateDirectory(String fullPath, UnixFileMode unixCreateMode)
+   at System.IO.DirectoryInfo.Create()
+   at Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository.GetAllElementsCore()+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository.GetAllElements()
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager.GetAllKeys()
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider.CreateCacheableKeyRingCore(DateTimeOffset now, IKey keyJustAdded)
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider.GetKeyRingFromCompletedTaskUnsynchronized(Task`1 task, DateTime utcNow)
+2025-09-12 00:52:45.907 +01:00 [INF] Key ring failed to load during application startup.
+System.UnauthorizedAccessException: Access to the path '/var/keys/' is denied.
+ ---> System.IO.IOException: Permission denied
+   --- End of inner exception stack trace ---
+   at System.IO.FileSystem.CreateDirectory(String fullPath, UnixFileMode unixCreateMode)
+   at System.IO.DirectoryInfo.Create()
+   at Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository.GetAllElementsCore()+MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository.GetAllElements()
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager.GetAllKeys()
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider.CreateCacheableKeyRingCore(DateTimeOffset now, IKey keyJustAdded)
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider.GetKeyRingFromCompletedTaskUnsynchronized(Task`1 task, DateTime utcNow)
+   at Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider.GetCurrentKeyRingCoreNew(DateTime utcNow, Boolean forceRefresh)
+   at Microsoft.AspNetCore.DataProtection.Internal.DataProtectionHostedService.StartAsync(CancellationToken token)
+2025-09-12 00:52:45.974 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-12 00:52:45.985 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-12 00:52:45.986 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-12 00:52:45.986 +01:00 [INF] Hosting environment: Development
+2025-09-12 00:52:45.986 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-12 00:52:47.699 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:52:47.762 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:52:47.763 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:52:47.771 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:52:47.771 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:52:47.776 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 77.4486ms
+2025-09-12 00:52:47.793 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:53:02.464 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/ - null null
+2025-09-12 00:53:02.467 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:02.467 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:53:02.534 +01:00 [INF] Write content with HTTP Response ContentType of text/html
+2025-09-12 00:53:02.545 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:53:02.545 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:02.549 +01:00 [WRN] Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: '["br"]'. Consider disabling response compression.
+2025-09-12 00:53:02.552 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/ - 200 null text/html 87.7396ms
+2025-09-12 00:53:02.592 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - null null
+2025-09-12 00:53:02.596 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:02.596 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:53:02.598 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - null null
+2025-09-12 00:53:02.600 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:02.601 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:53:02.605 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:53:02.605 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:53:02.606 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:53:02.606 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:53:02.607 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:02.608 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - 304 null null 9.4181ms
+2025-09-12 00:53:02.608 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:02.609 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - 304 null null 17.0963ms
+2025-09-12 00:53:03.287 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/favicon.ico - null null
+2025-09-12 00:53:03.287 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:03.287 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:03.288 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:03.288 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:03.290 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/favicon.ico - 404 0 null 2.6907ms
+2025-09-12 00:53:03.290 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/favicon.ico, Response status code: 404
+2025-09-12 00:53:04.410 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:53:04.411 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:04.411 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:04.651 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:04.656 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 245.6621ms
+2025-09-12 00:53:04.662 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:53:04.662 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:04.662 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:04.809 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:04.810 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 147.6295ms
+2025-09-12 00:53:09.093 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/ - null null
+2025-09-12 00:53:09.093 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:09.093 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:53:09.094 +01:00 [INF] Write content with HTTP Response ContentType of text/html
+2025-09-12 00:53:09.095 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:53:09.095 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:09.095 +01:00 [WRN] Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: '["br"]'. Consider disabling response compression.
+2025-09-12 00:53:09.095 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/ - 200 null text/html 2.2436ms
+2025-09-12 00:53:09.113 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - null null
+2025-09-12 00:53:09.113 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:09.114 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:53:09.114 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - null null
+2025-09-12 00:53:09.115 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:09.114 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:53:09.115 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:53:09.115 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:09.115 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:53:09.116 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:53:09.116 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:53:09.116 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - 304 null null 2.6327ms
+2025-09-12 00:53:09.116 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:09.117 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - 304 null null 3.2267ms
+2025-09-12 00:53:10.773 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:53:10.773 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:53:10.773 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:10.773 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:10.773 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:10.773 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:10.910 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:10.911 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 138.4388ms
+2025-09-12 00:53:10.914 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:53:10.914 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 141.7282ms
+2025-09-12 00:53:45.218 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-12 00:53:45.374 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-12 00:53:45.378 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-12 00:53:45.378 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-12 00:53:45.378 +01:00 [INF] Hosting environment: Development
+2025-09-12 00:53:45.378 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-12 00:53:47.015 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:53:47.096 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:47.097 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:47.106 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:53:47.107 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:53:47.112 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 99.6563ms
+2025-09-12 00:53:47.132 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:54:24.094 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:54:24.096 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:24.096 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:24.096 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:24.096 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:24.096 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 2.283ms
+2025-09-12 00:54:24.096 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:54:24.834 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:54:24.837 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:24.837 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:24.838 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:24.838 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:24.838 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 3.5329ms
+2025-09-12 00:54:24.838 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:54:31.469 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-12 00:54:31.638 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-12 00:54:31.642 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-12 00:54:31.643 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-12 00:54:31.643 +01:00 [INF] Hosting environment: Development
+2025-09-12 00:54:31.643 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-12 00:54:33.225 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:54:33.302 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:33.303 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:33.309 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:33.310 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:33.314 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 89.9442ms
+2025-09-12 00:54:33.333 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:54:36.573 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:54:36.576 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:36.576 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:36.577 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:36.577 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:36.578 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 5.0259ms
+2025-09-12 00:54:36.578 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:54:37.075 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:54:37.077 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:37.077 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:37.077 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:54:37.078 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:54:37.078 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 2.6083ms
+2025-09-12 00:54:37.078 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:55:19.971 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:55:19.972 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:19.972 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:19.972 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:19.972 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:19.972 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 1.1673ms
+2025-09-12 00:55:19.972 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 00:55:23.366 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/ - null null
+2025-09-12 00:55:23.367 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:23.368 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:55:23.424 +01:00 [INF] Write content with HTTP Response ContentType of text/html
+2025-09-12 00:55:23.439 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 00:55:23.439 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:23.443 +01:00 [WRN] Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: '["br"]'. Consider disabling response compression.
+2025-09-12 00:55:23.445 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/ - 200 null text/html 79.7985ms
+2025-09-12 00:55:23.467 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - null null
+2025-09-12 00:55:23.468 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:23.468 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:55:23.472 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - null null
+2025-09-12 00:55:23.473 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:23.473 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:55:23.474 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:55:23.474 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 00:55:23.474 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:23.475 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - 304 null null 7.3547ms
+2025-09-12 00:55:23.475 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 00:55:23.475 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 00:55:23.475 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:23.475 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - 304 null null 3.4925ms
+2025-09-12 00:55:24.108 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/favicon.ico - null null
+2025-09-12 00:55:24.108 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:24.108 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:24.109 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:24.109 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:55:24.111 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/favicon.ico - 404 0 null 2.8719ms
+2025-09-12 00:55:24.111 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/favicon.ico, Response status code: 404
+2025-09-12 00:55:25.112 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:55:25.113 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:25.113 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:55:25.113 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 00:55:25.113 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:55:25.113 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:55:25.267 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:55:25.267 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 00:55:25.278 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 164.5819ms
+2025-09-12 00:55:25.278 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 165.2371ms
+2025-09-12 00:59:43.951 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 00:59:43.953 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:59:43.953 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:59:43.953 +01:00 [INF] No cached response available for this request.
+2025-09-12 00:59:43.953 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 00:59:43.953 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 404 0 null 1.9369ms
+2025-09-12 00:59:43.953 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/swagger, Response status code: 404
+2025-09-12 01:04:30.652 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/ - null null
+2025-09-12 01:04:30.653 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:30.653 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 01:04:30.655 +01:00 [INF] Write content with HTTP Response ContentType of text/html
+2025-09-12 01:04:30.655 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/{documentName?}'
+2025-09-12 01:04:30.656 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 01:04:30.656 +01:00 [WRN] Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: '["br"]'. Consider disabling response compression.
+2025-09-12 01:04:30.656 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/ - 200 null text/html 3.6281ms
+2025-09-12 01:04:30.709 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - null null
+2025-09-12 01:04:30.710 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:30.710 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 01:04:30.710 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 01:04:30.710 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.js'
+2025-09-12 01:04:30.710 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 01:04:30.710 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.js - 304 null null 1.7006ms
+2025-09-12 01:04:30.714 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - null null
+2025-09-12 01:04:30.715 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:30.715 +01:00 [INF] Executing endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 01:04:30.715 +01:00 [INF] Setting HTTP status code 304.
+2025-09-12 01:04:30.715 +01:00 [INF] Executed endpoint 'HTTP: GET /scalar/scalar.aspnetcore.js'
+2025-09-12 01:04:30.715 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 01:04:30.715 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/scalar/scalar.aspnetcore.js - 304 null null 1.4172ms
+2025-09-12 01:04:31.368 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/favicon.ico - null null
+2025-09-12 01:04:31.368 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:31.369 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 01:04:31.369 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:31.369 +01:00 [INF] The response could not be cached for this request.
+2025-09-12 01:04:31.369 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/favicon.ico - 499 null null 0.5343ms
+2025-09-12 01:04:31.369 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/favicon.ico, Response status code: 499
+2025-09-12 01:04:32.647 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 01:04:32.648 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:32.648 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 01:04:32.653 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/openapi/v1.json - null null
+2025-09-12 01:04:32.653 +01:00 [INF] No cached response available for this request.
+2025-09-12 01:04:32.653 +01:00 [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 01:04:32.727 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 01:04:32.727 +01:00 [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+2025-09-12 01:04:32.729 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 76.5919ms
+2025-09-12 01:04:32.730 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/openapi/v1.json - 500 null application/json 82.2584ms
+2025-09-12 01:04:44.183 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-12 01:04:44.346 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-12 01:04:44.350 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-12 01:04:44.351 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-12 01:04:44.351 +01:00 [INF] Hosting environment: Development
+2025-09-12 01:04:44.351 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-12 01:04:45.659 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 01:04:45.711 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 53.2312ms
+2025-09-12 01:04:45.723 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-12 01:04:45.797 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 74.3082ms
+2025-09-12 01:04:45.827 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui.css - null null
+2025-09-12 01:04:45.830 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.css - null null
+2025-09-12 01:04:45.830 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui-standalone-preset.js - null null
+2025-09-12 01:04:45.830 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui-bundle.js - null null
+2025-09-12 01:04:45.831 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-12 01:04:45.832 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-12 01:04:45.832 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.5986ms
+2025-09-12 01:04:45.834 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 2.691ms
+2025-09-12 01:04:45.845 +01:00 [INF] Sending file. Request path: '/index.css'. Physical path: 'N/A'
+2025-09-12 01:04:45.845 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.css - 200 202 text/css 14.8707ms
+2025-09-12 01:04:45.848 +01:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-09-12 01:04:45.849 +01:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-09-12 01:04:45.851 +01:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-09-12 01:04:45.853 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui-bundle.js - 200 1426001 text/javascript 22.3979ms
+2025-09-12 01:04:45.853 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui.css - 200 152035 text/css 25.5375ms
+2025-09-12 01:04:45.853 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/swagger-ui-standalone-preset.js - 200 230007 text/javascript 22.2651ms
+2025-09-12 01:04:46.127 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - null null
+2025-09-12 01:04:46.128 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-12 01:04:46.128 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 200 628 image/png 0.5754ms
+2025-09-12 01:04:46.165 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-12 01:04:46.358 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 193.4799ms
+2025-09-12 08:06:55.907 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-12 08:06:56.130 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-12 08:06:56.138 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-12 08:06:56.139 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-12 08:06:56.139 +01:00 [INF] Hosting environment: Development
+2025-09-12 08:06:56.140 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-12 08:07:00.669 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-12 08:07:00.779 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 113.6067ms
+2025-09-12 08:07:00.804 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-12 08:07:00.958 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 155.1379ms
+2025-09-12 08:07:01.060 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-12 08:07:01.061 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-12 08:07:01.065 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 4.6445ms
+2025-09-12 08:07:01.066 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 5.2765ms
+2025-09-12 08:07:01.409 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - null null
+2025-09-12 08:07:01.429 +01:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2025-09-12 08:07:01.429 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - 200 665 image/png 20.8329ms
+2025-09-12 08:07:01.567 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-12 08:07:01.971 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 404.5308ms

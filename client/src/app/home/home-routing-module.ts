@@ -1,19 +1,12 @@
-import { DocumentAccess } from './document-access/document-access';
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Demandes } from './demandes/demandes';
-import { Documents } from './documents/documents';
-import { Home } from './home';
-import { Accueil } from './accueil/accueil';
-import { FolderDetails } from './folder-details/folder-details';
-import { FileViewer } from './file-viewer/file-viewer';
 import { DocumentRecherche } from './document-recherche/document-recherche';
 import { Access } from './access/access';
 
 const routes: Routes = [
   {
     path: '',
-
     loadComponent() {
       return import('./home').then((m) => m.Home);
     },
@@ -22,6 +15,12 @@ const routes: Routes = [
         path: 'demandes',
         loadComponent() {
           return import('./demandes/demandes').then((m) => m.Demandes);
+        },
+      },
+      {
+        path: 'notifications',
+        loadComponent() {
+          return import('./notifications/notifications').then((m) => m.Notifications);
         },
       },
       {
