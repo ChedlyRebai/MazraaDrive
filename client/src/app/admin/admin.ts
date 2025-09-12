@@ -26,26 +26,25 @@ export class Admin implements OnInit {
     badge?: string | number;
   }[] = [
     { label: 'Home', path: '/home/accueil', icon: 'pi pi-home' },
-    { label: 'Dashboard', path: '/admin/stats', icon: 'pi pi-chart-bar' },
+    // { label: 'Dashboard', path: '/admin/stats', icon: 'pi pi-chart-bar' },
     { label: 'Users', path: '/admin/user', icon: 'pi pi-users' },
     { label: 'Documents', path: '/admin/document', icon: 'pi pi-file' },
     { label: 'Departments', path: '/admin/department', icon: 'pi pi-sitemap' },
     { label: 'Roles', path: '/admin/role', icon: 'pi pi-shield' },
+      { label: 'Folders', path: '/admin/folders', icon: 'pi pi-folder' },
     {
       label: 'Doc Access Requests',
       path: '/admin/access-req',
       icon: 'pi pi-inbox',
     },
-    { label: 'Permissions', path: '/admin/permissions', icon: 'pi pi-lock' },
-    
+   // { label: 'Permissions', path: '/admin/permissions', icon: 'pi pi-lock' },
+
     { label: 'Doc Requests', path: '/admin/doc-req', icon: 'pi pi-inbox' },
   ];
 
   ngOnInit(): void {
     this.userService.getCurrentUser();
   }
-
- 
 
   getInitials(name: string) {
     return (name || '')

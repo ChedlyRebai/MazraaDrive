@@ -54,6 +54,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'folders',
+        loadComponent: () =>
+          import('./folders-management/folders-management').then((m) => m.FoldersManagement),
+      },
+      {
         path: 'permissions',
         loadComponent: () =>
           import('./pemission/pemission').then((m) => m.Pemission),
