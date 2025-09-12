@@ -27,6 +27,7 @@ public class MappingProfile : Profile
 
         CreateMap<AppUser, UserDto>().ReverseMap();
 
+        CreateMap<Notification, NotificationDTO>().ReverseMap();
 
         CreateMap<CreateUserDto, AppUser>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

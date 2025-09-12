@@ -16,21 +16,20 @@ public class NotificationDTO
     public bool IsRead { get; set; } = false;
     public string? Link { get; set; }
 
-    public NotificationType Type { get; set; } = NotificationType.Info;
+    public string? Type { get; set; } 
 
     public string? ActionUrl { get; set; } // URL for the notification action
 
     public string? SenderId { get; set; } // ID of the user who triggered the notification
 
     // Navigation properties
-    public enum NotificationType
-    {
-        Info,
-        Success,
-        Warning,
-        Error,
-        AccessRequest,
-        DocumentUpdate,
-        SystemAlert
-    }
+   
+}
+
+
+public class NotificationPagedResult : PagedResult<NotificationDTO>
+{
+
+    public int TotalNotifications { get; set; }
+    public int UnreadNotifications { get; set; }
 }

@@ -5,8 +5,6 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

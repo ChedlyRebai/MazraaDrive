@@ -1,4 +1,5 @@
 using AutoMapper;
+using Core.DTO;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -17,27 +18,46 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Notification>>> GetNotifications()
+        public async Task<ActionResult<NotificationPagedResult>> GetNotifications()
         {
             var notifications = await _unitOfWork.NotificationRepository.GetAllAsync();
-            return Ok(notifications);
+            var notificationDtos = _mapper.Map<IReadOnlyList<NotificationDTO>>(notifications);
+            return Ok(new NotificationPagedResult
+            {
+                Data = notificationDtos,
+                TotalNotifications = notifications.Data.Count(n=> true),
+
+                UnreadNotifications = notifications.Data.Count(n => !n.IsRead)
+            });
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Notification>> GetNotification(int id)
+        public async Task<ActionResult<NotificationDTO>> GetNotification(int id)
         {
             var notification = await _unitOfWork.NotificationRepository.GetByIdAsync(id);
             if (notification == null)
                 return NotFound();
 
-            return Ok(notification);
+            var notificationDto = _mapper.Map<NotificationDTO>(notification);
+            return Ok(notificationDto);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IReadOnlyList<Notification>>> GetUserNotifications(string userId)
+          
+
+        [HttpGet("my-notification")]
+        public async Task<ActionResult<NotificationPagedResult>> GetUserNotifications(string userId)
         {
+            
+            var _currentUserId = _currentUser.UserId;
             var notifications = await _unitOfWork.NotificationRepository.GetByUserIdAsync(userId);
-            return Ok(notifications);
+            var notificationDtos = _mapper.Map<IReadOnlyList<NotificationDTO>>(notifications);
+            return Ok(new NotificationPagedResult
+            {
+                Data = notificationDtos,
+                TotalNotifications = notifications.Data.Count(n=> true),
+
+                UnreadNotifications = notifications.Data.Count(n => !n.IsRead)
+            });
         }
 
         [HttpGet("user/{userId}/unread")]
@@ -188,7 +208,7 @@ namespace Api.Controllers
     public class CreateNotificationDto
     {
 
-        
+
         public string UserId { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
