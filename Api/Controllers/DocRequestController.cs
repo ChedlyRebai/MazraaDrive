@@ -225,7 +225,17 @@ public class DocumentRequestController : BaseController
             //     return BadRequest(new { success = false, message = "Failed to update document request" });
 
             // await _unitOfWork.CompleteAsync();
+            await _unitOfWork.NotificationRepository.AddAsync(new Notification
+            {
+                UserId = existingRequest.RequesterId,
+                title = "Mise à jour de la demande de document",
+                Message = $"Votre demande de document (ID: {existingRequest.Id}) a été mise à jour. Nouveau statut: {existingRequest.Status}.",
+                Link = $"/document-requests/{existingRequest.Id}",
+                IsRead = false,
+                CreatedAt = DateTime.UtcNow
+            });
 
+            
             var updatedRequest = await _unitOfWork.DocRequestRepository.GetByIdWithDetailsAsync(id);
             var requestDto = _mapper.Map<DocumentRequestDTO>(updatedRequest);
             _logger.LogInformation("Updated document request with ID {RequestId}", id);

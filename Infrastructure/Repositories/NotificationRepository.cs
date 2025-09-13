@@ -89,7 +89,9 @@ public class NotificationRepository:INotificationRepository
 
         public async Task<Notification> AddAsync(Notification notification)
         {
-            notification.CreatedAt = DateTime.Now; // Ensure date is set
+            var nowUtc = DateTime.UtcNow;
+            notification.CreatedAt = nowUtc;
+            
             await _context.Notifications.AddAsync(notification);
             await _context.SaveChangesAsync();
             return notification;

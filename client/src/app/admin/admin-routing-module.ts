@@ -16,8 +16,6 @@ const routes: Routes = [
     loadComponent: () => import('./admin').then((m) => m.Admin),
     children: [
       { path: 'access-req', component: AccessRequest },
-
-      { path: 'stats', component: Stats },
       {
         path: 'role',
         loadComponent: () =>
@@ -53,11 +51,7 @@ const routes: Routes = [
             (m) => m.DepartmentMangement
           ),
       },
-      {
-        path: 'folders',
-        loadComponent: () =>
-          import('./folders-management/folders-management').then((m) => m.FoldersManagement),
-      },
+      
       {
         path: 'permissions',
         loadComponent: () =>
@@ -68,7 +62,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./logs/logs-module').then((m) => m.LogsModule),
       },
-      { path: '**', redirectTo: 'stats' },
+      { path: '**', redirectTo: 'user' },
     ],
   },
 ];

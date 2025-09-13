@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { CreateUserDto, UserPagedResult } from '../../shared/models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookiesService: CookieService) {}
 
 
   currentUser = {
@@ -73,6 +74,13 @@ export class UserService {
 
   updateUser(userId: string, updatedUser: CreateUserDto) {
     return this.http.put(`${this.baseUrl}/${userId}`, updatedUser);
+  }
+
+  logout(){
+     
+  const token = this.cookiesService.delete('token');
+  console.log(token);
+  window.location.href = '/login';
   }
 
   getCurrentUser() {

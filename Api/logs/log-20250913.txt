@@ -1,0 +1,19 @@
+2025-09-13 10:49:45.757 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-13 10:49:45.863 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-13 10:49:45.866 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-13 10:49:45.867 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-13 10:49:45.867 +01:00 [INF] Hosting environment: Development
+2025-09-13 10:49:45.867 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-13 10:49:48.270 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-13 10:49:48.322 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 52.992ms
+2025-09-13 10:49:48.332 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-13 10:49:48.387 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 55.4685ms
+2025-09-13 10:49:48.439 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-13 10:49:48.440 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-13 10:49:48.441 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 1.959ms
+2025-09-13 10:49:48.442 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 2.1352ms
+2025-09-13 10:49:48.527 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - null null
+2025-09-13 10:49:48.533 +01:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2025-09-13 10:49:48.533 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - 200 665 image/png 6.9509ms
+2025-09-13 10:49:48.595 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-13 10:49:48.764 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 168.8016ms

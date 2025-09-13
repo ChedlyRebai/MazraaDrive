@@ -32,7 +32,6 @@ namespace API.Controllers
             _accessRequestRepository = accessRequestRepository;
         }
 
-
         [HttpPost("request/{documentId}")]
         public async Task<IActionResult> RequestDocumentAccess(int documentId,
             [FromBody] AccessRequestDto requestDto)
@@ -61,7 +60,6 @@ namespace API.Controllers
         }
 
         [HttpPost("approve/{requestId}")]
-        // [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> ApproveAccessRequest(int requestId,
             [FromBody] ApproveRequestDto approveDto)
         {
@@ -87,11 +85,20 @@ namespace API.Controllers
             accessRequest.DecidedById = approverId;
             accessRequest.DecisionAt = DateTime.UtcNow;
             accessRequest.Message = $"Approved. Access Link: {accessLink}";
-            
+
+            await _unitOfWork.NotificationRepository.AddAsync(new Notification
+            {
+                UserId = accessRequest.RequesterId,
+                title = "Access Request Approved",
+                Message = $"Your access request for document ID {accessRequest.DocumentId} has been approved.",
+                Link = accessLink,
+                IsRead = false,
+               // CreatedAt = DateTime.UtcNow
+            });
             await _accessRequestRepository.UpdateAsync(accessRequest);
             await _unitOfWork.SaveChangesAsync();
 
-            
+
             return Ok(new
             {
                 Message = "Access request approved",

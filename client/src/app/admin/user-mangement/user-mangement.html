@@ -262,11 +262,11 @@
     <!-- User Dialog -->
     <p-dialog
       [(visible)]="userDialog"
-      [style]="{ width: '48rem' }"
+      [style]="{ width: '50rem'  }"
       [header]="dialogTitle"
       [modal]="true"
       [draggable]="true"
-      class="overflow-y-scroll"
+      
     >
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
@@ -351,6 +351,7 @@
               <p-floatLabel>
                 <p-autocomplete
                   inputId="role"
+                  showClear="true"
                   [(ngModel)]="user.roleName"
                   [suggestions]="roleFilteredDialog"
                   (completeMethod)="completeRoleDialog($event)"

@@ -1,3 +1,4 @@
+import { UserService } from './../../core/services/user-service';
 import { FolderService } from './../../core/services/folder-service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -24,6 +25,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ThemeSwitcher } from '../../admin/themeswitcher';
 import { AdminRoutingModule } from '../../admin/admin-routing-module';
+import { FolderDTO } from '../../shared/models/folder';
 
 interface Folder {
   id: string;
@@ -157,7 +159,8 @@ export class Accueil implements OnInit {
     public folderService: FolderService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private router: Router
+    private router: Router,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
@@ -625,6 +628,11 @@ export class Accueil implements OnInit {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  haveAccess(folder:FolderDTO | null){
+    if(folder?.createdById == this.userService.currentUser.id || ["Admin","SuperAdmin"].includes(this.userService.currentUser.role)) return true;
+    else return false
   }
 
   getFolderIcon(category: string): string {

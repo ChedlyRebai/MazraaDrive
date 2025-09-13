@@ -249,15 +249,7 @@
                     [disabled]="request.status !== 'En Attente'"
                     (click)="respondToRequest(request)"
                   />
-                  <p-button
-                    icon="pi pi-pencil"
-                    severity="help"
-                    [text]="true"
-                    size="small"
-                    pTooltip="Modifier"
-                    [disabled]="request.status !== 'En Attente'"
-                    (click)="editRequest(request)"
-                  />
+                  
                   <p-button
                     icon="pi pi-trash"
                     severity="danger"
@@ -612,12 +604,12 @@
                   selectedRequest.respondedAt | date : "dd/MM/yyyy HH:mm"
                 }}</span>
               </div>
-              <div class="flex justify-between">
+              <!-- <div class="flex justify-between">
                 <span class="font-medium">Créé le:</span>
                 <span>{{
                   selectedRequest.createdAt | date : "dd/MM/yyyy HH:mm"
                 }}</span>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -894,6 +886,15 @@
                 fluid
                 (click)="quickReject()"
               />
+              <p-button
+                label="Info"
+                icon="pi pi-info-circle"
+                severity="info"
+                size="small"
+                [outlined]="true"
+                fluid
+                (click)="requestMoreInfo()"
+              />
               <!-- <p-button
                 label="Demander Info"
                 icon="pi pi-question-circle"
@@ -930,7 +931,7 @@
           icon="pi pi-send"
           severity="success"
           (click)="sendResponse()"
-          [loading]="sendingResponse"
+          
           
         />
         <!-- [disabled]="!isResponseValid()" -->

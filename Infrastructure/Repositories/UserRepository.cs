@@ -27,6 +27,7 @@ namespace Infrastructure.Repositories
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
+            
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
 

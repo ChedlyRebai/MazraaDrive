@@ -33,15 +33,25 @@ export class Home implements OnInit {
   });
 
   ngOnInit(): void {
-    this.userService.getCurrentUser();
+    console.log('Admin user detected, adding Admin link to navLinks');
+    this.userService.getCurrentUser().add(() => {
+      if (['Admin', 'SuperAdmin'].includes(this.userService.currentUser.role)) {
+      console.log('Admin user detected, adding Admin link to navLinks');
+      this.navLinks.push({ label: 'Admin', path: '/admin', icon: 'pi pi-cog' });
+    }
+      this.currentUser = this.userService.currentUser;
+    })
+    
   }
+
+ 
   hideMenu() {
     //this.configService.hideMenu();
     DomHandler.unblockBodyScroll('blocked-scroll');
   }
   mobileMenuOpen = false;
   pageTitle = 'Accueil';
-  
+
   navLinks: {
     label: string;
     path: string;
@@ -52,13 +62,10 @@ export class Home implements OnInit {
     { label: 'Documents', path: '/home/documents', icon: 'pi pi-file' },
     { label: 'Demandes', path: '/home/demandes', icon: 'pi pi-inbox' },
     { label: 'Access', path: '/home/access', icon: 'pi pi-lock' },
-    { label: 'Admin', path: '/admin', icon: 'pi pi-cog' },
+    { label: 'Notifications', path: '/home/notifications', icon: 'pi pi-bell' },
   ];
 
-  
-
-
-   getInitials(name: string) {
+  getInitials(name: string) {
     return (name || '')
       .split(' ')
       .filter((p) => p)
@@ -67,12 +74,15 @@ export class Home implements OnInit {
       .join('');
   }
 
-  logout() {}
+  logout() {
+    window.location.href = '/login';
+    this.userService.logout();
+  }
   currentUser = {
-    id: "",
+    id: '',
     departmentId: 0,
-    role: "",
-    name: "",
-    avatar: "/assets/avatar.png"
+    role: '',
+    name: '',
+    avatar: '/assets/avatar.png',
   };
 }

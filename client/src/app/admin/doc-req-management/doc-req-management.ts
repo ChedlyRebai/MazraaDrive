@@ -772,16 +772,26 @@ export class DocReqManagement implements OnInit {
 
   // Quick actions
   quickApprove() {
-    this.requestResponse.status = 'Approved';
+    this.selectedRequest.status= 'Approuvée';
+    this.selectedRequest.responseMessage =
+      'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
     // this.requestResponse.message = 'Votre demande a été approuvée. Le document sera traité dans les plus brefs délais.';
   }
 
   quickReject() {
     this.responseForm.status = 'Rejected';
+    //this.requestResponse.status = 'Rejected';
+    this.selectedRequest.responseMessage =
+      "Votre demande a été rejetée. Veuillez nous contacter pour plus d'informations.";
     // this.responseForm.message = 'Votre demande a été rejetée. Veuillez nous contacter pour plus d\'informations.';
   }
 
   requestMoreInfo() {
+    this.selectedRequest.status = 'Information nécessaire';
+    this.selectedRequest.responseMessage =
+      "Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.";
+    // this.requestResponse.status = 'More Info Required';
+    //
     this.responseForm.status = 'More Info Required';
     //this.responseForm.message = 'Des informations supplémentaires sont nécessaires pour traiter votre demande. Veuillez nous fournir plus de détails.';
   }
