@@ -1,0 +1,176 @@
+2025-09-15 10:11:24.274 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-15 10:11:24.496 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-15 10:11:24.501 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-15 10:11:24.502 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-15 10:11:24.502 +01:00 [INF] Hosting environment: Development
+2025-09-15 10:11:24.502 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-15 10:11:25.322 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-15 10:11:25.437 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 117.0212ms
+2025-09-15 10:11:25.490 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 10:11:25.609 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 119.6282ms
+2025-09-15 10:11:25.683 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 10:11:25.683 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 10:11:25.687 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 4.4926ms
+2025-09-15 10:11:25.712 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 25.9882ms
+2025-09-15 10:11:25.904 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - null null
+2025-09-15 10:11:25.927 +01:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2025-09-15 10:11:25.929 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-16x16.png - 200 665 image/png 24.2218ms
+2025-09-15 10:11:25.977 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 10:11:26.592 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 614.4913ms
+2025-09-15 10:16:16.655 +01:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5108/api/Account/login - null null
+2025-09-15 10:16:16.660 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:16.662 +01:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5108/api/Account/login - 204 null null 6.2945ms
+2025-09-15 10:16:16.667 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/login - application/json 45
+2025-09-15 10:16:16.678 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:16.697 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 10:16:16.702 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-15 10:16:16.717 +01:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Core.DTO.LoginDTO) on controller Api.Controllers.AccountController (Api).
+2025-09-15 10:16:17.209 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-15 10:16:17.238 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-15 10:16:17.345 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 10:16:17.346 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 10:16:17.346 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 10:16:17.902 +01:00 [INF] Executed DbCommand (63ms) [Parameters=[@__cin_0='?' (DbType = Int64)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."Cin" = @__cin_0
+LIMIT 1
+2025-09-15 10:16:18.063 +01:00 [INF] Executed DbCommand (7ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 10:16:18.227 +01:00 [INF] Executing OkObjectResult, writing value of type 'Api.Helper.ResponseAPI'.
+2025-09-15 10:16:18.258 +01:00 [INF] Executed action Api.Controllers.AccountController.Login (Api) in 1534.9914ms
+2025-09-15 10:16:18.259 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-15 10:16:18.278 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/login - 200 null application/json; charset=utf-8 1611.0966ms
+2025-09-15 10:16:18.279 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/login - application/json 45
+2025-09-15 10:16:18.280 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:18.282 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 10:16:18.283 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-15 10:16:18.283 +01:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Core.DTO.LoginDTO) on controller Api.Controllers.AccountController (Api).
+2025-09-15 10:16:18.296 +01:00 [INF] Executed action Api.Controllers.AccountController.Login (Api) in 12.4076ms
+2025-09-15 10:16:18.296 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-15 10:16:18.313 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/login - 500 null application/json 34.1375ms
+2025-09-15 10:16:18.616 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - text/plain 429
+2025-09-15 10:16:18.616 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:18.620 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 10:16:18.620 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 10:16:18.623 +01:00 [INF] Route matched with {action = "ValidateToken", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ValidateToken() on controller Api.Controllers.AccountController (Api).
+2025-09-15 10:16:18.665 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 10:16:18.671 +01:00 [INF] Executed action Api.Controllers.AccountController.ValidateToken (Api) in 47.7142ms
+2025-09-15 10:16:18.671 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 10:16:18.671 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - 200 null application/json; charset=utf-8 55.7637ms
+2025-09-15 10:16:19.027 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 10:16:19.028 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:19.028 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 10:16:19.031 +01:00 [INF] No cached response available for this request.
+2025-09-15 10:16:19.032 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 10:16:19.033 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 10:16:19.058 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 10:16:19.061 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 27.3541ms
+2025-09-15 10:16:19.061 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 10:16:19.061 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 10:16:19.061 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 34.216ms
+2025-09-15 10:16:19.071 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - null null
+2025-09-15 10:16:19.074 +01:00 [INF] CORS policy execution successful.
+2025-09-15 10:16:19.075 +01:00 [INF] No cached response available for this request.
+2025-09-15 10:16:19.075 +01:00 [INF] Executing endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 10:16:19.082 +01:00 [INF] Route matched with {action = "GetFolders", controller = "Folder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.FolderPagedResult]] GetFolders(Core.DTO.FolderFilterDto) on controller Api.Controllers.FolderController (Api).
+2025-09-15 10:16:19.139 +01:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 10:16:19.177 +01:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-09-15 10:16:19.201 +01:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT f1."Id", f1."CreatedAt", f1."CreatedById", f1."DepartmentId", f1."Description", f1."Name", f1."ParentFolderId", f1."UpdatedAt", f0."Id", f0."CreatedAt", f0."CreatedById", f0."DepartmentId", f0."Description", f0."Name", f0."ParentFolderId", f0."UpdatedAt", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", f2."Id", f2."CreatedAt", f2."CreatedById", f2."DepartmentId", f2."Description", f2."Name", f2."ParentFolderId", f2."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt"
+    FROM "Folder" AS f
+    ORDER BY f."Name"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS f1
+LEFT JOIN "Folder" AS f0 ON f1."ParentFolderId" = f0."Id"
+INNER JOIN "Departments" AS d ON f1."DepartmentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a ON f1."CreatedById" = a."Id"
+LEFT JOIN "Folder" AS f2 ON f1."Id" = f2."ParentFolderId"
+LEFT JOIN "Documents" AS d0 ON f1."Id" = d0."FolderId"
+ORDER BY f1."Name", f1."Id", f0."Id", d."Id", a."Id", f2."Id"
+2025-09-15 10:16:19.291 +01:00 [INF] Retrieved paged list of folders
+2025-09-15 10:16:19.292 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.FolderPagedResult'.
+2025-09-15 10:16:19.312 +01:00 [INF] Executed action Api.Controllers.FolderController.GetFolders (Api) in 230.039ms
+2025-09-15 10:16:19.312 +01:00 [INF] Executed endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 10:16:19.312 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 10:16:19.312 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 241.1479ms
+2025-09-15 13:46:04.120 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-15 13:46:04.233 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-15 13:46:04.236 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-15 13:46:04.237 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-15 13:46:04.237 +01:00 [INF] Hosting environment: Development
+2025-09-15 13:46:04.237 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-15 13:46:04.560 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-15 13:46:04.595 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 35.6873ms
+2025-09-15 13:46:04.607 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:46:04.656 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 48.6002ms
+2025-09-15 13:46:04.677 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:46:04.679 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 2.0107ms
+2025-09-15 13:46:04.680 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:46:04.683 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 2.1219ms
+2025-09-15 13:46:04.770 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - null null
+2025-09-15 13:46:04.778 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-15 13:46:04.778 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 200 628 image/png 7.881ms
+2025-09-15 13:46:04.795 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:46:04.946 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 151.6782ms
+2025-09-15 13:47:03.594 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:47:03.595 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.8217ms
+2025-09-15 13:47:03.604 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:47:03.605 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4853ms
+2025-09-15 13:47:03.605 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:47:03.605 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1984ms
+2025-09-15 13:47:03.677 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:47:03.716 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 39.2947ms
+2025-09-15 13:47:58.179 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:47:58.180 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.8731ms
+2025-09-15 13:47:58.191 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:47:58.191 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:47:58.192 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.4819ms
+2025-09-15 13:47:58.192 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 1.3103ms
+2025-09-15 13:47:58.265 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:47:58.302 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 36.8384ms
+2025-09-15 13:48:13.890 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:48:13.891 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 1.3233ms
+2025-09-15 13:48:13.907 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:48:13.907 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:48:13.907 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.2216ms
+2025-09-15 13:48:13.907 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.6174ms
+2025-09-15 13:48:13.986 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:48:14.007 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 21.1302ms
+2025-09-15 13:48:19.208 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:48:19.208 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.3421ms
+2025-09-15 13:48:19.219 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:48:19.219 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:48:19.219 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1832ms
+2025-09-15 13:48:19.219 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4872ms
+2025-09-15 13:48:19.292 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:48:19.309 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 16.7483ms
+2025-09-15 13:48:40.374 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:48:40.374 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.3416ms
+2025-09-15 13:48:40.384 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:48:40.384 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:48:40.384 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1778ms
+2025-09-15 13:48:40.385 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 1.1541ms
+2025-09-15 13:48:40.454 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:48:40.484 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 30.0428ms
+2025-09-15 13:48:50.295 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:48:50.296 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.4184ms
+2025-09-15 13:48:50.303 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:48:50.304 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:48:50.304 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.163ms
+2025-09-15 13:48:50.304 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 1.062ms
+2025-09-15 13:48:50.372 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:48:50.394 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 21.9579ms
+2025-09-15 13:48:59.345 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:48:59.346 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.5267ms
+2025-09-15 13:48:59.360 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:48:59.360 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:48:59.360 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.287ms
+2025-09-15 13:48:59.360 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4618ms

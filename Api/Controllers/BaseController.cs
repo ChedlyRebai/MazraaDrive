@@ -1,7 +1,5 @@
 using AutoMapper;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -14,6 +12,7 @@ namespace Api.Controllers
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
 
+        
 
         // protected readonly IAuditLogger _auditLogger;
 

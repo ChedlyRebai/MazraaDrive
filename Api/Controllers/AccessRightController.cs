@@ -1,10 +1,12 @@
 using Api.Helper;
+using Api.Hubs;
 using AutoMapper;
 using Core.DTO;
 using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace Api.Controllers
@@ -12,6 +14,9 @@ namespace Api.Controllers
 
     public class AccessRightController : BaseController
     {
+
+          public readonly IHubContext<AccessRightHub> _hub;
+
         public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRightController> logger)
             : base(currentUser, unitOfWork, mapper, logger)
         {
