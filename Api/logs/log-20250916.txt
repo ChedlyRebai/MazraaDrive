@@ -3708,3 +3708,11 @@ WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('mp4', 'avi', 'video')
 2025-09-16 11:35:19.645 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 499 628 image/png 1.3402ms
 2025-09-16 11:35:19.667 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
 2025-09-16 11:35:19.714 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 47.4204ms
+2025-09-16 11:40:09.558 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-16 11:40:09.559 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.398ms
+2025-09-16 11:40:09.580 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-16 11:40:09.580 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.2848ms
+2025-09-16 11:40:09.582 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-16 11:40:09.583 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.6436ms
+2025-09-16 11:40:09.744 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-16 11:40:09.808 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 63.5992ms
