@@ -403,7 +403,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var documentCount = await _context.Documents.CountAsync(d => d.UploadedById == userId);
+                //var documentCount = await _context.Documents.CountAsync(d => d.UploadedById == userId);
                 var folderCount = await _context.Folders.CountAsync(f => f.CreatedById == userId);
                 var totalFileSize = await _context.Documents
                     .Where(d => d.UploadedById == userId)
@@ -418,7 +418,7 @@ namespace Infrastructure.Repositories
                 var stats = new DocFolderStats
                 {
 
-                    DocumentCount = documentCount,
+                    //DocumentCount = documentCount,
                     FolderCount = folderCount,
                     TotalFileSize = totalFileSize,
                     ImageCount = imageCount,
@@ -427,7 +427,7 @@ namespace Infrastructure.Repositories
                     AudioCount = audioCount,
                     VideoCount = videoCount
                 };
-                Console.WriteLine($"Stats for user {userId}: Documents={documentCount}, Folders={folderCount}, TotalFileSize={totalFileSize}");
+                //Console.WriteLine($"Stats for user {userId}: Documents={documentCount}, Folders={folderCount}, TotalFileSize={totalFileSize}");
                 Console.WriteLine($"ImageCount={imageCount}, WordCount={wordCount}, PdfCount={pdfCount}, AudioCount={audioCount}, VideoCount={videoCount}");
                 return stats;
             }
