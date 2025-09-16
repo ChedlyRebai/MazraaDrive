@@ -176,3 +176,1157 @@ ORDER BY f1."Name", f1."Id", f0."Id", d."Id", a."Id", f2."Id"
 2025-09-15 13:48:59.360 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4618ms
 2025-09-15 13:48:59.445 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
 2025-09-15 13:48:59.469 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 24.7232ms
+2025-09-15 13:49:45.353 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:49:45.353 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.3803ms
+2025-09-15 13:49:45.365 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:49:45.365 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:49:45.366 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.2564ms
+2025-09-15 13:49:45.366 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.5302ms
+2025-09-15 13:49:45.440 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:49:45.474 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 33.7304ms
+2025-09-15 13:50:03.398 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:50:03.398 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.4128ms
+2025-09-15 13:50:03.408 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:50:03.408 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:50:03.409 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.15ms
+2025-09-15 13:50:03.409 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.3927ms
+2025-09-15 13:50:03.474 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:50:03.493 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 19.4383ms
+2025-09-15 13:50:45.870 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:50:45.871 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.305ms
+2025-09-15 13:50:45.880 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:50:45.881 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.3345ms
+2025-09-15 13:50:45.881 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:50:45.881 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.0887ms
+2025-09-15 13:50:45.953 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:50:45.979 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 26.5815ms
+2025-09-15 13:50:48.324 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:50:48.324 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.3752ms
+2025-09-15 13:50:48.334 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:50:48.334 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:50:48.334 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1757ms
+2025-09-15 13:50:48.334 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.328ms
+2025-09-15 13:50:48.396 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:50:48.419 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 22.6758ms
+2025-09-15 13:52:10.935 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-15 13:52:11.047 +01:00 [WRN] Overriding address(es) 'http://localhost:5108'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-09-15 13:52:11.050 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-15 13:52:11.050 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-15 13:52:11.050 +01:00 [INF] Hosting environment: Development
+2025-09-15 13:52:11.050 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/Api
+2025-09-15 13:52:11.350 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger - null null
+2025-09-15 13:52:11.394 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger - 301 0 null 44.5943ms
+2025-09-15 13:52:11.405 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:52:11.453 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 47.912ms
+2025-09-15 13:52:11.475 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:52:11.476 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:52:11.477 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 1.8684ms
+2025-09-15 13:52:11.480 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 4.0703ms
+2025-09-15 13:52:11.576 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - null null
+2025-09-15 13:52:11.584 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-15 13:52:11.584 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 200 628 image/png 8.4199ms
+2025-09-15 13:52:11.596 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:52:11.749 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 152.6864ms
+2025-09-15 13:56:03.605 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:56:03.606 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.7567ms
+2025-09-15 13:56:03.615 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:56:03.615 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:56:03.616 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.2818ms
+2025-09-15 13:56:03.616 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4962ms
+2025-09-15 13:56:03.680 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - null null
+2025-09-15 13:56:03.682 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-15 13:56:03.682 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 499 628 image/png 1.2415ms
+2025-09-15 13:56:03.701 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:56:03.757 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 56.3721ms
+2025-09-15 13:56:22.619 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:56:22.620 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.6897ms
+2025-09-15 13:56:22.631 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:56:22.631 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4877ms
+2025-09-15 13:56:22.631 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:56:22.632 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.5272ms
+2025-09-15 13:56:22.721 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:56:22.763 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 42.2745ms
+2025-09-15 13:56:32.738 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:56:32.739 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.7542ms
+2025-09-15 13:56:32.752 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:56:32.753 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.3659ms
+2025-09-15 13:56:32.753 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:56:32.753 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.0702ms
+2025-09-15 13:56:32.846 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:56:32.873 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 26.6901ms
+2025-09-15 13:56:56.171 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:56:56.171 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.4569ms
+2025-09-15 13:56:56.182 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:56:56.182 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:56:56.184 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 1.5929ms
+2025-09-15 13:56:56.184 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 1.2861ms
+2025-09-15 13:56:56.256 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - null null
+2025-09-15 13:56:56.257 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-09-15 13:56:56.257 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/favicon-32x32.png - 499 628 image/png 0.668ms
+2025-09-15 13:56:56.279 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:56:56.311 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 32.1514ms
+2025-09-15 13:57:03.148 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.html - null null
+2025-09-15 13:57:03.148 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.html - 200 null text/html;charset=utf-8 0.4529ms
+2025-09-15 13:57:03.162 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/index.js - null null
+2025-09-15 13:57:03.162 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/index.js - 200 null application/javascript;charset=utf-8 0.4486ms
+2025-09-15 13:57:03.162 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-15 13:57:03.163 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/_framework/aspnetcore-browser-refresh.js - 200 13440 application/javascript; charset=utf-8 0.1307ms
+2025-09-15 13:57:03.255 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - null null
+2025-09-15 13:57:03.284 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 29.1432ms
+2025-09-15 13:57:29.302 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - text/plain 429
+2025-09-15 13:57:29.308 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:29.321 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:29.323 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 13:57:29.329 +01:00 [INF] Route matched with {action = "ValidateToken", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ValidateToken() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:29.532 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:29.545 +01:00 [INF] Executed action Api.Controllers.AccountController.ValidateToken (Api) in 214.0897ms
+2025-09-15 13:57:29.545 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 13:57:29.546 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - 200 null application/json; charset=utf-8 244.6007ms
+2025-09-15 13:57:29.663 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 13:57:29.666 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:29.667 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:29.668 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:29.669 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:29.670 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:29.696 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:29.698 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 28.558ms
+2025-09-15 13:57:29.699 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:29.699 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:29.699 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 35.8115ms
+2025-09-15 13:57:31.618 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:31.620 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:31.621 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:31.621 +01:00 [INF] Executing endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 13:57:31.630 +01:00 [INF] Route matched with {action = "GetFolders", controller = "Folder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.FolderPagedResult]] GetFolders(Core.DTO.FolderFilterDto) on controller Api.Controllers.FolderController (Api).
+2025-09-15 13:57:31.892 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-15 13:57:31.914 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-15 13:57:31.988 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 13:57:31.988 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 13:57:31.988 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-15 13:57:32.300 +01:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:57:32.397 +01:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-09-15 13:57:32.435 +01:00 [INF] Executed DbCommand (16ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT f1."Id", f1."CreatedAt", f1."CreatedById", f1."DepartmentId", f1."Description", f1."Name", f1."ParentFolderId", f1."UpdatedAt", f0."Id", f0."CreatedAt", f0."CreatedById", f0."DepartmentId", f0."Description", f0."Name", f0."ParentFolderId", f0."UpdatedAt", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", f2."Id", f2."CreatedAt", f2."CreatedById", f2."DepartmentId", f2."Description", f2."Name", f2."ParentFolderId", f2."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt"
+    FROM "Folder" AS f
+    ORDER BY f."Name"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS f1
+LEFT JOIN "Folder" AS f0 ON f1."ParentFolderId" = f0."Id"
+INNER JOIN "Departments" AS d ON f1."DepartmentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a ON f1."CreatedById" = a."Id"
+LEFT JOIN "Folder" AS f2 ON f1."Id" = f2."ParentFolderId"
+LEFT JOIN "Documents" AS d0 ON f1."Id" = d0."FolderId"
+ORDER BY f1."Name", f1."Id", f0."Id", d."Id", a."Id", f2."Id"
+2025-09-15 13:57:32.554 +01:00 [INF] Retrieved paged list of folders
+2025-09-15 13:57:32.556 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.FolderPagedResult'.
+2025-09-15 13:57:32.570 +01:00 [INF] Executed action Api.Controllers.FolderController.GetFolders (Api) in 940.6557ms
+2025-09-15 13:57:32.571 +01:00 [INF] Executed endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 13:57:32.571 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:32.574 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 956.5498ms
+2025-09-15 13:57:37.304 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document/my-docs - null null
+2025-09-15 13:57:37.304 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:37.304 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Folder/my-folders - null null
+2025-09-15 13:57:37.305 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:37.305 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:37.305 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:37.305 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:37.305 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocumentsByUser (Api)'
+2025-09-15 13:57:37.305 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document/MyDocumentAndFolderstat - null null
+2025-09-15 13:57:37.305 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:37.305 +01:00 [INF] Executing endpoint 'Api.Controllers.FolderController.GetUserFolders (Api)'
+2025-09-15 13:57:37.306 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:37.306 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:37.306 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:37.306 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api)'
+2025-09-15 13:57:37.308 +01:00 [INF] Route matched with {action = "GetUserFolders", controller = "Folder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.FolderPagedResult]] GetUserFolders(Core.DTO.FolderFilterDto) on controller Api.Controllers.FolderController (Api).
+2025-09-15 13:57:37.308 +01:00 [INF] Route matched with {action = "GetMyDocumentAndFolderStats", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocFolderStats]] GetMyDocumentAndFolderStats() on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:37.309 +01:00 [INF] Route matched with {action = "GetDocumentsByUser", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[Core.DTOs.DocumentDto]]] GetDocumentsByUser(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:37.329 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:37.331 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+WHERE f."CreatedById" = @__userId_0
+2025-09-15 13:57:37.333 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+WHERE f."CreatedById" = @__userId_0
+2025-09-15 13:57:37.334 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:37.343 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:37.346 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT f1."Id", f1."Name", f1."Description", (
+    SELECT count(*)::int
+    FROM "Documents" AS d0
+    WHERE f1."Id" = d0."FolderId") AS "DocumentCount", f1."CreatedAt", f1."UpdatedAt", (
+    SELECT COALESCE(sum(d1."FileSize"), 0.0)::bigint
+    FROM "Documents" AS d1
+    WHERE f1."Id" = d1."FolderId") AS "Size", f1."ParentFolderId", f0."Name" AS "ParentFolderName", f1."DepartmentId", d."Name" AS "DepartmentName", f1."CreatedById", a."UserName" AS "CreatedByName"
+FROM (
+    SELECT f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt"
+    FROM "Folder" AS f
+    WHERE f."CreatedById" = @__userId_0
+    ORDER BY f."Name"
+    LIMIT @__p_2 OFFSET @__p_1
+) AS f1
+LEFT JOIN "Folder" AS f0 ON f1."ParentFolderId" = f0."Id"
+INNER JOIN "Departments" AS d ON f1."DepartmentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a ON f1."CreatedById" = a."Id"
+ORDER BY f1."Name"
+2025-09-15 13:57:37.346 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    WHERE d."UploadedById" = @__userId_0
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:57:37.347 +01:00 [INF] Retrieved user's folders
+2025-09-15 13:57:37.347 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.FolderPagedResult'.
+2025-09-15 13:57:37.348 +01:00 [INF] Executed action Api.Controllers.FolderController.GetUserFolders (Api) in 40.0004ms
+2025-09-15 13:57:37.348 +01:00 [INF] Executed endpoint 'Api.Controllers.FolderController.GetUserFolders (Api)'
+2025-09-15 13:57:37.348 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:37.348 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Folder/my-folders - 200 null application/json; charset=utf-8 43.7643ms
+2025-09-15 13:57:37.350 +01:00 [INF] Retrieved documents for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:37.350 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.DocumentDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:37.351 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocumentsByUser (Api) in 42.403ms
+2025-09-15 13:57:37.351 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocumentsByUser (Api)'
+2025-09-15 13:57:37.351 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:37.351 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document/my-docs - 200 null application/json; charset=utf-8 47.3818ms
+2025-09-15 13:57:37.354 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('png', 'jpg', 'image')
+2025-09-15 13:57:37.358 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('docx', 'doc', 'word')
+2025-09-15 13:57:37.360 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" = 'pdf'
+2025-09-15 13:57:37.362 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('mp3', 'wav', 'audio')
+2025-09-15 13:57:37.365 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('mp4', 'avi', 'video')
+2025-09-15 13:57:37.365 +01:00 [INF] Retrieved document and folder stats for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:37.365 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocFolderStats'.
+2025-09-15 13:57:37.367 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api) in 58.1788ms
+2025-09-15 13:57:37.367 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api)'
+2025-09-15 13:57:37.367 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:37.367 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document/MyDocumentAndFolderstat - 200 null application/json; charset=utf-8 61.9818ms
+2025-09-15 13:57:40.703 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/document-req-stats - null null
+2025-09-15 13:57:40.703 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.704 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.704 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.704 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api)'
+2025-09-15 13:57:40.704 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 13:57:40.704 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/GetMyDepartmentDocumentRequests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:40.704 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.704 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.704 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:40.704 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.705 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:40.705 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:40.705 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.705 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.705 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:40.706 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.706 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.706 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetMyRequests (Api)'
+2025-09-15 13:57:40.706 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.706 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.706 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 1.0897ms
+2025-09-15 13:57:40.706 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:40.706 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.706 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api)'
+2025-09-15 13:57:40.706 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 2.0967ms
+2025-09-15 13:57:40.707 +01:00 [INF] Route matched with {action = "GetDocumentStatistics", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestStatsDto]] GetDocumentStatistics() on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:40.708 +01:00 [INF] Route matched with {action = "GetMyDepartmentDocRequest", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetMyDepartmentDocRequest(Core.DTO.PaginationParams) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:40.708 +01:00 [INF] Route matched with {action = "GetMyRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetMyRequests(Core.DTO.PaginationParams) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:40.725 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:40.725 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.726 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.726 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.726 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:40.728 +01:00 [INF] Route matched with {action = "GetDocumentRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetDocumentRequests(Core.DTO.DocumentRequestFilterDTO) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:40.761 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__requesterId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."RequesterId" = @__requesterId_0
+2025-09-15 13:57:40.761 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."DepartmentId" = @__departmentId_0
+2025-09-15 13:57:40.764 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."RequesterId" = @__userId_0
+2025-09-15 13:57:40.764 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+2025-09-15 13:57:40.765 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:40.765 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:40.765 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:40.765 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:40.765 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:40.765 +01:00 [INF] Route matched with {action = "GetDocumentRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetDocumentRequests(Core.DTO.DocumentRequestFilterDTO) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:40.767 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:40.769 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+2025-09-15 13:57:40.769 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'Completed' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:40.772 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'Rejected' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:40.773 +01:00 [INF] Retrieved document statistics for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:40.773 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestStatsDto'.
+2025-09-15 13:57:40.774 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api) in 66.8985ms
+2025-09-15 13:57:40.774 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api)'
+2025-09-15 13:57:40.774 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.774 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/document-req-stats - 200 null application/json; charset=utf-8 71.1369ms
+2025-09-15 13:57:40.779 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__requesterId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d1."Id", d1."CreatedAt", d1."DepartmentId", d1."DepartmentId1", d1."Description", d1."DocumentId", d1."DocumentType", d1."Priority", d1."ProcessedById", d1."RequestedAt", d1."RequesterId", d1."RespondedAt", d1."ResponseDocumentId", d1."ResponseMessage", d1."Status", d1."UpdatedAt", d0."Id", d0."CreatedAt", d0."Description", d0."Name", d0."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    WHERE d."RequesterId" = @__requesterId_0
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d1
+INNER JOIN "Departments" AS d0 ON d1."DepartmentId" = d0."Id"
+LEFT JOIN "Documents" AS d2 ON d1."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a ON d1."ProcessedById" = a."Id"
+ORDER BY d1."RequestedAt" DESC
+2025-09-15 13:57:40.783 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."Description", d1."Name", d1."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+INNER JOIN "Departments" AS d1 ON d0."DepartmentId" = d1."Id"
+LEFT JOIN "Documents" AS d2 ON d0."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:40.783 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."Description", d1."Name", d1."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+INNER JOIN "Departments" AS d1 ON d0."DepartmentId" = d1."Id"
+LEFT JOIN "Documents" AS d2 ON d0."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:40.787 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__departmentId_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."DepartmentId", d1."Description", d1."FileSize", d1."FileType", d1."FolderId", d1."IsValidated", d1."Name", d1."StoragePath", d1."UpdatedAt", d1."UploadedById", d1."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    WHERE d."DepartmentId" = @__departmentId_0
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+LEFT JOIN "Documents" AS d1 ON d0."ResponseDocumentId" = d1."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:40.814 +01:00 [INF] Retrieved document requests for department ID 10
+2025-09-15 13:57:40.814 +01:00 [INF] Retrieved document requests for requester ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:40.814 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTO.DocumentRequestDTO, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:40.814 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTO.DocumentRequestDTO, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:40.814 +01:00 [INF] Retrieved paged list of document requests
+2025-09-15 13:57:40.814 +01:00 [INF] Retrieved paged list of document requests
+2025-09-15 13:57:40.814 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestPagedResult'.
+2025-09-15 13:57:40.814 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestPagedResult'.
+2025-09-15 13:57:40.817 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentRequests (Api) in 51.0374ms
+2025-09-15 13:57:40.817 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentRequests (Api) in 88.1489ms
+2025-09-15 13:57:40.817 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetMyRequests (Api) in 108.094ms
+2025-09-15 13:57:40.817 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:40.817 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api) in 108.1563ms
+2025-09-15 13:57:40.817 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:40.817 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api)'
+2025-09-15 13:57:40.817 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.817 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.817 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetMyRequests (Api)'
+2025-09-15 13:57:40.817 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.817 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:40.817 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/GetMyDepartmentDocumentRequests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 113.0586ms
+2025-09-15 13:57:40.817 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 91.8153ms
+2025-09-15 13:57:40.817 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 52.4557ms
+2025-09-15 13:57:40.817 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 112.7249ms
+2025-09-15 13:57:42.179 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:42.179 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:42.180 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:42.180 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:42.180 +01:00 [INF] Executing endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:57:42.182 +01:00 [INF] Route matched with {action = "GetUserAccessRights", controller = "AccessRequests"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[API.Controllers.AccessRequestDto]]] GetUserAccessRights(Core.DTO.PaginationParams) on controller API.Controllers.AccessRequestsController (Api).
+2025-09-15 13:57:42.188 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:42.188 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:42.189 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:42.189 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:42.189 +01:00 [INF] Executing endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:57:42.189 +01:00 [INF] Route matched with {action = "GetUserAccessRights", controller = "AccessRequests"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[API.Controllers.AccessRequestDto]]] GetUserAccessRights(Core.DTO.PaginationParams) on controller API.Controllers.AccessRequestsController (Api).
+2025-09-15 13:57:42.191 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AccessRequests" AS a
+WHERE a."RequesterId" = @__userId_0
+2025-09-15 13:57:42.191 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AccessRequests" AS a
+WHERE a."RequesterId" = @__userId_0
+2025-09-15 13:57:42.193 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2025-09-15 13:57:42.193 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2025-09-15 13:57:42.196 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."DocumentId", d."Name" AS "DocumentName", a0."RequesterId", a1."UserName" AS "RequesterName", a0."RequestRead", a0."Message", a0."RequestWrite", a0."RequestDelete", a0."Status", a0."CreatedAt", a0."DecisionAt", a0."DecidedById", a2."UserName" AS "DecidedByName"
+FROM (
+    SELECT a."Id", a."CreatedAt", a."DecidedById", a."DecisionAt", a."DocumentId", a."Message", a."RequestDelete", a."RequestRead", a."RequestWrite", a."RequesterId", a."Status"
+    FROM "AccessRequests" AS a
+    WHERE a."RequesterId" = @__userId_0
+    LIMIT @__p_2 OFFSET @__p_1
+) AS a0
+INNER JOIN "Documents" AS d ON a0."DocumentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a1 ON a0."RequesterId" = a1."Id"
+LEFT JOIN "AspNetUsers" AS a2 ON a0."DecidedById" = a2."Id"
+2025-09-15 13:57:42.196 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."DocumentId", d."Name" AS "DocumentName", a0."RequesterId", a1."UserName" AS "RequesterName", a0."RequestRead", a0."Message", a0."RequestWrite", a0."RequestDelete", a0."Status", a0."CreatedAt", a0."DecisionAt", a0."DecidedById", a2."UserName" AS "DecidedByName"
+FROM (
+    SELECT a."Id", a."CreatedAt", a."DecidedById", a."DecisionAt", a."DocumentId", a."Message", a."RequestDelete", a."RequestRead", a."RequestWrite", a."RequesterId", a."Status"
+    FROM "AccessRequests" AS a
+    WHERE a."RequesterId" = @__userId_0
+    LIMIT @__p_2 OFFSET @__p_1
+) AS a0
+INNER JOIN "Documents" AS d ON a0."DocumentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a1 ON a0."RequesterId" = a1."Id"
+LEFT JOIN "AspNetUsers" AS a2 ON a0."DecidedById" = a2."Id"
+2025-09-15 13:57:42.197 +01:00 [INF] Retrieved access requests for user d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:42.197 +01:00 [INF] Retrieved access requests for user d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:42.197 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.AccessRequests.AccessRequestDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:42.197 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.AccessRequests.AccessRequestDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:42.200 +01:00 [INF] Executed action API.Controllers.AccessRequestsController.GetUserAccessRights (Api) in 10.9631ms
+2025-09-15 13:57:42.200 +01:00 [INF] Executed action API.Controllers.AccessRequestsController.GetUserAccessRights (Api) in 17.4945ms
+2025-09-15 13:57:42.200 +01:00 [INF] Executed endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:57:42.200 +01:00 [INF] Executed endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:57:42.200 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:42.200 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:42.200 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 21.4344ms
+2025-09-15 13:57:42.200 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 12.098ms
+2025-09-15 13:57:43.331 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document - null null
+2025-09-15 13:57:43.331 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Notification/my-notification - null null
+2025-09-15 13:57:43.331 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:43.331 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:43.331 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:43.331 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:43.331 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:43.331 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:43.332 +01:00 [INF] Executing endpoint 'Api.Controllers.NotificationController.GetUserNotifications (Api)'
+2025-09-15 13:57:43.332 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:57:43.334 +01:00 [INF] Route matched with {action = "GetDocuments", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocumentPagedResult]] GetDocuments(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:43.334 +01:00 [INF] Route matched with {action = "GetUserNotifications", controller = "Notification"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.NotificationPagedResult]] GetUserNotifications(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.String, System.String) on controller Api.Controllers.NotificationController (Api).
+2025-09-15 13:57:43.339 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+2025-09-15 13:57:43.342 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:57:43.342 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:43.343 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:43.343 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:43.343 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:43.343 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:57:43.343 +01:00 [INF] Route matched with {action = "GetDocuments", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocumentPagedResult]] GetDocuments(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:43.344 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+2025-09-15 13:57:43.345 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:57:43.351 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:57:43.351 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:57:43.352 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT n."Id", n."ActionUrl", n."AppUserId", n."CreatedAt", n."IsRead", n."Link", n."Message", n."SenderId", n."Type", n."UpdatedAt", n."UserId", n.title, a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM "Notifications" AS n
+INNER JOIN "AspNetUsers" AS a ON n."UserId" = a."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON n."SenderId" = a0."Id"
+WHERE n."UserId" = @__userId_0
+ORDER BY n."CreatedAt" DESC
+2025-09-15 13:57:43.354 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:57:43.354 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:57:43.357 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:57:43.357 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:57:43.358 +01:00 [INF] Retrieved paged list of documents
+2025-09-15 13:57:43.358 +01:00 [INF] Retrieved paged list of documents
+2025-09-15 13:57:43.358 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocumentPagedResult'.
+2025-09-15 13:57:43.358 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocumentPagedResult'.
+2025-09-15 13:57:43.359 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocuments (Api) in 16.1406ms
+2025-09-15 13:57:43.359 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocuments (Api) in 25.4124ms
+2025-09-15 13:57:43.359 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:57:43.359 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:43.359 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:57:43.360 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:43.360 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 17.2511ms
+2025-09-15 13:57:43.360 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document - 200 null application/json; charset=utf-8 28.7714ms
+2025-09-15 13:57:43.372 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.NotificationPagedResult'.
+2025-09-15 13:57:43.374 +01:00 [INF] Executed action Api.Controllers.NotificationController.GetUserNotifications (Api) in 40.0114ms
+2025-09-15 13:57:43.374 +01:00 [INF] Executed endpoint 'Api.Controllers.NotificationController.GetUserNotifications (Api)'
+2025-09-15 13:57:43.374 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:43.374 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Notification/my-notification - 200 null application/json; charset=utf-8 43.4966ms
+2025-09-15 13:57:45.572 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 13:57:45.573 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:45.573 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:45.573 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:45.573 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:45.573 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:45.574 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:45.574 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 0.8846ms
+2025-09-15 13:57:45.574 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:45.574 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:45.574 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 2.1915ms
+2025-09-15 13:57:45.578 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/User - null null
+2025-09-15 13:57:45.579 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:45.579 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:45.579 +01:00 [INF] Executing endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.582 +01:00 [INF] Route matched with {action = "GetUsers", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.UserPagedResult]] GetUsers(Core.DTOs.UserFilterDto) on controller Api.Controllers.UserController (Api).
+2025-09-15 13:57:45.589 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.596 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/User?PageSize=10&PageNumber=1 - null null
+2025-09-15 13:57:45.596 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/User?PageSize=10&PageNumber=1 - null null
+2025-09-15 13:57:45.596 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:45.596 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:45.596 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:45.596 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:45.596 +01:00 [INF] Executing endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.596 +01:00 [INF] Executing endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.596 +01:00 [INF] Route matched with {action = "GetUsers", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.UserPagedResult]] GetUsers(Core.DTOs.UserFilterDto) on controller Api.Controllers.UserController (Api).
+2025-09-15 13:57:45.596 +01:00 [INF] Route matched with {action = "GetUsers", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.UserPagedResult]] GetUsers(Core.DTOs.UserFilterDto) on controller Api.Controllers.UserController (Api).
+2025-09-15 13:57:45.598 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.598 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.602 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+    FROM "AspNetUsers" AS a
+    ORDER BY a."CreatedAt"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS a0
+INNER JOIN "Departments" AS d ON a0."DepartmentId" = d."Id"
+LEFT JOIN "Documents" AS d0 ON a0."Id" = d0."UploadedById"
+ORDER BY a0."CreatedAt", a0."Id", d."Id"
+2025-09-15 13:57:45.602 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+    FROM "AspNetUsers" AS a
+    ORDER BY a."CreatedAt"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS a0
+INNER JOIN "Departments" AS d ON a0."DepartmentId" = d."Id"
+LEFT JOIN "Documents" AS d0 ON a0."Id" = d0."UploadedById"
+ORDER BY a0."CreatedAt", a0."Id", d."Id"
+2025-09-15 13:57:45.602 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+    FROM "AspNetUsers" AS a
+    ORDER BY a."CreatedAt"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS a0
+INNER JOIN "Departments" AS d ON a0."DepartmentId" = d."Id"
+LEFT JOIN "Documents" AS d0 ON a0."Id" = d0."UploadedById"
+ORDER BY a0."CreatedAt", a0."Id", d."Id"
+2025-09-15 13:57:45.615 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.615 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.615 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.619 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.619 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.619 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-15 13:57:45.622 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.622 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.622 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+2025-09-15 13:57:45.625 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE a."IsActive"
+2025-09-15 13:57:45.625 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE a."IsActive"
+2025-09-15 13:57:45.625 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE a."IsActive"
+2025-09-15 13:57:45.629 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE NOT (a."IsActive")
+2025-09-15 13:57:45.629 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE NOT (a."IsActive")
+2025-09-15 13:57:45.629 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AspNetUsers" AS a
+WHERE NOT (a."IsActive")
+2025-09-15 13:57:45.629 +01:00 [INF] Retrieved 2 users
+2025-09-15 13:57:45.629 +01:00 [INF] Retrieved 2 users
+2025-09-15 13:57:45.629 +01:00 [INF] Retrieved 2 users
+2025-09-15 13:57:45.629 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.UserPagedResult'.
+2025-09-15 13:57:45.629 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.UserPagedResult'.
+2025-09-15 13:57:45.629 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.UserPagedResult'.
+2025-09-15 13:57:45.634 +01:00 [INF] Executed action Api.Controllers.UserController.GetUsers (Api) in 37.548ms
+2025-09-15 13:57:45.634 +01:00 [INF] Executed action Api.Controllers.UserController.GetUsers (Api) in 51.9841ms
+2025-09-15 13:57:45.634 +01:00 [INF] Executed action Api.Controllers.UserController.GetUsers (Api) in 37.589ms
+2025-09-15 13:57:45.634 +01:00 [INF] Executed endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.634 +01:00 [INF] Executed endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.634 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:45.634 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:45.634 +01:00 [INF] Executed endpoint 'Api.Controllers.UserController.GetUsers (Api)'
+2025-09-15 13:57:45.634 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:45.634 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/User - 200 null application/json; charset=utf-8 56.1232ms
+2025-09-15 13:57:45.634 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/User?PageSize=10&PageNumber=1 - 200 null application/json; charset=utf-8 38.7891ms
+2025-09-15 13:57:45.634 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/User?PageSize=10&PageNumber=1 - 200 null application/json; charset=utf-8 38.8031ms
+2025-09-15 13:57:55.176 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - text/plain 429
+2025-09-15 13:57:55.176 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:55.176 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:55.176 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 13:57:55.176 +01:00 [INF] Route matched with {action = "ValidateToken", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ValidateToken() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:55.177 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:55.177 +01:00 [INF] Executed action Api.Controllers.AccountController.ValidateToken (Api) in 0.6005ms
+2025-09-15 13:57:55.177 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.ValidateToken (Api)'
+2025-09-15 13:57:55.177 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/validate-token - 200 null application/json; charset=utf-8 1.6739ms
+2025-09-15 13:57:55.196 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 13:57:55.197 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:55.197 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:55.197 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:55.197 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:55.197 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:55.198 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:55.198 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 0.6608ms
+2025-09-15 13:57:55.198 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:55.198 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:55.198 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 1.5557ms
+2025-09-15 13:57:55.207 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:55.207 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:55.207 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:55.207 +01:00 [INF] Executing endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 13:57:55.208 +01:00 [INF] Route matched with {action = "GetFolders", controller = "Folder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.FolderPagedResult]] GetFolders(Core.DTO.FolderFilterDto) on controller Api.Controllers.FolderController (Api).
+2025-09-15 13:57:55.209 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:57:55.211 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT f1."Id", f1."CreatedAt", f1."CreatedById", f1."DepartmentId", f1."Description", f1."Name", f1."ParentFolderId", f1."UpdatedAt", f0."Id", f0."CreatedAt", f0."CreatedById", f0."DepartmentId", f0."Description", f0."Name", f0."ParentFolderId", f0."UpdatedAt", d."Id", d."CreatedAt", d."Description", d."Name", d."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", f2."Id", f2."CreatedAt", f2."CreatedById", f2."DepartmentId", f2."Description", f2."Name", f2."ParentFolderId", f2."UpdatedAt", d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version"
+FROM (
+    SELECT f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt"
+    FROM "Folder" AS f
+    ORDER BY f."Name"
+    LIMIT @__p_1 OFFSET @__p_0
+) AS f1
+LEFT JOIN "Folder" AS f0 ON f1."ParentFolderId" = f0."Id"
+INNER JOIN "Departments" AS d ON f1."DepartmentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a ON f1."CreatedById" = a."Id"
+LEFT JOIN "Folder" AS f2 ON f1."Id" = f2."ParentFolderId"
+LEFT JOIN "Documents" AS d0 ON f1."Id" = d0."FolderId"
+ORDER BY f1."Name", f1."Id", f0."Id", d."Id", a."Id", f2."Id"
+2025-09-15 13:57:55.211 +01:00 [INF] Retrieved paged list of folders
+2025-09-15 13:57:55.211 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.FolderPagedResult'.
+2025-09-15 13:57:55.212 +01:00 [INF] Executed action Api.Controllers.FolderController.GetFolders (Api) in 3.9742ms
+2025-09-15 13:57:55.212 +01:00 [INF] Executed endpoint 'Api.Controllers.FolderController.GetFolders (Api)'
+2025-09-15 13:57:55.212 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:55.212 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Folder?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.81ms
+2025-09-15 13:57:57.370 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Folder/my-folders - null null
+2025-09-15 13:57:57.370 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document/my-docs - null null
+2025-09-15 13:57:57.370 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:57.370 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:57.370 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:57.370 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocumentsByUser (Api)'
+2025-09-15 13:57:57.370 +01:00 [INF] Route matched with {action = "GetDocumentsByUser", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[Core.DTOs.DocumentDto]]] GetDocumentsByUser(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:57.371 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:57.371 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document/MyDocumentAndFolderstat - null null
+2025-09-15 13:57:57.371 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:57.371 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:57.371 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:57.371 +01:00 [INF] Executing endpoint 'Api.Controllers.FolderController.GetUserFolders (Api)'
+2025-09-15 13:57:57.371 +01:00 [INF] Route matched with {action = "GetUserFolders", controller = "Folder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.FolderPagedResult]] GetUserFolders(Core.DTO.FolderFilterDto) on controller Api.Controllers.FolderController (Api).
+2025-09-15 13:57:57.371 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:57.371 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:57.371 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api)'
+2025-09-15 13:57:57.371 +01:00 [INF] Route matched with {action = "GetMyDocumentAndFolderStats", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocFolderStats]] GetMyDocumentAndFolderStats() on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:57:57.372 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:57.372 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:57.372 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+WHERE f."CreatedById" = @__userId_0
+2025-09-15 13:57:57.373 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+WHERE f."CreatedById" = @__userId_0
+2025-09-15 13:57:57.373 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    WHERE d."UploadedById" = @__userId_0
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:57:57.373 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0
+2025-09-15 13:57:57.374 +01:00 [INF] Retrieved documents for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:57.374 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.DocumentDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:57.374 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT f1."Id", f1."Name", f1."Description", (
+    SELECT count(*)::int
+    FROM "Documents" AS d0
+    WHERE f1."Id" = d0."FolderId") AS "DocumentCount", f1."CreatedAt", f1."UpdatedAt", (
+    SELECT COALESCE(sum(d1."FileSize"), 0.0)::bigint
+    FROM "Documents" AS d1
+    WHERE f1."Id" = d1."FolderId") AS "Size", f1."ParentFolderId", f0."Name" AS "ParentFolderName", f1."DepartmentId", d."Name" AS "DepartmentName", f1."CreatedById", a."UserName" AS "CreatedByName"
+FROM (
+    SELECT f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt"
+    FROM "Folder" AS f
+    WHERE f."CreatedById" = @__userId_0
+    ORDER BY f."Name"
+    LIMIT @__p_2 OFFSET @__p_1
+) AS f1
+LEFT JOIN "Folder" AS f0 ON f1."ParentFolderId" = f0."Id"
+INNER JOIN "Departments" AS d ON f1."DepartmentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a ON f1."CreatedById" = a."Id"
+ORDER BY f1."Name"
+2025-09-15 13:57:57.374 +01:00 [INF] Retrieved user's folders
+2025-09-15 13:57:57.374 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.FolderPagedResult'.
+2025-09-15 13:57:57.374 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocumentsByUser (Api) in 3.5883ms
+2025-09-15 13:57:57.374 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocumentsByUser (Api)'
+2025-09-15 13:57:57.374 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:57.374 +01:00 [INF] Executed action Api.Controllers.FolderController.GetUserFolders (Api) in 3.1788ms
+2025-09-15 13:57:57.374 +01:00 [INF] Executed endpoint 'Api.Controllers.FolderController.GetUserFolders (Api)'
+2025-09-15 13:57:57.374 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:57.374 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document/my-docs - 200 null application/json; charset=utf-8 4.7191ms
+2025-09-15 13:57:57.374 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Folder/my-folders - 200 null application/json; charset=utf-8 4.845ms
+2025-09-15 13:57:57.374 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('png', 'jpg', 'image')
+2025-09-15 13:57:57.375 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('docx', 'doc', 'word')
+2025-09-15 13:57:57.376 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" = 'pdf'
+2025-09-15 13:57:57.376 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('mp3', 'wav', 'audio')
+2025-09-15 13:57:57.377 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+WHERE d."UploadedById" = @__userId_0 AND d."FileType" IN ('mp4', 'avi', 'video')
+2025-09-15 13:57:57.377 +01:00 [INF] Retrieved document and folder stats for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:57.377 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocFolderStats'.
+2025-09-15 13:57:57.377 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api) in 5.6432ms
+2025-09-15 13:57:57.377 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetMyDocumentAndFolderStats (Api)'
+2025-09-15 13:57:57.377 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:57.377 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document/MyDocumentAndFolderstat - 200 null application/json; charset=utf-8 6.3986ms
+2025-09-15 13:57:59.267 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/document-req-stats - null null
+2025-09-15 13:57:59.267 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.268 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.268 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Account/me - null null
+2025-09-15 13:57:59.268 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.268 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api)'
+2025-09-15 13:57:59.268 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.268 +01:00 [INF] Route matched with {action = "GetDocumentStatistics", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestStatsDto]] GetDocumentStatistics() on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:59.268 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.268 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.268 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:59.268 +01:00 [INF] Route matched with {action = "Me", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Api.Controllers.AccountController (Api).
+2025-09-15 13:57:59.269 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`4[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-15 13:57:59.269 +01:00 [INF] Executed action Api.Controllers.AccountController.Me (Api) in 0.6043ms
+2025-09-15 13:57:59.269 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Me (Api)'
+2025-09-15 13:57:59.269 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.269 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Account/me - 200 null application/json; charset=utf-8 1.269ms
+2025-09-15 13:57:59.269 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."RequesterId" = @__userId_0
+2025-09-15 13:57:59.270 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'En Attente' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:59.271 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'Completed' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:59.271 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."Status" = 'Rejected' AND d."RequesterId" = @__userId_0
+2025-09-15 13:57:59.271 +01:00 [INF] Retrieved document statistics for user ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:59.271 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestStatsDto'.
+2025-09-15 13:57:59.272 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api) in 3.8223ms
+2025-09-15 13:57:59.272 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentStatistics (Api)'
+2025-09-15 13:57:59.272 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.272 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/document-req-stats - 200 null application/json; charset=utf-8 4.9527ms
+2025-09-15 13:57:59.274 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/GetMyDepartmentDocumentRequests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:59.274 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:59.274 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.274 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.274 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.274 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.274 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.274 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.274 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetMyRequests (Api)'
+2025-09-15 13:57:59.275 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api)'
+2025-09-15 13:57:59.275 +01:00 [INF] Route matched with {action = "GetMyRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetMyRequests(Core.DTO.PaginationParams) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:59.275 +01:00 [INF] Route matched with {action = "GetMyDepartmentDocRequest", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetMyDepartmentDocRequest(Core.DTO.PaginationParams) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:59.277 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__departmentId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."DepartmentId" = @__departmentId_0
+2025-09-15 13:57:59.277 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__requesterId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+WHERE d."RequesterId" = @__requesterId_0
+2025-09-15 13:57:59.278 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__requesterId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d1."Id", d1."CreatedAt", d1."DepartmentId", d1."DepartmentId1", d1."Description", d1."DocumentId", d1."DocumentType", d1."Priority", d1."ProcessedById", d1."RequestedAt", d1."RequesterId", d1."RespondedAt", d1."ResponseDocumentId", d1."ResponseMessage", d1."Status", d1."UpdatedAt", d0."Id", d0."CreatedAt", d0."Description", d0."Name", d0."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    WHERE d."RequesterId" = @__requesterId_0
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d1
+INNER JOIN "Departments" AS d0 ON d1."DepartmentId" = d0."Id"
+LEFT JOIN "Documents" AS d2 ON d1."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a ON d1."ProcessedById" = a."Id"
+ORDER BY d1."RequestedAt" DESC
+2025-09-15 13:57:59.278 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__departmentId_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."DepartmentId", d1."Description", d1."FileSize", d1."FileType", d1."FolderId", d1."IsValidated", d1."Name", d1."StoragePath", d1."UpdatedAt", d1."UploadedById", d1."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    WHERE d."DepartmentId" = @__departmentId_0
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+LEFT JOIN "Documents" AS d1 ON d0."ResponseDocumentId" = d1."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:59.278 +01:00 [INF] Retrieved document requests for requester ID d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:57:59.278 +01:00 [INF] Retrieved document requests for department ID 10
+2025-09-15 13:57:59.279 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTO.DocumentRequestDTO, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:59.279 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTO.DocumentRequestDTO, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:57:59.279 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetMyRequests (Api) in 4.172ms
+2025-09-15 13:57:59.279 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api) in 4.1159ms
+2025-09-15 13:57:59.279 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetMyRequests (Api)'
+2025-09-15 13:57:59.279 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetMyDepartmentDocRequest (Api)'
+2025-09-15 13:57:59.279 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.279 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.279 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 5.1802ms
+2025-09-15 13:57:59.279 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest/GetMyDepartmentDocumentRequests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 5.3956ms
+2025-09-15 13:57:59.288 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:59.288 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.288 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.288 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.288 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:59.288 +01:00 [INF] Route matched with {action = "GetDocumentRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetDocumentRequests(Core.DTO.DocumentRequestFilterDTO) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:59.290 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+2025-09-15 13:57:59.291 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."Description", d1."Name", d1."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+INNER JOIN "Departments" AS d1 ON d0."DepartmentId" = d1."Id"
+LEFT JOIN "Documents" AS d2 ON d0."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:59.291 +01:00 [INF] Retrieved paged list of document requests
+2025-09-15 13:57:59.292 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestPagedResult'.
+2025-09-15 13:57:59.292 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentRequests (Api) in 3.5509ms
+2025-09-15 13:57:59.292 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:59.292 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.292 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.5141ms
+2025-09-15 13:57:59.305 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:57:59.305 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:57:59.305 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:57:59.306 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:57:59.306 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:59.306 +01:00 [INF] Route matched with {action = "GetDocumentRequests", controller = "DocumentRequest"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.DocumentRequestPagedResult]] GetDocumentRequests(Core.DTO.DocumentRequestFilterDTO) on controller Api.Controllers.DocumentRequestController (Api).
+2025-09-15 13:57:59.307 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "DocumentRequests" AS d
+2025-09-15 13:57:59.308 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."DepartmentId1", d0."Description", d0."DocumentId", d0."DocumentType", d0."Priority", d0."ProcessedById", d0."RequestedAt", d0."RequesterId", d0."RespondedAt", d0."ResponseDocumentId", d0."ResponseMessage", d0."Status", d0."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", d1."Id", d1."CreatedAt", d1."Description", d1."Name", d1."UpdatedAt", d2."Id", d2."CreatedAt", d2."DepartmentId", d2."Description", d2."FileSize", d2."FileType", d2."FolderId", d2."IsValidated", d2."Name", d2."StoragePath", d2."UpdatedAt", d2."UploadedById", d2."Version", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."DepartmentId1", d."Description", d."DocumentId", d."DocumentType", d."Priority", d."ProcessedById", d."RequestedAt", d."RequesterId", d."RespondedAt", d."ResponseDocumentId", d."ResponseMessage", d."Status", d."UpdatedAt"
+    FROM "DocumentRequests" AS d
+    ORDER BY d."RequestedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+INNER JOIN "AspNetUsers" AS a ON d0."RequesterId" = a."Id"
+INNER JOIN "Departments" AS d1 ON d0."DepartmentId" = d1."Id"
+LEFT JOIN "Documents" AS d2 ON d0."ResponseDocumentId" = d2."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON d0."ProcessedById" = a0."Id"
+ORDER BY d0."RequestedAt" DESC
+2025-09-15 13:57:59.309 +01:00 [INF] Retrieved paged list of document requests
+2025-09-15 13:57:59.309 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.DocumentRequestPagedResult'.
+2025-09-15 13:57:59.309 +01:00 [INF] Executed action Api.Controllers.DocumentRequestController.GetDocumentRequests (Api) in 3.1997ms
+2025-09-15 13:57:59.309 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentRequestController.GetDocumentRequests (Api)'
+2025-09-15 13:57:59.309 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:57:59.309 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/DocumentRequest?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.2084ms
+2025-09-15 13:58:01.788 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:58:01.789 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:58:01.789 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:58:01.789 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:58:01.789 +01:00 [INF] Executing endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:58:01.789 +01:00 [INF] Route matched with {action = "GetUserAccessRights", controller = "AccessRequests"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[API.Controllers.AccessRequestDto]]] GetUserAccessRights(Core.DTO.PaginationParams) on controller API.Controllers.AccessRequestsController (Api).
+2025-09-15 13:58:01.791 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AccessRequests" AS a
+WHERE a."RequesterId" = @__userId_0
+2025-09-15 13:58:01.792 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."DocumentId", d."Name" AS "DocumentName", a0."RequesterId", a1."UserName" AS "RequesterName", a0."RequestRead", a0."Message", a0."RequestWrite", a0."RequestDelete", a0."Status", a0."CreatedAt", a0."DecisionAt", a0."DecidedById", a2."UserName" AS "DecidedByName"
+FROM (
+    SELECT a."Id", a."CreatedAt", a."DecidedById", a."DecisionAt", a."DocumentId", a."Message", a."RequestDelete", a."RequestRead", a."RequestWrite", a."RequesterId", a."Status"
+    FROM "AccessRequests" AS a
+    WHERE a."RequesterId" = @__userId_0
+    LIMIT @__p_2 OFFSET @__p_1
+) AS a0
+INNER JOIN "Documents" AS d ON a0."DocumentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a1 ON a0."RequesterId" = a1."Id"
+LEFT JOIN "AspNetUsers" AS a2 ON a0."DecidedById" = a2."Id"
+2025-09-15 13:58:01.792 +01:00 [INF] Retrieved access requests for user d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:58:01.793 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.AccessRequests.AccessRequestDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:58:01.793 +01:00 [INF] Executed action API.Controllers.AccessRequestsController.GetUserAccessRights (Api) in 3.6595ms
+2025-09-15 13:58:01.793 +01:00 [INF] Executed endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:58:01.793 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:58:01.793 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.7519ms
+2025-09-15 13:58:01.793 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:58:01.793 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:58:01.794 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:58:01.794 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:58:01.794 +01:00 [INF] Executing endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:58:01.794 +01:00 [INF] Route matched with {action = "GetUserAccessRights", controller = "AccessRequests"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.PagedResult`1[API.Controllers.AccessRequestDto]]] GetUserAccessRights(Core.DTO.PaginationParams) on controller API.Controllers.AccessRequestsController (Api).
+2025-09-15 13:58:01.796 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AccessRequests" AS a
+WHERE a."RequesterId" = @__userId_0
+2025-09-15 13:58:01.797 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?', @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."DocumentId", d."Name" AS "DocumentName", a0."RequesterId", a1."UserName" AS "RequesterName", a0."RequestRead", a0."Message", a0."RequestWrite", a0."RequestDelete", a0."Status", a0."CreatedAt", a0."DecisionAt", a0."DecidedById", a2."UserName" AS "DecidedByName"
+FROM (
+    SELECT a."Id", a."CreatedAt", a."DecidedById", a."DecisionAt", a."DocumentId", a."Message", a."RequestDelete", a."RequestRead", a."RequestWrite", a."RequesterId", a."Status"
+    FROM "AccessRequests" AS a
+    WHERE a."RequesterId" = @__userId_0
+    LIMIT @__p_2 OFFSET @__p_1
+) AS a0
+INNER JOIN "Documents" AS d ON a0."DocumentId" = d."Id"
+INNER JOIN "AspNetUsers" AS a1 ON a0."RequesterId" = a1."Id"
+LEFT JOIN "AspNetUsers" AS a2 ON a0."DecidedById" = a2."Id"
+2025-09-15 13:58:01.797 +01:00 [INF] Retrieved access requests for user d9b5964c-ac27-4cce-8059-b102f62ebedb
+2025-09-15 13:58:01.797 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.PagedResult`1[[Core.DTOs.AccessRequests.AccessRequestDto, Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-15 13:58:01.797 +01:00 [INF] Executed action API.Controllers.AccessRequestsController.GetUserAccessRights (Api) in 3.4937ms
+2025-09-15 13:58:01.797 +01:00 [INF] Executed endpoint 'API.Controllers.AccessRequestsController.GetUserAccessRights (Api)'
+2025-09-15 13:58:01.797 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:58:01.797 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/AccessRequests/my-requests?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.3092ms
+2025-09-15 13:58:07.014 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Notification/my-notification - null null
+2025-09-15 13:58:07.014 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document - null null
+2025-09-15 13:58:07.015 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:58:07.015 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:58:07.015 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:58:07.015 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:58:07.015 +01:00 [INF] Route matched with {action = "GetDocuments", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocumentPagedResult]] GetDocuments(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:58:07.016 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:58:07.016 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:58:07.016 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:58:07.016 +01:00 [INF] Executing endpoint 'Api.Controllers.NotificationController.GetUserNotifications (Api)'
+2025-09-15 13:58:07.016 +01:00 [INF] Route matched with {action = "GetUserNotifications", controller = "Notification"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTO.NotificationPagedResult]] GetUserNotifications(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.String, System.String) on controller Api.Controllers.NotificationController (Api).
+2025-09-15 13:58:07.017 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+2025-09-15 13:58:07.017 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:58:07.017 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT n."Id", n."ActionUrl", n."AppUserId", n."CreatedAt", n."IsRead", n."Link", n."Message", n."SenderId", n."Type", n."UpdatedAt", n."UserId", n.title, a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName", a0."Id", a0."AccessFailedCount", a0."Cin", a0."ConcurrencyStamp", a0."CreatedAt", a0."DepartmentId", a0."Email", a0."EmailConfirmed", a0."IsActive", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UpdatedAt", a0."UserName"
+FROM "Notifications" AS n
+INNER JOIN "AspNetUsers" AS a ON n."UserId" = a."Id"
+LEFT JOIN "AspNetUsers" AS a0 ON n."SenderId" = a0."Id"
+WHERE n."UserId" = @__userId_0
+ORDER BY n."CreatedAt" DESC
+2025-09-15 13:58:07.018 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTO.NotificationPagedResult'.
+2025-09-15 13:58:07.018 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:58:07.018 +01:00 [INF] Executed action Api.Controllers.NotificationController.GetUserNotifications (Api) in 2.1115ms
+2025-09-15 13:58:07.018 +01:00 [INF] Executed endpoint 'Api.Controllers.NotificationController.GetUserNotifications (Api)'
+2025-09-15 13:58:07.018 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:58:07.018 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Notification/my-notification - 200 null application/json; charset=utf-8 3.9912ms
+2025-09-15 13:58:07.019 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:58:07.019 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:58:07.019 +01:00 [INF] Retrieved paged list of documents
+2025-09-15 13:58:07.019 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocumentPagedResult'.
+2025-09-15 13:58:07.020 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocuments (Api) in 4.4928ms
+2025-09-15 13:58:07.020 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:58:07.020 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:58:07.020 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document - 200 null application/json; charset=utf-8 5.5154ms
+2025-09-15 13:58:07.022 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/api/Document?PageSize=5&PageNumber=1 - null null
+2025-09-15 13:58:07.022 +01:00 [INF] CORS policy execution successful.
+2025-09-15 13:58:07.022 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-15 13:58:07.022 +01:00 [INF] No cached response available for this request.
+2025-09-15 13:58:07.022 +01:00 [INF] Executing endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:58:07.022 +01:00 [INF] Route matched with {action = "GetDocuments", controller = "Document"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Core.DTOs.DocumentPagedResult]] GetDocuments(Core.DTOs.DocumentFilterDto) on controller Api.Controllers.DocumentController (Api).
+2025-09-15 13:58:07.023 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Documents" AS d
+2025-09-15 13:58:07.024 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:58:07.024 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT d0."Id", d0."CreatedAt", d0."DepartmentId", d0."Description", d0."FileSize", d0."FileType", d0."FolderId", d0."IsValidated", d0."Name", d0."StoragePath", d0."UpdatedAt", d0."UploadedById", d0."Version", f."Id", f."CreatedAt", f."CreatedById", f."DepartmentId", f."Description", f."Name", f."ParentFolderId", f."UpdatedAt", a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM (
+    SELECT d."Id", d."CreatedAt", d."DepartmentId", d."Description", d."FileSize", d."FileType", d."FolderId", d."IsValidated", d."Name", d."StoragePath", d."UpdatedAt", d."UploadedById", d."Version"
+    FROM "Documents" AS d
+    ORDER BY d."CreatedAt" DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS d0
+LEFT JOIN "Folder" AS f ON d0."FolderId" = f."Id"
+INNER JOIN "AspNetUsers" AS a ON d0."UploadedById" = a."Id"
+ORDER BY d0."CreatedAt" DESC
+2025-09-15 13:58:07.025 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(sum(d."FileSize"), 0.0)::bigint
+FROM "Documents" AS d
+2025-09-15 13:58:07.026 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Folder" AS f
+2025-09-15 13:58:07.026 +01:00 [INF] Retrieved paged list of documents
+2025-09-15 13:58:07.026 +01:00 [INF] Executing OkObjectResult, writing value of type 'Core.DTOs.DocumentPagedResult'.
+2025-09-15 13:58:07.026 +01:00 [INF] Executed action Api.Controllers.DocumentController.GetDocuments (Api) in 3.7783ms
+2025-09-15 13:58:07.026 +01:00 [INF] Executed endpoint 'Api.Controllers.DocumentController.GetDocuments (Api)'
+2025-09-15 13:58:07.026 +01:00 [INF] The response could not be cached for this request.
+2025-09-15 13:58:07.026 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/api/Document?PageSize=5&PageNumber=1 - 200 null application/json; charset=utf-8 4.4135ms

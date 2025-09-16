@@ -44,11 +44,13 @@ interface ColorOption {
      <div class="card flex justify-end p-2 mb-4">
         <ul class="flex  list-none m-0 p-0 gap-2 items-center">
             <li>
+               <button type="button" class="mr-2 cursor-pointer inline-flex w-8 h-8 p-0 items-center justify-center surface-0 dark:surface-800 border border-surface-200 dark:border-surface-600 rounded" (click)="showNotification()">
+                    <i  class="pi pi-bell"></i>
+                </button>
                 <button type="button" class="cursor-pointer inline-flex w-8 h-8 p-0 items-center justify-center surface-0 dark:surface-800 border border-surface-200 dark:border-surface-600 rounded" (click)="onThemeToggler()">
                     <i [ngClass]="'pi ' + iconClass()" class="dark:text-white"></i>
                 </button>
             </li>
-            
         </ul>
     </div>`
 })
@@ -306,6 +308,10 @@ export class ThemeSwitcher {
       ...state,
       darkTheme: !state.darkTheme,
     }));
+  }
+
+  showNotification(){
+    
   }
 
   getPresetExt() {

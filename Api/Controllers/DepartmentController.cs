@@ -12,7 +12,6 @@ namespace Api.Controllers
     
     public class DepartmentController : BaseController
     {
-
         public readonly IHubContext<DepartmentHub> _hub;
 
   

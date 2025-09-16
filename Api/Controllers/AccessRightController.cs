@@ -15,11 +15,12 @@ namespace Api.Controllers
     public class AccessRightController : BaseController
     {
 
-          public readonly IHubContext<AccessRightHub> _hub;
+        public readonly IHubContext<AccessRightHub> _hub;
 
-        public AccessRightController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRightController> logger)
+        public AccessRightController(ICurrentUserService currentUser,  IHubContext<AccessRightHub> hub, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRightController> logger)
             : base(currentUser, unitOfWork, mapper, logger)
         {
+            _hub = hub; 
         }
 
         [HttpGet("test")]
