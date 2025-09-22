@@ -1,0 +1,164 @@
+2025-09-21 12:32:05.212 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-21 12:32:05.319 +01:00 [INF] Now listening on: http://localhost:5000
+2025-09-21 12:32:05.321 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-21 12:32:05.322 +01:00 [INF] Hosting environment: Production
+2025-09-21 12:32:05.322 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive
+2025-09-21 12:34:30.025 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2025-09-21 12:34:30.070 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:34:30.076 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:34:30.078 +01:00 [INF] Executing endpoint 'HTTP: GET /'
+2025-09-21 12:34:30.088 +01:00 [INF] Executed endpoint 'HTTP: GET /'
+2025-09-21 12:34:30.088 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:34:30.089 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/ - 200 null text/plain; charset=utf-8 64.9974ms
+2025-09-21 12:34:30.106 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.ico - null null
+2025-09-21 12:34:30.109 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:34:30.109 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:34:30.110 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:34:30.117 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:34:30.117 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:34:30.117 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.ico - 404 0 null 12.1677ms
+2025-09-21 12:34:30.118 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/favicon.ico, Response status code: 404
+2025-09-21 12:35:38.994 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:35:39.001 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:35:39.001 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:35:39.012 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:35:39.019 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 2.2146ms
+2025-09-21 12:35:39.019 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:35:39.037 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 42.1885ms
+2025-09-21 12:35:50.929 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:35:50.931 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:35:50.931 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:35:50.931 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:35:50.932 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:35:50.932 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.3236ms
+2025-09-21 12:35:50.932 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:35:50.933 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 3.3313ms
+2025-09-21 12:35:50.986 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.ico - null null
+2025-09-21 12:35:50.987 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:35:50.987 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:35:50.988 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:35:50.988 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:35:50.989 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.ico - 404 0 null 2.1063ms
+2025-09-21 12:35:50.989 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/favicon.ico, Response status code: 404
+2025-09-21 12:37:00.427 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:37:00.428 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:37:00.428 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:37:00.428 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:37:00.429 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.1697ms
+2025-09-21 12:37:00.429 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:37:00.429 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 2.1372ms
+2025-09-21 12:37:01.208 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:37:01.209 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:37:01.209 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:37:01.209 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:37:01.210 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.3226ms
+2025-09-21 12:37:01.211 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:37:01.211 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 3.3798ms
+2025-09-21 12:38:39.377 +01:00 [INF] Application is shutting down...
+2025-09-21 12:38:48.102 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-21 12:38:48.203 +01:00 [INF] Now listening on: http://localhost:5000
+2025-09-21 12:38:48.205 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-21 12:38:48.205 +01:00 [INF] Hosting environment: Production
+2025-09-21 12:38:48.205 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive
+2025-09-21 12:38:53.324 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:38:53.379 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:38:53.385 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:38:53.387 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:38:53.401 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:38:53.406 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 1.315ms
+2025-09-21 12:38:53.416 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:38:53.432 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 109.5991ms
+2025-09-21 12:38:54.031 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:38:54.034 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:38:54.035 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:38:54.035 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:38:54.035 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:38:54.035 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.2565ms
+2025-09-21 12:38:54.035 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:38:54.036 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 4.8909ms
+2025-09-21 12:39:03.456 +01:00 [INF] Application is shutting down...
+2025-09-21 12:39:13.028 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-21 12:39:13.132 +01:00 [INF] Now listening on: http://localhost:5000
+2025-09-21 12:39:13.133 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-21 12:39:13.134 +01:00 [INF] Hosting environment: Production
+2025-09-21 12:39:13.134 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive
+2025-09-21 12:39:27.636 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:39:27.696 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:39:27.701 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:39:27.703 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:39:27.716 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:39:27.720 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 1.2616ms
+2025-09-21 12:39:27.732 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:39:27.747 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 111.7612ms
+2025-09-21 12:39:34.611 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:39:34.615 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:39:34.615 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:39:34.615 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:39:34.615 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:39:34.616 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.3745ms
+2025-09-21 12:39:34.616 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:39:34.617 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 6.169ms
+2025-09-21 12:39:34.655 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.ico - null null
+2025-09-21 12:39:34.658 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:39:34.658 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:39:34.665 +01:00 [INF] No cached response available for this request.
+2025-09-21 12:39:34.665 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 12:39:34.665 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.ico - 404 0 null 10.6989ms
+2025-09-21 12:39:34.666 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/favicon.ico, Response status code: 404
+2025-09-21 12:40:46.692 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Role/test - null null
+2025-09-21 12:40:46.693 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:40:46.694 +01:00 [INF] Executing endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:40:46.694 +01:00 [INF] Route matched with {action = "TestApi", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.RoleController (Api).
+2025-09-21 12:40:46.694 +01:00 [INF] Executed action Api.Controllers.RoleController.TestApi (Api) in 0.1146ms
+2025-09-21 12:40:46.694 +01:00 [INF] Executed endpoint 'Api.Controllers.RoleController.TestApi (Api)'
+2025-09-21 12:40:46.694 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Role/test - 500 null application/json 2.0008ms
+2025-09-21 12:41:51.864 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Department/test - null null
+2025-09-21 12:41:51.865 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 12:41:51.865 +01:00 [INF] Executing endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 12:41:51.870 +01:00 [INF] Route matched with {action = "TestApi", controller = "Department"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.DepartmentController (Api).
+2025-09-21 12:41:51.870 +01:00 [INF] Executed action Api.Controllers.DepartmentController.TestApi (Api) in 0.23ms
+2025-09-21 12:41:51.871 +01:00 [INF] Executed endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 12:41:51.871 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Department/test - 500 null application/json 6.7375ms
+2025-09-21 13:16:42.918 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Department/test - null null
+2025-09-21 13:16:42.919 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 13:16:42.919 +01:00 [INF] No cached response available for this request.
+2025-09-21 13:16:42.919 +01:00 [INF] Executing endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:16:42.920 +01:00 [INF] Route matched with {action = "TestApi", controller = "Department"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.DepartmentController (Api).
+2025-09-21 13:16:42.920 +01:00 [INF] Executed action Api.Controllers.DepartmentController.TestApi (Api) in 0.4326ms
+2025-09-21 13:16:42.920 +01:00 [INF] Executed endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:16:42.921 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Department/test - 500 null application/json 3.0789ms
+2025-09-21 13:16:42.947 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.ico - null null
+2025-09-21 13:16:42.948 +01:00 [INF] No cached response available for this request.
+2025-09-21 13:16:42.948 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 13:16:42.949 +01:00 [INF] No cached response available for this request.
+2025-09-21 13:16:42.950 +01:00 [INF] The response could not be cached for this request.
+2025-09-21 13:16:42.950 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.ico - 404 0 null 3.4582ms
+2025-09-21 13:16:42.952 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/favicon.ico, Response status code: 404
+2025-09-21 13:18:19.132 +01:00 [INF] Application is shutting down...
+2025-09-21 13:18:41.468 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-21 13:18:41.579 +01:00 [INF] Now listening on: http://localhost:5000
+2025-09-21 13:18:41.581 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-21 13:18:41.582 +01:00 [INF] Hosting environment: Production
+2025-09-21 13:18:41.582 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive
+2025-09-21 13:18:51.229 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Department/test - null null
+2025-09-21 13:18:51.288 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 13:18:51.292 +01:00 [INF] No cached response available for this request.
+2025-09-21 13:18:51.294 +01:00 [INF] Executing endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:18:51.307 +01:00 [INF] Route matched with {action = "TestApi", controller = "Department"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.DepartmentController (Api).
+2025-09-21 13:18:51.312 +01:00 [INF] Executed action Api.Controllers.DepartmentController.TestApi (Api) in 1.5608ms
+2025-09-21 13:18:51.323 +01:00 [INF] Executed endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:18:51.339 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Department/test - 500 null application/json 110.6217ms
+2025-09-21 13:26:40.270 +01:00 [INF] Application is shutting down...
+2025-09-21 13:26:42.360 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-21 13:26:42.465 +01:00 [INF] Now listening on: http://localhost:5000
+2025-09-21 13:26:42.467 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-21 13:26:42.468 +01:00 [INF] Hosting environment: Production
+2025-09-21 13:26:42.468 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive
+2025-09-21 13:26:58.446 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Department/test - null null
+2025-09-21 13:26:58.501 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-21 13:26:58.504 +01:00 [INF] Executing endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:26:58.519 +01:00 [INF] Route matched with {action = "TestApi", controller = "Department"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.String] TestApi() on controller Api.Controllers.DepartmentController (Api).
+2025-09-21 13:26:58.523 +01:00 [INF] Executed action Api.Controllers.DepartmentController.TestApi (Api) in 1.4052ms
+2025-09-21 13:26:58.534 +01:00 [INF] Executed endpoint 'Api.Controllers.DepartmentController.TestApi (Api)'
+2025-09-21 13:26:58.550 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Department/test - 500 null application/json 104.4131ms
+2025-09-21 13:27:56.119 +01:00 [INF] Application is shutting down...

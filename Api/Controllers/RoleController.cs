@@ -23,7 +23,7 @@ namespace Api.Controllers
 
 
         [HttpGet("test")]
-        [AuthorizeRoles("Manager,Admin,SuperAdmin")]
+        //[AuthorizeRoles("Manager,Admin,SuperAdmin")]
         public async Task<string> TestApi()
         {
             _logger.LogInformation("Testing API endpoint");
