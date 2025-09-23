@@ -49,13 +49,12 @@ services:
       es01:
         condition: service_healthy
     restart: unless-stopped
-  
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
     ports:
-      - "8080:8080"
-      - "50000:50000"
+      - "8080:8080" # Jenkins UI
+      - "50000:50000" # Jenkins agent communication
     volumes:
       - jenkins_home:/var/jenkins_home
 networks:
