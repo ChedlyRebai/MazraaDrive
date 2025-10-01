@@ -1,4 +1,4 @@
-FROM node:20-alpine as build-stage
+FROM node:20-alpine AS build-stage
 
 WORKDIR /app
 
@@ -14,6 +14,6 @@ FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build-stage /app/dist/client /usr/share/nginx/html
+COPY --from=build-stage /app/dist/browser /usr/share/nginx/html
 
 EXPOSE 80

@@ -1,7 +1,26 @@
 version: '3.8'
 services:
 
-  
+  web:
+    container_name: drive-ui
+    image: drive/drive-ui:5.0.0
+    ports:
+      - 8000:80
+    networks:
+      - elastic
+  drive-api:
+    image: drive-api:2.1.1
+    container_name: drive-api
+    build: ./backend
+    ports:
+      - "5108:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=mazraa;Username=mazraa;Password=mazraa
+    # volumes:
+    #   - ./backend/keys:/app/keys
+    depends_on:
+      - postgres
   postgres:
     image: postgres:15
     container_name: postgres-db

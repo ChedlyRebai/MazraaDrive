@@ -1,0 +1,43 @@
+2025-09-28 17:29:35.769 +01:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-28 17:29:35.870 +01:00 [INF] Now listening on: http://localhost:5108
+2025-09-28 17:29:35.874 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-28 17:29:35.874 +01:00 [INF] Hosting environment: Production
+2025-09-28 17:29:35.875 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/publish
+2025-09-28 17:35:17.938 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/ - null null
+2025-09-28 17:35:17.981 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-28 17:35:17.986 +01:00 [INF] No cached response available for this request.
+2025-09-28 17:35:17.987 +01:00 [INF] Executing endpoint 'HTTP: GET /'
+2025-09-28 17:35:17.996 +01:00 [INF] Executed endpoint 'HTTP: GET /'
+2025-09-28 17:35:17.996 +01:00 [INF] The response could not be cached for this request.
+2025-09-28 17:35:17.997 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/ - 200 null text/plain; charset=utf-8 60.3209ms
+2025-09-28 17:35:18.025 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5108/favicon.ico - null null
+2025-09-28 17:35:18.030 +01:00 [INF] Identity.Application was not authenticated. Failure message: Unprotect ticket failed
+2025-09-28 17:35:18.031 +01:00 [INF] No cached response available for this request.
+2025-09-28 17:35:18.031 +01:00 [INF] The response could not be cached for this request.
+2025-09-28 17:35:18.037 +01:00 [INF] No cached response available for this request.
+2025-09-28 17:35:18.038 +01:00 [INF] The response could not be cached for this request.
+2025-09-28 17:35:18.038 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5108/favicon.ico - 404 0 null 12.8056ms
+2025-09-28 17:35:18.039 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5108/favicon.ico, Response status code: 404
+2025-09-28 17:36:11.539 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5108/api/Account/login - application/json 52
+2025-09-28 17:36:11.545 +01:00 [INF] Executing endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-28 17:36:11.559 +01:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Core.DTO.LoginDTO) on controller Api.Controllers.AccountController (Api).
+2025-09-28 17:36:12.019 +01:00 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while while scanning assembly 'Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2025-09-28 17:36:12.061 +01:00 [WRN] There are multiple relationships between 'Message' and 'AppUser' without configured foreign key properties. This will cause Entity Framework to create shadow properties on 'Message' with names dependent on the discovery order. Consider configuring the foreign key properties using the [ForeignKey] attribute or in 'OnModelCreating'.
+2025-09-28 17:36:12.163 +01:00 [WRN] The foreign key property 'DocumentRequest.DepartmentId1' was created in shadow state because a conflicting property with the simple name 'DepartmentId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-28 17:36:12.163 +01:00 [WRN] The foreign key property 'Message.ReceiverId1' was created in shadow state because a conflicting property with the simple name 'ReceiverId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-28 17:36:12.163 +01:00 [WRN] The foreign key property 'Message.SenderId1' was created in shadow state because a conflicting property with the simple name 'SenderId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-09-28 17:36:12.497 +01:00 [INF] Executed DbCommand (27ms) [Parameters=[@__cin_0='?' (DbType = Int64)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."Cin", a."ConcurrencyStamp", a."CreatedAt", a."DepartmentId", a."Email", a."EmailConfirmed", a."IsActive", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UpdatedAt", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."Cin" = @__cin_0
+LIMIT 1
+2025-09-28 17:36:12.623 +01:00 [INF] Executed DbCommand (6ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-09-28 17:36:12.715 +01:00 [INF] Executing OkObjectResult, writing value of type 'Api.Helper.ResponseAPI'.
+2025-09-28 17:36:12.732 +01:00 [INF] Executed action Api.Controllers.AccountController.Login (Api) in 1169.8412ms
+2025-09-28 17:36:12.732 +01:00 [INF] Executed endpoint 'Api.Controllers.AccountController.Login (Api)'
+2025-09-28 17:36:12.740 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5108/api/Account/login - 200 null application/json; charset=utf-8 1200.5448ms
+2025-09-28 18:23:08.983 +01:00 [INF] Application is shutting down...
