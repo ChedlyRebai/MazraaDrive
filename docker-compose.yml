@@ -13,6 +13,7 @@ services:
     container_name: drive-api
     build: ./backend
     ports:
+      #destination:source
       - "5108:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
@@ -21,6 +22,8 @@ services:
     #   - ./backend/keys:/app/keys
     depends_on:
       - postgres
+    networks:
+      - elastic
   postgres:
     image: postgres:15
     container_name: postgres-db
@@ -33,6 +36,8 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - elastic
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     container_name: elasticsearch
@@ -78,6 +83,8 @@ services:
       - "50000:50000" # Jenkins agent communication
     volumes:
       - jenkins_home:/var/jenkins_home
+    networks:
+      - elastic
 networks:
   elastic:
     driver: bridge
