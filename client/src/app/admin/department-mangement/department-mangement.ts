@@ -31,6 +31,7 @@ import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { Textarea, TextareaModule } from 'primeng/textarea';
 import { ThemeSwitcher } from '../themeswitcher';
 import { DepartmentRealtimeService } from '../../core/services/Hub/DepartmentRealtimeService';
+import { environment } from '../../../environments/environment';
 
 interface UserCountRange {
   label: string;

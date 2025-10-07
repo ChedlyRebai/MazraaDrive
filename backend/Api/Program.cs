@@ -116,10 +116,12 @@ builder.Services.infrastructureRegistration(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddResponseCompression();
 builder.Services.AddSignalR();
-builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
-    p.WithOrigins("http://localhost:4200", "http://localhost:5108")
-     .AllowAnyHeader().AllowAnyMethod()
-     .AllowCredentials()));
+// builder.Services.AddCors(o => o.AddPolicy("CorsAll", p =>
+//     p.WithOrigins("http://localhost:4200", "http://localhost:5108")
+//      .AllowAnyHeader().AllowAnyMethod()
+//      .AllowCredentials()));
+
+
 builder.Services.AddOpenApi();
 // builder.Services.AddScalarApiReference();
 
