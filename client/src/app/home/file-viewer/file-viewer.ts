@@ -43,7 +43,7 @@ export class FileViewer {
   
   loadFile() {
      const id = this.activatedRoute.snapshot.paramMap.get('id');
-     this.http.get<any>(`http://localhost:5108/api/Document/${id}`).subscribe({
+     this.http.get<any>(`${this.baseUrl}/Document/${id}`).subscribe({
       next: (response:any) => {
 
         

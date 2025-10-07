@@ -33,6 +33,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { Observable } from 'rxjs';
 import { ThemeSwitcher } from "../../admin/themeswitcher";
 import { NotificationDTO, NotificationPagedResult } from '../../shared/models/Notification';
+import { environment } from '../../../environments/environment';
 
 // interface Document {
 //   id?: number;
@@ -110,7 +111,7 @@ export class Notifications implements OnInit {
 
   statuses = ['Actif', 'Archivé', 'Brouillon', 'En révision', 'Expiré'];
 
-  private baseUrl = 'http://localhost:5108/api';
+  private baseUrl = environment.apiUrl;
   myNotification: NotificationPagedResult= {}  as NotificationPagedResult;
   constructor(
     public notificationService:NotificationService,

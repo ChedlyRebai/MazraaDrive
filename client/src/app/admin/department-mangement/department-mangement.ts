@@ -109,7 +109,7 @@ export class DepartmentMangement implements OnInit {
     { label: '50+ utilisateurs', minCount: 51, maxCount: null },
   ];
 
-  private baseUrl = 'http://localhost:5108/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(
     public departmentService: DepartmentService,

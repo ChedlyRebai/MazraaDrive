@@ -80,8 +80,8 @@ export class AccessRequsetService {
     if(SortDirection){
       params = params.append('SortDirection', SortDirection);
     }
-    
-    return this.http.get<AccessRequestPagedResult>('http://localhost:5108/api/AccessRequests/my-requests', { params,withCredentials: true })
+
+    return this.http.get<AccessRequestPagedResult>(`${this.baseUrl}/my-requests`, { params,withCredentials: true })
   }
 
 
@@ -91,7 +91,7 @@ export class AccessRequsetService {
 
 
   approuved(id: number | string, validityDuration: number | string) {
-    return this.http.post<AccessRequestDto>(`http://localhost:5108/api/DocumentAccess/approve/${id}`, { params: { validityDuration }, withCredentials: true });
+    return this.http.post<AccessRequestDto>(`${this.baseUrl}/DocumentAccess/approve/${id}`, { params: { validityDuration }, withCredentials: true });
   }
 
 

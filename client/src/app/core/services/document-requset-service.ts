@@ -21,6 +21,7 @@ export class DocumentRequsetService {
   );
   documentRequests$ = this.documentRequest.asObservable();
 
+  
   getDocumentRequests(
     PageSize?: number,
     Search?: string,
@@ -116,7 +117,7 @@ export class DocumentRequsetService {
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
     return this.http.post<DocumentRequestDTO>(
-      `http://localhost:5108/api/DocumentRequest`,
+      `${this.baseUrl}/DocumentRequest`,
       documentRequest,
       { withCredentials: true }
     );
