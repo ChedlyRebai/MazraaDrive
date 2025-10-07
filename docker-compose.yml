@@ -20,10 +20,13 @@ services:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=mazraa;Username=mazraa;Password=mazraa
     # volumes:
     #   - ./backend/keys:/app/keys
+    deploy:
+      replicas: 3
     depends_on:
       - postgres
     networks:
       - elastic
+
   postgres:
     image: postgres:15
     container_name: postgres-db
