@@ -1,16 +1,19 @@
-#!bin/bash
+#!/bin/sh
 
-if [ -z "$API_URL" ] || [ -z "$AUTH_URL" ]; then
-  echo "API_URL environment variable is not set. Using default value."
-  export API_URL="http://localhost:5108/api"
-  export AUTH_URL="http://localhost:5108/api"
-  exit 1
-else
-  echo "Using API_URL from environment variable: $API_URL"
-  echo "Using AUTH_URL from environment variable: $AUTH_URL"
-fi
+# Set default values if not provided
+API_URL=${API_URL:-"http://localhost:5108/api"}
+AUTH_URL=${AUTH_URL:-"http://localhost:5108/api"}
 
-envsubst < src/environments/environment.ts > src/environments/environment.tmp.ts && \
-mv src/environments/environment.tmp.ts src/environments/environment.ts
+echo "Using API_URL: ${API_URL}"
+echo "Using AUTH_URL: ${AUTH_URL}"
 
-exec "$@"
+# Substitute environment variables in built JavaScript files
+echo "Substituting environment variables in built files..."
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|\${API_URL}|${API_URL}|g" {} \;
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|\${AUTH_URL}|${AUTH_URL}|g" {} \;
+
+echo "Environment variables substituted successfully"
+
+# Start nginx
+echo "Starting nginx..."
+exec nginx -g 'daemon off;'
