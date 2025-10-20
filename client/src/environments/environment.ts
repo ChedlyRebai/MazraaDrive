@@ -4,8 +4,8 @@ export interface Environment {
 }
 
 export const environment = {
-  apiUrl: '${API_URL}',
-  authUrl: '${AUTH_URL}',
+    apiUrl: 'http://localhost:5108/api',
+  authUrl: 'http://localhost:5108/auth'
 };
 
 

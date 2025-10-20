@@ -535,121 +535,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Folder");
                 });
 
-            modelBuilder.Entity("Core.Entities.MailFolder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ParentFolderId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentFolderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MailFolder");
-                });
-
-            modelBuilder.Entity("Core.Entities.MailMessageFolder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MailFolderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MessageId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MailFolderId");
-
-                    b.HasIndex("MessageId");
-
-                    b.ToTable("MailMessageFolder");
-                });
-
-            modelBuilder.Entity("Core.Entities.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ReceiverId1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SenderId1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId1");
-
-                    b.HasIndex("SenderId1");
-
-                    b.ToTable("Message");
-                });
-
             modelBuilder.Entity("Core.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -1034,61 +919,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("ParentFolder");
                 });
 
-            modelBuilder.Entity("Core.Entities.MailFolder", b =>
-                {
-                    b.HasOne("Core.Entities.MailFolder", "ParentFolder")
-                        .WithMany("SubFolders")
-                        .HasForeignKey("ParentFolderId");
-
-                    b.HasOne("Core.Entities.AppUser", "User")
-                        .WithMany("MailFolders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ParentFolder");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Core.Entities.MailMessageFolder", b =>
-                {
-                    b.HasOne("Core.Entities.MailFolder", "MailFolder")
-                        .WithMany("MailMessageFolders")
-                        .HasForeignKey("MailFolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Message", "Message")
-                        .WithMany("MailMessageFolders")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MailFolder");
-
-                    b.Navigation("Message");
-                });
-
-            modelBuilder.Entity("Core.Entities.Message", b =>
-                {
-                    b.HasOne("Core.Entities.AppUser", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.AppUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("Core.Entities.Notification", b =>
                 {
                     b.HasOne("Core.Entities.AppUser", null)
@@ -1170,8 +1000,6 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("CreatedFolders");
 
-                    b.Navigation("MailFolders");
-
                     b.Navigation("Notifications");
 
                     b.Navigation("ProcessedDocuments");
@@ -1202,18 +1030,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Documents");
 
                     b.Navigation("SubFolders");
-                });
-
-            modelBuilder.Entity("Core.Entities.MailFolder", b =>
-                {
-                    b.Navigation("MailMessageFolders");
-
-                    b.Navigation("SubFolders");
-                });
-
-            modelBuilder.Entity("Core.Entities.Message", b =>
-                {
-                    b.Navigation("MailMessageFolders");
                 });
 #pragma warning restore 612, 618
         }
