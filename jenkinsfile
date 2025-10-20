@@ -4,5 +4,37 @@ pipeline{
         stage('checkout'){
             sete
         }
+
+
+        stage('build'){
+            steps{
+                echo 'Building ...'
+            }
+
+        }
+
+        stage('test'){
+            steps{
+                echo 'Testing ...'
+            }
+        }
+
+
     }
+
+    post {
+        always {
+            echo 'always run'
+        }
+
+        success {
+            echo 'This will run only if successful'
+        }
+
+        failure {
+            echo 'This will run only if failed'
+        }
+    }
+
+
 }
