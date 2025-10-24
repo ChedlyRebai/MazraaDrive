@@ -4,13 +4,10 @@ pipeline{
         stage('checkout'){
             sete
         }
-
-
         stage('build'){
             steps{
                 echo 'Building ...'
             }
-
         }
 
         stage('test'){
