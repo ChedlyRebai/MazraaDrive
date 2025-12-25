@@ -14,7 +14,7 @@ using Infrastructure.Data;
 using Serilog.Context;
 
 var builder = WebApplication.CreateBuilder(args);
-
+uofp krlu aacl xhcf 
 // Configure Serilog FIRST
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

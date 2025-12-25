@@ -16,8 +16,6 @@ pipeline{
                 echo 'Testing ...'
             }
         }
-
-
     }
 
     post {
