@@ -90,25 +90,23 @@ public static class InfrastructureRegistration
             options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
             options.ReportApiVersions = true;
         });
-        // services.AddScoped<IEmailService, EmailService>();
 
-        // Register UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        
+
 
         // Configure Identity cookie
-         services.ConfigureApplicationCookie(options =>
-         {
-             options.Cookie.Name = "token";
-             options.Events.OnRedirectToLogin = context =>
-             {
-                 context.Response.StatusCode = 401;
-                 return Task.CompletedTask;
-             };
-         });
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.Name = "token";
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            };
+        });
 
-       
+
 
 
         // JWT Bearer authentication

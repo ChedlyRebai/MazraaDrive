@@ -11,6 +11,7 @@ using Serilog.Sinks.Elasticsearch;
 using Infrastructure.Repositories;
 using Core.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
+using Infrastructure.Seeding;
 var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
@@ -189,6 +190,28 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 //     var roleManager = services.GetRequiredService<RoleManager<Role>>();
 //     await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
 // }
+
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+//     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+//     await UserSeeder.SeedUsersAsync(userManager, roleManager);
+// }
+
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    //var roleManager = services.GetRequiredService<RoleManager<Role>>();
+
+    await UserSeeder.SeedUsersAsync(userManager);
+}
+
 
 
 // using (var scope = app.Services.CreateScope())
