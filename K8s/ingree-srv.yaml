@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Ingress
+metadata:
+  name: drive-Ingress-srv
+  annotations:
+    kubernetes.io/spec.ingressClassName: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - http:
+        paths:
+          - path:
