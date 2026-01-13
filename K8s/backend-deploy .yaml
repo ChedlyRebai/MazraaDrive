@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-app-deployment
+spec:
+  replicas : 2
+  selector :
+    matchLabels:
+      app: back-app
+  template:
+    metadata:
+      labels:
+        app: back-app
+    spec:
+      containers:
+        - name: back-app
+          image: chedlyrebai/drive-api:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: back-app-service
+spec:
+  selector:
+    app: back-app
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
