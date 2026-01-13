@@ -1,10 +1,10 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front-app-deployment
 spec:
   replicas: 2
-  slector:
+  selector :
     matchLabels:
       app: front-app
   template:
