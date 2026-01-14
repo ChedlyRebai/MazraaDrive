@@ -44,6 +44,9 @@ dlldata.c
 *.obj
 *.pch
 *.pdb
+*.cache
+*.dll
+*.pdb
 *.pgc
 *.pgd
 *.rsp
