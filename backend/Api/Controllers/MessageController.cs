@@ -12,5 +12,6 @@ namespace Api.Controllers
             : base(currentUser, unitOfWork, mapper, logger )
         {
         }
+        
     }
 }
