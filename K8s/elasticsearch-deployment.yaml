@@ -37,3 +37,14 @@ spec:
             requests:
               cpu: 500m
               memory: 4Gi
+       # Allow non-root user to access PersistentVolume
+      securityContext:
+        fsGroup: 1000
+      restartPolicy: Always
+      volumes:
+      - name: elasticsearch-config
+        configMap:
+          name: elasticsearch-config
+      - name: elasticsearch-data
+        persistentVolumeClaim:
+          claimName: elasticsearch-pvc
