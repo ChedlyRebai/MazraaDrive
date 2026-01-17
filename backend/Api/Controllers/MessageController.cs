@@ -11,7 +11,6 @@ namespace Api.Controllers
         public MessageController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<MessageController> logger)
             : base(currentUser, unitOfWork, mapper, logger )
         {
-        }
-        
+        }   
     }
 }
