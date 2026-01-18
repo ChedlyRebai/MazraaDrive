@@ -14,7 +14,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: angular-app-service
+                name: angular-app-srv
                 port:
                   number: 80
     - host: api.drive.com
@@ -24,6 +24,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: back-app-service
+                name: back-app-srv
                 port:
                   number: 8080
