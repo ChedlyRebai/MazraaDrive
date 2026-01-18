@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata: 
-  name: angular-app-service
+  name: angular-app-srv
 spec:
   selector:
     app: front-app

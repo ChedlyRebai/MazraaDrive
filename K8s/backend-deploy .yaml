@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata: 
-  name: back-app-service
+  name: back-app-srv
 spec:
   selector:
     app: back-app
