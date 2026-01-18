@@ -41,7 +41,7 @@ metadata:
   name:  postgres-srv
 spec: 
   selector: 
-    app: platforme-db
+    app: postgres-db
   ports:
     - port: 5432
       targetPort: 5432
