@@ -40,9 +40,10 @@ kind: Service
 metadata:
   name:  postgres-srv
 spec: 
+  type: ClusterIP
   selector: 
     app: postgres-db
   ports:
     - port: 5432
       targetPort: 5432
-  type: ClusterIP
+  
