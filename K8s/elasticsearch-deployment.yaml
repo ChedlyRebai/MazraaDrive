@@ -48,3 +48,18 @@ spec:
       - name: elasticsearch-data
         persistentVolumeClaim:
           claimName: elasticsearch-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-srv
+  labels:
+    component: elasticsearch
+spec:
+  type: NodePort
+  selector:
+    component: elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200
