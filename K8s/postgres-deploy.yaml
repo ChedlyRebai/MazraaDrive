@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: platforme-db
+      app: postgres-db
   template:
     metadata:
       labels:
-        app: platforme-db
+        app: postgres-db
     spec:
       containers:
         - name: postgres
@@ -38,7 +38,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name:  plateform-srv-db
+  name:  postgres-srv
 spec: 
   selector: 
     app: platforme-db
