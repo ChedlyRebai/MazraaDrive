@@ -12,6 +12,7 @@ using Infrastructure.Repositories;
 using Core.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Infrastructure.Seeding;
+using Microsoft.Extensions.Logging;
 var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
@@ -133,6 +134,23 @@ builder.Services.AddOpenApi();
 //     .SetApplicationName("MazraaDrive");
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
+
+// Apply pending migrations at startup to keep the database schema current
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while applying database migrations.");
+        throw;
+    }
+}
 
 
 
