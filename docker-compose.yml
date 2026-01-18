@@ -6,6 +6,9 @@ services:
     image: drive/drive-ui:5.0.0
     ports:
       - 8000:80
+    environment:
+      API_URL: http://localhost:5108/api
+      AUTH_URL: http://localhost:5108/api
     networks:
       - elastic
   drive-api:

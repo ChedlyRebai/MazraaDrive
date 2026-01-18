@@ -46,6 +46,7 @@ import {
 import { DocumentService } from '../../core/services/document-service';
 import { DocumentDto } from '../../shared/models/document';
 import { DepartmentService } from '../../core/services/department-service';
+import { environment } from '../../../environments/environment';
 
 interface Department {
   id: number;
@@ -276,7 +277,7 @@ export class Demandes implements OnInit {
     { label: 'Rejeté', value: 'Rejeté' },
   ];
 
-  private baseUrl = 'http://localhost:5108/api';
+  private baseUrl = environment.apiUrl;
   globalFilterValue: any;
 
   documentReqStat: DocumentRequestStatsDto = {} as DocumentRequestStatsDto;
@@ -749,7 +750,7 @@ export class Demandes implements OnInit {
 
     // Simulate download
     window.open(
-      `http://localhost:5108/api/uploads/${request.responseDocumentName}`
+      `${this.baseUrl}/uploads/${request.responseDocumentName}`
     );
   }
 

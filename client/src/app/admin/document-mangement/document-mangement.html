@@ -448,7 +448,7 @@
           <iframe
             *ngSwitchCase="'pdf'"
             [src]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             style="width: 100%; height: 50vh"
@@ -459,7 +459,7 @@
           <img
             *ngSwitchCase="'jpg'"
             [src]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             style="
@@ -473,7 +473,7 @@
           <img
             *ngSwitchCase="'png'"
             [src]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             style="
@@ -489,7 +489,7 @@
           <ngx-doc-viewer
             *ngSwitchCase="'doc'"
             [url]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             viewer="mammoth"
@@ -498,7 +498,7 @@
           <ngx-doc-viewer
             *ngSwitchCase="'docx'"
             [url]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             viewer="mammoth"
@@ -507,7 +507,7 @@
           <ngx-doc-viewer
             *ngSwitchCase="'txt'"
             [url]="
-              'http://localhost:5108/api/uploads/' +
+              `${baseUrl}/uploads/` +
               selectedDocument.storagePath
             "
             viewer="mammoth"

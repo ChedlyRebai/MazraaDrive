@@ -84,7 +84,7 @@ export class UserService {
   }
 
   getCurrentUser() {
-    return this.http.get(`http://localhost:5108/api/Account/me`, { withCredentials: true }).subscribe((user: any) => {
+    return this.http.get(`${environment.apiUrl}/Account/me`, { withCredentials: true }).subscribe((user: any) => {
       console.log("current user:",user);
       this.currentUser = {
         id: user.id,

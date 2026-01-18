@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PdfViewerModule } from "ng2-pdf-viewer";
+import { environment } from '../../../environments/environment';
 
 interface Document {
   id?: number;
@@ -126,7 +127,7 @@ export class Documents implements OnInit {
   @ViewChild('contextMenu') contextMenu: any;
 
   // User and stats data
-
+  baseUrl:string=  environment.apiUrl
   totalFiles = 718;
   totalFolders = 45;
   sharedFiles = 156;

@@ -9,8 +9,8 @@ echo "Using AUTH_URL: ${AUTH_URL}"
 
 # Substitute environment variables in built JavaScript files
 echo "Substituting environment variables in built files..."
-find /usr/share/nginx/html -name "*.js" -exec sed -i "s|\${API_URL}|${API_URL}|g" {} \;
-find /usr/share/nginx/html -name "*.js" -exec sed -i "s|\${AUTH_URL}|${AUTH_URL}|g" {} \;
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|__API_URL__|${API_URL}|g" {} \;
+find /usr/share/nginx/html -name "*.js" -exec sed -i "s|__AUTH_URL__|${AUTH_URL}|g" {} \;
 
 echo "Environment variables substituted successfully"
 

@@ -122,7 +122,7 @@ export class DocumentAccess implements OnInit {
     this.validateAccess();
 
     this.fileurl =
-      'http://localhost:5108/api/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf';
+      `${environment.apiUrl}/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf`;
   
   this.loadFile();
     
@@ -241,7 +241,7 @@ export class DocumentAccess implements OnInit {
   loadFile() {
     this.http
       .get<any>(
-        `http://localhost:5108/api/Document/${this.documentInfo.documentId}`
+        `${environment.apiUrl}/Document/${this.documentInfo.documentId}`
       )
       .subscribe({
         next: (response: any) => {
@@ -252,7 +252,7 @@ export class DocumentAccess implements OnInit {
           this.fileurl = `${this.baseUrl}/uploads/${response.data.storagePath}`;
           console.log('File URL:', this.fileurl);
           this.fileurl =
-            'http://localhost:5108/api/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf';
+            `${environment.apiUrl}/uploads/8f61d9bf-1865-4998-8239-3d5644d23e5b.pdf`;
           console.log('File fetched successfully:', response);
         },
         error: (error) => {

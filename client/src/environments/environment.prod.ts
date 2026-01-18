@@ -3,6 +3,7 @@ export interface Environment {
   AUTH_URL: string;
 }
 export const environment = {
-  apiUrl: '${API_URL}',
-  authUrl: '${AUTH_URL}',
+  production: true,
+  apiUrl: '__API_URL__',
+  authUrl: '__AUTH_URL__',
 };

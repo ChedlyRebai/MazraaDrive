@@ -30,6 +30,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { DocumentDto } from '../../shared/models/document';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 // interface Document {
 //   id?: number;
@@ -107,7 +108,7 @@ export class DocumentMangement implements OnInit {
 
   statuses = ['Actif', 'Archivé', 'Brouillon', 'En révision', 'Expiré'];
 
-  private baseUrl = 'http://localhost:5108/api';
+  public baseUrl = environment.apiUrl;
 
   constructor(
     public DocumentService: DocumentService,
@@ -295,20 +296,20 @@ export class DocumentMangement implements OnInit {
   }
 
   downloadDocument(document: DocumentDto) {
-    //download file from this path http://localhost:5108/api/uploads/${selectedDocument.storagePath}
+    //download file from this path ${this.baseUrl}/uploads/${selectedDocument.storagePath}
     this.http
-      .get(`http://localhost:5108/api/uploads/${document.storagePath}`, {
+      .get(`${this.baseUrl}/uploads/${document.storagePath}`, {
         responseType: 'blob',
       })
       .subscribe((blob) => {
         window.open(
-          `http://localhost:5108/api/uploads/${document.storagePath}`
+          `${this.baseUrl}/uploads/${document.storagePath}`
         );
         console.log(blob);
       });
 
-    // window.Infinityr(`(`http://localhost:5108/api/uploads/${document.storagePath}`, '_blank');
-    // window.history.pushState(null, '', `http://localhost:5108/api/uploads/${document.storagePath}`);
+    // window.Infinityr(`(`${this.baseUrl}/uploads/${document.storagePath}`, '_blank');
+    // window.history.pushState(null, '', `${this.baseUrl}/uploads/${document.storagePath}`);
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement',
