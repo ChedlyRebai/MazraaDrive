@@ -7,8 +7,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    component: kibana
+    component: elasticsearch
   ports:
-  - port: 5601
-    targetPort: 5601
-    protocol: TCP
+  - port: 9200
+    targetPort: 9200
