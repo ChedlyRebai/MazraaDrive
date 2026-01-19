@@ -8,16 +8,19 @@ data:
   elasticsearch.yml: |
     cluster.name: Demo-Elastic
     node.name: Master
-    path.data: /usr/share/elasticsearch/data
-    http:
-      host: 0.0.0.0
-      port: 9200
-    bootstrap.memory_lock: true
-    transport.host: 127.0.0.1
+
+    network.host: 0.0.0.0
+    http.port: 9200
+
+    discovery.type: single-node
+
+    # Disable memory locking in Kubernetes
+    bootstrap.memory_lock: false
+
     xpack.license.self_generated.type: basic
-    # Enable xpack.security which is provided in basic subscription
     xpack.security.enabled: true
-    # Disable unused xpack features 
+
+    # Disable unused xpack features
     xpack.monitoring.enabled: false
     xpack.graph.enabled: false
     xpack.watcher.enabled: false
