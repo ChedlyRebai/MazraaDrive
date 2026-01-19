@@ -17,6 +17,11 @@ spec:
           image: chedlyrebai/drive-front:latest
           ports:
             - containerPort: 80
+          env:
+            - name: API_URL
+              value: "http://back-app-service:8080/api"
+            - name: AUTH_URL
+              value: "http://auth-service:8080/api"
           resources:
             requests:
               memory: "64Mi"
