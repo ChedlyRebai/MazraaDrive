@@ -24,14 +24,22 @@ builder.WebHost.ConfigureKestrel(options =>
 //builder.WebHost.UseUrls($"http://*:{port}");
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        builder.AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials()
-               .SetIsOriginAllowed(_ => true); // Allow any origin
+        policy
+            .WithOrigins(
+                "http://localhost:8080",
+                "http://angular-app-srv",
+                "http://angular-app-srv:80",
+                "http://angular-app-srv:8080",
+                "http://angular-app-srv:4200"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
+
 
 
 Log.Logger = new LoggerConfiguration()
@@ -179,7 +187,7 @@ if (!Directory.Exists(uploadsPath))
 
 app.MapGet("/", () => "Hello world!");
 // After app.Build(), add:
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontend");
 //app.UseCors("CORSPolicy");
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -222,7 +230,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     //var roleManager = services.GetRequiredService<RoleManager<Role>>();
-
     await UserSeeder.SeedUsersAsync(userManager);
 }
 

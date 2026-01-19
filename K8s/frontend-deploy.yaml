@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: front-app-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector :
     matchLabels:
       app: front-app
@@ -21,7 +21,7 @@ spec:
             - name: API_URL
               value: "http://back-app-service:8080/api"
             - name: AUTH_URL
-              value: "http://auth-service:8080/api"
+              value: "http://back-app-service:8080/api"
           resources:
             requests:
               memory: "64Mi"

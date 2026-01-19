@@ -31,7 +31,7 @@ export class Admin implements OnInit {
     { label: 'Documents', path: '/admin/document', icon: 'pi pi-file' },
     { label: 'Departments', path: '/admin/department', icon: 'pi pi-sitemap' },
     { label: 'Roles', path: '/admin/role', icon: 'pi pi-shield' },
-  
+
     {
       label: 'Doc Access Requests',
       path: '/admin/access-req',
