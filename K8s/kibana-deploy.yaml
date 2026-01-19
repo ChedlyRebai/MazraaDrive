@@ -15,20 +15,21 @@ spec:
         - name: kibana
           image:  docker.elastic.co/kibana/kibana:7.12.0
           env:
-            - name: ELASTICSEARCH_URL
+            - name: ELASTICSEARCH_HOSTS
               value: http://elasticsearch-srv:9200
             - name: XPACK_SECURITY_ENABLED
               value: "true"
             - name: ELASTICSEARCH_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name:  kibana-secret
-                  key: ELASTICSEARCH_USERNAME
-            - name: ELASTICSERACH_PASSWORD
+                  name: elastic-secret
+                  key: ELASTIC_USERNAME
+                  
+            - name: ELASTICSEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: kibana-secret
-                  key: ELASTICSEARCH_PASSWORD
+                  name: elastic-secret
+                  key: ELASTIC_PASSWORD
           ports:
           - containerPort: 5601
             name: http
