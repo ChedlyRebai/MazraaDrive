@@ -23,6 +23,8 @@ spec:
                 secretKeyRef:
                   name:  postgres-secret
                   key:  ConnectionStrings__DefaultConnection
+            - name:  Elasticsearch__Url
+              value: http://elasticsearch-srv:9200
           resources:
             requests:
               memory: "64Mi"

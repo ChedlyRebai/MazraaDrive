@@ -42,11 +42,13 @@ builder.Services.AddCors(options =>
 
 
 
+var elasticUrl=builder.Configuration.GetValue<string>("Elasticsearch:Url");
+
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithMachineName()
     .WriteTo.Console()
-    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl ?? "http://localhost:9200"))
     {
         AutoRegisterTemplate = true,
         IndexFormat = "serilog-logs-{0:yyyy.MM.dd}",
