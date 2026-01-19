@@ -43,19 +43,25 @@ builder.Services.AddCors(options =>
 
 
 var elasticUrl=builder.Configuration.GetValue<string>("Elasticsearch:Url");
+var elasticUsername=builder.Configuration.GetValue<string>("Elasticsearch:Username");
+var elasticPass=builder.Configuration.GetValue<string>("Elasticsearch:Password");
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithMachineName()
     .WriteTo.Console()
+    
     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl ?? "http://localhost:9200"))
+    
     {
         AutoRegisterTemplate = true,
         IndexFormat = "serilog-logs-{0:yyyy.MM.dd}",
         NumberOfShards = 2,
         NumberOfReplicas = 1,
         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-        ModifyConnectionSettings = x => x.ServerCertificateValidationCallback(
+        ModifyConnectionSettings = x => 
+        x.BasicAuthentication(elasticUsername,elasticPass)
+        .ServerCertificateValidationCallback(
             (o, certificate, arg3, arg4) => true)
     })
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
@@ -135,13 +141,7 @@ builder.Services.AddSignalR();
 
 
 builder.Services.AddOpenApi();
-// builder.Services.AddScalarApiReference();
 
-// persist keys to disk (Program.cs)
-
-// builder.Services.AddDataProtection()
-//     .PersistKeysToFileSystem(new DirectoryInfo(@"/var/keys/"))
-//     .SetApplicationName("MazraaDrive");
 var app = builder.Build();
 //app.UseMiddleware<GlobalAuditMiddleware>();
 
@@ -200,12 +200,6 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
-
-// var connectionString = builder.Configuration.GetConnectionString("GameStore");
-// builder.Services.AddDbContext<AppDbContext>(options =>
-//     options.UseMySql(
-//         connectionString, ServerVersion.AutoDetect(connectionString)
-//     ));
 
 
 // using (var scope = app.Services.CreateScope())
@@ -267,10 +261,6 @@ using (var scope = app.Services.CreateScope())
 //     }
 // }
 // // ...existing code...
-
-
-
-
 
 
 
