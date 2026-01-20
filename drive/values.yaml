@@ -1,54 +1,40 @@
-# Global
-namespace: drive-dev
-replicaCount: 1
 
-# Images (override facile)
-images:
-  backend: chedlyrebai/drive-api:latest
-  frontend: chedlyrebai/drive-front:latest
-  postgres: postgres:15
-  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
-  kibana: docker.elastic.co/kibana/kibana:7.12.0
-
-# Ingress
 ingress:
   enabled: true
   className: nginx
   frontendHost: frontend.drive.com
   apiHost: api.drive.com
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
 
-# PostgreSQL
+# Valeurs propagées aux subcharts (exemples)
+backend:
+  image: chedlyrebai/drive-api:latest
+  elasticsearch:
+    url: http://elasticsearch-master:9200   # nom du service elasticsearch
+
+frontend:
+  image: chedlyrebai/drive-front:latest
+  apiUrl: http://backend-backend:8080/api   # nom du service backend
+
 postgres:
-  enabled: true
-  storageSize: 1Gi
-  dbName: mazraa
-  user: mazraa
-  password: mazraa-change-me
-  connectionString: "Host=postgres-srv;Port=5432;Database={{ .Values.postgres.dbName }};Username={{ .Values.postgres.user }};Password={{ .Values.postgres.password }}"
+  image: postgres:15
+  auth:
+    database: mazraa
+    username: mazraa
+    password: mazraa-change-me
+  persistence:
+    size: 1Gi
+  enable: true
 
-# Elasticsearch
 elasticsearch:
-  enabled: true
+  image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0   # ou 8.x plus tard
   replicas: 1
   heapSize: "512m"
-  storageSize: 1Gi
-  username: elastic
-  password: change-me-strong-password
+  persistence:
+    size: 1Gi
+  security:
+    elasticPassword: change-me-strong
+  enable: true
 
-# Kibana
 kibana:
-  enabled: true
-
-# Backend specific
-backend:
-  port: 8080
-  env:
-    elasticsearchUrl: http://elasticsearch-srv:9200
-
-# Frontend
-frontend:
-  port: 80
-  apiUrl: http://back-app-srv:8080/api
-  authUrl: http://back-app-srv:8080/api
+  image: docker.elastic.co/kibana/kibana:7.12.0
+  enable: true

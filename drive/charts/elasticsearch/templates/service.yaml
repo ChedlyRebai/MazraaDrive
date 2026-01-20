@@ -1,15 +1,15 @@
+{{- if .Values.elasticsearch.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "elasticsearch.fullname" . }}
+  name: elasticsearch-srv
   labels:
-    {{- include "elasticsearch.labels" . | nindent 4 }}
+    component: elasticsearch
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  type: ClusterIP          # ← changé de NodePort → plus sécurisé
   selector:
-    {{- include "elasticsearch.selectorLabels" . | nindent 4 }}
+    component: elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200
+{{- end -}}
