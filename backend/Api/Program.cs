@@ -13,6 +13,8 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Infrastructure.Seeding;
 using Microsoft.Extensions.Logging;
+AppContext.SetSwitch("Npgsql.DisableIPv6", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
@@ -143,6 +145,7 @@ builder.Services.AddSignalR();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
 //app.UseMiddleware<GlobalAuditMiddleware>();
 
 // Apply pending migrations at startup to keep the database schema current
@@ -152,7 +155,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var dbContext = services.GetRequiredService<AppDbContext>();
-        dbContext.Database.Migrate();
+       dbContext.Database.Migrate();
     }
     catch (Exception ex)
     {

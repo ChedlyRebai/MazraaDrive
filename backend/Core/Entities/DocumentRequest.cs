@@ -9,6 +9,7 @@ public class DocumentRequest : BaseEntity<int>
     [ForeignKey("Requester")]
     public string RequesterId { get; set; }
 
+    [ForeignKey("Department")]
     public int DepartmentId { get; set; }
     
     [Required]
