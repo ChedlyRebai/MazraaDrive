@@ -202,64 +202,79 @@ app.UseAuthorization();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     var roleManager = services.GetRequiredService<RoleManager<Role>>();
-//     await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
-// }
+//  using (var scope = app.Services.CreateScope())
+//  {
+//      var services = scope.ServiceProvider;
+//      var roleManager = services.GetRequiredService<RoleManager<Role>>();
+//      await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+//  }
+
+
+//  using (var scope = app.Services.CreateScope())
+//  {
+//      var services = scope.ServiceProvider;
+//      var userManager = services.GetRequiredService<UserManager<AppUser>>();
+//      var roleManager = services.GetRequiredService<RoleManager<Role>>();
+
+//      await UserSeeder.SeedUsersAsync(userManager);
+//  }
+
 
 
 // using (var scope = app.Services.CreateScope())
 // {
 //     var services = scope.ServiceProvider;
 //     var userManager = services.GetRequiredService<UserManager<AppUser>>();
-//     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-//     await UserSeeder.SeedUsersAsync(userManager, roleManager);
+//     var roleManager = services.GetRequiredService<RoleManager<Role>>();
+//     await UserSeeder.SeedUsersAsync(userManager);
 // }
 
 
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-    //var roleManager = services.GetRequiredService<RoleManager<Role>>();
-    await UserSeeder.SeedUsersAsync(userManager);
-}
+ using (var scope = app.Services.CreateScope())
+ {
+     var services = scope.ServiceProvider;
+
+     // seed roles (optional)
+     try
+     {
+         var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
+         if (roleManager != null)
+         {
+             await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+         }
+     }
+     catch
+     {
+      //    log or ignore
+     }
+
+      //seed departments
+     try
+     {
+         var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
+         await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
+     }
+     catch
+     {
+        //  log or ignore
+     }
 
 
-
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-
-//     // seed roles (optional)
-//     try
-//     {
-//         var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
-//         if (roleManager != null)
-//         {
-//             await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
-//         }
-//     }
-//     catch
-//     {
-//         // log or ignore
-//     }
-
-//     // seed departments
-//     try
-//     {
-//         var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
-//         await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
-//     }
-//     catch
-//     {
-//         // log or ignore
-//     }
-// }
+     try
+     {
+        
+     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+   var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
+            // var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
+     await UserSeeder.SeedUsersAsync(userManager,roleManager);
+     }
+     catch (System.Exception)
+     {
+        
+        throw;
+     }
+ }
 // // ...existing code...
 
 
