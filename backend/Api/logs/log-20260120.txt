@@ -6207,3 +6207,4 @@ LIMIT 2
 2026-01-20 22:26:50.339 +01:00 [INF] Application started. Press Ctrl+C to shut down.
 2026-01-20 22:26:50.339 +01:00 [INF] Hosting environment: Development
 2026-01-20 22:26:50.339 +01:00 [INF] Content root path: /home/ubuntu/Bureau/github/MazraaDrive/backend/Api
+2026-01-20 22:50:31.009 +01:00 [INF] Application is shutting down...

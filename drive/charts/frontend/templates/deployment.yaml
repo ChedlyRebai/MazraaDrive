@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: front-app-deployment
+  name: frontend-deployment
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: front-app
+      app: frontend
   template:
     metadata:
       labels:
-        app: front-app
+        app: frontend
     spec:
       containers:
-      - name: front-app
-        image: {{ .Values.images.frontend }}
+      - name: frontend
+        image: {{ .Values.image }}
         ports:
-        - containerPort: {{ .Values.frontend.port }}
+        - containerPort: {{ .Values.port }}
         env:
         - name: API_URL
-          value: {{ .Values.frontend.apiUrl | quote }}
+          value: {{ .Values.apiUrl | quote }}
         - name: AUTH_URL
-          value: {{ .Values.frontend.authUrl | quote }}
+          value: {{ .Values.authUrl | quote }}
         resources:
           requests:
-            memory: "64Mi"
             cpu: "250m"
+            memory: "64Mi"
           limits:
-            memory: "128Mi"
             cpu: "500m"
+            memory: "128Mi"

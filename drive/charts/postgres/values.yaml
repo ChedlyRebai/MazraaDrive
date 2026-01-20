@@ -1,0 +1,8 @@
+image: postgres:15
+replicas: 1
+auth:
+  database: mazraa
+  username: mazraa
+  password: mazraa
+persistence:
+  size: 1Gi

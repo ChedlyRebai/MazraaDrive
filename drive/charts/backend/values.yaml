@@ -1,0 +1,4 @@
+image: chedlyrebai/drive-api:latest
+port: 8080
+replicas: 1
+elasticsearchUrl: http://elasticsearch-service:9200

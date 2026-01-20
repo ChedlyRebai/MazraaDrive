@@ -20,7 +20,7 @@ postgres:
   auth:
     database: mazraa
     username: mazraa
-    password: mazraa-change-me
+    password: mazraa
   persistence:
     size: 1Gi
   enable: true
@@ -32,7 +32,7 @@ elasticsearch:
   persistence:
     size: 1Gi
   security:
-    elasticPassword: change-me-strong
+    elasticPassword: mazraa
   enable: true
 
 kibana:

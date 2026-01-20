@@ -1,12 +1,11 @@
-{{- if .Values.elasticsearch.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: kibana-srv
+  name: kibana-service
 spec:
   selector:
     app: kibana
   ports:
   - port: 5601
     targetPort: 5601
-{{- end -}}
+  type: ClusterIP

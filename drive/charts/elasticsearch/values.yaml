@@ -1,0 +1,8 @@
+image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+replicas: 1
+heapSize: "512m"
+persistence:
+  size: 1Gi
+auth:
+  username: elastic
+  password: ""

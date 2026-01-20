@@ -1,0 +1,5 @@
+image: chedlyrebai/drive-front:latest
+port: 80
+replicas: 1
+apiUrl: http://backend-service:8080/api
+authUrl: http://backend-service:8080/api

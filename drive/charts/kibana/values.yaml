@@ -1,0 +1,6 @@
+image: docker.elastic.co/kibana/kibana:7.12.0
+replicas: 1
+ELASTICSEARCH_USERNAME: elastic
+ELASTICSEARCH_PASSWORD: bOKm2ibsSKgdHLzah6pr
+KIBANA_USERNAME: kibana_system
+KIBANA_PASSWORD: yyUpKEyO9wF9KiztMuRX

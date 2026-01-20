@@ -11,22 +11,22 @@ appVersion: "1.16.0"
 dependencies:
   - name: frontend
     version: "0.1.0"
-    repository: "charts/frontend"
+    repository: "file://./charts/frontend"
 
   - name: backend 
     version: "0.1.0"
-    repository: "charts/backend"
+    repository: "file://./charts/backend"
     
   - name: postgres
     version: "0.1.0"
-    repository: "charts/postgres"
+    repository: "file://./charts/postgres"
   
   - name: elasticsearch
     version: "0.1.0"
-    repository: "charts/elasticsearch"
+    repository: "file://./charts/elasticsearch"
     condition: elasticsearch.enable
 
   - name: kibana
     version: "0.1.0"
-    repository: "charts/kibana"
+    repository: "file://./charts/kibana"
     condition: kibana.enable

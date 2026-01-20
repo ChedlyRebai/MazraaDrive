@@ -1,26 +1,28 @@
-{{- if .Values.postgres.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-depl
+  name: postgres-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: postgres-db
+      app: postgres
   template:
     metadata:
       labels:
-        app: postgres-db
+        app: postgres
     spec:
       containers:
       - name: postgres
-        image: {{ .Values.images.postgres }}
+        image: {{ .Values.image }}
         ports:
         - containerPort: 5432
         envFrom:
         - secretRef:
             name: postgres-secret
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
         resources:
           requests:
             memory: "250Mi"
@@ -28,11 +30,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-        volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
       volumes:
-      - name: postgres-storage
+      - name: data
         persistentVolumeClaim:
           claimName: postgres-pvc
-{{- end -}}
