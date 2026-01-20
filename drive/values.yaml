@@ -1,0 +1,54 @@
+# Global
+namespace: drive-dev
+replicaCount: 1
+
+# Images (override facile)
+images:
+  backend: chedlyrebai/drive-api:latest
+  frontend: chedlyrebai/drive-front:latest
+  postgres: postgres:15
+  elasticsearch: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+  kibana: docker.elastic.co/kibana/kibana:7.12.0
+
+# Ingress
+ingress:
+  enabled: true
+  className: nginx
+  frontendHost: frontend.drive.com
+  apiHost: api.drive.com
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+# PostgreSQL
+postgres:
+  enabled: true
+  storageSize: 1Gi
+  dbName: mazraa
+  user: mazraa
+  password: mazraa-change-me
+  connectionString: "Host=postgres-srv;Port=5432;Database={{ .Values.postgres.dbName }};Username={{ .Values.postgres.user }};Password={{ .Values.postgres.password }}"
+
+# Elasticsearch
+elasticsearch:
+  enabled: true
+  replicas: 1
+  heapSize: "512m"
+  storageSize: 1Gi
+  username: elastic
+  password: change-me-strong-password
+
+# Kibana
+kibana:
+  enabled: true
+
+# Backend specific
+backend:
+  port: 8080
+  env:
+    elasticsearchUrl: http://elasticsearch-srv:9200
+
+# Frontend
+frontend:
+  port: 80
+  apiUrl: http://back-app-srv:8080/api
+  authUrl: http://back-app-srv:8080/api

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: drive
-description: Mon application avec frontend, backend, PostgreSQL, Elasticsearch + Kibana
+description: Helm chart pour l'application Drive (frontend + backend + postgres + ELK)
 
 type: application
 
