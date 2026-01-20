@@ -24,7 +24,7 @@ spec:
                 secretKeyRef:
                   name: elastic-secret
                   key: ELASTIC_USERNAME
-                  
+                
             - name: ELASTICSEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
