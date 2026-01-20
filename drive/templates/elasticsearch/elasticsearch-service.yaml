@@ -1,0 +1,15 @@
+{{- if .Values.elasticsearch.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-srv
+  labels:
+    component: elasticsearch
+spec:
+  type: ClusterIP          # ← changé de NodePort → plus sécurisé
+  selector:
+    component: elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200
+{{- end -}}

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-app-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: back-app
+  template:
+    metadata:
+      labels:
+        app: back-app
+    spec:
+      containers:
+      - name: back-app
+        image: {{ .Values.images.backend }}
+        ports:
+        - containerPort: {{ .Values.backend.port }}
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: ConnectionStrings__DefaultConnection
+        - name: Elasticsearch__Username
+          valueFrom:
+            secretKeyRef:
+              name: elastic-secret
+              key: ELASTIC_USERNAME
+        - name: Elasticsearch__Password
+          valueFrom:
+            secretKeyRef:
+              name: elastic-secret
+              key: ELASTIC_PASSWORD
+        - name: Elasticsearch__Url
+          value: {{ .Values.backend.elasticsearchUrl | quote }}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
