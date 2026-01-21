@@ -7,7 +7,6 @@ pipeline {
                 sh 'echo "checkout"'
             }
         }
-        
         stage('build') {
             steps {
                 sh 'echo "Building ..."'
