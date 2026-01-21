@@ -21,18 +21,8 @@ pipeline {
     }
 
     post {
-        // always {
-        //     sh 'always run'
-        // }
-
-        // success {
-        //     sh 'This will run only if successful'
-        // }
-
-        // failure {
-        //     sh 'This will run only if failed'
-        // }
+        always {
+            sh 'echo "always"'
+        }
     }
-
-
 }
