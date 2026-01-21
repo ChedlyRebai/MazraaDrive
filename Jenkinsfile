@@ -3,17 +3,18 @@ pipeline {
     agent any
     stages {
         stage('checkout') {
-            sh 'echo "checkout"'
+            steps {
+                sh 'echo "checkout"'
+            }
         }
-        
-        stage('build'){
-            steps{
+        stage('build') {
+            steps {
                 sh 'echo "Building ..."'
             }
         }
 
-        stage('test'){
-            steps{
+        stage('test') {
+            steps {
                 sh ' echo "Testing ..."'
             }
         }
