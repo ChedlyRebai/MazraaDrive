@@ -3,34 +3,34 @@ pipeline {
     agent any
     stages {
         stage('checkout') {
-            echo 'checkout'
+            sh 'echo "checkout"'
         }
         
         stage('build'){
             steps{
-                echo 'Building ...'
+                sh 'echo "Building ..."'
             }
         }
 
         stage('test'){
             steps{
-                echo 'Testing ...'
+                sh ' echo "Testing ..."'
             }
         }
     }
 
     post {
-        always {
-            echo 'always run'
-        }
+        // always {
+        //     sh 'always run'
+        // }
 
-        success {
-            echo 'This will run only if successful'
-        }
+        // success {
+        //     sh 'This will run only if successful'
+        // }
 
-        failure {
-            echo 'This will run only if failed'
-        }
+        // failure {
+        //     sh 'This will run only if failed'
+        // }
     }
 
 
