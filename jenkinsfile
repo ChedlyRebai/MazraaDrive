@@ -1,8 +1,9 @@
-pipeline{
+
+pipeline {
     agent any
     stages {
-        stage('checkout'){
-            sete
+        stage('checkout') {
+            echo 'checkout'
         }
         
         stage('build'){
