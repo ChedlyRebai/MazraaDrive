@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                sh 'echo "cehd"'
+                sh 'echo "ceshd"'
             }
         }
         stage('build') {
