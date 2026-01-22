@@ -1,0 +1,5162 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilateur Microsoft (R) Visual C#",
+        "version": "4.12.0.0",
+        "fileVersion": "4.12.0-3.25467.18 (191254d6)",
+        "semanticVersion": "4.12.0",
+        "language": "fr-FR"
+      },
+      "results": [
+        {
+          "ruleId": "CS8625",
+          "level": "warning",
+          "message": "Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Services/IImageMangeService.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 55,
+                  "endLine": 10,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'DocumentRequestFilterDTO.Search' masque le membre hérité 'PaginationParams.Search'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 68,
+                  "startColumn": 20,
+                  "endLine": 68,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'FolderWithSubFoldersDTO.SubFolderCount' masque le membre hérité 'FolderDTO.SubFolderCount'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 100,
+                  "startColumn": 16,
+                  "endLine": 100,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'FolderWithSubFoldersDTO.DocumentCount' masque le membre hérité 'FolderDTO.DocumentCount'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 16,
+                  "endLine": 101,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDepartmentRepository.AddAsync(Department)' masque le membre hérité 'IGenericRepository<Department>.AddAsync(Department)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 26,
+                  "endLine": 13,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDepartmentRepository.DeleteAsync(int)' masque le membre hérité 'IGenericRepository<Department>.DeleteAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 14,
+                  "endLine": 14,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDepartmentRepository.GetAllAsync()' masque le membre hérité 'IGenericRepository<Department>.GetAllAsync()'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 41,
+                  "endLine": 15,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDepartmentRepository.GetByIdAsync(int)' masque le membre hérité 'IGenericRepository<Department>.GetByIdAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 27,
+                  "endLine": 16,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDepartmentRepository.UpdateAsync(Department)' masque le membre hérité 'IGenericRepository<Department>.UpdateAsync(Department)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 14,
+                  "endLine": 18,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'FolderWithDocumentsDTO.DocumentCount' masque le membre hérité 'FolderDTO.DocumentCount'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 16,
+                  "endLine": 60,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'FolderWithDocumentsDTO.SubFolderCount' masque le membre hérité 'FolderDTO.SubFolderCount'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 16,
+                  "endLine": 61,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'AIQueryLog.CreatedAt' masque le membre hérité 'BaseEntity<int>.CreatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 21,
+                  "endLine": 17,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDocument.AddAsync(Document)' masque le membre hérité 'IGenericRepository<Document>.AddAsync(Document)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 20,
+                  "endLine": 17,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDocument.DeleteAsync(int)' masque le membre hérité 'IGenericRepository<Document>.DeleteAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 10,
+                  "endLine": 20,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDocument.GetAllAsync()' masque le membre hérité 'IGenericRepository<Document>.GetAllAsync()'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 35,
+                  "endLine": 21,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDocument.GetByIdAsync(int)' masque le membre hérité 'IGenericRepository<Document>.GetByIdAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 21,
+                  "endLine": 22,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IDocument.UpdateAsync(Document)' masque le membre hérité 'IGenericRepository<Document>.UpdateAsync(Document)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 10,
+                  "endLine": 24,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS8625",
+          "level": "warning",
+          "message": "Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IGenerateToken.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 83,
+                  "endLine": 7,
+                  "endColumn": 87
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IRoleRepository.GetAllAsync()' masque le membre hérité 'IGenericRepository<Role>.GetAllAsync()'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IRoleRepository.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 45,
+                  "endLine": 23,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IRoleRepository.AddAsync(Role)' masque le membre hérité 'IGenericRepository<Role>.AddAsync(Role)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IRoleRepository.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 17,
+                  "endLine": 26,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IRoleRepository.UpdateAsync(Role)' masque le membre hérité 'IGenericRepository<Role>.UpdateAsync(Role)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IRoleRepository.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 16,
+                  "endLine": 27,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IPermissionsRepository.AddAsync(AccessRight)' masque le membre hérité 'IGenericRepository<AccessRight>.AddAsync(AccessRight)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IPermissionsRepository.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 27,
+                  "endLine": 16,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IPermissionsRepository.DeleteAsync(int)' masque le membre hérité 'IGenericRepository<AccessRight>.DeleteAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IPermissionsRepository.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 14,
+                  "endLine": 17,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IPermissionsRepository.GetAllAsync()' masque le membre hérité 'IGenericRepository<AccessRight>.GetAllAsync()'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IPermissionsRepository.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 42,
+                  "endLine": 18,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IPermissionsRepository.GetByIdAsync(int)' masque le membre hérité 'IGenericRepository<AccessRight>.GetByIdAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IPermissionsRepository.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 28,
+                  "endLine": 19,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IPermissionsRepository.UpdateAsync(AccessRight)' masque le membre hérité 'IGenericRepository<AccessRight>.UpdateAsync(AccessRight)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IPermissionsRepository.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 14,
+                  "endLine": 20,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'Document.CreatedAt' masque le membre hérité 'BaseEntity<int>.CreatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 21,
+                  "endLine": 36,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'Document.UpdatedAt' masque le membre hérité 'BaseEntity<int>.UpdatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 21,
+                  "endLine": 37,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'Department.CreatedAt' masque le membre hérité 'BaseEntity<int>.CreatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 21,
+                  "endLine": 15,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'Department.UpdatedAt' masque le membre hérité 'BaseEntity<int>.UpdatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 21,
+                  "endLine": 16,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'Folder.CreatedAt' masque le membre hérité 'BaseEntity<int>.CreatedAt'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 21,
+                  "endLine": 20,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IFolderRepository.DeleteAsync(int)' masque le membre hérité 'IGenericRepository<Folder>.DeleteAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 10,
+                  "endLine": 17,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IFolderRepository.GetAllAsync()' masque le membre hérité 'IGenericRepository<Folder>.GetAllAsync()'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 33,
+                  "endLine": 18,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IFolderRepository.GetByIdAsync(int)' masque le membre hérité 'IGenericRepository<Folder>.GetByIdAsync(int)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 19,
+                  "endLine": 19,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IFolderRepository.UpdateAsync(Folder)' masque le membre hérité 'IGenericRepository<Folder>.UpdateAsync(Folder)'. Utilisez le mot clé new si le masquage est intentionnel.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 10,
+                  "endLine": 21,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Token » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 19,
+                  "endLine": 28,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 19,
+                  "endLine": 28,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Description » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Role.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Role.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UserId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Question » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « ResultSummary » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « User » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 28,
+                  "endLine": 21,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 28,
+                  "endLine": 21,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « title » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UserId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Message » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 19,
+                  "endLine": 14,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 19,
+                  "endLine": 14,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « DocumentName » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « RequesterId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « RequesterName » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Status » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 19,
+                  "endLine": 17,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 19,
+                  "endLine": 17,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Document » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessLInk.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 25,
+                  "endLine": 17,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessLInk.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 25,
+                  "endLine": 17,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « User » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessLInk.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 24,
+                  "endLine": 20,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessLInk.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 24,
+                  "endLine": 20,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Name » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Description » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 19,
+                  "endLine": 13,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Users » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 41,
+                  "endLine": 19,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 41,
+                  "endLine": 19,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Folders » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 40,
+                  "endLine": 20,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 40,
+                  "endLine": 20,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « DocumentRequests » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 49,
+                  "endLine": 21,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 49,
+                  "endLine": 21,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Id » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/BaseEntity.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 14,
+                  "endLine": 11,
+                  "endColumn": 16
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/BaseEntity.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 14,
+                  "endLine": 11,
+                  "endColumn": 16
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Name » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 19,
+                  "endLine": 11,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « FileType » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « StoragePath » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UploadedById » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 19,
+                  "endLine": 29,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 19,
+                  "endLine": 29,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UploadedBy » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 28,
+                  "endLine": 44,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 28,
+                  "endLine": 44,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « DocumentRequests » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 49,
+                  "endLine": 46,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 49,
+                  "endLine": 46,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UserId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Document » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 29,
+                  "endLine": 14,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 29,
+                  "endLine": 14,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Folder » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 27,
+                  "endLine": 18,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 27,
+                  "endLine": 18,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « User » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 28,
+                  "endLine": 27,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 28,
+                  "endLine": 27,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Name » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 19,
+                  "endLine": 9,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 19,
+                  "endLine": 9,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « CreatedById » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 19,
+                  "endLine": 18,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 19,
+                  "endLine": 18,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « ParentFolder » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 19,
+                  "endLine": 23,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « SubFolders » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 32,
+                  "endLine": 24,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 32,
+                  "endLine": 24,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Department » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 23,
+                  "endLine": 25,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 23,
+                  "endLine": 25,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « CreatedBy » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 20,
+                  "endLine": 26,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 20,
+                  "endLine": 26,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Documents » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 34,
+                  "endLine": 27,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 34,
+                  "endLine": 27,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « id » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RoleDTO.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 23,
+                  "endLine": 8,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RoleDTO.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 23,
+                  "endLine": 8,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Username » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 19,
+                  "endLine": 19,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 19,
+                  "endLine": 19,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Id » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/UserDTO.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 23,
+                  "endLine": 9,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/UserDTO.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 23,
+                  "endLine": 9,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « RequesterId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/DocumentRequest.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/DocumentRequest.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « RequesterId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 19,
+                  "endLine": 5,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 19,
+                  "endLine": 5,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « token » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 19,
+                  "endLine": 15,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Password » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « title » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 19,
+                  "endLine": 10,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UserId » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 19,
+                  "endLine": 12,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Message » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 19,
+                  "endLine": 14,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 19,
+                  "endLine": 14,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « CreatedById » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 19,
+                  "endLine": 31,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 19,
+                  "endLine": 31,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Department » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 31,
+                  "endLine": 33,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 31,
+                  "endLine": 33,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « AccessRights » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 45,
+                  "endLine": 35,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 45,
+                  "endLine": 35,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « CreatedFolders » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 40,
+                  "endLine": 36,
+                  "endColumn": 54
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 40,
+                  "endLine": 36,
+                  "endColumn": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « UploadedDocuments » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 42,
+                  "endLine": 37,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 42,
+                  "endLine": 37,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « AIQueryLogs » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 44,
+                  "endLine": 40,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 44,
+                  "endLine": 40,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Notifications » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 46,
+                  "endLine": 44,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 46,
+                  "endLine": 44,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « SubFolders » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 38,
+                  "endLine": 24,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 38,
+                  "endLine": 24,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Le propriété « Documents » non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le propriété comme pouvant accepter la valeur Null.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 37,
+                  "endLine": 26,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 37,
+                  "endLine": 26,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 5,
+                  "endLine": 23,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 5,
+                  "endLine": 8,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/RegisterDTO.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 4,
+                  "endLine": 26,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/UserDTO.cs",
+                "region": {
+                  "startLine": 137,
+                  "startColumn": 5,
+                  "endLine": 137,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 5,
+                  "endLine": 30,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 5,
+                  "endLine": 41,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/BaseEntity.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 5,
+                  "endLine": 15,
+                  "endColumn": 9
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 5,
+                  "endLine": 49,
+                  "endColumn": 99
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Role.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 5,
+                  "endLine": 10,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Role.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 5,
+                  "endLine": 12,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAuth.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 6,
+                  "endLine": 9,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAuth.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 6,
+                  "endLine": 13,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IGenericRepository.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 4,
+                  "endLine": 9,
+                  "endColumn": 88
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IGenericRepository.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 5,
+                  "endLine": 11,
+                  "endColumn": 82
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IHomeRepository.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 5,
+                  "endLine": 9,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/ILoginUseCase.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 5,
+                  "endLine": 9,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IRoleRepository.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 5,
+                  "endLine": 11,
+                  "endColumn": 103
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Services/IEmailService.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 5,
+                  "endLine": 8,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Services/IImageMangeService.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 3,
+                  "endLine": 9,
+                  "endColumn": 79
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1050",
+          "level": "note",
+          "message": "Déclarer les types dans des espaces de noms",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAccessRequestRepository.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 18,
+                  "endLine": 5,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IEmailService' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Services/IEmailService.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IAccessRequestRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAccessRequestRepository.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 18,
+                  "endLine": 5,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IImageMangeService' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Services/IImageMangeService.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 18,
+                  "endLine": 7,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IAccessRightService' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAccessRightService.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 18,
+                  "endLine": 3,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IAuth' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IAuth.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRequestDecisionDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 14,
+                  "endLine": 34,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentFilterDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 14,
+                  "endLine": 34,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Class1' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Class1.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 14,
+                  "endLine": 3,
+                  "endColumn": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1118",
+          "level": "warning",
+          "message": "Add a 'protected' constructor or the 'static' keyword to the class declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Shared/EmailBody.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'EmailBody' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Shared/EmailBody.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRequestPageResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 14,
+                  "endLine": 39,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRequest' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRequest.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRequestCreateDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 14,
+                  "endLine": 24,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'ProductParam' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Shared/ProductParam.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DepartmentUpdateDTO' to match pascal case naming rules, consider using 'DepartmentUpdateDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 14,
+                  "endLine": 22,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentUpdateDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 14,
+                  "endLine": 22,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRequestDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/AccessRequestDTO.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 14,
+                  "endLine": 6,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DepartmentUserCountDTO' to match pascal case naming rules, consider using 'DepartmentUserCountDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 14,
+                  "endLine": 48,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentUserCountDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 14,
+                  "endLine": 48,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DepartmentDeleteDTO' to match pascal case naming rules, consider using 'DepartmentDeleteDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 14,
+                  "endLine": 29,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentDeleteDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 14,
+                  "endLine": 29,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRight' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DepartmentSearchDTO' to match pascal case naming rules, consider using 'DepartmentSearchDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 55,
+                  "startColumn": 14,
+                  "endLine": 55,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentSearchDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 55,
+                  "startColumn": 14,
+                  "endLine": 55,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentPagedResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 14,
+                  "endLine": 43,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'CreateDocumentRequestDTO' to match pascal case naming rules, consider using 'CreateDocumentRequestDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 14,
+                  "endLine": 35,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'CreateDocumentRequestDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 14,
+                  "endLine": 35,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'UpdateDocumentRequestDTO' to match pascal case naming rules, consider using 'UpdateDocumentRequestDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 14,
+                  "endLine": 46,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'UpdateDocumentRequestDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 46,
+                  "startColumn": 14,
+                  "endLine": 46,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'SubFolderDTO' to match pascal case naming rules, consider using 'SubFolderDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 14,
+                  "endLine": 29,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'SubFolderDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 14,
+                  "endLine": 29,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'CreateFolderDTO' to match pascal case naming rules, consider using 'CreateFolderDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 14,
+                  "endLine": 40,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'CreateFolderDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 14,
+                  "endLine": 40,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DepartmentCreateDTO' to match pascal case naming rules, consider using 'DepartmentCreateDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 14,
+                  "endLine": 16,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DepartmentCreateDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DepartmentDto.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 14,
+                  "endLine": 16,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AccessRightType' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AccessRight.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 13,
+                  "endLine": 31,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'UpdateFolderDTO' to match pascal case naming rules, consider using 'UpdateFolderDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 14,
+                  "endLine": 50,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'UpdateFolderDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 14,
+                  "endLine": 50,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DocumentSearchDTO' to match pascal case naming rules, consider using 'DocumentSearchDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentDTO.cs",
+                "region": {
+                  "startLine": 129,
+                  "startColumn": 18,
+                  "endLine": 129,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'UserDepartmentFoldersDocumentsDTO' to match pascal case naming rules, consider using 'UserDepartmentFoldersDocumentsDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/UserDTO.cs",
+                "region": {
+                  "startLine": 153,
+                  "startColumn": 18,
+                  "endLine": 153,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DocumentRequestDTO' to match pascal case naming rules, consider using 'DocumentRequestDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 14,
+                  "endLine": 3,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DocumentRequestDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 14,
+                  "endLine": 3,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderFilterDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 79,
+                  "startColumn": 14,
+                  "endLine": 79,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'DocumentRequestFilterDTO' to match pascal case naming rules, consider using 'DocumentRequestFilterDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 14,
+                  "endLine": 58,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DocumentRequestFilterDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 14,
+                  "endLine": 58,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IDocRequestRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocRequestRepository.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 18,
+                  "endLine": 7,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DocumentRequestStatsDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 17,
+                  "endLine": 26,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderPagedResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 90,
+                  "startColumn": 14,
+                  "endLine": 90,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'FolderWithSubFoldersDTO' to match pascal case naming rules, consider using 'FolderWithSubFoldersDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 14,
+                  "endLine": 98,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderWithSubFoldersDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 98,
+                  "startColumn": 14,
+                  "endLine": 98,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IDepartmentRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDepartmentRepository.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 18,
+                  "endLine": 8,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'HomeDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 14,
+                  "endLine": 5,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DocumentRequestPagedResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/DocumentRequestDTO.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 14,
+                  "endLine": 71,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'FolderDTO' to match pascal case naming rules, consider using 'FolderDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'NotificationDTO' to match pascal case naming rules, consider using 'NotificationDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'NotificationDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'FolderWithDocumentsDTO' to match pascal case naming rules, consider using 'FolderWithDocumentsDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 14,
+                  "endLine": 58,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderWithDocumentsDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 14,
+                  "endLine": 58,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IDocumentAccessService' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocumentAccessService.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 18,
+                  "endLine": 10,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'HomePagedResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 18,
+                  "endLine": 62,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'NotificationPagedResult' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/NotificationDTO.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 14,
+                  "endLine": 31,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AIQueryLog' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AIQueryLog.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IGenerateToken' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IGenerateToken.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 18,
+                  "endLine": 5,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IDocument' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IDocument.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 18,
+                  "endLine": 9,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'HomeFilterDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 14,
+                  "endLine": 42,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IMessageRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IMessageRepository.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IGenericRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IGenericRepository.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IHomeRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IHomeRepository.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'ILoginUserCase' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/ILoginUseCase.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 18,
+                  "endLine": 6,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'FolderTreeDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/FolderDTO.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 14,
+                  "endLine": 64,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'HomeDocumentDTO' to match pascal case naming rules, consider using 'HomeDocumentDto'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 14,
+                  "endLine": 19,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'HomeDocumentDTO' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 14,
+                  "endLine": 19,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AppRole' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppRole.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 14,
+                  "endLine": 6,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'BaseEntity' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/BaseEntity.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'HomeFolderDto' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/DTO/HomeDTo.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 14,
+                  "endLine": 31,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'INotificationRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/INotificationRepository.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 18,
+                  "endLine": 7,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IRoleRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IRoleRepository.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 18,
+                  "endLine": 9,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Department' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Department.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 14,
+                  "endLine": 6,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Document' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Document.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 22
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'AppUser' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/AppUser.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 14,
+                  "endLine": 11,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Folder' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Folder.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 14,
+                  "endLine": 6,
+                  "endColumn": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IUnitOfWork' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IUnitOfWork.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 18,
+                  "endLine": 8,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Notification' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Notification.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IUserRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IUserRepository.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 18,
+                  "endLine": 8,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'Role' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/Role.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 14,
+                  "endLine": 6,
+                  "endColumn": 18
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'IFolderRepository' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 18,
+                  "endLine": 7,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3903",
+          "level": "warning",
+          "message": "Move 'DocumentRequest' into a named namespace.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Entities/DocumentRequest.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 14,
+                  "endLine": 7,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S4136",
+          "level": "warning",
+          "message": "All 'GetSubFoldersAsync' method overloads should be adjacent.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 31,
+                  "endLine": 11,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///home/ubuntu/Bureau/github/MazraaDrive/backend/Core/Interfaces/IFolderRepository.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 33,
+                  "endLine": 25,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "Non-adjacent overload"
+            }
+          }
+        }
+      ],
+      "rules": {
+        "CA1050": {
+          "id": "CA1050",
+          "shortDescription": "Déclarer les types dans des espaces de noms",
+          "fullDescription": "Les types sont déclarés dans les espaces de noms pour empêcher les collisions de nommage, ainsi que pour organiser les types connexes dans une hiérarchie d'objets.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1050",
+          "properties": {
+            "category": "Design",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS0108": {
+          "id": "CS0108",
+          "shortDescription": "Un membre masque un membre hérité ; le mot clé new est manquant",
+          "fullDescription": "Une variable a été déclarée avec le même nom qu'une variable dans le type de base. Cependant, le mot clé new n'a pas été utilisé. Cet avertissement vous informe que vous devez utiliser new ; la variable est déclarée comme si new avait été utilisé dans la déclaration.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0108)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Un champ non-nullable doit contenir une valeur autre que Null lors de la fermeture du constructeur. Envisagez d’ajouter le modificateur « required » ou de déclarer le champ comme pouvant accepter la valeur Null.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8625": {
+          "id": "CS8625",
+          "shortDescription": "Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8625)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S101": {
+          "id": "S101",
+          "shortDescription": "Types should be named in PascalCase",
+          "fullDescription": "Shared naming conventions allow teams to collaborate efficiently. This rule checks whether or not type names are using PascalCase. To reduce noise, two consecutive upper case characters are allowed unless they form the whole type name. So, MyXClass is compliant, but XC on its own is not.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-101",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "SonarWay",
+              "MainSourceScope",
+              "TestSourceScope"
+            ]
+          }
+        },
+        "S1118": {
+          "id": "S1118",
+          "shortDescription": "Utility classes should not have public constructors",
+          "fullDescription": "Utility classes, which are collections of static members, are not meant to be instantiated.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1118",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "SonarWay",
+              "MainSourceScope",
+              "TestSourceScope"
+            ]
+          }
+        },
+        "S125": {
+          "id": "S125",
+          "shortDescription": "Sections of code should not be commented out",
+          "fullDescription": "Programmers should not comment out code as it bloats programs and reduces readability.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-125",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "SonarWay",
+              "MainSourceScope",
+              "TestSourceScope"
+            ]
+          }
+        },
+        "S3903": {
+          "id": "S3903",
+          "shortDescription": "Types should be defined in named namespaces",
+          "fullDescription": "Types are declared in namespaces in order to prevent name collisions and as a way to organize them into the object hierarchy. Types that are defined outside any named namespace are in a global namespace that cannot be referenced in code.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3903",
+          "properties": {
+            "category": "Major Bug",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "SonarWay",
+              "MainSourceScope",
+              "TestSourceScope"
+            ]
+          }
+        },
+        "S4136": {
+          "id": "S4136",
+          "shortDescription": "Method overloads should be grouped together",
+          "fullDescription": "For clarity, all overloads of the same method should be grouped together. That lets both users and maintainers quickly understand all the current available options.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-4136",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "SonarWay",
+              "MainSourceScope",
+              "TestSourceScope"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

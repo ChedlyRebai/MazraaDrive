@@ -1,0 +1,6 @@
+projectKey=MazraaDrive
+serverUrl=http://localhost:9000
+serverVersion=8.9.7.52159
+dashboardUrl=http://localhost:9000/dashboard?id=MazraaDrive
+ceTaskId=AZvnm3-dxZa93cLmFEKS
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AZvnm3-dxZa93cLmFEKS
