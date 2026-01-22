@@ -18,10 +18,10 @@ pipeline {
         SONAR_LOGIN = 'a6f3afeaea35f9c3b6fd7b22ba3c14d4fa9c3aea'
     }
 
-    tools {
-        // Uses the Jenkins NodeJS plugin installation named 'node-20'
-        nodejs 'Node 21'
-    }
+    // tools {
+    //     // Uses the Jenkins NodeJS plugin installation named 'node-20'
+    //     nodejs 'Node 21'
+    // }
 
     parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Deployment environment')
