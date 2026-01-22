@@ -39,7 +39,7 @@ pipeline {
                     checkout([$class:'GitSCM',
                          branch:[[name:'*/master']],
                           userRemoteConfigs:[[
-                              url:'git@github.com/ChedlyRebai/MazraaDrive',
+                              url:'git@github.com:ChedlyRebai/MazraaDrive.git',
                               credentialsId:'chedlydrive'
                           ]]
                      ])
