@@ -57,10 +57,22 @@ pipeline {
                     script {
                         echo 'Building .Net BAckend...'
                         sh '''
-                    dotnet restore Api/Api.csproj
-                    dotnet  build Api/Api.csproj --configutration Release --no-restore
-                    echo "Backend build completed successfully"
-                    '''
+                            dotnet restore Api/Api.csproj
+                            dotnet  build Api/Api.csproj --configuration Release --no-restore
+                            echo "Backend build completed successfully"
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Build - Frontend') {
+            steps {
+                dir('frontend') {
+                    script {
+                        sh '''
+
+                        '''
                     }
                 }
             }
