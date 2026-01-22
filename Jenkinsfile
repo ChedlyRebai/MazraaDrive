@@ -51,20 +51,20 @@ pipeline {
             }
         }
 
-        stage('Build - bakcend') {
-            steps {
-                dir('backend') {
-                    script {
-                        echo 'Building .Net BAckend...'
-                        sh '''
-                            dotnet restore Api/Api.csproj
-                            dotnet  build Api/Api.csproj --configuration Release --no-restore
-                            echo "Backend build completed successfully"
-                        '''
-                    }
-                }
-            }
-        }
+        // stage('Build - bakcend') {
+        //     steps {
+        //         dir('backend') {
+        //             script {
+        //                 echo 'Building .Net BAckend...'
+        //                 sh '''
+        //                     dotnet restore Api/Api.csproj
+        //                     dotnet  build Api/Api.csproj --configuration Release --no-restore
+        //                     echo "Backend build completed successfully"
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Build - Frontend') {
             steps {
