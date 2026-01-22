@@ -15,7 +15,7 @@ pipeline {
         FRONTEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-api"
         SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
-        SONAR_LOGIN = 'a6f3afeaea35f9c3b6fd7b22ba3c14d4fa9c3aea'
+        SONAR_LOGIN = '8147d39a4b271f25d7d14e909ec4c721a97eca0b'
     }
 
     // tools {
