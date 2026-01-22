@@ -68,10 +68,11 @@ pipeline {
 
         stage('Build - Frontend') {
             steps {
-                dir('frontend') {
+                dir('client') {
                     script {
                         sh '''
-
+                            npm ci
+                            npm run build -- --configuartion production
                         '''
                     }
                 }
