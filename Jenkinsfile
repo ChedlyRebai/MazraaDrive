@@ -71,6 +71,7 @@ pipeline {
                 dir('client') {
                     script {
                         sh '''
+                        echo "node -v" 
                             npm ci
                             npm run build -- --configuartion production
                         '''
