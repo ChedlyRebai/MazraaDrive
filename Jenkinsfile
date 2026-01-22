@@ -18,7 +18,7 @@ pipeline {
 
     tools {
         // Uses the Jenkins NodeJS plugin installation named 'node-20'
-        nodejs 'node-20'
+        nodejs 'Node 21'
     }
 
     parameters {
