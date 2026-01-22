@@ -13,7 +13,7 @@ pipeline {
         REGESTRY_CREDENTIALS = 'docker-hub'
         BACKEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-ui"
         FRONTEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-api"
-        SONARQUEBE_HOST = 'http://sonarqube:9000'
+        SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
         SONAR_LOGIN = 'a6f3afeaea35f9c3b6fd7b22ba3c14d4fa9c3aea'
     }
