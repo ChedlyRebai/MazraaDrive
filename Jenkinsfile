@@ -73,6 +73,10 @@ pipeline {
                 dir('client') {
                     script {
                         sh '''
+                            # Use Node.js v20.19.4 if nvm is available
+                            if command -v nvm &> /dev/null; then
+                                nvm use 20.19.4 || nvm install 20.19.4
+                            fi
                             node -v
                             npm ci
                             npm run build -- --configuartion production
