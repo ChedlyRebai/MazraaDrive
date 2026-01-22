@@ -25,31 +25,31 @@ pipeline {
         githubPush()
     }
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-                script {
-                    echo 'pipeline started'
-                }
-            }
-        }
-        stage('Chekout') {
-            steps {
-                script {
-                    checkout([$class:'GitSCM',
-                         branch:[[name:'*/master']],
-                          userRemoteConfigs:[[
-                              url:'git@github.com:ChedlyRebai/MazraaDrive.git',
-                              credentialsId:'chedlydrive'
-                          ]]
-                     ])
-                    GIT_COMMIT_SHORT = sh(script:'git rev-parse --short HEAD', returnStdout:true).trim()
-                    GIT_BRANCH = sh(script:'git rev-parse --abbrev-ref HEAD', returnStdout:true).trim()
-                    echo "bracnch ${GIT_BRANCH}"
-                    echo "branch ${GIT_COMMIT_SHORT}"
-                }
-            }
-        }
+        // stage('Clean Workspace') {
+        //     steps {
+        //         cleanWs()
+        //         script {
+        //             echo 'pipeline started'
+        //         }
+        //     }
+        // }
+        // stage('Chekout') {
+        //     steps {
+        //         script {
+        //             checkout([$class:'GitSCM',
+        //                  branch:[[name:'*/master']],
+        //                   userRemoteConfigs:[[
+        //                       url:'git@github.com:ChedlyRebai/MazraaDrive.git',
+        //                       credentialsId:'chedlydrive'
+        //                   ]]
+        //              ])
+        //             GIT_COMMIT_SHORT = sh(script:'git rev-parse --short HEAD', returnStdout:true).trim()
+        //             GIT_BRANCH = sh(script:'git rev-parse --abbrev-ref HEAD', returnStdout:true).trim()
+        //             echo "bracnch ${GIT_BRANCH}"
+        //             echo "branch ${GIT_COMMIT_SHORT}"
+        //         }
+        //     }
+        // }
 
         // stage('Build - bakcend') {
         //     steps {
@@ -71,7 +71,7 @@ pipeline {
                 dir('client') {
                     script {
                         sh '''
-                        echo "node -v" 
+                            echo "node -v"
                             npm ci
                             npm run build -- --configuartion production
                         '''
