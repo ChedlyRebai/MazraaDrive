@@ -16,6 +16,11 @@ pipeline {
         SONARQUEBE_HOST = 'http://sonarqube:9000'
     }
 
+    tools {
+        // Uses the Jenkins NodeJS plugin installation named 'node-20'
+        nodejs 'node-20'
+    }
+
     parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Deployment environment')
         booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip running tests')
@@ -71,13 +76,11 @@ pipeline {
         stage('Build - Frontend') {
             steps {
                 dir('client') {
-                        sh '''
-                            sh 'source ~/.bashrc && nvm use 21'
-                            node -v
-                            npm ci
-                            npm run build -- --configuration production
-                        '''
-                    
+                    sh '''
+                        node -v
+                        npm ci
+                        npm run build -- --configuration production
+                    '''
                 }
             }
         }
