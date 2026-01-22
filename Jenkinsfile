@@ -71,13 +71,13 @@ pipeline {
         stage('Build - Frontend') {
             steps {
                 dir('client') {
-                        nodejs('Node 20'){
-                            sh '''
+                    nodejs('Node 20'){
+                        sh '''
                             node -v
                             npm ci
                             npm run build -- --configuration production
                         '''
-                        }
+                    }
                 }
             }
         }
