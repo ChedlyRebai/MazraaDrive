@@ -8,7 +8,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
-    environement {
+    environment {
         REGISTRY = 'docker.io'
         REGESTRY_CREDENTIALS = 'docker-hub'
         BACKEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-ui"
