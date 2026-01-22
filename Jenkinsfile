@@ -79,6 +79,7 @@ pipeline {
                 dir('backend') {
                     script {
                         sh '''
+                            dotnet tool install --global dotnet-sonarscanner
                             dotnet sonarscanner begin \
                             /k:"${SONAR_PROJECT_KEY}" \
                             /d:sonar.host.url="${SONARQUEBE_HOST}" \
