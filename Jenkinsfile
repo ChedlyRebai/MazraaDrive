@@ -79,14 +79,22 @@ pipeline {
                 dir('backend') {
                     script {
                         sh '''
-                            dotnet tool install --global dotnet-sonarscanner
+                            # Add dotnet global tools to PATH
+                            export PATH="$HOME/.dotnet/tools:$PATH"
+                            
+                            # Install dotnet-sonarscanner if not already installed
+                            dotnet tool install --global dotnet-sonarscanner || dotnet tool update --global dotnet-sonarscanner
+                            
+                            # Begin SonarQube analysis
                             dotnet sonarscanner begin \
                             /k:"${SONAR_PROJECT_KEY}" \
                             /d:sonar.host.url="${SONARQUEBE_HOST}" \
                             /d:sonar.login="${SONAR_LOGIN}"
 
+                            # Build the project
                             dotnet build
 
+                            # End SonarQube analysis
                             dotnet sonarscanner end /d:sonar.login="${SONAR_LOGIN}"
                         '''
                     }
