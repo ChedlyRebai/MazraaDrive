@@ -14,6 +14,8 @@ pipeline {
         BACKEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-ui"
         FRONTEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-api"
         SONARQUEBE_HOST = 'http://sonarqube:9000'
+        SONAR_PROJECT_KEY = 'MazaaDrive'
+        SONAR_LOGIN = 'a6f3afeaea35f9c3b6fd7b22ba3c14d4fa9c3aea'
     }
 
     tools {
@@ -72,17 +74,34 @@ pipeline {
         //         }
         //     }
         // }
-
-        stage('Build - Frontend') {
+        stage('BAckend - code quality)') {
             steps {
-                dir('client') {
-                    sh '''
-                        node -v
-                        npm ci
-                        npm run build -- --configuration production
-                    '''
+                dir('backend') {
+                    script {
+                        sh '''
+                            dotnet sonarscanner begin \
+                            /k:"${SONAR_PROJECT_KEY}" \
+                            /d:sonar.host.url="${SONARQUEBE_HOST}" \
+                            /d:sonar.login="${SONAR_LOGIN}"
+
+                            dotnet build
+
+                            dotnet sonarscanner end /d:sonar.login="${SONAR_LOGIN}"
+                        '''
+                    }
                 }
             }
         }
+        // stage('Build - Frontend') {
+        //     steps {
+        //         dir('client') {
+        //             sh '''
+        //                 node -v
+        //                 npm ci
+        //                 npm run build -- --configuration production
+        //             '''
+        //         }
+        //     }
+        // }
     }
 }
