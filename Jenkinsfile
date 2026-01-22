@@ -35,20 +35,21 @@ pipeline {
         }
         stage('Chekout') {
             steps {
-                checkout scm
-                script{
-                    GIT_COMMIT_SHORT = sh(script:"git rev-parse --short HEAD",returnStdout:true).trim()
-                    GIT_BRANCH = sh(script:"git rev-parse --abbrev-ref HEAD",returnStdout:true).trim()
+                script {
+                    checkout([$class:'GitSCM',
+                         branch:[[name:'*/master']],
+                          userRemoteConfigs:[[
+                              url:'git@github.com/ChedlyRebai/MazraaDrive',
+                              credentialsId:'chedlydrive'
+                          ]]
+                     ])
+                    GIT_COMMIT_SHORT = sh(script:'git rev-parse --short HEAD', returnStdout:true).trim()
+                    GIT_BRANCH = sh(script:'git rev-parse --abbrev-ref HEAD', returnStdout:true).trim()
                     echo "bracnch ${GIT_BRANCH}"
                     echo "branch ${GIT_COMMIT_SHORT}"
                 }
             }
         }
 
-        // stage('Backend - Build'){
-        //     steps {
-                
-        //     }
-        // }
     }
 }
