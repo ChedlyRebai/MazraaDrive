@@ -12,8 +12,8 @@ pipeline {
         REGISTRY = 'docker.io'
         REGESTRY_CREDENTIALS = 'docker-hub'
         DOCKER_USERNAME = 'chedlyrebai'
-        BACKEND_IMAGE = "${DOCKER_USERNAME}/drive-api"
-        FRONTEND_IMAGE = "${DOCKER_USERNAME}/drive-ui"
+        BACKEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-api"
+        FRONTEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-ui"
         SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
         SONAR_LOGIN = credentials('drive-sonar-token')
@@ -144,7 +144,7 @@ pipeline {
                      url: 'https://index.docker.io/v1/'
                  ]) {
                         sh 'echo docker login successful'
-                        sh " docher push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
+                        sh " docker push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
                         sh " docker push ${BACKEND_IMAGE}:${BUILD_NUMBER}"
                  }
                 }
