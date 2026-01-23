@@ -19,7 +19,7 @@ pipeline {
         SONAR_LOGIN = credentials('drive-sonar-token')
         HELM_RELEASE_NAME = 'drive'
         HELM_NAMESPACE = 'helm'
-        KUBECONFIG = credentials('kubeconfig')
+        //KUBECONFIG = credentials('kubeconfig')
     }
 
     // tools {
