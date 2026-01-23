@@ -126,16 +126,16 @@ pipeline {
         // }
 
 
-        // stage('Build Docker image'){
-        //     steps {
-        //         script {
-        //             sh '''
-        //                 docker build -t ${DOCKER_USERNAME}/${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
-        //                 docker build -t ${DOCKER_USERNAME}/${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
-        //             '''
-        //         }
-        //     }
-        // }
+         stage('Build Docker image'){
+             steps {
+                 script {
+                     sh '''
+                         docker build -t ${DOCKER_USERNAME}/${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
+                         docker build -t ${DOCKER_USERNAME}/${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
+                     '''
+                 }
+             }
+         }
 
         // stage('Build - Frontend') {
         //     steps {
