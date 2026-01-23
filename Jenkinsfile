@@ -182,6 +182,8 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        
+                        export KUBECONFIG=~/.kube/config
                         # Verify Helm is available
                         if command -v helm &> /dev/null; then
                             echo "Helm found at: $(which helm)"
