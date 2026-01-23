@@ -11,8 +11,9 @@ pipeline {
     environment {
         REGISTRY = 'docker.io'
         REGESTRY_CREDENTIALS = 'docker-hub'
-        BACKEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-ui"
-        FRONTEND_IMAGE = "${REGISTRY}/chedlyrebai/drive-api"
+        DOCKER_USERNAME='chedlyrebai'
+        BACKEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-api"
+        FRONTEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-ui"
         SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
         SONAR_LOGIN = credentialsId('drive-sonar-token')'8147d39a4b271f25d7d14e909ec4c721a97eca0b'
@@ -74,35 +75,68 @@ pipeline {
         //         }
         //     }
         // }
-        stage('BAckend - code quality)') {
+        // stage('BAckend - code quality)') {
             
-            steps {
+        //     steps {
 
-                dir('backend') {
-                    script {
-                        sh '''
-                            # Add dotnet global tools to PATH
-                            export PATH="$HOME/.dotnet/tools:$PATH"
+        //         dir('backend') {
+        //             script {
+        //                 sh '''
+        //                     # Add dotnet global tools to PATH
+        //                     export PATH="$HOME/.dotnet/tools:$PATH"
                             
-                            # Install dotnet-sonarscanner if not already installed
-                            dotnet tool install --global dotnet-sonarscanner || dotnet tool update --global dotnet-sonarscanner
+        //                     # Install dotnet-sonarscanner if not already installed
+        //                     dotnet tool install --global dotnet-sonarscanner || dotnet tool update --global dotnet-sonarscanner
                             
-                            # Begin SonarQube analysis
-                            dotnet sonarscanner begin \
-                            /k:"${SONAR_PROJECT_KEY}" \
-                            /d:sonar.host.url="${SONARQUEBE_HOST}" \
-                            /d:sonar.login="${SONAR_LOGIN}"
+        //                     # Begin SonarQube analysis
+        //                     dotnet sonarscanner begin \
+        //                     /k:"${SONAR_PROJECT_KEY}" \
+        //                     /d:sonar.host.url="${SONARQUEBE_HOST}" \
+        //                     /d:sonar.login="${SONAR_LOGIN}"
 
-                            # Build the project
-                            dotnet build
+        //                     # Build the project
+        //                     dotnet build
 
-                            # End SonarQube analysis
-                            dotnet sonarscanner end /d:sonar.login="${SONAR_LOGIN}"
-                        '''
-                    }
-                }
-            }
-        }
+        //                     # End SonarQube analysis
+        //                     dotnet sonarscanner end /d:sonar.login="${SONAR_LOGIN}"
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage('OWASP security'){
+        //     steps {
+        //         dir('backend'){
+        //             script{
+        //                 sh'''
+        //                     dotnet list package --vulnerable || true       
+        //                 '''
+        //         }
+        //         }
+        //         dir('client'){
+        //             script {
+        //                 sh '''
+        //                     npm audit --audit-level=moderate || true
+        //                 '''
+        //             }
+        //         }
+                
+        //     }
+        // }
+
+
+        // stage('Build Docker image'){
+        //     steps {
+        //         script {
+        //             sh '''
+        //                 docker build -t ${DOCKER_USERNAME}/${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
+        //                 docker build -t ${DOCKER_USERNAME}/${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
+        //             '''
+        //         }
+        //     }
+        // }
+
         // stage('Build - Frontend') {
         //     steps {
         //         dir('client') {
