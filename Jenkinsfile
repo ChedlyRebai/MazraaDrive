@@ -183,7 +183,21 @@ pipeline {
                 script {
                     sh '''
                         
-                        export KUBECONFIG=~/.kube/config
+                        export KUBECONFIG=$HOME/.kube/config
+                        
+                        # Verify kubeconfig exists
+                        if [ ! -f "$KUBECONFIG" ]; then
+                            echo "ERROR: kubeconfig file not found at $KUBECONFIG"
+                            exit 1
+                        fi
+                        
+                        # Verify kubectl can connect to cluster
+                        echo "Testing kubectl connection..."
+                        if ! kubectl cluster-info; then
+                            echo "ERROR: Cannot connect to Kubernetes cluster"
+                            exit 1
+                        fi
+                        
                         # Verify Helm is available
                         if command -v helm &> /dev/null; then
                             echo "Helm found at: $(which helm)"
@@ -191,8 +205,7 @@ pipeline {
                         else
                             echo "ERROR: Helm not found. Please install Helm on the Jenkins agent."
                             exit 1
-                        fi
-                        
+                        fi                        
                         # Update Helm dependencies
                         cd drive
                         helm dependency update
