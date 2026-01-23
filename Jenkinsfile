@@ -139,10 +139,11 @@ pipeline {
         stage('Push docker image') {
             steps {
                 script {
-                    withCredentials([
-                        credentialsId:'chedly-rebai-dockerhub',
-                        url : 'https://index.io/v1/'
-                    ]) {
+                    withDockerRegistry([
+                     credentialsId: 'chedlyrebai-dockerhub',
+                     url: 'https://index.docker.io/v1/'
+                 ]) {
+
                         sh 'echo docker login successful'
                         sh "docher push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
                         sh " docker push ${BACKEND_IMAGE}:${BUILD_NUMBER}"
