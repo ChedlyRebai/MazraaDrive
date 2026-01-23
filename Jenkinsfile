@@ -17,6 +17,9 @@ pipeline {
         SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
         SONAR_LOGIN = credentials('drive-sonar-token')
+        HELM_RELEASE_NAME = 'drive'
+        HELM_NAMESPACE = 'helm'
+        KUBECONFIG = credentials('kubeconfig')
     }
 
     // tools {
@@ -170,6 +173,41 @@ pipeline {
                         sh " docker push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
                         sh " docker push ${BACKEND_IMAGE}:${BUILD_NUMBER}"
                  }
+                }
+            }
+        }
+
+        stage('Deploy with Helm') {
+            steps {
+                script {
+                    sh '''
+                        # Set kubeconfig
+                        
+                        # Check Helm installation
+                        if ! command -v helm &> /dev/null; then
+                            echo "Installing Helm..."
+                            curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+                        fi
+                        
+                        # Update Helm dependencies
+                        cd drive
+                        helm dependency update
+                        
+                        # Deploy or upgrade the release
+                        helm upgrade --install ${HELM_RELEASE_NAME} . \
+                            --namespace ${HELM_NAMESPACE} \
+                            --create-namespace \
+                            --set backend.image.tag=${BUILD_NUMBER} \
+                            --set frontend.image.tag=${BUILD_NUMBER} \
+                            --set backend.image.repository=${BACKEND_IMAGE} \
+                            --set frontend.image.repository=${FRONTEND_IMAGE} \
+                            --wait \
+                            --timeout 5m
+                        
+                        # Show deployment status
+                        helm list -n ${HELM_NAMESPACE}
+                        kubectl get pods -n ${HELM_NAMESPACE}
+                    '''
                 }
             }
         }
