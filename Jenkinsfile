@@ -181,12 +181,13 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        # Set kubeconfig
-                        
-                        # Check Helm installation
-                        if ! command -v helm &> /dev/null; then
-                            echo "Installing Helm..."
-                            curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+                        # Verify Helm is available
+                        if command -v helm &> /dev/null; then
+                            echo "Helm found at: $(which helm)"
+                            helm version
+                        else
+                            echo "ERROR: Helm not found. Please install Helm on the Jenkins agent."
+                            exit 1
                         fi
                         
                         # Update Helm dependencies
