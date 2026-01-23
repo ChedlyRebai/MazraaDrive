@@ -16,7 +16,7 @@ pipeline {
         FRONTEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-ui"
         SONARQUEBE_HOST = 'http://localhost:9000'
         SONAR_PROJECT_KEY = 'MazaaDrive'
-        SONAR_LOGIN = credentialsId('drive-sonar-token')
+        SONAR_LOGIN = credentials('drive-sonar-token')
     }
 
     // tools {
