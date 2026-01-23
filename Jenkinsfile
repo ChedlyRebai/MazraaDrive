@@ -182,14 +182,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        
-                        export KUBECONFIG=$HOME/.kube/config
-                        
-                        # Verify kubeconfig exists
-                        if [ ! -f "$KUBECONFIG" ]; then
-                            echo "ERROR: kubeconfig file not found at $KUBECONFIG"
-                            exit 1
-                        fi
+                        export KUBECONFIG=/var/lib/jenkins/.kube/config
                         
                         # Verify kubectl can connect to cluster
                         echo "Testing kubectl connection..."
