@@ -216,7 +216,7 @@ pipeline {
                         
                         # Show deployment status
                         helm list -n ${HELM_NAMESPACE}
-                        kubectl get pods -n ${HELM_NAMESPACE}
+                      
                     '''
                 }
             }
