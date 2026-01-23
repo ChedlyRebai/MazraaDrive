@@ -11,7 +11,7 @@ pipeline {
     environment {
         REGISTRY = 'docker.io'
         REGESTRY_CREDENTIALS = 'docker-hub'
-        DOCKER_USERNAME='chedlyrebai'
+        DOCKER_USERNAME = 'chedlyrebai'
         BACKEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-api"
         FRONTEND_IMAGE = "${REGISTRY}/${DOCKER_USERNAME}/drive-ui"
         SONARQUEBE_HOST = 'http://localhost:9000'
@@ -76,7 +76,7 @@ pipeline {
         //     }
         // }
         // stage('BAckend - code quality)') {
-            
+
         //     steps {
 
         //         dir('backend') {
@@ -84,10 +84,10 @@ pipeline {
         //                 sh '''
         //                     # Add dotnet global tools to PATH
         //                     export PATH="$HOME/.dotnet/tools:$PATH"
-                            
+
         //                     # Install dotnet-sonarscanner if not already installed
         //                     dotnet tool install --global dotnet-sonarscanner || dotnet tool update --global dotnet-sonarscanner
-                            
+
         //                     # Begin SonarQube analysis
         //                     dotnet sonarscanner begin \
         //                     /k:"${SONAR_PROJECT_KEY}" \
@@ -110,7 +110,7 @@ pipeline {
         //         dir('backend'){
         //             script{
         //                 sh'''
-        //                     dotnet list package --vulnerable || true       
+        //                     dotnet list package --vulnerable || true
         //                 '''
         //         }
         //         }
@@ -121,32 +121,45 @@ pipeline {
         //                 '''
         //             }
         //         }
-                
+
         //     }
         // }
 
-
-         stage('Build Docker image'){
-             steps {
-                 script {
-                     sh '''
-                         docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER} -f client/Dockerfile client
+        stage('Build Docker image') {
+            steps {
+                script {
+                    sh '''
+                         docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER}   -f client/Dockerfile client
                          docker build -t ${BACKEND_IMAGE}:${BUILD_NUMBER} -f backend/Dockerfile backend
                      '''
-                 }
-             }
-         }
+                }
+            }
+        }
 
-        // stage('Build - Frontend') {
-        //     steps {
-        //         dir('client') {
-        //             sh '''
-        //                 node -v
-        //                 npm ci
-        //                 npm run build -- --configuration production
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Push docker image') {
+            steps {
+                script {
+                    withCredentials([
+                        credentialsId:'chedly-rebai-dockerhub',
+                        url : 'https://index.io/v1/'
+                    ]) {
+                        sh 'echo docker login successful'
+                        sh "docher push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
+                        sh " docker push ${BACKEND_IMAGE}:${BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+    // stage('Build - Frontend') {
+    //     steps {
+    //         dir('client') {
+    //             sh '''
+    //                 node -v
+    //                 npm ci
+    //                 npm run build -- --configuration production
+    //             '''
+    //         }
+    //     }
+    // }
     }
 }
