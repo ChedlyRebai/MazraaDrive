@@ -19,6 +19,7 @@ pipeline {
         SONAR_LOGIN = credentials('drive-sonar-token')
         HELM_RELEASE_NAME = 'drive'
         HELM_NAMESPACE = 'helm'
+        TAG_NUMBER = 50 
         //KUBECONFIG = credentials('kubeconfig')
     }
 
@@ -128,54 +129,54 @@ pipeline {
         //     }
         // }
 
-        stage('Build Docker image') {
-            steps {
-                script {
-                    sh '''
-                         docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER}  -f client/Dockerfile client
-                         docker build -t ${BACKEND_IMAGE}:${BUILD_NUMBER} -f backend/Dockerfile backend
-                     '''
-                }
-            }
-        }
+        // stage('Build Docker image') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //                  docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER}  -f client/Dockerfile client
+        //                  docker build -t ${BACKEND_IMAGE}:${BUILD_NUMBER} -f backend/Dockerfile backend
+        //              '''
+        //         }
+        //     }
+        // }
 
-        stage('Security Scan') {
-            steps {
-                script {
-                    sh '''
-                        # Scan both images using Trivy in Docker (avoids snap issues)
-                        docker run --rm \
-                            -v /var/run/docker.sock:/var/run/docker.sock \
-                            aquasec/trivy:latest image \
-                            --exit-code 1 \
-                            --severity HIGH,CRITICAL \
-                            ${FRONTEND_IMAGE}:${BUILD_NUMBER} || true
+        // stage('Security Scan') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //                 # Scan both images using Trivy in Docker (avoids snap issues)
+        //                 docker run --rm \
+        //                     -v /var/run/docker.sock:/var/run/docker.sock \
+        //                     aquasec/trivy:latest image \
+        //                     --exit-code 1 \
+        //                     --severity HIGH,CRITICAL \
+        //                     ${FRONTEND_IMAGE}:${BUILD_NUMBER} || true
                         
-                        docker run --rm \
-                            -v /var/run/docker.sock:/var/run/docker.sock \
-                            aquasec/trivy:latest image \
-                            --exit-code 1 \
-                            --severity HIGH,CRITICAL \
-                            ${BACKEND_IMAGE}:${BUILD_NUMBER} || true
-                     '''
-                }
-            }
-        }
+        //                 docker run --rm \
+        //                     -v /var/run/docker.sock:/var/run/docker.sock \
+        //                     aquasec/trivy:latest image \
+        //                     --exit-code 1 \
+        //                     --severity HIGH,CRITICAL \
+        //                     ${BACKEND_IMAGE}:${BUILD_NUMBER} || true
+        //              '''
+        //         }
+        //     }
+        // }
 
-        stage('Push docker image') {
-            steps {
-                script {
-                    withDockerRegistry([
-                     credentialsId: 'chedlyrebai-dockerhub',
-                     url: 'https://index.docker.io/v1/'
-                 ]) {
-                        sh 'echo docker login successful'
-                        sh " docker push ${FRONTEND_IMAGE}:${BUILD_NUMBER}"
-                        sh " docker push ${BACKEND_IMAGE}:${BUILD_NUMBER}"
-                 }
-                }
-            }
-        }
+        // stage('Push docker image') {
+        //     steps {
+        //         script {
+        //             withDockerRegistry([
+        //              credentialsId: 'chedlyrebai-dockerhub',
+        //              url: 'https://index.docker.io/v1/'
+        //          ]) {
+        //                 sh 'echo docker login successful'
+        //                 sh " docker push ${FRONTEND_IMAGE}:${TAG_NUMBER}"
+        //                 sh " docker push ${BACKEND_IMAGE}:${TAG_NUMBER}"
+        //          }
+        //         }
+        //     }
+        // }
 
         stage('Deploy with Helm') {
             steps {
@@ -198,8 +199,8 @@ pipeline {
                         helm upgrade --install ${HELM_RELEASE_NAME} . \
                             --namespace ${HELM_NAMESPACE} \
                             --create-namespace \
-                            --set backend.image.tag=${BUILD_NUMBER} \
-                            --set frontend.image.tag=${BUILD_NUMBER} \
+                            --set backend.image.tag=${TAG_NUMBER} \
+                            --set frontend.image.tag=${TAG_NUMBER} \
                             --set backend.image.repository=${BACKEND_IMAGE} \
                             --set frontend.image.repository=${FRONTEND_IMAGE} \
                             --wait \
