@@ -24,10 +24,10 @@ pipeline {
     //     nodejs 'Node 21'
     // }
 
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Deployment environment')
-        booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip running tests')
-    }
+    // parameters {
+    //     choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Deployment environment')
+    //     booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip running tests')
+    // }
 
     triggers {
         githubPush()
@@ -130,8 +130,8 @@ pipeline {
              steps {
                  script {
                      sh '''
-                         docker build -t ${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
-                         docker build -t ${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
+                         docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER} -f client/Dockerfile client
+                         docker build -t ${BACKEND_IMAGE}:${BUILD_NUMBER} -f backend/Dockerfile backend
                      '''
                  }
              }
