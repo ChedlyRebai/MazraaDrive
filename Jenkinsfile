@@ -131,6 +131,11 @@ pipeline {
                     sh '''
                          docker build -t ${FRONTEND_IMAGE}:${BUILD_NUMBER}  -f client/Dockerfile client
                          docker build -t ${BACKEND_IMAGE}:${BUILD_NUMBER} -f backend/Dockerfile backend
+                           # Install Trivy if not present
+                        command -v trivy >/dev/null 2>&1 || curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+                        
+                        # Run scan (fail pipeline on HIGH or CRITICAL)
+                        trivy image --exit-code 1 --severity HIGH,CRITICAL ${FRONTEND_IMAGE}:${BUILD_NUMBER}
                      '''
                 }
             }
