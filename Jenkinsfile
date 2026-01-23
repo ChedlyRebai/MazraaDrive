@@ -130,8 +130,8 @@ pipeline {
              steps {
                  script {
                      sh '''
-                         docker build -t ${DOCKER_USERNAME}/${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
-                         docker build -t ${DOCKER_USERNAME}/${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
+                         docker build -t ${FRONTEND_IMAGE}:${GIT_COMMIT_SHORT} -f client/Dockerfile client
+                         docker build -t ${BACKEND_IMAGE}:${GIT_COMMIT_SHORT} -f backend/Dockerfile backend
                      '''
                  }
              }
