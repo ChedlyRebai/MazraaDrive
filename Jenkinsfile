@@ -151,7 +151,6 @@ pipeline {
         //                     --exit-code 1 \
         //                     --severity HIGH,CRITICAL \
         //                     ${FRONTEND_IMAGE}:${BUILD_NUMBER} || true
-                        
         //                 docker run --rm \
         //                     -v /var/run/docker.sock:/var/run/docker.sock \
         //                     aquasec/trivy:latest image \
@@ -183,14 +182,14 @@ pipeline {
                 script {
                     sh '''
                         export KUBECONFIG=/var/lib/jenkins/.kube/config
-                        
+
                         # Verify kubectl can connect to cluster
                         echo "Testing kubectl connection..."
                         if ! kubectl cluster-info; then
                             echo "ERROR: Cannot connect to Kubernetes cluster"
                             exit 1
                         fi
-                        
+
                         # Verify Helm is available
                         if command -v helm &> /dev/null; then
                             echo "Helm found at: $(which helm)"
@@ -198,11 +197,10 @@ pipeline {
                         else
                             echo "ERROR: Helm not found. Please install Helm on the Jenkins agent."
                             exit 1
-                        fi                        
+                        fi
                         # Update Helm dependencies
                         cd drive
                         helm dependency update
-                        
                         # Deploy or upgrade the release
                         helm upgrade --install ${HELM_RELEASE_NAME} . \
                             --namespace ${HELM_NAMESPACE} \
@@ -213,10 +211,10 @@ pipeline {
                             --set frontend.image.repository=${FRONTEND_IMAGE} \
                             --wait \
                             --timeout 5m
-                        
+
                         # Show deployment status
                         helm list -n ${HELM_NAMESPACE}
-                      
+
                     '''
                 }
             }

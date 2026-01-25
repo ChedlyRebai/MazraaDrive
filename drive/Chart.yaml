@@ -30,3 +30,8 @@ dependencies:
     version: "0.1.0"
     repository: "file://./charts/kibana"
     condition: kibana.enable
+
+  - name: argocd
+    version: "0.1.0"
+    repository: "file://./charts/argocd"
+    condition: argocd.enable
