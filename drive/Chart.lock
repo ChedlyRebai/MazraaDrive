@@ -14,8 +14,8 @@ dependencies:
 - name: kibana
   repository: file://./charts/kibana
   version: 0.1.0
-- name: argocd
-  repository: file://./charts/argocd
-  version: 0.1.0
-digest: sha256:c30b858d5c3e0115681177ffc15c085730206d99621d380ba1626f4a7c40e117
-generated: "2026-01-25T14:16:25.489862005+01:00"
+- name: argo-cd
+  repository: https://argoproj.github.io/argo-helm
+  version: 6.7.3
+digest: sha256:c5a56c7d6d9585e60aa14dde95b28261b6ec4c09f0b86d8c3423acc61edade86
+generated: "2026-01-26T20:51:39.462977561+01:00"

@@ -31,7 +31,10 @@ dependencies:
     repository: "file://./charts/kibana"
     condition: kibana.enable
 
-  - name: argocd
-    version: "0.1.0"
-    repository: "file://./charts/argocd"
-    condition: argocd.enable
+  # - name: argocd
+  #   version: "0.1.0"
+  #   repository: "file://./charts/argocd"
+  #   condition: argocd.enable
+  - name: argo-cd
+    version: 6.7.3
+    repository: https://argoproj.github.io/argo-helm
