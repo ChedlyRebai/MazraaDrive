@@ -8,7 +8,7 @@ spec:
   
   source:
     repoURL: https://github.com/ChedlyRebai/MazraaDrive
-    targetRevision: HEAD
+    targetRevision: master
     path: drive
   
   destination:
