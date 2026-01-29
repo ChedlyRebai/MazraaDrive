@@ -70,10 +70,10 @@ argo-cd:
     service:
       type: LoadBalancer
     ingress:
-      enabled: true
+      enabled: false
       ingressClassName: nginx
       hosts:
-        - argocd.drive.com
+        - argocd.example.com
   
   # ArgoCD repo server
   repoServer:
