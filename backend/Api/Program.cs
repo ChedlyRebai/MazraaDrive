@@ -30,6 +30,8 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
+                "http://localhost:4020",
+                "http://localhost:4200",
                 "http://localhost:8080",
                 "http://angular-app-srv",
                 "http://angular-app-srv:80",

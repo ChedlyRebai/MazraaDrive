@@ -7,8 +7,8 @@ export interface Environment {
 
 export const environment = {
   production: false,
-    apiUrl: 'http://localhost:7000/api',
-  authUrl: 'http://localhost:7000/auth'
+    apiUrl: 'http://localhost:5108/api',
+  authUrl: 'http://localhost:5108/auth'
 };
 
 
