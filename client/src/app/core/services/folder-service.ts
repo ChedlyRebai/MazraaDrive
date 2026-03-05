@@ -43,7 +43,7 @@ export class FolderService {
     if(SortDirection){
       params = params.append('SortDirection', SortDirection);
     }
-    return this.http.get<FolderPagedResult>(`${this.baseUrl}`, { params }).subscribe(
+    return this.http.get<FolderPagedResult>(`${this.baseUrl}`,{ params }).subscribe(
       (result) => {
         this.folders.next(result);
         console.log(result);
@@ -97,7 +97,8 @@ export class FolderService {
 
   CreateFolder(newFolder :any){
     newFolder.isActive = true;
-    return this.http.post<FolderDTO>(`${this.baseUrl}`, newFolder)
+    console.log(newFolder);
+    return this.http.post<FolderDTO>(`${this.baseUrl}`, newFolder,{withCredentials:true})
   }
 
 }

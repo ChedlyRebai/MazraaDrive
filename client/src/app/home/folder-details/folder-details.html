@@ -4,16 +4,7 @@
     <p-breadcrumb class="layout-readcrumb" [model]="items" [home]="home" />
   </nav>
   <router-outlet></router-outlet>
-  <app-files class="ng-star-inserted">CREATE PROFILE PROFIL_INFRA LIMIT
-    SESSIONS_PER_USER UNLIMITED
-    CONNECT_TIME 90                      
-    CPU_PER_SESSION 50000               
-    CPU_PER_CALL 60                      -- 60 centisecondes par requête
-    PASSWORD_LIFE_TIME 30                -- 30 jours = 1 mois
-    PASSWORD_GRACE_TIME 3                -- 3 jours de grâce
-    FAILED_LOGIN_ATTEMPTS 2              -- 2 erreurs max
-    PASSWORD_LOCK_TIME (5/1440);         -- 5 minutes (1 jour = 1440 minutes)
-
+  <app-files class="ng-star-inserted">
     <div class="grid grid-cols-12 gap-4">
       <!-- Statistics Cards -->
       <div class="col-span-12 md:col-span-3">

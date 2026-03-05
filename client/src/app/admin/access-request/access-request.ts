@@ -288,7 +288,7 @@ export class AccessRequest implements OnInit {
       message: 'Approuver cette demande ?',
       accept: () => {
         console.log('Demande approuvée:', r);
-        this.accessRequestService.approuved(r.id, this.validityDuration).subscribe({
+        this.accessRequestService.decide(r.id, true).subscribe({
           next: (res: any) => {
             console.log(res);
             this.toast.add({ severity: 'success', summary: 'Approuvée' });

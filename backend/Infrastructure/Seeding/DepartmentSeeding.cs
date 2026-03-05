@@ -9,7 +9,7 @@ namespace Infrastructure.Seeding
 {
     public static class DepartmentSeeder
     {
-        private static readonly (int id ,string Name, string Description)[] Departments = new[]
+        private static readonly (int id, string Name, string Description)[] Departments = new[]
         {
             (1,"Direction Générale", "Directorate - overall leadership (DG)"),
             (2,"Contrôle de gestion", "Management control and performance monitoring"),
@@ -43,7 +43,7 @@ namespace Infrastructure.Seeding
                 // ignore migration errors here; caller can handle if needed
             }
 
-            foreach (var (id,name, description) in Departments)
+            foreach (var (id, name, description) in Departments)
             {
                 var exists = await context.Departments
                     .AsNoTracking()
@@ -53,7 +53,7 @@ namespace Infrastructure.Seeding
                 {
                     var dept = new Department
                     {
-                        Id=id,
+                        Id = id,
                         Name = name,
                         Description = description,
                         CreatedAt = DateTime.UtcNow,

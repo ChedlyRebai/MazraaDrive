@@ -18,7 +18,6 @@ namespace API.Controllers;
 public class AccessRequestsController : BaseController
 {
 
-
     private readonly IAccessRightService _accessRightService; // optional if you auto-create rights
 
     public AccessRequestsController(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper mapper, ILogger<AccessRequestsController> logger, IAccessRightService accessRightService)

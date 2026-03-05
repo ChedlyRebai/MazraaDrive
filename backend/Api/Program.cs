@@ -46,25 +46,25 @@ builder.Services.AddCors(options =>
 
 
 
-var elasticUrl=builder.Configuration.GetValue<string>("Elasticsearch:Url");
-var elasticUsername=builder.Configuration.GetValue<string>("Elasticsearch:Username");
-var elasticPass=builder.Configuration.GetValue<string>("Elasticsearch:Password");
+var elasticUrl = builder.Configuration.GetValue<string>("Elasticsearch:Url");
+var elasticUsername = builder.Configuration.GetValue<string>("Elasticsearch:Username");
+var elasticPass = builder.Configuration.GetValue<string>("Elasticsearch:Password");
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithMachineName()
     .WriteTo.Console()
-    
+
     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl ?? "http://localhost:9200"))
-    
+
     {
         AutoRegisterTemplate = true,
         IndexFormat = "serilog-logs-{0:yyyy.MM.dd}",
         NumberOfShards = 2,
         NumberOfReplicas = 1,
         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-        ModifyConnectionSettings = x => 
-        x.BasicAuthentication(elasticUsername,elasticPass)
+        ModifyConnectionSettings = x =>
+        x.BasicAuthentication(elasticUsername, elasticPass)
         .ServerCertificateValidationCallback(
             (o, certificate, arg3, arg4) => true)
     })
@@ -157,7 +157,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var dbContext = services.GetRequiredService<AppDbContext>();
-       dbContext.Database.Migrate();
+        dbContext.Database.Migrate();
     }
     catch (Exception ex)
     {
@@ -176,7 +176,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "MazraaDrive API v1");
         c.RoutePrefix = "swagger"; // Keep swagger at /swagger
     });
-    
+
     // Enable OpenAPI endpoint for Scalar
     app.MapOpenApi();
 }
@@ -236,51 +236,48 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 
 
- using (var scope = app.Services.CreateScope())
- {
-     var services = scope.ServiceProvider;
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-     // seed roles (optional)
-     try
-     {
-         var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
-         if (roleManager != null)
-         {
-             await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
-         }
-     }
-     catch
-     {
-      //    log or ignore
-     }
+    // seed roles (optional)
+    try
+    {
+        var roleManager = services.GetService<RoleManager<Role>>();
+        if (roleManager != null)
+        {
+            await Infrastructure.Seeding.RoleSeeder.SeedRolesAsync(roleManager);
+        }
+    }
+    catch
+    {
 
-      //seed departments
-     try
-     {
-         var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
-         await Infrastructure.Seeding.DepartmentSeeder.SeedAsync(db);
-     }
-     catch
-     {
+    }
+
+    try
+    {
+        var db = services.GetRequiredService<AppDbContext>();
+        await DepartmentSeeder.SeedAsync(db);
+    }
+    catch
+    {
         //  log or ignore
-     }
+    }
 
+    try
+    {
 
-     try
-     {
-        
-     var userManager = services.GetRequiredService<UserManager<AppUser>>();
-   var roleManager = services.GetService<Microsoft.AspNetCore.Identity.RoleManager<Core.Entities.Role>>();
-            // var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
-     await UserSeeder.SeedUsersAsync(userManager,roleManager);
-     }
-     catch (System.Exception)
-     {
-        
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = services.GetService<RoleManager<Role>>();
+        // var db = services.GetRequiredService<Infrastructure.Data.AppDbContext>();
+        await UserSeeder.SeedUsersAsync(userManager, roleManager);
+    }
+    catch (System.Exception)
+    {
+
         throw;
-     }
- }
-// // ...existing code...
+    }
+}
 
 
 

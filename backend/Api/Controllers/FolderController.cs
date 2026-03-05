@@ -291,7 +291,12 @@ namespace Api.Controllers
                 // if (await _unitOfWork.FolderRepository.IsNameTakenInParentAsync(createDto.Name, createDto.ParentFolderId, createDto.DepartmentId))
                 //     return BadRequest(new { success = false, message = "Folder name already exists in this location" });
                 var userId = _currentUser.UserId ?? "10";
-                var depId = int.Parse(_currentUser.DepartmentId);
+                
+                if (!int.TryParse(_currentUser.DepartmentId, out var depId))
+                {
+                    return BadRequest(new { success = false, message = "Invalid or missing department ID" });
+                }
+                
                 var folder = _mapper.Map<Folder>(createDto);
                 folder.CreatedById = userId;
                 folder.DepartmentId = depId;

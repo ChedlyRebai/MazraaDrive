@@ -91,6 +91,7 @@ export class AccessRequsetService {
 
 
   approuved(id: number | string, validityDuration: number | string) {
+    console.log(id,validityDuration)
     return this.http.post<AccessRequestDto>(`${this.baseUrl}/DocumentAccess/approve/${id}`, { params: { validityDuration }, withCredentials: true });
   }
 
