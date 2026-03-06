@@ -117,7 +117,7 @@ export class DocumentRequsetService {
 
   createDocumentRequest(documentRequest: DocumentRequestDTO) {
     return this.http.post<DocumentRequestDTO>(
-      `${this.baseUrl}/DocumentRequest`,
+      `${this.baseUrl}`,
       documentRequest,
       { withCredentials: true }
     );

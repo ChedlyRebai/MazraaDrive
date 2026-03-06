@@ -300,8 +300,18 @@ export class Demandes implements OnInit {
     this.userService.getCurrentUser();
     this.getReceivedDocumentRequests();
     this.getSendedDocumentRequests();
+    this.getAllDeapartments();
   }
 
+  getAllDeapartments() {
+    this.depService.getDepartments().subscribe(
+      (response:any)=>{
+        console.log(response.data.map((d:any)=>({label:d.name,value:d.id})));
+        this.departmentSuggestions= response.data.map((d:any)=>({label:d.name,value:d.id}));
+        this.departments = response.data.map((d:any)=>({id:d.id,name:d.name}));
+      }
+    )
+  }
   ReceivedDocumentRequest: DocumentRequestPagedResult =
     {} as DocumentRequestPagedResult;
   SendedDocumentRequest: DocumentRequestPagedResult =
