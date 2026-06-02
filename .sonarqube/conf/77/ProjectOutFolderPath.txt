@@ -1,0 +1,1 @@
+/home/ubuntu/Bureau/github/MazraaDrive/.sonarqube/out/77
