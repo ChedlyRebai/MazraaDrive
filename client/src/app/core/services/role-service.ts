@@ -9,11 +9,16 @@ import { CreateRoleDto } from '../../shared/models/role';
   providedIn: 'root'
 })
 export class RoleService {
-  baseUrl=environment.apiUrl+"/Role";
-   constructor(private http: HttpClient) { }
+  baseUrl = environment.apiUrl + "/Role";
+  constructor(private http: HttpClient) { }
 
-   private roles = new BehaviorSubject<RolePagedResult>({} as RolePagedResult);
-   roles$ = this.roles.asObservable();
+  private roles = new BehaviorSubject<RolePagedResult>({} as RolePagedResult);
+  roles$ = this.roles.asObservable();
+
+  loadAllRoles() {
+    return this.http.get(`${this.baseUrl}`,)
+  }
+
 
   getRoles(PageSize?: number,
     Search?: string,
@@ -22,26 +27,26 @@ export class RoleService {
     SortDirection?: string) {
     let params = new HttpParams();
 
-    if(PageSize){
+    if (PageSize) {
       params = params.append('PageSize', PageSize.toString());
     }
 
-    if(PageNumber){
+    if (PageNumber) {
       params = params.append('PageNumber', PageNumber.toString());
     }
 
-    if(Search){
+    if (Search) {
       params = params.append('Search', Search.toString());
     }
 
-    if(SortBy){
+    if (SortBy) {
       params = params.append('SortBy', SortBy);
     }
-    
-    if(SortDirection){
+
+    if (SortDirection) {
       params = params.append('SortDirection', SortDirection);
     }
-    return this.http.get<RolePagedResult>(`${this.baseUrl}`,{params}).subscribe(
+    return this.http.get<RolePagedResult>(`${this.baseUrl}`, { params }).subscribe(
       (result) => {
         console.log('Fetched roles:', result);
         this.roles.next(result);
@@ -73,7 +78,7 @@ export class RoleService {
   }
 
 
-    getSearchRoles(searchTerm: string) {
-      return this.http.get<RoleDto[]>(`${this.baseUrl}/search/${searchTerm}`)
-    }
+  getSearchRoles(searchTerm: string) {
+    return this.http.get<RoleDto[]>(`${this.baseUrl}/search/${searchTerm}`)
+  }
 }

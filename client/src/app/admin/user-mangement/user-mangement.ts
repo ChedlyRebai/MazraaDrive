@@ -143,6 +143,19 @@ export class UserMangement implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.userService.getUsers();
+    this.loadRoles();
+  }
+
+
+  loadRoles(){
+    this.roleService.loadAllRoles().subscribe({
+      next: (result) => {
+        console.log('Roles loaded in component:', result);
+      },
+      error: (error) => {
+        console.error('Error loading roles in component:', error);
+      }
+    });
   }
 
   initRoleSearch() {

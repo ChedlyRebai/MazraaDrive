@@ -15,9 +15,7 @@
 
   <div class="mb-4 grid gap-4 grid-cols-12">
     <div class="col-span-12 md:col-span-3">
-      <div
-        class="rounded-lg p-4 bg-gray-500 text-white flex items-center justify-between"
-      >
+      <div class="rounded-lg p-4 bg-gray-500 text-white flex items-center justify-between">
         <div>
           <div class="text-sm opacity-80">Total</div>
           <div class="text-2xl font-semibold">
@@ -29,9 +27,7 @@
     </div>
 
     <div class="col-span-12 md:col-span-3">
-      <div
-        class="rounded-lg p-4 bg-green-500 text-white flex items-center justify-between"
-      >
+      <div class="rounded-lg p-4 bg-green-500 text-white flex items-center justify-between">
         <div>
           <div class="text-sm opacity-80">Actifs</div>
           <div class="text-2xl font-semibold">
@@ -42,9 +38,7 @@
       </div>
     </div>
     <div class="col-span-12 md:col-span-3">
-      <div
-        class="rounded-lg p-4 bg-amber-500 text-white flex items-center justify-between"
-      >
+      <div class="rounded-lg p-4 bg-amber-500 text-white flex items-center justify-between">
         <div>
           <div class="text-sm opacity-80">Inactifs</div>
           <div class="text-2xl font-semibold">
@@ -72,26 +66,13 @@
     <p-toolbar class="mb-4">
       <ng-template #start>
         <div class="flex flex-wrap gap-2">
-          <p-button
-            label="Nouvel Utilisateur"
-            icon="pi pi-user-plus"
-            (onClick)="openNew()"
-          />
+          <p-button label="Nouvel Utilisateur" icon="pi pi-user-plus" (onClick)="openNew()" />
         </div>
       </ng-template>
       <ng-template #end>
         <div class="flex flex-wrap gap-2">
-          <p-button
-            label="Exporter"
-            icon="pi pi-download"
-            severity="secondary"
-            (onClick)="exportUsers()"
-          />
-          <p-button
-            icon="pi pi-refresh"
-            [outlined]="true"
-            (onClick)="loadUsers()"
-          />
+          <p-button label="Exporter" icon="pi pi-download" severity="secondary" (onClick)="exportUsers()" />
+          <p-button icon="pi pi-refresh" [outlined]="true" (onClick)="loadUsers()" />
         </div>
       </ng-template>
     </p-toolbar>
@@ -101,41 +82,21 @@
       <div class="col-span-12 md:col-span-3">
         <p-iconField iconPosition="left" class="w-full">
           <p-inputIcon class="pi pi-search" />
-          <input
-            pInputText
-            type="text"
-            placeholder="Rechercher..."
-            (input)="onGlobalSearch($event)"
-          />
+          <input pInputText type="text" placeholder="Rechercher..." (input)="onGlobalSearch($event)" />
         </p-iconField>
       </div>
     </div>
     <ng-container *ngIf="userService.users$ | async as users">
       <!-- Users Table -->
-      <p-table
-        #dt
-        [value]="users.data"
-        [paginator]="true"
-        [rows]="10"
-        [rowsPerPageOptions]="[1, 10, 25, 50]"
-        (onLazyLoad)="onPageChange($event)"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Affichage {first} - {last} sur {totalRecords}"
-        [showCurrentPageReport]="true"
-        responsiveLayout="scroll"
-        styleClass="p-datatable-sm"
-        [globalFilterFields]="['fullName', 'userName', 'department', 'role']"
-        [lazy]="true"
-        (onLazyLoad)="onPageChange($event)"
-        [totalRecords]="users.totalRecords"
-        [globalFilterFields]="['name', 'description']"
-        [rowHover]="true"
-        dataKey="id"
+      <p-table #dt [value]="users.data" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[1, 10, 25, 50]"
+        (onLazyLoad)="onPageChange($event)" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Affichage {first} - {last} sur {totalRecords}" [showCurrentPageReport]="true"
+        responsiveLayout="scroll" styleClass="p-datatable-sm"
+        [globalFilterFields]="['fullName', 'userName', 'department', 'role']" [lazy]="true"
+        (onLazyLoad)="onPageChange($event)" [totalRecords]="users.totalRecords"
+        [globalFilterFields]="['name', 'description']" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} rôles"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[1, 10, 25, 50]"
-      >
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[1, 10, 25, 50]">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 3rem">Cin</th>
@@ -167,16 +128,12 @@
         <ng-template pTemplate="body" let-user>
           <tr>
             <td class="font-medium text-xl gap-2 mx-4">
-              {{ user.cin }} {{ "  " }}
+              {{ user.cin }} {{ " " }}
             </td>
             <td>
               <div class="flex items-center gap-2">
-                <p-avatar
-                  [image]="user.profilePicture"
-                  [label]="getInitials(user.userName)"
-                  shape="circle"
-                  size="normal"
-                />
+                <p-avatar [image]="user.profilePicture" [label]="getInitials(user.userName)" shape="circle"
+                  size="normal" />
                 <span class="font-medium">{{ user.userName }}</span>
               </div>
             </td>
@@ -189,16 +146,10 @@
 
             <td><p-tag [value]="user.departmentName" severity="info" /></td>
             <td>
-              <p-tag
-                [value]="user.roleName"
-                [severity]="getRoleSeverity(user.roleName)"
-              />
+              <p-tag [value]="user.roleName" [severity]="getRoleSeverity(user.roleName)" />
             </td>
             <td>
-              <p-tag
-                [value]="user.isActive ? 'Actif' : 'Inactif'"
-                [severity]="user.isActive ? 'success' : 'danger'"
-              />
+              <p-tag [value]="user.isActive ? 'Actif' : 'Inactif'" [severity]="user.isActive ? 'success' : 'danger'" />
             </td>
             <td>
               <div class="font-medium">
@@ -210,30 +161,13 @@
             </td>
             <td>
               <div class="flex gap-2">
-                <p-button
-                  icon="pi pi-eye"
-                  severity="info"
-                  [rounded]="true"
-                  [outlined]="true"
-                  (click)="viewUser(user)"
-                  pTooltip="Voir"
-                />
+                <p-button icon="pi pi-eye" severity="info" [rounded]="true" [outlined]="true" (click)="viewUser(user)"
+                  pTooltip="Voir" />
 
-                <p-button
-                  icon="pi pi-pencil"
-                  [rounded]="true"
-                  [outlined]="true"
-                  (click)="editUser(user)"
-                  pTooltip="Modifier"
-                />
-                <p-button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  [rounded]="true"
-                  [outlined]="true"
-                  (click)="deleteUser(user)"
-                  pTooltip="Supprimer"
-                />
+                <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="editUser(user)"
+                  pTooltip="Modifier" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                  (click)="deleteUser(user)" pTooltip="Supprimer" />
               </div>
             </td>
           </tr>
@@ -242,9 +176,7 @@
         <ng-template pTemplate="emptymessage">
           <tr>
             <td colspan="9">
-              <div
-                class="flex flex-col items-center gap-2 py-4 text-color-secondary"
-              >
+              <div class="flex flex-col items-center gap-2 py-4 text-color-secondary">
                 <i class="pi pi-users text-3xl"></i>
                 <span>Aucun utilisateur trouvé.</span>
               </div>
@@ -260,106 +192,59 @@
       </p-table>
     </ng-container>
     <!-- User Dialog -->
-    <p-dialog
-      [(visible)]="userDialog"
-      [style]="{ width: '50rem'  }"
-      [header]="dialogTitle"
-      [modal]="true"
-      [draggable]="true"
-      
-    >
+    <p-dialog [(visible)]="userDialog" [style]="{ width: '50rem'  }" [header]="dialogTitle" [modal]="true"
+      [draggable]="true">
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-6">
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <input
-                  pInputText
-                  id="Cin"
-                  type="number"
-                  [(ngModel)]="user.cin"
-                  required
-                />
+                <input pInputText id="Cin" type="number" [(ngModel)]="user.cin" required />
                 <label for="Cin">Cin *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.cin"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.cin">Requis.</small>
             </div>
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <input
-                  pInputText
-                  id="fullName"
-                  type="text"
-                  [(ngModel)]="user.userName"
-                  required
-                />
+                <input pInputText id="fullName" type="text" [(ngModel)]="user.userName" required />
                 <label for="fullName">Nom Complet *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.userName"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.userName">Requis.</small>
             </div>
 
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <input
-                  pInputText
-                  id="phoneNumber"
-                  type="tel"
-                  [(ngModel)]="user.phoneNumber"
-                />
+                <input pInputText id="phoneNumber" type="tel" [(ngModel)]="user.phoneNumber" />
                 <label for="phoneNumber">Téléphone</label>
               </p-floatLabel>
             </div>
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <p-autocomplete
-                  inputId="department"
-                  [(ngModel)]="user.departmentName"
-                  [suggestions]="departmentFilteredDialog"
-                  (completeMethod)="completeDepartmentDialog($event)"
-                  [dropdown]="true"
-                  optionLabel="name"
-                  optionValue="name"
-                  showClear="true"
-                  placeholder="Sélectionner un département"
-                  [forceSelection]="true"
-                  [minLength]="1"
-                  (onSelect)="user.departmentId = $event.value.id"
-                >
+                <p-autocomplete inputId="department" [(ngModel)]="user.departmentName"
+                  [suggestions]="departmentFilteredDialog" (completeMethod)="completeDepartmentDialog($event)"
+                  [dropdown]="true" optionLabel="name" optionValue="name" showClear="true"
+                  placeholder="Sélectionner un département" [forceSelection]="true" [minLength]="1"
+                  (onSelect)="user.departmentId = $event.value.id">
                   <ng-template let-department pTemplate="item">
                     <div class="flex flex-col">
                       <span class="font-medium">{{ department.name }}</span>
                       <small class="text-gray-500">{{
                         department.description
-                      }}</small>
+                        }}</small>
                     </div>
                   </ng-template>
                 </p-autocomplete>
                 <label for="department">Département *</label>
               </p-floatLabel>
-              <small
-                class="text-red-500"
-                *ngIf="submitted && !user.departmentId"
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.departmentId">
                 Requis.
               </small>
             </div>
             <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <p-autocomplete
-                  inputId="role"
-                  showClear="true"
-                  [(ngModel)]="user.roleName"
-                  [suggestions]="roleFilteredDialog"
-                  (completeMethod)="completeRoleDialog($event)"
-                  (onSelect)="user.roleId = $event.value.id"
-                  [dropdown]="true"
-                  optionLabel="name"
-                  optionValue="name"
-                >
+                <p-autocomplete inputId="role" showClear="true" [(ngModel)]="user.roleName"
+                  [suggestions]="roleFilteredDialog" (completeMethod)="completeRoleDialog($event)"
+                  (onSelect)="user.roleId = $event.value.id" [dropdown]="true" optionLabel="name" optionValue="name">
                   <!-- <ng-template let-department pTemplate="item">
                     <div class="flex flex-col">
                       <span class="font-medium">{{ department.name }}</span>
@@ -372,77 +257,40 @@
 
                 <label for="role">Rôle *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.roleId"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.roleId">Requis.</small>
             </div>
-            <div class="col-span-12 md:col-span-6" >
+            <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <p-password
-                  inputId="password"
-                  [(ngModel)]="user.password"
-                  [toggleMask]="true"
-                  placeholder="Mot de passe"
-                />
+                <p-password inputId="password" [(ngModel)]="user.password" [toggleMask]="true"
+                  placeholder="Mot de passe" />
                 <label for="password">Mot de passe *</label>
               </p-floatLabel>
-              <small class="text-red-500" *ngIf="submitted && !user.password"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.password">Requis.</small>
             </div>
-            <div class="col-span-12 md:col-span-6" >
+            <div class="col-span-12 md:col-span-6">
               <p-floatLabel>
-                <p-password
-                  inputId="confirmPassword"
-                  [(ngModel)]="user.confirmPassword"
-                  [toggleMask]="true"
-                  placeholder="Confirmer Mot de passe"
-                />
+                <p-password inputId="confirmPassword" [(ngModel)]="user.confirmPassword" [toggleMask]="true"
+                  placeholder="Confirmer Mot de passe" />
                 <label for="confirmPassword">Confirmer le mot de passe *</label>
               </p-floatLabel>
-              <small
-                class="text-red-500"
-                *ngIf="submitted && !user.confirmPassword"
-                >Requis.</small
-              >
+              <small class="text-red-500" *ngIf="submitted && !user.confirmPassword">Requis.</small>
             </div>
             <div class="col-span-12 md:col-span-6 flex items-center gap-3">
-              <p-checkbox
-                [(ngModel)]="user.isActive"
-                [binary]="true"
-                inputId="isActive"
-              />
-              <label for="isActive" class="font-medium"
-                >Utilisateur actif</label
-              >
+              <p-checkbox [(ngModel)]="user.isActive" [binary]="true" inputId="isActive" />
+              <label for="isActive" class="font-medium">Utilisateur actif</label>
             </div>
           </div>
         </div>
       </ng-template>
       <ng-template pTemplate="footer">
-        <p-button
-          label="Annuler"
-          icon="pi pi-times"
-          [text]="true"
-          (click)="hideDialog()"
-        />
-        <p-button
-          label="Sauvegarder"
-          icon="pi pi-check"
-          (click)="saveUser()"
-          [loading]="saving"
-        />
+        <p-button label="Annuler" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+        <p-button label="Sauvegarder" icon="pi pi-check" (click)="saveUser()" [loading]="saving" />
       </ng-template>
     </p-dialog>
 
     <!-- User Details Dialog -->
-    <p-dialog
-      [(visible)]="userDetailsDialog"
-      [style]="{ width: '40rem' }"
-      header="Détails de l'utilisateur"
-      [modal]="true"
-      [draggable]="false"
-    >
+    <p-dialog [(visible)]="userDetailsDialog" [style]="{ width: '40rem' }" header="Détails de l'utilisateur"
+      [modal]="true" [draggable]="false">
       <ng-template pTemplate="content">
         <div class="flex flex-col gap-4" *ngIf="selectedUser">
           <div class="flex items-center gap-4 pb-4 border-b">
@@ -471,10 +319,8 @@
             </div>
             <div class="col-span-6">
               <span class="font-semibold">Statut:</span>
-              <p-tag
-                [value]="selectedUser!.isActive ? 'Actif' : 'Inactif'"
-                [severity]="selectedUser!.isActive ? 'success' : 'danger'"
-              />
+              <p-tag [value]="selectedUser!.isActive ? 'Actif' : 'Inactif'"
+                [severity]="selectedUser!.isActive ? 'success' : 'danger'" />
             </div>
             <div class="col-span-6">
               <span class="font-semibold">Créé le:</span>
@@ -494,19 +340,10 @@
         </div>
       </ng-template>
       <ng-template pTemplate="footer">
-        <p-button
-          label="Fermer"
-          icon="pi pi-times"
-          [text]="true"
-          (click)="userDetailsDialog = false"
-        />
-        <p-button
-          label="Modifier"
-          icon="pi pi-pencil"
-          (click)="
+        <p-button label="Fermer" icon="pi pi-times" [text]="true" (click)="userDetailsDialog = false" />
+        <p-button label="Modifier" icon="pi pi-pencil" (click)="
             selectedUser && editUser(selectedUser); userDetailsDialog = false
-          "
-        />
+          " />
       </ng-template>
     </p-dialog>
 
