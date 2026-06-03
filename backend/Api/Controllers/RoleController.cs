@@ -73,6 +73,24 @@ namespace Api.Controllers
             }
         }
 
+
+        [HttpGet("allRoles")]
+        public async Task<ActionResult<RolePagedResult>> GetAllRoles()
+        {
+            try
+            {
+                
+                var roles = await _unitOfWork.RoleRepository.GetAllRoles();
+                var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
+                return Ok(roleDtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving paged list of roles");
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleDto>> GetRole(string id)
         {
@@ -107,10 +125,7 @@ namespace Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(new ResponseAPI(400, "Invalid data"));
 
-                // Map DTO to entity
                 var role = _mapper.Map<Role>(createRoleDto);
-
-                // Add to repository and get the created entity with ID
                 var createdRole = await _unitOfWork.RoleRepository.AddAsync(role);
 
                 // IMPORTANT: Save changes to get the generated ID
@@ -119,7 +134,6 @@ namespace Api.Controllers
                 // Map back to DTO
                 var roleDto = _mapper.Map<RoleDto>(createdRole);
 
-                //await _auditLogger.LogAsync("CreateRole", "Created new role", "10", "Role");
                 _logger.LogInformation("Created new role with ID {RoleId}", roleDto.id);
                 return CreatedAtAction(nameof(GetRole), new { id = roleDto.id },
                     new { success = true, data = roleDto });
@@ -197,9 +211,6 @@ namespace Api.Controllers
         {
             try
             {
-                // if (string.IsNullOrWhiteSpace(searchTerm))
-                //     return BadRequest(new ResponseAPI(400, "Search term is required"));
-
                 var roles = await _unitOfWork.RoleRepository.SearchAsync(searchTerm);
                 var roleDtos = _mapper.Map<IEnumerable<RoleDto>>(roles);
                 _logger.LogInformation("Searched roles with term {SearchTerm}", searchTerm);

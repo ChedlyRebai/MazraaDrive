@@ -118,7 +118,7 @@ interface FileCategory {
     TabsModule,
     NgxDocViewerModule,
     PdfViewerModule
-],
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './documents.html',
   styleUrls: ['./documents.css'],
@@ -127,7 +127,7 @@ export class Documents implements OnInit {
   @ViewChild('contextMenu') contextMenu: any;
 
   // User and stats data
-  baseUrl:string=  environment.apiUrl
+  baseUrl: string = environment.apiUrl
   totalFiles = 718;
   totalFolders = 45;
   sharedFiles = 156;
@@ -334,7 +334,7 @@ export class Documents implements OnInit {
     private confirmationService: ConfirmationService,
     public documentService: DocumentService,
     public folderService: FolderService
-  ) {}
+  ) { }
 
   viewDocument(document: DocumentDto) {
     this.selectedDocument = document;
@@ -377,12 +377,12 @@ export class Documents implements OnInit {
           datasets: [
             {
               data: [
-                stats.documentCount,
-                stats.imageCount,
-                stats.videoCount,
-                stats.wordCount,
-                stats.pdfCount,
-                stats.audioCount,
+                stats.documentCount | 0,
+                stats.imageCount | 0,
+                stats.videoCount | 0,
+                stats.wordCount | 0,
+                stats.pdfCount | 0,
+                stats.audioCount | 0,
               ],
               backgroundColor: [
                 '#3B82F6',
@@ -581,7 +581,7 @@ export class Documents implements OnInit {
     },
   ];
 
-  initializeCharts() {}
+  initializeCharts() { }
 
   setupContextMenu() {
     // Context Menu
@@ -1054,5 +1054,5 @@ export class Documents implements OnInit {
 
 
 
-  
+
 }

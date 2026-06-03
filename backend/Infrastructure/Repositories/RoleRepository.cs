@@ -186,5 +186,10 @@ namespace Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<Role>> GetAllRoles()
+        {
+            return await _roleManager.Roles.Select(r => r).ToListAsync();
+        }
     }
 }

@@ -16,7 +16,7 @@ export class RoleService {
   roles$ = this.roles.asObservable();
 
   loadAllRoles() {
-    return this.http.get(`${this.baseUrl}`,)
+    return this.http.get<any[]>(`${this.baseUrl}/allRoles`)
   }
 
 

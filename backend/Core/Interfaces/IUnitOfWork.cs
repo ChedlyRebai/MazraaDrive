@@ -23,6 +23,8 @@ public interface IUnitOfWork
     public RoleManager<Role> RoleManager { get; }
     public IRoleRepository RoleRepository { get; }
 
+    
+
     Task<int> SaveChangesAsync();
 
 }

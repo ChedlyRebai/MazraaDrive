@@ -10,10 +10,8 @@ import { Checkbox } from 'primeng/checkbox';
 import { AutoComplete } from 'primeng/autocomplete';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ThemeSwitcher } from '../themeswitcher';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { RoleService } from '../../core/services/role-service';
 import { DepartmentService } from '../../core/services/department-service';
 
@@ -67,17 +65,7 @@ export class UserMangement implements OnInit {
 
   filter: UserFilter = { role: null, dept: null, status: null };
 
-  // Option sources
-  roleOptions = [
-    { label: 'Administrateur', value: 'Admin' },
-    { label: 'Manager', value: 'Manager' },
-    { label: 'Utilisateur', value: 'User' },
-  ];
-  departmentOptions = [
-    { label: 'Finance', value: 'Finance' },
-    { label: 'IT', value: 'IT' },
-    { label: 'RH', value: 'HR' },
-  ];
+  
   statusOptions = [
     { label: 'Actif', value: true },
     { label: 'Inactif', value: false },
@@ -96,19 +84,6 @@ export class UserMangement implements OnInit {
       this.SortBy,
       this.SortDirection
     );
-    //   .subscribe({
-    //     next: (response: any) => {
-    //       this.PageNumber = response.pageNumber;
-    //       this.PageSize = response.pageSize;
-    //       this.departments = response.data;
-    //       this.totalRecords = response.totalRecords;
-    //       this.totalDepartments = response.totalDepartments;
-    //       this.totalUsers = response.totalUsers;
-    //       this.avgUsersPerDepartment = Math.round(
-    //         this.totalUsers / this.totalDepartments
-    //       );
-    //     },
-    //   });
   }
 
   onPageChange(event: any) {
@@ -117,16 +92,9 @@ export class UserMangement implements OnInit {
     this.PageSize = event.rows;
     this.getAllUsers();
   }
-  // Filter autocomplete suggestions
-  roleFiltered: any[] = [
-    { value: 'Admin' },
-    { value: 'Manager' },
-    { value: 'User' },
-  ];
+  
   departmentFiltered: any[] = [];
   statusFiltered: any[] = [];
-
-  // Dialog autocomplete suggestions (separate to avoid interference if desired)
   roleFilteredDialog: any[] = [];
   departmentFilteredDialog: any[] = [];
 
@@ -138,19 +106,23 @@ export class UserMangement implements OnInit {
     public userService: UserService,
     private message: MessageService,
     private confirm: ConfirmationService
-  ) {}
+  ) {
+    this.loadRoles();
+  }
 
   ngOnInit(): void {
     this.loadUsers();
     this.userService.getUsers();
-    this.loadRoles();
+    
   }
 
 
   loadRoles(){
     this.roleService.loadAllRoles().subscribe({
-      next: (result) => {
+      next: (result:any[]) => {
+        console.log(result)
         console.log('Roles loaded in component:', result);
+        this.roleFilteredDialog = result;
       },
       error: (error) => {
         console.error('Error loading roles in component:', error);
@@ -305,15 +277,7 @@ export class UserMangement implements OnInit {
   }
 
   newUser: CreateUserDto = {} as CreateUserDto;
-  // {
-  //   "userName": "mohamed",
-  //   "cin": 220,
-  //   "password": "chedlyREb12.",
-  //   "confirmPassword": "chedlyREb12.",
-  //   "phoneNumber": "28651633",
-  //   "roleId": 10,
-  //   "departmentId": 10
-  // }
+ 
 
   saveUser() {
     console.log(this.user);
@@ -337,17 +301,7 @@ export class UserMangement implements OnInit {
       console.log('Saving user:', this.user);
       this.saving = true;
       const isNew = !this.user.id;
-      // {
-      //   "cin": "124551",
-      //   "confirmPassword": "wN*EKv}_9Uih7AP",
-      //   "departmentId": 2,
-      //   "departmentName": "IT",
-      //   "password": "wN*EKv}_9Uih7AP",
-      //   "phoneNumber": "1234567",
-      //   "roleId": 10,
-      //   "roleName": "Finance",
-      //   "userName": "hichem"
-      // }
+     
       this.newUser = {
         cin: this.user.cin,
         confirmPassword: this.user.confirmPassword,

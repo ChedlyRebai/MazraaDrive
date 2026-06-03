@@ -615,11 +615,14 @@
         <!-- Storage Chart -->
         <div class="card mb-6">
           <h3
+          *ngIf="stats.totalFileSize > 0"
             class="text-xl font-semibold mb-4 text-surface-900 dark:text-surface-0"
           >
             Utilisation du stockage
           </h3>
-          <div class="flex justify-center mb-4">
+          <div *ngIf="stats.totalFileSize > 0" class="flex justify-center mb-4">
+            
+           
             <p-chart
               type="doughnut"
               [data]="storageChartData"
@@ -627,6 +630,7 @@
               width="200"
               height="200"
             />
+            
           </div>
           <div class="text-center">
             <p
