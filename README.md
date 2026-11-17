@@ -4,6 +4,7 @@ MazraaDrive est une application de gestion documentaire et de communication prof
 
 ## Fonctionnalités métier détaillées
 
+
 ### Utilisateurs (`AppUser`)
 - Gestion des utilisateurs avec rôles, département, activation/désactivation
 - Historique des accès et actions (audit logs)
